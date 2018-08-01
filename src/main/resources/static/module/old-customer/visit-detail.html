@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="en">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1"/>
+    <meta name="keywords" content="查看详情"/>
+    <meta name="description" content="查看详情"/>
+    <title>查看详情</title>
+
+
+    <link rel="stylesheet" href="../../css/jquery-weui.css">
+    <link rel="stylesheet" href="../../css/weui.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../iconfont/iconfont.css">
+    <link rel="stylesheet" href="../old-customer/css/character.css">
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../../js/jquery-weui.min.js"></script>
+    <script src="../../js/fastclick.js"></script>
+    <script src="../../js/city-picker.min.js"></script>
+
+
+    <!--<script type="text/javascript" src="../lib/swiper.min.js"></script>-->
+    <!--<script type="text/javascript" src="../lib/upload.js?time=20160912"></script>-->
+    <!--<script type="text/javascript" src="/lib/yt/config.js?time=20160912"></script>-->
+    <!--<script src="js/visit-detail.js"></script>-->
+
+</head>
+<body ontouchstart="">
+<div class="weui-form-preview">
+    <div class="weui-form-preview__hd name-narrow">
+        <label class="weui-form-preview__label name-font customer_name"></label>
+        <em class="weui-form-preview__value" style="text-align: right">
+            <a href="javascript:void(0);" class="icon-active icon-narrow add">
+                <i class="iconfont " style="color: #fa416e">&#xe007;</i>
+            </a>
+        </em>
+    </div>
+    <div id="info"></div>
+</div>
+
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <div class="weui-uploader">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title">图片(点击查看)</p>
+                </div>
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderImageFiles">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <div class="weui-uploader">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title">附件(点击下载)</p>
+                </div>
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderFiles">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="weui-form-preview" style="margin-top: 10px;">
+    <div class="weui-form-preview__hd name-narrow">
+        <label class="weui-form-preview__label name-font">评论</label>
+        <em class="weui-form-preview__value" style="text-align: right">
+            <a href="sales-grade.html" class="icon-active icon-narrow">&nbsp;</a>
+        </em>
+    </div>
+    <div class="weui-panel_access" id="list"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="en">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1"/>
+    <meta name="keywords" content="查看详情"/>
+    <meta name="description" content="查看详情"/>
+    <title>查看详情</title>
+
+    <link rel="stylesheet" href="../../css/jquery-weui.css">
+    <link rel="stylesheet" href="../../css/weui.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../iconfont/iconfont.css">
+    <link rel="stylesheet" href="css/customer-comm.css">
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../../js/jquery-weui.min.js"></script>
+    <script src="../../js/fastclick.js"></script>
+    <script src="../../js/city-picker.min.js"></script>
+
+
+    <!--<script type="text/javascript" src="/lib/yt/config.js"></script>-->
+    <!--<script type="text/javascript" src="js/common.js"></script>-->
+    <!--<script type="text/javascript" src="js/visit-detail-log.js"></script>-->
+
+</head>
+<body ontouchstart>
+<div class="weui-form-preview" style=" width: 100%">
+    <div class="weui-form-preview__bd" style="padding: 0px">
+        <div id="customer-table">
+
+        </div>
+    </div>
+</div>
+
+<!-- 客户印象 -->
+<div class="weui-cells__title customerTag" style="display: none;">客户印象</div>
+<div class="weui-cells weui-cells_form customerTag" style="display: none;">
+    <div class="weui-cell">
+        <div class="weui-cell__bd weui-media-box_appmsg">
+
+            <div class="box tag-box">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="weui-navbar" style="position: relative;top:0;margin: 0;padding: 0;">
+    <div class="weui-navbar__item btn-plan">
+        拜访计划
+    </div>
+    <div class="weui-navbar__item weui-bar__item_on">
+        拜访记录
+    </div>
+</div>
+<div class="weui-form-preview" id="log-list">
+
+</div>
+
+<div class="weui-infinite-scroll" id="infinite">
+    <div class="infinite-preloader"></div>
+    正在加载...
+</div>
+</body>
+</html>

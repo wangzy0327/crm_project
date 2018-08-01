@@ -1,0 +1,14 @@
+body {
+    background: #f1f5f8;
+    font-size: 14px;
+}
+
+@media (min-width: 720px) {
+
+    .body {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+
+}

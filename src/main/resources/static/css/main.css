@@ -1,0 +1,22 @@
+body, html {
+    height: 100%;
+    -webkit-tap-highlight-color: transparent;
+    background-color: #f1f5f8;
+}
+.weui-infinite-scroll {
+    height: 24px;
+    line-height: 24px;
+    padding: 10px;
+    text-align: center;
+}
+.weui-infinite-scroll .infinite-preloader {
+    display: inline-block;
+    margin-right: 4px;
+    vertical-align: -4px;
+    width: 20px;
+    height: 20px;
+    -webkit-transform-origin: 50%;
+    transform-origin: 50%;
+    -webkit-animation: preloader-spin 1s steps(12, end) infinite;
+    animation: preloader-spin 1s steps(12, end) infinite;
+}

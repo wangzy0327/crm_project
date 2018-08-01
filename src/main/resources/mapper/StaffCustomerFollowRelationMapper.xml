@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wzy.crm.dao.StaffCustomerFollowRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.StaffCustomerFollowRelation" >
+    <result column="staff_id" property="staffId" jdbcType="INTEGER" />
+    <result column="customer_id" property="customerId" jdbcType="INTEGER" />
+    <result column="is_follow" property="isFollow" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="StaffMap" type="com.wzy.crm.pojo.Staff" >
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.wzy.crm.pojo.StaffCustomerFollowRelation" >
+    insert into staff_customer_follow_relation (staff_id, customer_id, is_follow
+      )
+    values (#{staffId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, 1
+      )
+  </insert>
+  <insert id="insertByParam">
+   insert into staff_customer_follow_relation (customer_id,staff_id,is_follow)
+    values (#{param1}, #{param2}, 1)
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select staff_id, customer_id, is_follow
+    from staff_customer_follow_relation
+  </select>
+  <select id="selectStaffsByParam" resultMap="StaffMap">
+    select id,`name`
+    from staff_customer_follow_relation,staff
+    where staff_customer_follow_relation.customer_id = #{customerId}
+     and staff_customer_follow_relation.staff_id = staff.id
+  </select>
+  <select id="selectStaffIdsByParam" resultType="int">
+    select staff_id
+    from staff_customer_follow_relation
+    where customer_id = #{customerId}
+  </select>
+  <delete id="deleteByParam">
+    delete
+    from staff_customer_follow_relation
+    where customer_id = #{param1} and staff_id = #{param2}
+  </delete>
+</mapper>

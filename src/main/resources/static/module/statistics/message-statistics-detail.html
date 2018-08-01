@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+
+    <title></title>
+    <meta name="msapplication-config" content="/Static/Favicon/browserconfig.xml">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <link rel="stylesheet" href="../../css/weui.min.css?time=20160912">
+    <link rel="stylesheet" href="css/jquery-weui.min.css?time=20160912">
+    <link rel="stylesheet" href="../../iconfont/iconfont.css?time=20160912">
+    <script type="text/javascript" src="../../js/jquery-2.1.4.js?time=20160912"></script>
+    <script src="js/fastclick.js"></script>
+    <script>
+        $(function() {
+            FastClick.attach(document.body);
+        });
+    </script>
+    <script type="text/javascript" src="js/jquery-weui.min.js?time=20160912"></script>
+    <script type="text/javascript" src="/lib/yt/config.js?time=20160912"></script>
+    <script type="text/javascript" src="js/message-statistics-datail.js?time=20160912"></script>
+    <style type="text/css">
+        body {
+            background: #f1f5f8;
+            font-size: 12px;
+        }
+        .staff_con{
+            background-color: #f9f9f9;
+            padding: 10px 15px 10px 8px;
+        }
+        .day_con{
+            padding: 4px 15px 4px 2px;
+        }
+        .weui-media-box__desc{
+            -webkit-line-clamp:10;
+            word-break:break-all;
+        }
+        .weui-panel__hd{
+            color: #444;
+            font-size: 15px;
+        }
+        .weui-panel__hd:before {
+            content: " ";
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            height: 1px;
+            border-top: 1px solid #e5e5e5;
+            color: #e5e5e5;
+            -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+            -webkit-transform: scaleY(.5);
+            transform: scaleY(.5);
+        }
+        .weui-panel__hd:first-child:before{
+            display: none;
+        }
+        .weui-panel__hd.active{
+            background-color: #e3f9ff;
+            border-left: 4px solid #aae2f2;
+            padding: 7px 15px 7px 4px;
+        }
+        .weui-panel__bd{
+            display: none;
+        }
+        .weui-media-box{
+            padding: 15px 15px;
+        }
+        .weui-media-box_text .weui-media-box__title{
+            margin-bottom: 0;
+        }
+        .weui-btn_primary {
+            background-color: #2889d6;
+            margin:0 8px;
+        }
+        .weui-btn_primary:not(.weui-btn_disabled):active {
+            color: hsla(0, 0%, 100%, .6);
+            background-color: #2889d6;
+            margin:0 8px;
+        }
+        .flex-box{
+            margin-top: 5px;
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-wrap:wrap;
+        }
+        .flex-item{
+            margin:3px 2px;
+            flex:0 1 auto;
+        }
+        .flex-item-content{
+            padding: 0 4px;
+            border-radius: 4px;
+            color:#fff;
+        }
+        .hot-label{
+            margin-top: 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body ontouchstart="">
+<div class="weui-panel weui-panel_access">
+    <div class="weui-cells hot-label">
+        <a class="weui-cell weui-cell_access" href="javascript:;" id="message-detail">
+            <div class="weui-cell__bd">
+                <p class="box-label">
+                    <span>浏览热度：</span>
+                </p>
+            </div>
+            <div class="weui-cell__ft">
+                消息详情
+            </div>
+        </a>
+    </div>
+</div>
+<div id="full" class='weui-popup__container'>
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal" id="full-pop-content" style="padding-bottom: 8px;">
+
+    </div>
+</div>
+
+</body>
+
+
+</html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzy.crm.dao.VisitLogMapper">
+  <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.VisitLog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="staff_id" jdbcType="INTEGER" property="staffId" />
+    <result column="customer_id" jdbcType="INTEGER" property="customerId" />
+    <result column="way" jdbcType="VARCHAR" property="way" />
+    <result column="result" jdbcType="VARCHAR" property="result" />
+    <result column="requirement" jdbcType="VARCHAR" property="requirement" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="to_staff" jdbcType="VARCHAR" property="toStaff" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="picture" jdbcType="LONGVARCHAR" property="picture" />
+    <result column="attachment" jdbcType="LONGVARCHAR" property="attachment" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from visit_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wzy.crm.pojo.VisitLog">
+    insert into visit_log (id, staff_id, customer_id, 
+      way, result, requirement, 
+      memo, to_staff, update_time, 
+      picture, attachment)
+    values (#{id,jdbcType=INTEGER}, #{staffId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, 
+      #{way,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, #{requirement,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR}, #{toStaff,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{picture,jdbcType=LONGVARCHAR}, #{attachment,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.VisitLog">
+    update visit_log
+    set staff_id = #{staffId,jdbcType=INTEGER},
+      customer_id = #{customerId,jdbcType=INTEGER},
+      way = #{way,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR},
+      requirement = #{requirement,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      to_staff = #{toStaff,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      picture = #{picture,jdbcType=LONGVARCHAR},
+      attachment = #{attachment,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, staff_id, customer_id, way, result, requirement, memo, to_staff, update_time, 
+    picture, attachment
+    from visit_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, staff_id, customer_id, way, result, requirement, memo, to_staff, update_time, 
+    picture, attachment
+    from visit_log
+  </select>
+</mapper>

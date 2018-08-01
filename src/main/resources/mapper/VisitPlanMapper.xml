@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzy.crm.dao.VisitPlanMapper">
+  <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.VisitPlan">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="staff_id" jdbcType="INTEGER" property="staffId" />
+    <result column="customer_id" jdbcType="INTEGER" property="customerId" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+    <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="place" jdbcType="VARCHAR" property="place" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="remind" jdbcType="TIMESTAMP" property="remind" />
+    <result column="to_staff" jdbcType="VARCHAR" property="toStaff" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="picture" jdbcType="LONGVARCHAR" property="picture" />
+    <result column="attachment" jdbcType="LONGVARCHAR" property="attachment" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from visit_plan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wzy.crm.pojo.VisitPlan">
+    insert into visit_plan (id, staff_id, customer_id, 
+      time, place, content, 
+      remind, to_staff, update_time, 
+      picture, attachment)
+    values (#{id,jdbcType=INTEGER}, #{staffId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, 
+      #{time,jdbcType=TIMESTAMP}, #{place,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{remind,jdbcType=TIMESTAMP}, #{toStaff,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{picture,jdbcType=LONGVARCHAR}, #{attachment,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.VisitPlan">
+    update visit_plan
+    set staff_id = #{staffId,jdbcType=INTEGER},
+      customer_id = #{customerId,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP},
+      place = #{place,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      remind = #{remind,jdbcType=TIMESTAMP},
+      to_staff = #{toStaff,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      picture = #{picture,jdbcType=LONGVARCHAR},
+      attachment = #{attachment,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, staff_id, customer_id, time, place, content, remind, to_staff, update_time, 
+    picture, attachment
+    from visit_plan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, staff_id, customer_id, time, place, content, remind, to_staff, update_time, 
+    picture, attachment
+    from visit_plan
+  </select>
+  <select id="selectPlanByParam" parameterType="map" resultMap="BaseResultMap">
+    select sc.id,sc.staff_id,staff.`name` staff_name,sc.customer_id,customer.`name` customer_name,sc.`time`,sc.remind,sc.place,sc.content
+    from
+    (select id,staff_id,customer_id,`time`,remind,place,content
+    from visit_plan
+    <where>
+      visit_plan.customer_id = #{customerId,jdbcType=INTEGER}
+      <if test="startTime != null and startTime != ''">
+      AND `time` <![CDATA[>=]]> #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+      AND `time` <![CDATA[<=]]> #{endTime}
+      </if>
+    </where>
+        ORDER BY ${orderColumn} ${orderType}
+        limit ${start},${length}
+    ) sc
+    LEFT JOIN customer
+    ON customer.id = sc.customer_id
+    LEFT JOIN staff
+    ON staff.id = sc.staff_id
+    <where>
+    <if test="keyword != null and keyword != ''">
+    AND staff.name LIKE #{keyword}
+    </if>
+    </where>
+  </select>
+  <select id="findPlanCountByParam" resultType="int">
+    select COUNT (DISTINCT (sc.id))
+    from
+    (select id,staff_id,customer_id,`time`,remind,place,content
+    from visit_plan
+    <where>
+      visit_plan.customer_id = #{customerId,jdbcType=INTEGER}
+      <if test="startTime != null and startTime != ''">
+        AND `time` <![CDATA[>=]]> #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND `time` <![CDATA[<=]]> #{endTime}
+      </if>
+    </where>
+    ORDER BY ${orderColumn} ${orderType}
+    limit ${start},${length}
+    ) sc
+    LEFT JOIN customer
+    ON customer.id = sc.customer_id
+    LEFT JOIN staff
+    ON staff.id = sc.staff_id
+    <where>
+      <if test="keyword != null and keyword != ''">
+        AND staff.name LIKE #{keyword}
+      </if>
+    </where>
+  </select>
+  <select id="findPlanCount">
+    select count(*)
+    from visit_plan
+    where customer_id = #{customerId}
+  </select>
+</mapper>

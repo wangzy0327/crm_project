@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wzy.crm.dao.StaffCustomerCreateRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.StaffCustomerCreateRelation" >
+    <result column="staff_id" property="staffId" jdbcType="INTEGER" />
+    <result column="customer_id" property="customerId" jdbcType="INTEGER" />
+    <result column="is_create" property="isCreate" jdbcType="INTEGER" />
+  </resultMap>
+  <insert id="insert" parameterType="com.wzy.crm.pojo.StaffCustomerCreateRelation" >
+    insert into staff_customer_create_relation (staff_id, customer_id, is_create
+      )
+    values (#{staffId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, #{isCreate,jdbcType=INTEGER}
+      )
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select staff_id, customer_id, is_create
+    from staff_customer_create_relation
+  </select>
+</mapper>

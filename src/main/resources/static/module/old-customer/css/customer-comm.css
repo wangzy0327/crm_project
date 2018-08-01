@@ -1,0 +1,125 @@
+.page-unScroll {
+    overflow: hidden;
+}
+
+.page-scroll {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.weui-btn-area {
+    margin-bottom: 0;
+    padding-bottom: 15px;
+}
+
+.head-size {
+    height: 30px !important;
+    width: 30px !important;
+}
+
+.popupWarp .weui-media-box {
+    padding: 5px 15px !important;
+}
+
+.box {
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tag-warp {
+    position: relative;
+    padding: 5px 10px 5px 0;
+}
+
+.tag-warp > img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 5px;
+    z-index: 10;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.tag {
+    color: #0d99ee;
+    height: 24px;
+    line-height: 24px;
+    border: 1px solid #0d99ee;
+    border-radius: 15px;
+    padding: 0 5px;
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 40px;
+    text-align: center;
+}
+
+/* 蓝色 */
+.tag.blue {
+    color: #8bbae4;
+    border-color: #8bbae4;
+}
+
+.tag.blue.action {
+    color: #fff;
+    background-color: #8bbae4;
+}
+
+/* 绿色 */
+.tag.green {
+    color: #a0e48b;
+    border-color: #a0e48b;
+}
+
+.tag.green.action {
+    color: #fff;
+    background-color: #a0e48b;
+}
+
+/* 橙色 */
+.tag.orange {
+    color: #ecbe5b;
+    border-color: #ecbe5b;
+}
+
+.tag.orange.action {
+    color: #fff;
+    background-color: #ecbe5b;
+}
+
+/* 红色 */
+.tag.red {
+    color: #e48b8b;
+    border-color: #e48b8b;
+}
+
+.tag.red.action {
+    color: #fff;
+    background-color: #e48b8b;
+}
+
+/* 紫色 */
+.tag.purple {
+    color: #e48bd9;
+    border-color: #e48bd9;
+}
+
+.tag.purple.action {
+    color: #fff;
+    background-color: #e48bd9;
+}
+
+/* 灰色 */
+.tag.grey {
+    color: #c3c3c3;
+    border-color: #c3c3c3;
+}
+
+.tag.grey.action {
+    color: #fff;
+    background-color: #c3c3c3;
+}
+
+
+
