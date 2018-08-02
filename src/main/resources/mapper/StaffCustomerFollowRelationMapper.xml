@@ -17,8 +17,12 @@
       )
   </insert>
   <insert id="insertByParam">
-   insert into staff_customer_follow_relation (customer_id,staff_id,is_follow)
-    values (#{param1}, #{param2}, 1)
+   insert into staff_customer_follow_relation
+    (customer_id,staff_id,is_follow)
+    values
+    <foreach collection="staffIds" item="item" index="index" separator=",">
+      (#{customerId}, #{item.value}, 1)
+    </foreach>
   </insert>
   <select id="selectAll" resultMap="BaseResultMap" >
     select staff_id, customer_id, is_follow
@@ -38,6 +42,9 @@
   <delete id="deleteByParam">
     delete
     from staff_customer_follow_relation
-    where customer_id = #{param1} and staff_id = #{param2}
+    where
+    <foreach collection="staffIds" item="item" index="index" separator="or">
+      (customer_id = #{customerId} and staff_id = #{item.value})
+    </foreach>
   </delete>
 </mapper>

@@ -30,6 +30,15 @@ $(document).ready(function () {
     $('#planDetail').on('hidden.bs.modal', '.modal', function () {
         $(this).removeData('bs.modal');
     });
+
+    // $('.changeFollow').unbind().on('click',function () {
+    //     var id = $(this).attr("data-id");
+    //     console.log(id);
+    //     loadFollowModalData();
+    //     loadFollowStaff(id);
+    //     updateFollow(id);
+    // });
+
     loadFollowData();
     // loadPlanData();
     chooseFollow();
@@ -138,20 +147,38 @@ $(document).ready(function () {
     }
 
     function loadFollowData() {
-        // $('.changeFollow').on('click',function(){
+        // $(document).delegate(".changeFollow", "click", function () {
         //     var id = $(this).attr("data-id");
         //     console.log(id);
-        //     loadModalData();
+        //     $('#followTable').dataTable().fnDestroy();
+        //     loadFollowModalData();
         //     loadFollowStaff(id);
         //     updateFollow(id);
         // });
-        $(document).delegate(".changeFollow", "click", function () {
+        $('.changeFollow').off('click');
+        $(document).on('click','.changeFollow',function () {
             var id = $(this).attr("data-id");
             console.log(id);
             loadFollowModalData();
             loadFollowStaff(id);
+            $('#modalSave').off('click');
             updateFollow(id);
         });
+        // $('.changeFollow').on('click',function () {
+        //     var id = $(this).attr("data-id");
+        //     console.log(id);
+        //     loadFollowModalData();
+        //     loadFollowStaff(id);
+        //     updateFollow(id);
+        // });
+        // $('.changeFollow').click(function () {
+        //     var id = $(this).attr("data-id");
+        //     console.log(id);
+        //     loadFollowModalData();
+        //     loadFollowStaff(id);
+        //     updateFollow(id);
+        // });
+        // $(document).off("click",'.changeFollow');
     }
 
     function getFollowName(list) {
@@ -295,7 +322,7 @@ $(document).ready(function () {
     }
 
     function updateFollow(customerId) {
-        $("#modalSave").click(function () {
+        $("#modalSave").unbind().click(function () {
             var staffIds = [];
             $("#staffs span").each(function(){
                 var staffId = $(this).attr("data-id");
@@ -329,7 +356,7 @@ $(document).ready(function () {
                     // window.location.reload();
                 }
             });
-        })
+        });
     }
 
 });
