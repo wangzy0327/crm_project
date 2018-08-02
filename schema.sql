@@ -55,6 +55,7 @@ CREATE TABLE `staff_customer_follow_relation`(
   `staff_id` int(11) NOT NULL COMMENT '销售id',
   `customer_id` int(11) NOT NULL COMMENT '客户id',
   `is_follow` int(4) DEFAULT 1 COMMENT '是否跟进该客户 0-否 1-是',
+  UNIQUE KEY `staff_id` (`staff_id`,`customer_id`),
   KEY `customerId_isFollow_staffId` (`customer_id`,`is_follow`,`staff_id`) USING BTREE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工与客户跟进关系';
 

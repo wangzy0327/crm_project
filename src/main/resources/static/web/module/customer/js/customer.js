@@ -163,6 +163,8 @@ $(document).ready(function () {
                 str= str + list[i].name + ', ';
             }
         }
+        if(str.length>15)
+            str = str.substring(0,15)+"...";
         return str==""?'无':str;
     }
 
@@ -249,6 +251,7 @@ $(document).ready(function () {
                 if(result.code == 0){
                     var data = result.data;
                     console.log(data);
+                    $('#staffs').html('<span>人员：</span>');
                     for(var i = 0;i<data.length;i++){
                         $('#staffs').append("<span style='margin-left: 5px;margin-right: 5px;' data-id='"+data[i].id+"'>"+data[i].name+"<a href='#' onclick='javascript:void(0);' data-id='"+id+"'>[删除]</a></span>");
                     }
