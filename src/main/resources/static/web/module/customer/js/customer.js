@@ -24,6 +24,12 @@ $(document).ready(function () {
     $('#editLog').on('hidden.bs.modal', '.modal', function () {
         $(this).removeData('bs.modal');
     });
+    $('#logDetail').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+    });
+    $('#planDetail').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+    });
     loadFollowData();
     // loadPlanData();
     chooseFollow();

@@ -44,4 +44,13 @@ public class VisitPlanMapperTest {
         System.out.println("count:"+recordNum);
     }
 
+    @Test
+    public void selectByPrimaryKey() throws Exception {
+        Integer planId = 19;
+        VisitPlan visitPlan = visitPlanMapper.selectByPrimaryKey(planId);
+        System.out.println("************************");
+        System.out.println(visitPlan);
+        System.out.println("************************");
+    }
+
 }

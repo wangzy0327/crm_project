@@ -6,6 +6,7 @@ import com.wzy.crm.dao.VisitPlanMapper;
 import com.wzy.crm.pojo.CustomerDetailInfo;
 import com.wzy.crm.pojo.VisitPlan;
 import com.wzy.crm.service.IVisitPlanService;
+import com.wzy.crm.vo.ServerResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,5 +67,9 @@ public class VisitPlanController {
         return result;
     }
 
+    @GetMapping("/detail")
+    public ServerResponse<VisitPlan> findPlanDetail(@RequestParam String id){
+        return ServerResponse.createBySuccess(visitPlanMapper.selectByPrimaryKey(Integer.valueOf(id)));
+    }
 
 }

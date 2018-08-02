@@ -21,6 +21,8 @@ $(document).ready(function () {
     });
     loadPlanData();
     //加载数据
+    //显示拜访计划详情
+    showPlanDetail();
 
 });
 
@@ -92,7 +94,7 @@ function loadPlanModalData(id) {
             },
             {
                 "data": function (row) {
-                    return "<a href='#' class='choose' style='margin: 0 5px 0 5px' data-id='" + row.id+"' >查看</a> ";;
+                    return "<a href='#' class='plan' style='margin: 0 5px 0 5px' data-id='" + row.id+"' data-target='#planDetail' data-toggle='modal'>查看</a> ";;
                 }
             }
         ],
@@ -129,6 +131,37 @@ function loadPlanModalData(id) {
     });
 }
 
+function showPlanDetail() {
+    $(document).on('click','.plan',function () {
+        var id = $(this).attr("data-id");
+        console.log("planId:"+id);
+        loadPlanDetail(id);
+    })
+}
+
+function loadPlanDetail(id) {
+    $.ajax({
+        url:"/plan/detail?id="+id,
+        type:"GET",
+        contentType: "application/json;charset=UTF-8",
+        dataType:'json',
+        success:function (result) {
+            if(result.code == 0){
+                var data = result.data;
+                console.log(data);
+                $("input[name='customerName']").val(data.customerName);
+                $("input[name='staffName']").val(data.staffName);
+                $("input[name='place']").val(data.place);
+                $("input[name='time']").val(fmtDate(data.time));
+                $("textarea[name='content']").val(data.content);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+            alert(result.status);
+        }
+    });
+}
 
 
 

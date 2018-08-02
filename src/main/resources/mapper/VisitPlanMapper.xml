@@ -45,10 +45,12 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, staff_id, customer_id, time, place, content, remind, to_staff, update_time, 
+    select visit_plan.id, staff_id,staff.`name` staff_name, customer_id,customer.`name` customer_name, `time`, place, content, remind, to_staff, visit_plan.update_time,
     picture, attachment
-    from visit_plan
-    where id = #{id,jdbcType=INTEGER}
+    from visit_plan,staff,customer
+    where visit_plan.id = #{id,jdbcType=INTEGER}
+    and staff.id = visit_plan.staff_id
+    and customer.id = visit_plan.customer_id
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, staff_id, customer_id, time, place, content, remind, to_staff, update_time, 

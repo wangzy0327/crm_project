@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.wzy.crm.dao.VisitLogMapper;
 import com.wzy.crm.pojo.VisitLog;
 import com.wzy.crm.service.IVisitLogService;
+import com.wzy.crm.vo.ServerResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +63,11 @@ public class VisitLogController {
         result.put("data",planList);
 
         return result;
+    }
+
+    @GetMapping("/detail")
+    public ServerResponse<VisitLog> findPlanDetail(@RequestParam String id){
+        return ServerResponse.createBySuccess(visitLogMapper.selectByPrimaryKey(Integer.valueOf(id)));
     }
 
 }

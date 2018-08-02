@@ -21,6 +21,8 @@ $(document).ready(function () {
     });
     loadLogData();
     //加载数据
+    //显示拜访记录详情
+    showLogDetail();
 
 });
 
@@ -92,7 +94,7 @@ function loadLogModalData(id) {
             },
             {
                 "data": function (row) {
-                    return "<a href='#' class='choose' style='margin: 0 5px 0 5px'  data-id='" + row.id+"' >查看</a> ";;
+                    return "<a href='#' class='log' style='margin: 0 5px 0 5px'  data-id='" + row.id+"' data-target='#logDetail' data-toggle='modal' >查看</a> ";;
                 }
             }
         ],
@@ -128,6 +130,41 @@ function loadLogModalData(id) {
         }
     });
 }
+
+
+function showLogDetail() {
+    $(document).on('click','.log',function () {
+        var id = $(this).attr("data-id");
+        console.log("logId:"+id);
+        loadLogDetail(id);
+    })
+}
+
+function loadLogDetail(id) {
+    $.ajax({
+        url:"/log/detail?id="+id,
+        type:"GET",
+        contentType: "application/json;charset=UTF-8",
+        dataType:'json',
+        success:function (result) {
+            if(result.code == 0){
+                var data = result.data;
+                console.log(data);
+                $("input[name='customerName']").val(data.customerName);
+                $("input[name='staffName']").val(data.staffName);
+                $("input[name='way']").val(data.way);
+                $("input[name='result']").val(data.result);
+                $("textarea[name='requirement']").val(data.requirement);
+                $("textarea[name='memo']").val(data.memo);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+            alert(result.status);
+        }
+    });
+}
+
 
 
 
