@@ -7,6 +7,14 @@ $(document).ready(function () {
         $('#startTimePlan').val('');
         $('#endTimePlan').val('');
     });
+    $('#searchPlanModal').bind("click",function () {
+        $('#planTable').dataTable().fnDraw(false);
+    });
+    $('#clearPlanModal').click(function () {
+        $('#visitPlanName').val('');
+        $('#startTimePlan').val('');
+        $('#endTimePlan').val('');
+    });
     //清除弹窗原数据
     $('body').on('hidden.bs.modal', '.modal', function () {
         $(this).removeData('bs.modal');

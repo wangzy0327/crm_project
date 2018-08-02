@@ -20,11 +20,9 @@ $(document).ready(function () {
     });
     $('#editPlan').on('hidden.bs.modal', '.modal', function () {
         $(this).removeData('bs.modal');
-        $('#planTable').dataTable().fnDestroy();
     });
     $('#editLog').on('hidden.bs.modal', '.modal', function () {
         $(this).removeData('bs.modal');
-        $('#logTable').dataTable().fnDestroy();
     });
     loadFollowData();
     // loadPlanData();

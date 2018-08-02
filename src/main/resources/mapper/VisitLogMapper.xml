@@ -74,13 +74,13 @@
     ON customer.id = sc.customer_id
     LEFT JOIN staff
     ON staff.id = sc.staff_id
-    ORDER BY ${orderColumn} ${orderType}
-    limit ${start},${length}
     <where>
       <if test="keyword != null and keyword != ''">
         AND staff.name LIKE #{keyword}
       </if>
     </where>
+    ORDER BY ${orderColumn} ${orderType}
+    limit ${start},${length}
   </select>
   <select id="findLogCountByParam" resultType="int">
     select count(DISTINCT (sc.id))

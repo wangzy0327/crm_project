@@ -130,7 +130,7 @@
 </div>
 
 
-    <div class="modal inmodal " id="editPlan" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal inmodal " id="editPlan" tabindex="-1" role="dialog"  aria-hidden="true">
         <div class="modal-dialog" style="width: 1000px;">
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
@@ -148,18 +148,18 @@
                             <label class="i-checks" style="font-size: 14px;padding-right: 10px;">查询条件</label>
                             <input id="visitPlanName" type="text" style="width: 200px" class="form-control"
                                    placeholder="姓名">
-                            <div class="form-group" id="beginPlan">
-                                <div class="input-group date">
+                            <div class="form-group" id="beginPlan" style="position: relative;z-index: 9999;">
+                                <div class="input-group date" >
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     <input id="startTimePlan" type="text" class="form-control" value=""
-                                           placeholder="创建时间-开始">
+                                           placeholder="拜访时间-开始">
                                 </div>
                             </div>
-                            <div class="form-group" id="endPlan">
-                                <div class="input-group date">
+                            <div class="form-group" id="endPlan" style="position: relative;z-index: 9999;">
+                                <div class="input-group date" >
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     <input id="endTimePlan" type="text" class="form-control" value=""
-                                           placeholder="创建时间-结束">
+                                           placeholder="拜访时间-结束">
                                 </div>
                             </div>
                             <button id="searchPlanModal" class="btn btn-primary" style="margin-left: 5px" type="button">
@@ -211,18 +211,18 @@
                     <div class="row form-inline" style="margin-left: 20px;margin-bottom: 15px">
                         <label class="i-checks" style="font-size: 14px;padding-right: 10px;">查询条件</label>
                         <input id="visitLogName" type="text" class="form-control" placeholder="姓名">
-                        <div class="form-group" id="beginLog">
+                        <div class="form-group" id="beginLog" style="position: relative;z-index: 9999;">
                             <div class="input-group date">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 <input id="startTimeLog" type="text" class="form-control" value=""
-                                       placeholder="创建时间-开始">
+                                       placeholder="记录时间-开始">
                             </div>
                         </div>
-                        <div class="form-group" id="endLog">
+                        <div class="form-group" id="endLog" style="position: relative;z-index: 9999;">
                             <div class="input-group date">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 <input id="endTimeLog" type="text" class="form-control" value=""
-                                       placeholder="创建时间-结束">
+                                       placeholder="记录时间-结束">
                             </div>
                         </div>
                         <button id="searchLogModal" class="btn btn-primary" style="margin-left: 5px"  type="button"><i class="fa fa-search"></i>&nbsp;查询</button>
