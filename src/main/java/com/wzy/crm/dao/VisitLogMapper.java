@@ -2,6 +2,7 @@ package com.wzy.crm.dao;
 
 import com.wzy.crm.pojo.VisitLog;
 import java.util.List;
+import java.util.Map;
 
 public interface VisitLogMapper {
     int deleteByPrimaryKey(Integer id);
@@ -13,4 +14,11 @@ public interface VisitLogMapper {
     List<VisitLog> selectAll();
 
     int updateByPrimaryKey(VisitLog record);
+
+    List<VisitLog> selectLogByParam(Map<String, String> param);
+
+    Integer findLogCountByParam(Map<String, String> param);
+
+    Integer findLogCount(Integer integer);
+
 }

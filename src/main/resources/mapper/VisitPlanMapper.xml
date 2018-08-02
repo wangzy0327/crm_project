@@ -69,13 +69,13 @@
       AND `time` <![CDATA[<=]]> #{endTime}
       </if>
     </where>
-        ORDER BY ${orderColumn} ${orderType}
-        limit ${start},${length}
     ) sc
     LEFT JOIN customer
     ON customer.id = sc.customer_id
     LEFT JOIN staff
     ON staff.id = sc.staff_id
+    ORDER BY ${orderColumn} ${orderType}
+    limit ${start},${length}
     <where>
     <if test="keyword != null and keyword != ''">
     AND staff.name LIKE #{keyword}
@@ -83,9 +83,9 @@
     </where>
   </select>
   <select id="findPlanCountByParam" resultType="int">
-    select COUNT (DISTINCT (sc.id))
+    select count(DISTINCT (sc.id))
     from
-    (select id,staff_id,customer_id,`time`,remind,place,content
+    (select id,staff_id,customer_id,`time`
     from visit_plan
     <where>
       visit_plan.customer_id = #{customerId,jdbcType=INTEGER}
@@ -96,8 +96,6 @@
         AND `time` <![CDATA[<=]]> #{endTime}
       </if>
     </where>
-    ORDER BY ${orderColumn} ${orderType}
-    limit ${start},${length}
     ) sc
     LEFT JOIN customer
     ON customer.id = sc.customer_id
@@ -109,8 +107,8 @@
       </if>
     </where>
   </select>
-  <select id="findPlanCount">
-    select count(*)
+  <select id="findPlanCount" resultType="int">
+    select count(DISTINCT (id))
     from visit_plan
     where customer_id = #{customerId}
   </select>

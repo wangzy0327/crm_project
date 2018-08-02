@@ -5,6 +5,8 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="staff_id" jdbcType="INTEGER" property="staffId" />
     <result column="customer_id" jdbcType="INTEGER" property="customerId" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+    <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
     <result column="way" jdbcType="VARCHAR" property="way" />
     <result column="result" jdbcType="VARCHAR" property="result" />
     <result column="requirement" jdbcType="VARCHAR" property="requirement" />
@@ -52,5 +54,62 @@
     select id, staff_id, customer_id, way, result, requirement, memo, to_staff, update_time, 
     picture, attachment
     from visit_log
+  </select>
+  <select id="selectLogByParam" resultMap="BaseResultMap">
+    select sc.id,sc.staff_id,staff.`name` staff_name,sc.customer_id,customer.`name` customer_name,sc.way,sc.result,sc.requirement
+    from
+    (select id,staff_id,customer_id,way,result,requirement,update_time
+    from visit_log
+    <where>
+      visit_log.customer_id = #{customerId,jdbcType=INTEGER}
+      <if test="startTime != null and startTime != ''">
+        AND update_time <![CDATA[>=]]> #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND update_time <![CDATA[<=]]> #{endTime}
+      </if>
+    </where>
+    ) sc
+    LEFT JOIN customer
+    ON customer.id = sc.customer_id
+    LEFT JOIN staff
+    ON staff.id = sc.staff_id
+    ORDER BY ${orderColumn} ${orderType}
+    limit ${start},${length}
+    <where>
+      <if test="keyword != null and keyword != ''">
+        AND staff.name LIKE #{keyword}
+      </if>
+    </where>
+  </select>
+  <select id="findLogCountByParam" resultType="int">
+    select count(DISTINCT (sc.id))
+    from
+    (select id,staff_id,customer_id,update_time
+    from visit_log
+    <where>
+      visit_log.customer_id = #{customerId,jdbcType=INTEGER}
+      <if test="startTime != null and startTime != ''">
+        AND update_time <![CDATA[>=]]> #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND update_time <![CDATA[<=]]> #{endTime}
+      </if>
+    </where>
+    ) sc
+    LEFT JOIN customer
+    ON customer.id = sc.customer_id
+    LEFT JOIN staff
+    ON staff.id = sc.staff_id
+    <where>
+      <if test="keyword != null and keyword != ''">
+        AND staff.name LIKE #{keyword}
+      </if>
+    </where>
+  </select>
+  <select id="findLogCount" resultType="int">
+    select count(DISTINCT (id))
+    from visit_log
+    where customer_id = #{customerId}
   </select>
 </mapper>

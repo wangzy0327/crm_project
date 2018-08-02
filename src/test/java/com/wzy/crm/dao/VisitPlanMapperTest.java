@@ -37,4 +37,11 @@ public class VisitPlanMapperTest {
         }
     }
 
+    @Test
+    public void findPlanCount() throws Exception {
+        Integer customerId = 100;
+        Integer recordNum = visitPlanMapper.findPlanCount(customerId);
+        System.out.println("count:"+recordNum);
+    }
+
 }

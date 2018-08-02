@@ -1,6 +1,7 @@
 package com.wzy.crm.pojo;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -26,6 +27,7 @@ public class VisitLog {
 
     private String toStaff;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     private String picture;
