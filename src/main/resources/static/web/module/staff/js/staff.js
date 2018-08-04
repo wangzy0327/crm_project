@@ -157,7 +157,7 @@ function updateDetail(dt) {
             error:function (result) {
                 console.log(result);
                 alert(result.status);
-                dt.ajax.reload();
+                dt.ajax.reload(null,false);
             }
         });
 //                $('#editable').dataTable().fnDestroy();

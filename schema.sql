@@ -137,3 +137,23 @@ INSERT INTO `visit_log`(`staff_id`,`customer_id`,`way`,`result`,`requirement`)VA
  ('1004','103','微信交流','有明确意向','成功需求'),
  ('1001','104','邮件','初步洽谈','服务需求');
 
+
+ CREATE TABLE `message_tag` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '标签编号',
+  `name` varchar(20) DEFAULT NULL COMMENT '标签名称',
+  `corpid` varchar(30) DEFAULT NULL COMMENT '公司id',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最后一次更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+INSERT INTO `message_tag`(`name`,`corpid`)VALUES
+('2018','wx4b8e52ee9877a5be'),
+ ('盛典','wx4b8e52ee9877a5be'),
+ ('致辞','wx4b8e52ee9877a5be'),
+ ('邀请函','wx4b8e52ee9877a5be'),
+ ('九零','wx4b8e52ee9877a5be'),
+ ('周报','wx4b8e52ee9877a5be'),
+ ('销售助手','wx4b8e52ee9877a5be'),
+ ('发布会','wx4b8e52ee9877a5be'),
+ ('迎春','wx4b8e52ee9877a5be');
+

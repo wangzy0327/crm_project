@@ -55,9 +55,11 @@
         <!--</table>-->
         <!--<table tableName="staff_customer_follow_relation" domainObjectName="StaffCustomerFollowRelation">-->
         <!--</table>-->
-        <table tableName="visit_log" domainObjectName="VisitLog">
-        </table>
-        <table tableName="visit_plan" domainObjectName="VisitPlan">
+        <!--<table tableName="visit_log" domainObjectName="VisitLog">-->
+        <!--</table>-->
+        <!--<table tableName="visit_plan" domainObjectName="VisitPlan">-->
+        <!--</table>-->
+        <table tableName="message_tag" domainObjectName="MessageTag">
         </table>
 
     </context>

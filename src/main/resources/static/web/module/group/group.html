@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>分组管理</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link href="../../css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../../css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../../css/animate.css" rel="stylesheet">
+    <link href="../../css/style.css?v=4.1.0" rel="stylesheet">
+
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <!-- Panel Columns & Select -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <!--<h5>列&amp;选择</h5>-->
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+
+                <div class="clearfix hidden-xs"></div>
+
+                <div class="col-sm-3">
+                    <!-- Example Radio Select -->
+                    <div class="example-wrap margin-sm-0">
+                        <h4 class="example-title">组列表</h4>
+                        <div class="dataTables_wrapper form-inline" style="margin-bottom: 15px;" role="grid">
+                            <div class="pull-left" >
+                                <input id="title" type="text" style="width: 100px;font-size: 12px;" class="form-control" placeholder="组名称">
+                                <button id="searchGroup" class="btn btn-primary" style="margin-left: 5px;font-size: 12px;border-radius:1px;" onclick="search()" type="button">&nbsp;查询</button>
+                                <button id="clearGroup" class="btn btn-primary" style="margin-left: 5px;font-size: 12px;border-radius:1px;" onclick="clear()" type="button">&nbsp;清空</button>
+                            </div>
+                            <div class="pull-right">
+                                <button id="addGroup" class="btn btn-primary" style="font-size: 12px;border-radius:1px;margin-left: 10px" onclick="clear()" type="button">新增</button>
+                            </div>
+                        </div>
+                        <div class="example">
+                            <table data-toggle="table" data-url="js/demo/bootstrap_table_test.json" data-height="299" data-click-to-select="true" data-select-item-name="myRadioName" data-mobile-responsive="true">
+                                <thead>
+                                <tr>
+                                    <th data-field="state" data-radio="true"></th>
+                                    <th data-field="name" style="text-align: center">组名</th>
+                                    <th data-field="price" style="text-align: center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- End Example Radio Select -->
+                </div>
+
+                <div class="col-sm-3">
+                    <!-- Example Checkbox Select -->
+                    <div class="example-wrap">
+                        <h4 class="example-title">组内成员</h4>
+                        <div class="dataTables_wrapper form-inline" style="margin-bottom: 15px;" role="grid">
+                            <div class="pull-left" >
+                                <input id="staffName" type="text" style="width: 100px;font-size: 12px;" class="form-control" placeholder="成员姓名">
+                                <button id="searchName" class="btn btn-primary" style="margin-left: 5px;font-size: 12px;border-radius:1px;" onclick="search()" type="button">&nbsp;查询</button>
+                                <button id="clearName" class="btn btn-primary" style="margin-left: 5px;font-size: 12px;border-radius:1px;" onclick="clear()" type="button">&nbsp;清空</button>
+                            </div>
+                            <div class="pull-right">
+                                <button id="addName" class="btn btn-primary" style="font-size: 12px;border-radius:1px;margin-left: 10px" onclick="clear()" type="button">新关联</button>
+                            </div>
+                        </div>
+                        <div class="example">
+                            <table data-toggle="table" data-url="js/demo/bootstrap_table_test.json" data-height="299" data-click-to-select="true" data-mobile-responsive="true">
+                                <thead>
+                                <tr>
+                                    <th data-field="state" data-checkbox="true"></th>
+                                    <th data-field="name" style="text-align: center">姓名</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- End Example Checkbox Select -->
+                </div>
+                <div class="col-sm-6">
+                    <!-- Example Checkbox Select -->
+                    <div class="example-wrap">
+                        <h4 class="example-title">组内资料</h4>
+                        <div class="dataTables_wrapper form-inline" style="margin-bottom: 15px;" role="grid">
+                            <div class="pull-left" >
+                                <input id="messageTitle" type="text" style="width: 100px;font-size: 12px;" class="form-control" placeholder="成员姓名">
+                                <button id="searchTitle" class="btn btn-primary" style="margin-left: 5px;font-size: 12px;border-radius:1px;" onclick="search()" type="button">&nbsp;查询</button>
+                                <button id="clearTitle" class="btn btn-primary" style="margin-left: 5px;font-size: 12px;border-radius:1px;" onclick="clear()" type="button">&nbsp;清空</button>
+                            </div>
+                            <div class="pull-right">
+                                <button id="addTitle" class="btn btn-primary" style="font-size: 12px;border-radius:1px;margin-left: 10px" onclick="clear()" type="button">新关联</button>
+                            </div>
+                        </div>
+                        <div class="example">
+                            <table data-toggle="table" data-url="js/demo/bootstrap_table_test.json" data-height="299" data-click-to-select="true" data-mobile-responsive="true">
+                                <thead>
+                                <tr>
+                                    <th data-field="state" data-checkbox="true"></th>
+                                    <th data-field="name" style="text-align: center">标题</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- End Example Checkbox Select -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Columns & Select -->
+
+</div>
+
+<!-- 全局js -->
+<script src="../../js/jquery.min.js?v=2.1.4"></script>
+<script src="../../js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../../js/content.js?v=1.0.0"></script>
+
+
+<!-- Bootstrap table -->
+<script src="../../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="../../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="../../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+<!-- Peity -->
+<script src="../../js/demo/bootstrap-table-demo.js"></script>
+
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+<!--统计代码，可删除-->
+
+</body>
+
+</html>
