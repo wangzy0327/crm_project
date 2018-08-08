@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wzy.crm.dao.GroupStaffRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.GroupStaffRelation" >
+    <id column="group_id" property="groupId" jdbcType="INTEGER" />
+    <id column="staff_id" property="staffId" jdbcType="INTEGER" />
+    <result column="def_group" property="defGroup" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from group_staff_relation
+    where group_id = #{groupId,jdbcType=INTEGER}
+      and staff_id = #{staffId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wzy.crm.pojo.GroupStaffRelation" >
+    insert into group_staff_relation (group_id, staff_id, def_group
+      )
+    values (#{groupId,jdbcType=INTEGER}, #{staffId,jdbcType=INTEGER}, #{defGroup,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.GroupStaffRelation" >
+    update group_staff_relation
+    set def_group = #{defGroup,jdbcType=INTEGER}
+    where group_id = #{groupId,jdbcType=INTEGER}
+      and staff_id = #{staffId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select group_id, staff_id, def_group
+    from group_staff_relation
+    where group_id = #{groupId,jdbcType=INTEGER}
+      and staff_id = #{staffId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select group_id, staff_id, def_group
+    from group_staff_relation
+  </select>
+</mapper>

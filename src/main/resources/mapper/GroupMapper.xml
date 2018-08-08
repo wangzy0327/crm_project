@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wzy.crm.dao.GroupMapper" >
+  <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.Group" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="corpid" property="corpid" jdbcType="VARCHAR" />
+    <result column="def_group" property="defGroup" jdbcType="INTEGER" />
+    <result column="create_group" property="createGroup" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from `group`
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wzy.crm.pojo.Group" >
+    insert into `group` (`name`)
+    values (#{name,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.Group" >
+    update `group`
+    <set>
+      <if test="name != null and name != ''">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="corpid != null and corpid != ''">
+        corpid = #{corpid,jdbcType=VARCHAR},
+      </if>
+      <if test="defGroup != null and defGroup != ''">
+        def_group = #{defGroup},
+      </if>
+      <if test="createGroup != null and createGroup != ''">
+        create_group = #{createGroup},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, name, corpid, def_group, create_group
+    from `group`
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, `name`, corpid, def_group, create_group
+    from `group`
+  </select>
+  <select id="selectGroupByParam" resultMap="BaseResultMap">
+    select id, `name`, corpid, def_group, create_group
+    from `group`
+    <where>
+      <if test="keyword != null and keyword != ''">
+        AND `group`.`name` LIKE #{keyword}
+      </if>
+    </where>
+  </select>
+  <select id="selectGroupByName" resultType="int">
+    select count(*)
+    from `group`
+    where `name` = #{name}
+    <if test="id != null and id != ''">
+      and id != #{id}
+    </if>
+  </select>
+</mapper>

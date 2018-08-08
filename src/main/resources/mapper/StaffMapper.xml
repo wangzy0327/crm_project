@@ -85,6 +85,15 @@
       </if>
     </where>
   </select>
+  <select id="selectStaffNameByParam" resultMap="BaseResultMap">
+    select id,`name`
+    from staff
+    <where>
+      <if test="keyword != null and keyword != ''">
+        AND staff.`name` LIKE #{keyword}
+      </if>
+    </where>
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select id, role, `name`,username, password, age, wx, email, phone, update_time
     from staff

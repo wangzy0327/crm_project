@@ -1,5 +1,6 @@
 package com.wzy.crm.dao;
 
+import com.wzy.crm.pojo.Group;
 import com.wzy.crm.pojo.Staff;
 import java.util.List;
 import java.util.Map;
@@ -23,5 +24,5 @@ public interface StaffMapper {
 
     Integer findStaffCountByParam(Map<String,String> map);
 
-
+    List<Staff> selectStaffNameByParam(Map<String, String> param);
 }

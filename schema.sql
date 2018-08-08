@@ -137,7 +137,7 @@ INSERT INTO `visit_log`(`staff_id`,`customer_id`,`way`,`result`,`requirement`)VA
  ('1004','103','微信交流','有明确意向','成功需求'),
  ('1001','104','邮件','初步洽谈','服务需求');
 
-
+DROP TABLE IF EXISTS `message_tag`;
  CREATE TABLE `message_tag` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '标签编号',
   `name` varchar(20) DEFAULT NULL COMMENT '标签名称',
@@ -157,3 +157,91 @@ INSERT INTO `message_tag`(`name`,`corpid`)VALUES
  ('发布会','wx4b8e52ee9877a5be'),
  ('迎春','wx4b8e52ee9877a5be');
 
+DROP TABLE IF EXISTS `group`;
+CREATE TABLE `group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '组唯一标识',
+  `name` varchar(30) DEFAULT NULL COMMENT '组名',
+  `corpid` varchar(30) DEFAULT NULL COMMENT '授权方企业微信id',
+  `def_group` int(1) DEFAULT '0' COMMENT '组 0新增 1默认 2公司',
+  `create_group` int(11) DEFAULT NULL COMMENT '当del_group=1时，值代表成员主键（staff_id）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
+INSERT INTO `group`(`name`,`corpid`,`def_group`,`create_group`)VALUES
+('admin的默认组','wx4b8e52ee9877a5be',1,'1000'),
+('admin3的默认组','wx4b8e52ee9877a5be',1,'1001'),
+('hdy的默认组','wx4b8e52ee9877a5be',1,'1003'),
+('mike的默认组','wx4b8e52ee9877a5be',1,'1005'),
+('蚂蚁技术','wwd700d514cc421397',2,'1000');
+
+
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `corp_id` varchar(255) NOT NULL COMMENT '第三方id',
+  `suite_id` varchar(255) NOT NULL COMMENT '套件id',
+  `corpid` varchar(255) NOT NULL COMMENT '公司id',
+  `msgType` int(2) DEFAULT '1' COMMENT '1-文章 2-资料 3-图片 4-没有二维码图片 5-H5 6平面',
+  `type` int(2) DEFAULT '1' COMMENT '1:图文消息',
+  `titleText` longtext NOT NULL COMMENT '标题文本',
+  `title` longtext NOT NULL COMMENT '标题',
+  `descriptionText` longtext COMMENT '内容文本',
+  `description` longtext COMMENT '描述上部分',
+  `url` varchar(255) NOT NULL COMMENT '点击后跳转的链接',
+  `picurl` varchar(255) DEFAULT NULL COMMENT '图文消息的图片链接，支持JPG、PNG格式，较好的效果为大图640x320，小图80x80',
+  `btntxt` varchar(4) DEFAULT NULL COMMENT '按钮文字，仅在图文数为1条时才生效。 默认为“阅读全文”。',
+  `coverPicAttach` longtext,
+  `contentAttach` longtext,
+  `third_params` varchar(255) DEFAULT NULL COMMENT '第三方参数，json格式',
+  `pageCount` int(11) DEFAULT '1' COMMENT '页数',
+  `create_userId` int(11) DEFAULT NULL,
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最后一次更新时间',
+  `status` int(2) DEFAULT '1' COMMENT '状态 0停用 1启用',
+  `delFlag` int(2) DEFAULT '0' COMMENT '删除标志位 0未删除 1删除',
+  PRIMARY KEY (`id`),
+  KEY `query` (`corp_id`,`suite_id`,`corpid`,`delFlag`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+
+INSERT INTO `message`(`corp_id`,`suite_id`,`corpid`,`msgType`,`titleText`,`title`
+,`descriptionText`,`description`,`url`,`picurl`,`btntxt`,`coverPicAttach`
+,`contentAttach`,`third_params`,`pageCount`,`create_userId`,`update_time`
+,`status`,`delFlag`)VALUES
+('wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '5', '大辣娇--加1元再来1桶', '大辣娇--加1元再来1桶'
+, null, '/module/web/message/h5/page/3e29e698-7995-4f0f-9443-29bc3ecbd717/neUzquH', 'http://crm.youitech.com/module/web/message/h5/h5-share.html', '', '阅读全文', '[]'
+, '[]', '{"d":"neUzquH\","type":"rabbitpre","url":"http://v1.rabbitpre.com/m/neUzquH"}', '16', '1000', '2018-01-27 16:11:49', '1', '0'),
+('wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '5', '腊八节/腊八粥/传统节日/企业宣传祝福', '腊八节/腊八粥/传统节日/企业宣传祝福'
+, null, '/module/web/message/h5/page/ead64920-f3ef-462c-85f8-3bfe9273cf8c/y7AQQuiFp', 'http://crm.youitech.com/module/web/message/h5/h5-share.html', '', '阅读全文', '[]'
+, '[]', '{"d":"y7AQQuiFp","type":"rabbitpre","url":"http://v1.rabbitpre.com/m/y7AQQuiFp"}', '7', '1000', '2018-01-24 10:13:44', '1', '0'),
+('wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '1', '企业微信注册', '<p>企业微信注册</p>'
+, ' 以下是简单的注册「企业微信 / 微信企业号」操作步骤：1、登录【微信企业号官网/企业微信官网】-【企业注册】 2、填写【企业信息&管理员信息】★温馨提示：','<p>★温馨提示</p>','http://crm.youitech.com/module/web/message/message-share.html', '', '阅读全文', '[]'
+, '[]', null, '1', '1000', '2017-12-07 08:11:49', '1', '0');
+
+DROP TABLE IF EXISTS `group_message_relation`;
+CREATE TABLE `group_message_relation` (
+  `group_id` int(11) NOT NULL COMMENT '组编号',
+  `message_id` int(11) NOT NULL COMMENT '消息编号',
+  PRIMARY KEY (`group_id`,`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `group_message_relation`(`group_id`,`message_id`)VALUES
+('30','100'),
+('30','101'),
+('30','102'),
+('31','100'),
+('31','101');
+
+DROP TABLE IF EXISTS `group_staff_relation`;
+CREATE TABLE `group_staff_relation` (
+  `group_id` int(11) NOT NULL COMMENT '组编号',
+  `staff_id` int(11) NOT NULL COMMENT '销售员编号',
+  `def_group` int(1) DEFAULT '0' COMMENT '组 0新增 1默认 2公司',
+  PRIMARY KEY (`group_id`,`staff_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `group_staff_relation`(`group_id`,`staff_id`,`def_group`)VALUES
+('30','1000',1),
+('31','1001',1),
+('32','1003',1),
+('34','1000',0),
+('34','1001',0),
+('34','1003',0);

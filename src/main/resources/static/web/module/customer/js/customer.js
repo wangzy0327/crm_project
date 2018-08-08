@@ -230,7 +230,7 @@ $(document).ready(function () {
                 },
                 {
                     "data": function (row) {
-                        return "<a href='#' class='choose' style='margin: 0 5px 0 5px' data-name='"+row.name+"' data-id='" + row.id+"' >选择</a> ";;
+                        return "<a href='#' class='choose' style='margin: 0 5px 0 5px' data-name='"+row.name+"' data-id='" + row.id+"' >选择</a> ";
                     }
                 }
             ],
