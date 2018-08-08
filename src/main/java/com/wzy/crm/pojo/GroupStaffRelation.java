@@ -10,4 +10,6 @@ public class GroupStaffRelation {
 
     private Integer defGroup;
 
+    private String staffName;
+
 }

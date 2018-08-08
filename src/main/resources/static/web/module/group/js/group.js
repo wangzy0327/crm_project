@@ -1,16 +1,17 @@
-$(document).ready(function () {
+$(function () {
     $('#searchGroup').bind("click",function () {
         $('#groupTable').bootstrapTable('refresh');
     });
     $('#clearGroup').click(function () {
         $('#title').val('');
     });
-    initGroupTable();
+    initTable();
     loadGroupModal();
     addGroup();
     updateGroup();
     editValidator();
     loadDeleteConfirm();
+    // initStaffTable();
     $("#addGroupModal").on('hidden.bs.modal',function(e){
         //移除上次的校验配置
         $("#addGroupForm").data('bootstrapValidator').destroy();
@@ -24,9 +25,17 @@ $(document).ready(function () {
         $('#editGroupForm').data('bootstrapValidator',null);
         editValidator();
     });
+
 });
 
+function initTable() {
+    initGroupTable();
+}
+
 function initGroupTable() {
+    var groupId = null;
+    var flag = false;
+    $("#groupTable").bootstrapTable('destroy');
     $("#groupTable").bootstrapTable({
         url: '/group',
         method: 'get',
@@ -61,21 +70,31 @@ function initGroupTable() {
         columns: [
             {
                 // field: 'state',
-                // align: 'center',
-                checkbox: true,
+                align: 'center',
+                // checkbox: true,
                 formatter:function (value,row,index) {
-                    // return '<input data-index="'+index+'" name="btSelectItem" type="checkbox" data-id = "'+row.id+'" >';
+                    // return '<input data-index="'+index+'" name="btSelectItem" type="checkbox" value="'+row.id+'">';
+
+                    if(flag == false){
+                        if(groupId!=null){
+                            flag = true;
+                            initStaffTable(groupId);
+                            initMessageTable(groupId);
+                        }
+                    }
                     if(index == 0){
-                        return {
-                            checked:true,
-                            value:row.id
-                            // data-id:row.id
-                        }
+                        groupId = row.id;
+                        return '<input data-index="'+index+'" name="btSelectItem" type="checkbox" checked="checked" value="'+row.id+'">';
+                        // return {
+                        //     checked:true,
+                        //     value:row.id
+                        //     // data-id:row.id
+                        // }
                     }else{
-                        // return '<input data-index="'+index+'" name="btSelectItem" type="checkbox" data-id = "'+row.id+'" >';
-                        return {
-                            value:row.id
-                        }
+                        return '<input data-index="'+index+'" name="btSelectItem" type="checkbox" value = "'+row.id+'" >';
+                        // return {
+                        //     value:row.id
+                        // }
                     }
                 }
             },
@@ -94,7 +113,16 @@ function initGroupTable() {
                         "<a href='#' class='deleteGroup' style='margin: 0 5px 0 5px' data-target='#deleteConfirm' data-toggle='modal' data-id='" + row.id+"' >删除</a> ";
                 }
             }
-        ]
+        ],
+        onCheck:function(row){
+            var groupId = $('#groupTable input:checkbox:checked').val();
+            console.log("checked:groupId:"+groupId);
+            initStaffTable(groupId);
+            initMessageTable(groupId);
+            console.log(row);
+        },
+
+            // initStaffTable();
 
     });
 }

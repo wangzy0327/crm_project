@@ -1,8 +1,10 @@
 package com.wzy.crm.controller;
 
 import com.google.common.collect.Maps;
+import com.wzy.crm.dao.GroupStaffRelationMapper;
 import com.wzy.crm.dao.StaffMapper;
 import com.wzy.crm.pojo.Group;
+import com.wzy.crm.pojo.GroupStaffRelation;
 import com.wzy.crm.pojo.Staff;
 import com.wzy.crm.service.IStaffService;
 import com.wzy.crm.vo.ServerResponse;
@@ -24,6 +26,9 @@ public class StaffController {
 
     @Autowired
     private StaffMapper staffMapper;
+
+    @Autowired
+    private GroupStaffRelationMapper groupStaffRelationMapper;
 
     @GetMapping("/hello")
     public ServerResponse<Staff> hello(){
@@ -93,12 +98,14 @@ public class StaffController {
     }
 
     @GetMapping("/name")
-    public List<Staff> findAllName(HttpServletRequest request, HttpSession session, @RequestParam String title){
+    public List<GroupStaffRelation> findAllName(HttpServletRequest request, HttpSession session, @RequestParam String groupId, @RequestParam String title){
         Map<String,String> param = Maps.newHashMap();
         if(StringUtils.isNotEmpty(title)) {
             param.put("keyword", "%" + (title) + "%");
         }
-        return staffMapper.selectStaffNameByParam(param);
+        param.put("groupId",groupId);
+        return groupStaffRelationMapper.selectStaffNameByParam(param);
+//        return staffMapper.selectStaffNameByParam(param);
     }
 
     @GetMapping("/one")

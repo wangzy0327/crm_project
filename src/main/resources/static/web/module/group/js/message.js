@@ -7,7 +7,8 @@ $(document).ready(function () {
     });
     initMessageTable();
 });
-function initMessageTable() {
+function initMessageTable(id) {
+    $("#messageTable").bootstrapTable('destroy');
     $("#messageTable").bootstrapTable({
         url: '/message/name',
         method: 'get',
@@ -39,7 +40,25 @@ function initMessageTable() {
         },
         columns: [
             {
-                checkbox: true
+                align: 'center',
+                checkbox: true,
+                formatter:function (value,row,index) {
+                    console.log("groupId:"+row.groupId);
+                    if(row.groupId!=null){
+                        // return '<input data-index="'+index+'" name="btSelectItem" type="checkbox" checked="checked" value="'+row.messageId+'">';
+                        return {
+                            checked:true
+                        }
+                    }else{
+                        // return '<input data-index="'+index+'" name="btSelectItem" type="checkbox"  value="'+row.messageId+'">';
+                        return {
+                            checked:false
+                        }
+                    }
+                    // return '<input data-index="'+index+'" name="btSelectItem" type="checkbox" data-id = "'+row.id+'" >';
+                    // var groupId = $('#groupTable input:checkbox:checked').val();
+                    // console.log("groupId:"+groupId);
+                }
             },
             {
                 title: '标题',

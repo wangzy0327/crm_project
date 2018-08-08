@@ -2,6 +2,7 @@ package com.wzy.crm.dao;
 
 import com.wzy.crm.pojo.GroupStaffRelation;
 import java.util.List;
+import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 public interface GroupStaffRelationMapper {
@@ -14,4 +15,6 @@ public interface GroupStaffRelationMapper {
     List<GroupStaffRelation> selectAll();
 
     int updateByPrimaryKey(GroupStaffRelation record);
+
+    List<GroupStaffRelation> selectStaffNameByParam(Map<String, String> param);
 }
