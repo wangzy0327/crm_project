@@ -1,10 +1,10 @@
 package com.wzy.crm.service;
 
-import com.wzy.crm.pojo.Group;
+import com.wzy.crm.vo.ServerResponse;
 
 import java.util.List;
-import java.util.Map;
 
 public interface IGroupService {
 
+    ServerResponse updateFollow(Integer groupId,List<Integer> staffIds);
 }

@@ -26,7 +26,6 @@ function initStaffTable(id) {
         showFooter: false,//是否显示列脚
         showPaginationSwitch: true,//是否显示 数据条数选择框
         clickToSelect: true,//点击选中checkbox
-        uniquedId:"id",
         // idField: 'SystemCode',//key值栏位
         // sortable: false,//排序
         // search: true,//启用搜索
@@ -46,22 +45,17 @@ function initStaffTable(id) {
         },
         columns: [
             {
-                // field: 'checkbox',
                 align: 'center',
                 checkbox: true,
                 formatter:function (value,row,index) {
                     console.log("groupId:"+row.groupId);
-                    // if(flag == false){
-                    //     // addSelectAll();
-                    //     flag = true;
-                    // }
                     if(row.groupId!=null){
-                        // return '<input data-index="'+index+'" name="btSelectItem" type="checkbox" checked="checked" value="'+row.staffId+'">';
+                        // return '<input data-index="'+index+'" name="btSelectItem" type="checkbox" checked="checked" value="'+row.messageId+'">';
                         return {
                             checked:true
                         }
                     }else{
-                        // return '<input data-index="'+index+'" name="btSelectItem" type="checkbox"  value="'+row.staffId+'">';
+                        // return '<input data-index="'+index+'" name="btSelectItem" type="checkbox"  value="'+row.messageId+'">';
                         return {
                             checked:false
                         }
@@ -78,7 +72,13 @@ function initStaffTable(id) {
                 valign: 'middle',
                 sortable: true
             }
-        ]
+        ],
+        rowAttributes:function (row,index) {
+            console.log("staffId:"+row.staffId);
+            return {
+                'data-id':row.staffId
+            }
+        }
 
     });
 }
@@ -92,13 +92,37 @@ function addSelectAll() {
 function correlGroupStaff() {
     $('#addName').unbind().click(function (){
         var groupId = $('#groupTable input:checkbox:checked').val();
-        var staffId = {};
+        console.log("ajax groupId:"+groupId);
+        var staffIds = [];
         $('#staffTable input:checkbox').each(function () {
-            console.log("uniquedId:"+$(this).parent('tr').attr('uniquedId'));
-            if(this.checked = true){
-                console.log("uniquedId:"+$(this).parent('tr').attr('uniquedId'));
+            var staffId = $(this).parent('td').parent('tr').attr('data-id');
+            console.log("data-id:"+staffId);
+            if(this.checked == true && staffId != undefined && staffId != null){
+                staffIds.push(staffId);
             }
-        })
+        });
+        console.log(staffIds);
+        var paramsJson = {"groupId":groupId,"staffIds":staffIds};
+        var param = jQuery.param(paramsJson);
+        console.log(param);
+        $.ajax({
+            url:"/group/relation/edit?groupId="+groupId+"&staffIds="+staffIds,
+            type:"PUT",
+            contentType: "application/json;charset=UTF-8",
+            dataType:'json',
+            success:function (result) {
+                if(result.code == 0){
+                    var data = result.data;
+                    console.log(data);
+                    Ewin.confirm({ message: "关联成功！" });
+                }
+            },
+            error:function (result) {
+                console.log(result);
+                alert(result.status);
+                Ewin.confirm({ message: "关联失败！" });
+            }
+        });
     });
 }
 

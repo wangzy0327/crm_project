@@ -51,4 +51,25 @@
       </if>
     </where>
   </select>
+  <select id="selectStaffIdsByParam" resultType="int">
+    select staff_id
+    from group_staff_relation
+    where group_id = #{groupId}
+  </select>
+  <delete id="deleteByParam">
+    delete
+    from group_staff_relation
+    where
+    <foreach collection="staffIds" item="item" index="index" separator="or">
+      (group_id = #{groupId} and staff_id = #{item.value})
+    </foreach>
+  </delete>
+  <insert id="insertByParam">
+    insert into group_staff_relation
+    (group_id,staff_id)
+    values
+    <foreach collection="staffIds" item="item" index="index" separator=",">
+      (#{groupId}, #{item.value})
+    </foreach>
+  </insert>
 </mapper>

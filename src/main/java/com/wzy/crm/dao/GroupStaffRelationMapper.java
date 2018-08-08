@@ -17,4 +17,10 @@ public interface GroupStaffRelationMapper {
     int updateByPrimaryKey(GroupStaffRelation record);
 
     List<GroupStaffRelation> selectStaffNameByParam(Map<String, String> param);
+
+    List<Integer> selectStaffIdsByParam(Integer groupId);
+
+    void deleteByParam(@Param("groupId") Integer groupId, @Param("staffIds") List<Integer> needToDel);
+
+    void insertByParam(@Param("groupId") Integer groupId, @Param("staffIds") List<Integer> needToInsert);
 }

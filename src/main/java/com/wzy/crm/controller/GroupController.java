@@ -3,6 +3,7 @@ package com.wzy.crm.controller;
 import com.google.common.collect.Maps;
 import com.wzy.crm.dao.GroupMapper;
 import com.wzy.crm.pojo.Group;
+import com.wzy.crm.service.IGroupService;
 import com.wzy.crm.vo.ResponseCode;
 import com.wzy.crm.vo.ServerResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +18,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/group")
 public class GroupController {
+
+    @Autowired
+    private IGroupService groupService;
 
     @Autowired
     private GroupMapper groupMapper;
@@ -71,5 +75,11 @@ public class GroupController {
             map.put("valid",false);
         }
         return map;
+    }
+
+    @PutMapping("/relation/edit")
+    public ServerResponse editGroupStaffRelation(@RequestParam Integer groupId,@RequestParam List<Integer> staffIds ){
+        System.out.println("groupId:"+groupId);
+        return groupService.updateFollow(groupId,staffIds);
     }
 }
