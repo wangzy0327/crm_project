@@ -8,6 +8,6 @@ public class GroupMessageRelation {
 
     private Integer messageId;
 
-    private String MessageTitle;
+    private String messageTitle;
 
 }

@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface IGroupService {
 
-    ServerResponse updateFollow(Integer groupId,List<Integer> staffIds);
+    ServerResponse updateStaffRelation(Integer groupId,List<Integer> staffIds);
+
+    ServerResponse updateMessageRelation(Integer groupId, List<Integer> messageIds);
 }

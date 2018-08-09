@@ -1,15 +1,15 @@
 package com.wzy.crm.controller;
 
 import com.google.common.collect.Maps;
+import com.wzy.crm.dao.GroupMessageRelationMapper;
 import com.wzy.crm.dao.MessageMapper;
 import com.wzy.crm.pojo.Group;
+import com.wzy.crm.pojo.GroupMessageRelation;
 import com.wzy.crm.pojo.Message;
+import com.wzy.crm.vo.ServerResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,16 +20,24 @@ import java.util.Map;
 @RequestMapping("/message")
 public class MessageController {
 
+
     @Autowired
-    private MessageMapper messageMapper;
+    private GroupMessageRelationMapper groupMessageRelationMapper;
 
     @GetMapping("/name")
-    public List<Message> findAllTitle(HttpServletRequest request, HttpSession session, @RequestParam String title){
+    public List<GroupMessageRelation> findAllTitle(HttpServletRequest request, HttpSession session, @RequestParam String groupId, @RequestParam String title){
         Map<String,String> param = Maps.newHashMap();
         if(StringUtils.isNotEmpty(title)) {
             param.put("keyword", "%" + (title) + "%");
         }
-        return messageMapper.selectMessageTitleByParam(param);
+        param.put("groupId",groupId);
+        return groupMessageRelationMapper.selectMessageTitleByParam(param);
+    }
+
+    @PostMapping("/messageIds")
+    public ServerResponse getAllStaffIds(@RequestParam Integer groupId){
+        System.out.println("groupId:"+groupId);
+        return ServerResponse.createBySuccess(groupMessageRelationMapper.selectAllMessageIdsByGroupId(groupId));
     }
 
 }

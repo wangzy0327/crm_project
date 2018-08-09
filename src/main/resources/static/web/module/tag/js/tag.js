@@ -216,7 +216,8 @@ function updateTag() {
                     var data = result.data;
                     console.log(data);
                 }else if(result.code == 3){
-                    $('#duplicatePrompt').modal('show');
+                    Ewin.confirm({ message: "该标签已存在!" });
+                    // $('#duplicatePrompt').modal('show');
                 }
                 $('#editModal').modal('hide');
                 $('#editable').DataTable().ajax.reload(null, false);
@@ -246,7 +247,7 @@ function queryDetail(id) {
         },
         error:function (result) {
             console.log(result);
-            alert(result.status);
+            Ewin.confirm({ message: result.status });
         }
     })
 }
@@ -268,7 +269,7 @@ function deleteData(id) {
             },
             error:function (result) {
                 console.log(result);
-                alert(result.status);
+                Ewin.confirm({ message: result.status });
                 $('#deleteConfirm').modal('hide');
                 $('#editable').DataTable().ajax.reload(null,false);
             }

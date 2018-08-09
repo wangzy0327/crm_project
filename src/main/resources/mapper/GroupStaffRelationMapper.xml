@@ -5,7 +5,7 @@
     <id column="group_id" property="groupId" jdbcType="INTEGER" />
     <id column="staff_id" property="staffId" jdbcType="INTEGER" />
     <result column="def_group" property="defGroup" jdbcType="INTEGER" />
-    <result column="name" property="staffName" jdbcType="INTEGER" />
+    <result column="name" property="staffName" jdbcType="VARCHAR" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="map" >
     delete from group_staff_relation
@@ -72,4 +72,9 @@
       (#{groupId}, #{item.value})
     </foreach>
   </insert>
+  <select id="selectAllStaffIdsByGroupId" resultType="int">
+    select staff_id
+    from group_staff_relation
+    where group_id = #{groupId}
+  </select>
 </mapper>

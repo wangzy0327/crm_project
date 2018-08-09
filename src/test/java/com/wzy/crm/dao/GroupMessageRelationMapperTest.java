@@ -1,7 +1,7 @@
 package com.wzy.crm.dao;
 
 import com.google.common.collect.Maps;
-import com.wzy.crm.pojo.GroupStaffRelation;
+import com.wzy.crm.pojo.GroupMessageRelation;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,29 +14,28 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class GroupStaffRelationMapperTest {
+public class GroupMessageRelationMapperTest {
 
     @Autowired
-    private GroupStaffRelationMapper groupStaffRelationMapper;
+    private GroupMessageRelationMapper groupMessageRelationMapper;
 
     @Test
-    public void selectStaffNameByParam() throws Exception {
-        String staffName = "";
+    public void selectMessageTitleByParam() throws Exception {
+        String title = "";
         String groupId = "30";
         Map<String,String> param = Maps.newHashMap();
-        if(StringUtils.isNotEmpty(staffName)) {
-            param.put("keyword", "%" + (staffName) + "%");
+        if(StringUtils.isNotEmpty(title)) {
+            param.put("keyword", "%" + (title) + "%");
         }
         param.put("groupId",groupId);
-        List<GroupStaffRelation> staffs =  groupStaffRelationMapper.selectStaffNameByParam(param);
-        System.out.println("********************");
-        for(int i = 0;i<staffs.size();i++){
-            System.out.println(staffs.get(i));
+        List<GroupMessageRelation> messages = groupMessageRelationMapper.selectMessageTitleByParam(param);
+        System.out.println("***************");
+        for(int i = 0;i<messages.size();i++){
+            System.out.println(messages.get(i));
         }
-        System.out.println("********************");
+        System.out.println("***************");
     }
 
 }

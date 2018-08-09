@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.GroupMessageRelation" >
     <id column="group_id" property="groupId" jdbcType="INTEGER" />
     <id column="message_id" property="messageId" jdbcType="INTEGER" />
+    <result column="titleText" property="messageTitle" jdbcType="VARCHAR" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="map" >
     delete from group_message_relation
@@ -17,5 +18,48 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select group_id, message_id
     from group_message_relation
+  </select>
+  <select id="selectMessageIdsByParam" resultType="int">
+    select message_id
+    from group_message_relation
+    where group_id = #{groupId}
+  </select>
+  <delete id="deleteByParam">
+    delete
+    from group_message_relation
+    where
+    <foreach collection="messageIds" item="item" index="index" separator="or">
+      (group_id = #{groupId} and message_id = #{item.value})
+    </foreach>
+  </delete>
+  <insert id="insertByParam">
+    insert into group_message_relation
+    (group_id,message_id)
+    values
+    <foreach collection="messageIds" item="item" index="index" separator=",">
+      (#{groupId}, #{item.value})
+    </foreach>
+  </insert>
+  <select id="selectAllMessageIdsByGroupId" resultType="int">
+    select message_id
+    from group_message_relation
+    where group_id = #{groupId}
+  </select>
+  <select id="selectMessageTitleByParam" resultMap="BaseResultMap">
+    select message.id message_id,message.titleText,`group`.id group_id
+    from message
+    LEFT JOIN
+    (SELECT group_id,message_id
+    FROM group_message_relation
+    WHERE group_id = #{groupId,jdbcType=INTEGER}) gm
+    ON message.id = gm.message_id
+    LEFT JOIN
+    `group`
+    ON `group`.id = gm.group_id
+    <where>
+      <if test="keyword != null and keyword != ''">
+        AND message.titleText LIKE #{keyword}
+      </if>
+    </where>
   </select>
 </mapper>

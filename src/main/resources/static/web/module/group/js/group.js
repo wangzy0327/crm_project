@@ -175,13 +175,13 @@ function addGroup() {
                         console.log(data);
                         $('#addModal').modal('hide');
                     } else if (result.code == 3) {
-                        alert("标签名重复");
+                        Ewin.confirm({ message: "标签名重复" });
                     }
                     $('#groupTable').bootstrapTable('refresh');
                 },
                 error: function (result) {
                     console.log(result);
-                    alert(result.status);
+                    Ewin.confirm({ message: result.status });
                     $('#groupTable').bootstrapTable('refresh');
                 }
             });

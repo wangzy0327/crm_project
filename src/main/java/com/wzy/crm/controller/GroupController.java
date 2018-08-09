@@ -77,9 +77,17 @@ public class GroupController {
         return map;
     }
 
-    @PutMapping("/relation/edit")
+    @PutMapping("/staffRelation/edit")
     public ServerResponse editGroupStaffRelation(@RequestParam Integer groupId,@RequestParam List<Integer> staffIds ){
         System.out.println("groupId:"+groupId);
-        return groupService.updateFollow(groupId,staffIds);
+        return groupService.updateStaffRelation(groupId,staffIds);
     }
+
+    @PutMapping("/messageRelation/edit")
+    public ServerResponse editGroupMessageRelation(@RequestParam Integer groupId,@RequestParam List<Integer> messageIds ){
+        System.out.println("groupId:"+groupId);
+        return groupService.updateMessageRelation(groupId,messageIds);
+    }
+
+
 }

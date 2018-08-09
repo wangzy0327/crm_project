@@ -98,14 +98,13 @@ public class StaffController {
     }
 
     @GetMapping("/name")
-    public List<GroupStaffRelation> findAllName(HttpServletRequest request, HttpSession session, @RequestParam String groupId, @RequestParam String title){
+    public List<GroupStaffRelation> findAllName(HttpServletRequest request, HttpSession session, @RequestParam String groupId, @RequestParam String staffName){
         Map<String,String> param = Maps.newHashMap();
-        if(StringUtils.isNotEmpty(title)) {
-            param.put("keyword", "%" + (title) + "%");
+        if(StringUtils.isNotEmpty(staffName)) {
+            param.put("keyword", "%" + (staffName) + "%");
         }
         param.put("groupId",groupId);
         return groupStaffRelationMapper.selectStaffNameByParam(param);
-//        return staffMapper.selectStaffNameByParam(param);
     }
 
     @GetMapping("/one")
@@ -113,9 +112,15 @@ public class StaffController {
         return ServerResponse.createBySuccess(staffMapper.selectByPrimaryKey(Integer.parseInt(id)));
     }
 
-    @GetMapping("getAll")
+    @GetMapping("/getAll")
     public ServerResponse<List<Staff>> findAllStaff(){
         return ServerResponse.createBySuccess(staffMapper.selectAll());
+    }
+
+    @PostMapping("/staffIds")
+    public ServerResponse getAllStaffIds(@RequestParam Integer groupId){
+        System.out.println("groupId:"+groupId);
+        return ServerResponse.createBySuccess(groupStaffRelationMapper.selectAllStaffIdsByGroupId(groupId));
     }
 
 }
