@@ -1,0 +1,14 @@
+$(document).ready(function(){
+    $("#delete").hide();
+    $("#another").hide();
+    $("#add").click(function(){
+        $("#another").show();
+        $("#delete").show();
+        $("#add").hide();
+    });
+    $("#delete").click(function(){
+        $("#another").hide();
+        $("#add").show();
+        $("#delete").hide();
+    });
+});

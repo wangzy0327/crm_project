@@ -43,8 +43,8 @@ function initGroupTable() {
         toolbar: '#toobar',//工具列
         striped: true,//隔行换色
         cache: false,//禁用缓存
-        pageSize: 5,//单页记录数
-        pageList: [ 5, 10, 20, 30],//可选择单页记录数
+        pageSize: 10,//单页记录数
+        pageList: [ 10, 20, 30],//可选择单页记录数
         pagination: true,//启动分页
         sidePagination: 'client',//分页方式
         pageNumber: 1,//初始化table时显示的页码

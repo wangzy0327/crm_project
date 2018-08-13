@@ -1,0 +1,143 @@
+/*@font-face {
+    font-family: 'iconfont';  !* project id 445275 *!
+    src: url('//at.alicdn.com/t/font_445275_2ww6rjeu6b7w4s4i.eot');
+    src: url('//at.alicdn.com/t/font_445275_2ww6rjeu6b7w4s4i.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_445275_2ww6rjeu6b7w4s4i.woff') format('woff'),
+    url('//at.alicdn.com/t/font_445275_2ww6rjeu6b7w4s4i.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_445275_2ww6rjeu6b7w4s4i.svg#iconfont') format('svg');
+}
+
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:20px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.5px;
+    -moz-osx-font-smoothing: grayscale;
+}*/
+
+.ignore-background-orange{
+    background-color: #FFA500;
+    color: #ffffff;
+}
+
+.font-color-orange {
+    color: #FFA500;
+}
+
+.first-background-blue{
+    background-color: #1e90ff;
+    color: #ffffff;
+}
+
+.first-background-green{
+    background-color: forestgreen;
+    color: #ffffff;
+}
+
+.visited-background-red{
+    background-color: #ff0000;
+    color: #ffffff;
+}
+
+.visited-background-gray{
+    background-color: #808080;
+    color: #ffffff;
+}
+
+.point-size {
+    width: 16px;
+    height: 16px;
+}
+
+.operating-pic {
+    width: 20px;
+    height: 20px;
+}
+
+.icon-active:active {
+    opacity: 0.5;
+}
+
+.icon-narrow {
+    padding-left: 10px;
+}
+
+.nav-narrow{
+    padding: 0 10px;
+}
+
+.name-font {
+    font-size: 20px;
+}
+
+.name-narrow {
+    padding: 4px 15px;
+}
+
+.add-iconfont {
+    font-size:50px;
+}
+
+.detail-background:active {
+    background-color: #d0d0d0;
+}
+
+.evaluation-overflow-visiable {
+    overflow: visible;
+}
+
+.head-box {
+    height: 65%;
+    width: 65% !important;
+    margin-top: 7px;
+}
+
+.evaluator-font {
+    font-size: 16px;
+    color: #333;
+}
+
+.evaluation-font {
+    font-size: 17px;
+}
+
+.information-topic {
+    padding: 0 15px;
+}
+
+.information-content {
+    padding: 0 15px;
+    font-size: 13px;
+}
+
+.detail-log:active {
+    background-color: #d0d0d0;
+}
+
+.detail-plan:active {
+    background-color: #d0d0d0;
+}
+
+.head-size {
+    height: 30px !important;
+    width: 30px !important;
+}
+
+.head-pic {
+    border-radius: 0 !important;
+}
+
+.muti-selected {
+    padding: 0px !important;
+}
+
+.muti-selected:before {
+    border-top: 0 !important;
+}
+
+.btn-foot {
+    position: fixed;
+    width: 100vw;
+    bottom: 0;
+}

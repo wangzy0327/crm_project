@@ -1,0 +1,74 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+.weui-btn_primary {
+    background-color: #2889d6;
+}
+.weui-btn_primary:not(.weui-btn_disabled):active {
+    color: hsla(0, 0%, 100%, .6);
+    background-color: #2889d6;
+}
+.weui-cell.weui-cell_access.active{
+    background-color: #ececec;
+}
+.weui-cell.weui-cell_access.active .weui-cell__ft:after{
+    border-width: 0 2px 2px 0;
+}
+.flex-box-two{
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-wrap:nowrap;
+}
+.flex-item-two{
+    margin:0 5px 0 0;
+    flex:0 1 auto;
+}
+.head-img{
+    width:32px;
+    height:32px;
+    border-radius: 16px;
+}
+.name{
+    line-height: 32px;height:32px;
+}
+.phone{
+    font-size: 12px;
+    color: #888;
+}
+.con-box{
+    font-size: 14px;
+    line-height: 17px;
+}
+.con-box .flex-item-two{
+    margin:0 5px;
+}
+.position{
+    font-size: 13px;
+    color: #666;
+}
+.con-box-two{
+    flex-wrap:wrap;
+    font-size: 10px;
+    line-height: 15px;
+    color: #777;
+}
+.con-box-two .flex-item-two{
+    margin:0 5px;
+}
+.weui-cell.weui-cell_access.detail:active{
+    border-width: 0 2px 2px 0;
+    background-color: #ececec;
+}
+.weui-media-box{
+    padding: 0;
+}
+.flex-box{
+    margin-top: 0;
+}
+.weui-media-box__desc{
+    margin-top: 5px;
+}
+.detail_content{
+    padding:0 15px;
+}

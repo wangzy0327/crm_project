@@ -1,0 +1,14 @@
+a {
+    color: #ffbe00;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #2889d6;
+    font-size: 20px;
+}
+
+a:active {
+    color: #2889d6;
+    font-size: 20px;
+}

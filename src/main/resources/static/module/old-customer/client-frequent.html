@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="en">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1"/>
+    <meta name="keywords" content="老客户列表"/>
+    <meta name="description" content="老客户列表"/>
+    <title>老客户列表</title>
+
+    <link rel="stylesheet" href="../../css/jquery-weui.css">
+    <link rel="stylesheet" href="../../css/weui.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../iconfont/iconfont.css">
+    <link rel="stylesheet" href="css/character.css">
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../../js/jquery-weui.min.js"></script>
+
+
+</head>
+<body ontouchstart="">
+<!--<div class="weui-navbar" style="top: 0;position: fixed">
+    <div class="weui-navbar__item weui-bar__item_on">老客户列表</div>
+</div>-->
+
+<div id="list">
+
+</div>
+
+<!--<div class="weui-infinite-scroll" id="infinite">-->
+    <!--<div class="infinite-preloader"></div>-->
+    <!--正在加载...-->
+<!--</div>-->
+<div class="weui-loadmore">
+    <i class="weui-loading"></i>
+    <span class="weui-loadmore__tips">正在加载</span>
+</div>
+<div class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+    <span class="weui-loadmore__tips"></span>
+</div>
+<!--<div class="weui-form-preview" style="margin-top: 10px;">
+    <div class="weui-form-preview__hd name-narrow">
+        <label class="weui-form-preview__label">
+            <span class="first-background-green">未拜访</span>&nbsp;&nbsp;
+            <span class="first-background-blue">置顶</span>&nbsp;&nbsp;张三
+        </label>
+        <em class="weui-form-preview__value" style="text-align: right">
+            <a href="client-tovisit-edit.html" class="icon-active icon-narrow">
+                <i class="iconfont " style="color: #1afa29">&#xe001;</i>
+            </a>
+            <a href="#" class="icon-active icon-narrow">
+                <i class="iconfont" style="color: #FFA500">&#xe002;</i>
+            </a>
+            <a href="#" class="icon-active icon-narrow">
+                <i class="iconfont" style="color: #1e90ff">&#xe003;</i>
+            </a>
+        </em>
+    </div>
+    <div class="weui-form-preview__bd getdetail">
+        <div class="detail-background">
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">供职单位</label>
+                <span class="weui-form-preview__value">cisco</span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">工作地址</label>
+                <span class="weui-form-preview__value">上海黄浦路288号北邮无锡研究院</span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">联系方式</label>
+                <span class="weui-form-preview__value">18013220010</span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">拜访时间</label>
+                <span class="weui-form-preview__value">2天后</span>
+            </div>
+        </div>
+        <div class="weui-form-preview__ft">
+            <a class="weui-form-preview__btn weui-form-preview__btn_default" href="new-visit-plan.html">新增拜访计划</a>
+            <a class="weui-form-preview__btn weui-form-preview__btn_default" href="visit-log.html">拜访记录情况</a>
+        </div>
+    </div>
+</div>
+<div class="weui-form-preview" style="margin-top: 10px;">
+    <div class="weui-form-preview__hd name-narrow">
+        <label class="weui-form-preview__label">
+            <span class="first-background-green">未拜访</span>&nbsp;&nbsp;李四
+        </label>
+        <em class="weui-form-preview__value" style="text-align: right">
+            <a href="client-tovisit-edit.html" class="icon-active icon-narrow">
+                <i class="iconfont " style="color: #1afa29">&#xe001;</i>
+            </a>
+            <a href="#" class="icon-active icon-narrow">
+                <i class="iconfont" style="color: #FFA500">&#xe002;</i>
+            </a>
+            <a href="#" class="icon-active icon-narrow">
+                <i class="iconfont" style="color: #1e90ff">&#xe003;</i>
+            </a>
+        </em>
+    </div>
+    <div class="weui-form-preview__bd">
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">供职单位</label>
+            <span class="weui-form-preview__value">Oracle</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">工作地址</label>
+            <span class="weui-form-preview__value">上海黄浦路288号北邮无锡研究院</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">联系方式</label>
+            <span class="weui-form-preview__value">18262396061</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">拜访时间</label>
+            <span class="weui-form-preview__value">3天后</span>
+        </div>
+        <div class="weui-form-preview__ft">
+            <a class="weui-form-preview__btn weui-form-preview__btn_default" href="new-visit-plan.html">新增拜访计划</a>
+            <a class="weui-form-preview__btn weui-form-preview__btn_default" href="visit-log.html">拜访记录情况</a>
+        </div>
+    </div>
+</div>
+
+<div class="weui-form-preview" style="margin-top: 10px;">
+    <div class="weui-form-preview__hd name-narrow">
+        <label class="weui-form-preview__label">
+            <span class="ignore-background-orange">已忽略</span>&nbsp;&nbsp;王五
+        </label>
+        <em class="weui-form-preview__value" style="text-align: right">
+            <a href="client-tovisit-edit.html" class="icon-active icon-narrow">
+                <i class="iconfont " style="color: #1afa29">&#xe001;</i>
+            </a>
+            <a href="#" class="icon-active icon-narrow">
+                <i class="iconfont" style="color: #FFA500">&#xe002;</i>
+            </a>
+            <a href="#" class="icon-active icon-narrow">
+                <i class="iconfont" style="color: #1e90ff">&#xe003;</i>
+            </a>
+        </em>
+    </div>
+    <div class="weui-form-preview__bd">
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">供职单位</label>
+            <span class="weui-form-preview__value">SONY</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">工作地址</label>
+            <span class="weui-form-preview__value">上海黄浦路288号北邮无锡研究院</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">联系方式</label>
+            <span class="weui-form-preview__value">18262396069</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">拜访时间</label>
+            <span class="weui-form-preview__value">1周后</span>
+        </div>
+        <div class="weui-form-preview__ft">
+            <a class="weui-form-preview__btn weui-form-preview__btn_default" href="new-visit-plan.html">新增拜访计划</a>
+            <a class="weui-form-preview__btn weui-form-preview__btn_default" href="visit-log.html">拜访记录情况</a>
+        </div>
+    </div>
+</div>
+
+<div class="weui-form-preview" style="margin-top: 10px;">
+    <div class="weui-form-preview__hd name-narrow">
+        <label class="weui-form-preview__label">
+            <span class="visited-background-red">已拜访</span>&nbsp;&nbsp;小红
+        </label>
+        <em class="weui-form-preview__value" style="text-align: right">
+            <a href="client-tovisit-edit.html" class="icon-active icon-narrow">
+                <i class="iconfont " style="color: #1afa29">&#xe001;</i>
+            </a>
+            <a href="#" class="icon-active icon-narrow">
+                <i class="iconfont" style="color: #FFA500">&#xe002;</i>
+            </a>
+            <a href="#" class="icon-active icon-narrow">
+                <i class="iconfont" style="color: #1e90ff">&#xe003;</i>
+            </a>
+        </em>
+    </div>
+    <div class="weui-form-preview__bd">
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">供职单位</label>
+            <span class="weui-form-preview__value">SONY</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">工作地址</label>
+            <span class="weui-form-preview__value">上海黄浦路288号北邮无锡研究院</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">联系方式</label>
+            <span class="weui-form-preview__value">18262396069</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">拜访时间</label>
+            <span class="weui-form-preview__value">1周前</span>
+        </div>
+        <div class="weui-form-preview__ft">
+            <a class="weui-form-preview__btn weui-form-preview__btn_default" href="new-visit-plan.html">新增拜访计划</a>
+            <a class="weui-form-preview__btn weui-form-preview__btn_default" href="visit-log.html">拜访记录情况</a>
+        </div>
+    </div>
+</div>-->
+</body>
+</html>

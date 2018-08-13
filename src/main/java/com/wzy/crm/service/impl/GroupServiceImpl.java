@@ -57,17 +57,21 @@ public class GroupServiceImpl implements IGroupService {
     }
 
     private void handleMessageRelData(Integer groupId, List<Integer> needToDel, List<Integer> needToInsert){
-        if(needToDel!=null&&needToDel.size()>0)
-            groupMessageRelationMapper.deleteByParam(groupId,needToDel);
-        if(needToInsert!=null&&needToInsert.size()>0)
-            groupMessageRelationMapper.insertByParam(groupId,needToInsert);
+        synchronized (this){
+            if(needToDel!=null&&needToDel.size()>0)
+                groupMessageRelationMapper.deleteByParam(groupId,needToDel);
+            if(needToInsert!=null&&needToInsert.size()>0)
+                groupMessageRelationMapper.insertByParam(groupId,needToInsert);
+        }
     }
 
     private void handleStaffRelData(Integer groupId, List<Integer> needToDel, List<Integer> needToInsert){
-        if(needToDel!=null&&needToDel.size()>0)
-            groupStaffRelationMapper.deleteByParam(groupId,needToDel);
-        if(needToInsert!=null&&needToInsert.size()>0)
-            groupStaffRelationMapper.insertByParam(groupId,needToInsert);
+        synchronized (this){
+            if(needToDel!=null&&needToDel.size()>0)
+                groupStaffRelationMapper.deleteByParam(groupId,needToDel);
+            if(needToInsert!=null&&needToInsert.size()>0)
+                groupStaffRelationMapper.insertByParam(groupId,needToInsert);
+        }
     }
 
 }
