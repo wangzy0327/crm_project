@@ -9,17 +9,17 @@
     <result column="msgType" property="msgtype" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="url" property="url" jdbcType="VARCHAR" />
-    <result column="picurl" property="picurl" jdbcType="VARCHAR" />
+    <result column="picurl" property="picUrl" jdbcType="VARCHAR" />
     <result column="btntxt" property="btntxt" jdbcType="VARCHAR" />
     <result column="third_params" property="thirdParams" jdbcType="VARCHAR" />
     <result column="pageCount" property="pagecount" jdbcType="INTEGER" />
-    <result column="create_userId" property="createUserid" jdbcType="INTEGER" />
+    <result column="create_userId" property="createUserId" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="delFlag" property="delflag" jdbcType="INTEGER" />
-    <result column="titleText" property="titletext" jdbcType="LONGVARCHAR" />
+    <result column="titleText" property="titleText" jdbcType="LONGVARCHAR" />
     <result column="title" property="title" jdbcType="LONGVARCHAR" />
-    <result column="descriptionText" property="descriptiontext" jdbcType="LONGVARCHAR" />
+    <result column="descriptionText" property="descriptionText" jdbcType="LONGVARCHAR" />
     <result column="description" property="description" jdbcType="LONGVARCHAR" />
     <result column="coverPicAttach" property="coverpicattach" jdbcType="LONGVARCHAR" />
     <result column="contentAttach" property="contentattach" jdbcType="LONGVARCHAR" />
@@ -29,20 +29,20 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wzy.crm.pojo.Message" >
-    insert into message (id, corp_id, suite_id, 
-      corpid, msgType, type, 
-      url, picurl, btntxt, 
+    insert into message (corp_id, suite_id,
+      corpid, msgType, `type`,
+      url, picurl, btntxt,
       third_params, pageCount, create_userId, 
       update_time, status, delFlag, 
       titleText, title, descriptionText, 
       description, coverPicAttach, contentAttach
       )
-    values (#{id,jdbcType=INTEGER}, #{corpId,jdbcType=VARCHAR}, #{suiteId,jdbcType=VARCHAR}, 
+    values ( #{corpId,jdbcType=VARCHAR}, #{suiteId,jdbcType=VARCHAR},
       #{corpid,jdbcType=VARCHAR}, #{msgtype,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
-      #{url,jdbcType=VARCHAR}, #{picurl,jdbcType=VARCHAR}, #{btntxt,jdbcType=VARCHAR}, 
-      #{thirdParams,jdbcType=VARCHAR}, #{pagecount,jdbcType=INTEGER}, #{createUserid,jdbcType=INTEGER}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, 
-      #{titletext,jdbcType=LONGVARCHAR}, #{title,jdbcType=LONGVARCHAR}, #{descriptiontext,jdbcType=LONGVARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, #{btntxt,jdbcType=VARCHAR},
+      #{thirdParams,jdbcType=VARCHAR}, #{pagecount,jdbcType=INTEGER}, #{createUserId,jdbcType=INTEGER},
+      now(), #{status,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER},
+      #{titleText,jdbcType=LONGVARCHAR}, #{title,jdbcType=LONGVARCHAR}, #{descriptionText,jdbcType=LONGVARCHAR},
       #{description,jdbcType=LONGVARCHAR}, #{coverpicattach,jdbcType=LONGVARCHAR}, #{contentattach,jdbcType=LONGVARCHAR}
       )
   </insert>
@@ -52,9 +52,9 @@
       suite_id = #{suiteId,jdbcType=VARCHAR},
       corpid = #{corpid,jdbcType=VARCHAR},
       msgType = #{msgtype,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=INTEGER},
       url = #{url,jdbcType=VARCHAR},
-      picurl = #{picurl,jdbcType=VARCHAR},
+      picurl = #{picUrl,jdbcType=VARCHAR},
       btntxt = #{btntxt,jdbcType=VARCHAR},
       third_params = #{thirdParams,jdbcType=VARCHAR},
       pageCount = #{pagecount,jdbcType=INTEGER},
@@ -71,14 +71,14 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, corp_id, suite_id, corpid, msgType, type, url, picurl, btntxt, third_params, 
+    select id, corp_id, suite_id, corpid, msgType, `type`, url, picurl, btntxt, third_params,
     pageCount, create_userId, update_time, status, delFlag, titleText, title, descriptionText, 
     description, coverPicAttach, contentAttach
     from message
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, corp_id, suite_id, corpid, msgType, type, url, picurl, btntxt, third_params, 
+    select id, corp_id, suite_id, corpid, msgType, `type`, url, picurl, btntxt, third_params,
     pageCount, create_userId, update_time, status, delFlag, titleText, title, descriptionText, 
     description, coverPicAttach, contentAttach
     from message

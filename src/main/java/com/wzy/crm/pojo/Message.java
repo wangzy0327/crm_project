@@ -20,7 +20,7 @@ public class Message {
 
     private String url;
 
-    private String picurl;
+    private String picUrl;
 
     private String btntxt;
 
@@ -28,7 +28,7 @@ public class Message {
 
     private Integer pagecount;
 
-    private Integer createUserid;
+    private Integer createUserId;
 
     private Date updateTime;
 
@@ -36,11 +36,11 @@ public class Message {
 
     private Integer delflag;
 
-    private String titletext;
+    private String titleText;
 
     private String title;
 
-    private String descriptiontext;
+    private String descriptionText;
 
     private String description;
 
@@ -48,4 +48,19 @@ public class Message {
 
     private String contentattach;
 
+    public String getCorpid() {
+        return corpid;
+    }
+
+    public void setCorpid(String corpid) {
+        this.corpid = corpid;
+    }
+
+    public String getCorpId() {
+        return corpId;
+    }
+
+    public void setCorpId(String corpId) {
+        this.corpId = corpId;
+    }
 }

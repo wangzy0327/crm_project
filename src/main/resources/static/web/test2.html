@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <style>
+        .fileinput-button {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .fileinput-button input{
+            position:absolute;
+            right: 0px;
+            top: 0px;
+            opacity: 0;
+            -ms-filter: 'alpha(opacity=0)';
+            font-size: 200px;
+        }
+    </style>
+</head>
+<body style="padding: 10px">
+<div align="center">
+        <span id="filename" class="btn btn-success fileinput-button">
+            <span>上传</span>
+            <input type="file" onChange="changeText(this)">
+        </span>
+</div>
+<script>
+    function changeText(th){
+        var filename = document.getElementById("filename");
+        var exist = th.value.lastIndexOf("\\");
+        // 火狐浏览器直接可以获取到文件名
+        if(exist == -1){
+            filename.textContent = th.value;
+        }
+        //chrome或获取到绝对路径
+        else{
+            filename.textContent = th.value.substring(exist + 1);
+        }
+    }
+</script>
+</body>
+</html>

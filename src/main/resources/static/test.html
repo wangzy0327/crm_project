@@ -6,6 +6,29 @@
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
+<style>
+    .upload{
+        padding: 4px 10px;
+        height: 20px;
+        line-height: 20px;
+        position: relative;
+        border: 1px solid #999;
+        text-decoration: none;
+        color: #666;
+    }
+    .change{
+        position: absolute;
+        overflow: hidden;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+</style>
+
+
+<a href="javascript:;" class="upload">选择文件
+    <input class="change" type="file" multiple="multiple" />
+</a>
     <a href="javascript:;" id="btn">'点击'</a>
     <script>
         $('#btn').click(function () {

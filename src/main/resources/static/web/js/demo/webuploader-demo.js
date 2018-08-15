@@ -32,8 +32,8 @@ jQuery(function() {
         ratio = window.devicePixelRatio || 1,
 
         // 缩略图大小
-        thumbnailWidth = 110 * ratio,
-        thumbnailHeight = 110 * ratio,
+        thumbnailWidth = 80 * ratio,
+        thumbnailHeight = 80 * ratio,
 
         // 可能有pedding, ready, uploading, confirm, done.
         state = 'pedding',
@@ -62,6 +62,7 @@ jQuery(function() {
 
     // 实例化
     uploader = WebUploader.create({
+        // auto:true, //是否自动上传
         pick: {
             id: '#filePicker',
             label: '点击选择图片'
@@ -82,23 +83,24 @@ jQuery(function() {
 
         chunked: true,
         // server: 'http://webuploader.duapp.com/server/fileupload.php',
-        server: 'http://2betop.net/fileupload.php',
-        fileNumLimit: 300,
-        fileSizeLimit: 5 * 1024 * 1024,    // 200 M
+        server: '/upload/save',
+        fileNumLimit: 1,
+        fileSizeLimit: 1 * 1024 * 1024,    // 200 M
         fileSingleSizeLimit: 1 * 1024 * 1024    // 50 M
     });
 
     // 添加“添加文件”的按钮，
-    uploader.addButton({
-        id: '#filePicker2',
-        label: '继续添加'
-    });
+    // uploader.addButton({
+    //     id: '#filePicker2',
+    //     label: '继续添加'
+    // });
 
     // 当有文件添加进来时执行，负责view的创建
     function addFile( file ) {
         var $li = $( '<li id="' + file.id + '">' +
-                '<p class="title">' + file.name + '</p>' +
-                '<p class="imgWrap"></p>'+
+                '<p class="title" style="margin-bottom: 30px;">' + file.name + '</p>' +
+                '<p class="imgWrap" style="margin:30px auto; text-align:center;'+
+            ' vertical-align:middle;"></p>'+
                 '<p class="progress"><span></span></p>' +
                 '</li>' ),
 
@@ -210,22 +212,6 @@ jQuery(function() {
                 });
             } else {
                 $wrap.css( 'filter', 'progid:DXImageTransform.Microsoft.BasicImage(rotation='+ (~~((file.rotation/90)%4 + 4)%4) +')');
-                // use jquery animate to rotation
-                // $({
-                //     rotation: rotation
-                // }).animate({
-                //     rotation: file.rotation
-                // }, {
-                //     easing: 'linear',
-                //     step: function( now ) {
-                //         now = now * Math.PI / 180;
-
-                //         var cos = Math.cos( now ),
-                //             sin = Math.sin( now );
-
-                //         $wrap.css( 'filter', "progid:DXImageTransform.Microsoft.Matrix(M11=" + cos + ",M12=" + (-sin) + ",M21=" + sin + ",M22=" + cos + ",SizingMethod='auto expand')");
-                //     }
-                // });
             }
 
 
@@ -341,7 +327,7 @@ jQuery(function() {
             case 'finish':
                 stats = uploader.getStats();
                 if ( stats.successNum ) {
-                    alert( '上传成功' );
+                    // alert( '上传成功' );
                 } else {
                     // 没有成功的图片，重设
                     state = 'done';
@@ -407,9 +393,28 @@ jQuery(function() {
         }
     });
 
+    uploader.on( 'uploadSuccess', function(file,response ) {
+        console.log(file);
+        console.log(response);
+        var data = response.data;
+        console.log("data:"+data);
+        var targetFileName = data["targetFileName"];
+        var url = data["url"];
+        $('.imgWrap').attr('data-id',url);
+        console.log("targetFileName:"+targetFileName);
+        console.log("url:"+url);
+    });
+
     uploader.onError = function( code ) {
         alert( 'Eroor: ' + code );
     };
+    uploader.on('fileQueued', function(file) {
+        $('#queueList').append('<div id="' + file.id + '" class="webuploader-item">' +
+            '<h4 class="info" style="display: inline-block;">' + file.name + '</h4>' +
+            '<p class="state" style="display: inline-block;margin-left: 20px;">等待上传...</p>' +
+            '<p class="remove-this" style="display: inline-block;margin-left: 20px;">删除</p>' +
+            '</div>');
+    });
 
     $upload.on('click', function() {
         if ( $(this).hasClass( 'disabled' ) ) {
@@ -430,7 +435,7 @@ jQuery(function() {
     } );
 
     $info.on( 'click', '.ignore', function() {
-        alert( 'todo' );
+        alert("todo");
     } );
 
     $upload.addClass( 'state-' + state );

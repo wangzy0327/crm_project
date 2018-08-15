@@ -24,6 +24,9 @@ public class MessageController {
     @Autowired
     private GroupMessageRelationMapper groupMessageRelationMapper;
 
+    @Autowired
+    private MessageMapper messageMapper;
+
     @GetMapping("/name")
     public List<GroupMessageRelation> findAllTitle(HttpServletRequest request, HttpSession session, @RequestParam String groupId, @RequestParam String title){
         Map<String,String> param = Maps.newHashMap();
@@ -38,6 +41,16 @@ public class MessageController {
     public ServerResponse getAllStaffIds(@RequestParam Integer groupId){
         System.out.println("groupId:"+groupId);
         return ServerResponse.createBySuccess(groupMessageRelationMapper.selectAllMessageIdsByGroupId(groupId));
+    }
+
+    @PostMapping("/save/richText")
+    public ServerResponse saveMessage(@RequestParam List<Integer> tagIds,@RequestBody Message message){
+        System.out.println("tagIds:"+tagIds);
+        System.out.println("message:"+message);
+        message.setUrl("http://crm.youitech.com/module/web/message/message-share.html");
+        int count = messageMapper.insert(message);
+        System.out.println("count:"+count);
+        return ServerResponse.createBySuccess();
     }
 
 }
