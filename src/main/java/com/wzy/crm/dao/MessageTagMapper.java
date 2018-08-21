@@ -21,5 +21,7 @@ public interface MessageTagMapper {
 
     List<MessageTag> selectMessageTagByParam(Map<String, String> param);
 
-    Integer selectMessageTagByName(String name);
+    Integer selectMessageTagCountByName(String name);
+
+    Integer selectByTagName(String name);
 }

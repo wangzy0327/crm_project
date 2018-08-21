@@ -7,6 +7,7 @@ import java.util.Date;
 
 @Data
 public class MessageTag {
+
     private Integer id;
 
     private String name;
@@ -15,4 +16,5 @@ public class MessageTag {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+
 }

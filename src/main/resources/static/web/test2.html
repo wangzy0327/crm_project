@@ -1,49 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.css">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/swiper.min.css">
     <style>
-        .fileinput-button {
+        html, body {
             position: relative;
-            display: inline-block;
-            overflow: hidden;
+            height: 100%;
         }
+        body {
+            background: #eee;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color:#000;
+            margin: 0;
+            padding: 0;
+        }
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+        }
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
 
-        .fileinput-button input{
-            position:absolute;
-            right: 0px;
-            top: 0px;
-            opacity: 0;
-            -ms-filter: 'alpha(opacity=0)';
-            font-size: 200px;
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
         }
     </style>
 </head>
-<body style="padding: 10px">
-<div align="center">
-        <span id="filename" class="btn btn-success fileinput-button">
-            <span>上传</span>
-            <input type="file" onChange="changeText(this)">
-        </span>
+<body>
+<div class="swiper-container swiper-container-vertical">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">Slide 1</div>
+        <div class="swiper-slide">Slide 2</div>
+        <div class="swiper-slide">Slide 3</div>
+    </div>
+    <!-- 如果需要分页器 -->
+    <div class="swiper-pagination"></div>
+
+    <!-- 如果需要导航按钮 -->
+    <!--<div class="swiper-button-prev"></div>-->
+    <!--<div class="swiper-button-next"></div>-->
+
+    <!-- 如果需要滚动条 -->
+    <div class="swiper-scrollbar"></div>
 </div>
+<!--导航等组件可以放在container之外-->
+<script src="js/swiper.min.js"></script>
 <script>
-    function changeText(th){
-        var filename = document.getElementById("filename");
-        var exist = th.value.lastIndexOf("\\");
-        // 火狐浏览器直接可以获取到文件名
-        if(exist == -1){
-            filename.textContent = th.value;
-        }
-        //chrome或获取到绝对路径
-        else{
-            filename.textContent = th.value.substring(exist + 1);
-        }
-    }
+    var mySwiper = new Swiper ('.swiper-container', {
+        direction: 'vertical',
+        loop: true,
+
+        // 如果需要分页器
+        pagination: {
+            el: '.swiper-pagination',
+        },
+
+        // 如果需要前进后退按钮
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+
+        // 如果需要滚动条
+        scrollbar: {
+            el: '.swiper-scrollbar',
+        },
+    })
 </script>
 </body>
 </html>

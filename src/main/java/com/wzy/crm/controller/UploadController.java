@@ -28,8 +28,8 @@ public class UploadController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/save", produces = {"application/json"})
-    public ServerResponse upload( @RequestParam MultipartFile file,HttpServletRequest request) throws IOException {
+    @RequestMapping(value = "/save")
+    public ServerResponse upload( @RequestParam(required = false) MultipartFile file,HttpServletRequest request) throws IOException {
         //获取文件名
         String originalFilename = file.getOriginalFilename();
         System.out.println("文件名："+originalFilename);

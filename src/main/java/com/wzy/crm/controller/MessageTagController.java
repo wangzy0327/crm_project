@@ -63,7 +63,7 @@ public class MessageTagController {
 
     @PostMapping("/add")
     public ServerResponse addTag(@RequestBody MessageTag messageTag){
-        if(messageTagMapper.selectMessageTagByName(messageTag.getName())<=0)
+        if(messageTagMapper.selectMessageTagCountByName(messageTag.getName())<=0)
             return ServerResponse.createBySuccess(messageTagMapper.insert(messageTag));
         else{
             return ServerResponse.createByErrorCodeMessage(ResponseCode.DUPLICATE.getCode(),ResponseCode.DUPLICATE.getStatus(),ResponseCode.DUPLICATE.getDesc());
@@ -78,7 +78,7 @@ public class MessageTagController {
 
     @PutMapping("/edit")
     public ServerResponse editTag(@RequestBody MessageTag messageTag){
-        if(messageTagMapper.selectMessageTagByName(messageTag.getName())<=0)
+        if(messageTagMapper.selectMessageTagCountByName(messageTag.getName())<=0)
             return ServerResponse.createBySuccess(messageTagMapper.updateByPrimaryKey(messageTag));
         else{
             return ServerResponse.createByErrorCodeMessage(ResponseCode.DUPLICATE.getCode(),ResponseCode.DUPLICATE.getStatus(),ResponseCode.DUPLICATE.getDesc());

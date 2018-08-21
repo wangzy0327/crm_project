@@ -6,6 +6,8 @@ import com.wzy.crm.dao.MessageMapper;
 import com.wzy.crm.pojo.Group;
 import com.wzy.crm.pojo.GroupMessageRelation;
 import com.wzy.crm.pojo.Message;
+import com.wzy.crm.pojo.MessageTag;
+import com.wzy.crm.service.IMessageService;
 import com.wzy.crm.vo.ServerResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class MessageController {
     @Autowired
     private MessageMapper messageMapper;
 
+    @Autowired
+    private IMessageService messageService;
+
     @GetMapping("/name")
     public List<GroupMessageRelation> findAllTitle(HttpServletRequest request, HttpSession session, @RequestParam String groupId, @RequestParam String title){
         Map<String,String> param = Maps.newHashMap();
@@ -44,13 +49,14 @@ public class MessageController {
     }
 
     @PostMapping("/save/richText")
-    public ServerResponse saveMessage(@RequestParam List<Integer> tagIds,@RequestBody Message message){
-        System.out.println("tagIds:"+tagIds);
+    public ServerResponse saveMessage(@RequestParam List<String> tags, @RequestBody Message message){
+        System.out.println("tags:"+tags);
+        for(int i = 0;i<tags.size();i++){
+            System.out.println("tag"+(i+1)+":"+tags.get(i));
+        }
         System.out.println("message:"+message);
         message.setUrl("http://crm.youitech.com/module/web/message/message-share.html");
-        int count = messageMapper.insert(message);
-        System.out.println("count:"+count);
-        return ServerResponse.createBySuccess();
+        return messageService.saveMessage(message,tags);
     }
 
 }

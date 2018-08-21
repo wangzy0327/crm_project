@@ -98,8 +98,8 @@ jQuery(function() {
     // 当有文件添加进来时执行，负责view的创建
     function addFile( file ) {
         var $li = $( '<li id="' + file.id + '">' +
-                '<p class="title" style="margin-bottom: 30px;">' + file.name + '</p>' +
-                '<p class="imgWrap" style="margin:30px auto; text-align:center;'+
+                '<p class="title" style="margin:0 auto;">' + file.name + '</p>' +
+                '<p class="imgWrap" style="margin:30px auto 10px; text-align:center;'+
             ' vertical-align:middle;"></p>'+
                 '<p class="progress"><span></span></p>' +
                 '</li>' ),
@@ -229,7 +229,90 @@ jQuery(function() {
         $li.off().find('.file-panel').off().end().remove();
     }
 
-    function updateTotalProgress() {
+    function editFile( file ) {
+        var $li = $('<li id="' + file.id + '">' +
+            '<p class="title">' + file.name + '</p>' +
+            '<p class="imgWrap"></p>' +
+            '<p class="progress"><span></span></p>' +
+            '</li>'),
+
+            $btns = $('<div class="file-panel">' +
+                '<span class="cancel">删除</span>' +
+                '<span class="rotateRight">向右旋转</span>' +
+                '<span class="rotateLeft">向左旋转</span></div>').appendTo($li),
+            $prgress = $li.find('p.progress span'),
+            $wrap = $li.find('p.imgWrap'),
+            $info = $('<p class="error"></p>');
+
+
+        if (file.getStatus() === 'invalid') {
+            showError(file.statusText);
+        } else {
+            // @todo lazyload
+            $wrap.empty();
+            $wrap.text('不能预览');
+
+            var img;
+            //判断是否是图片
+            if (containsPic(file.filetype)) {
+                //读取文件流
+                var src = getRootPath() + '/download/fileDownLoadAction!showFile.action?fileName=' + file.filename;
+                img = $('<img src="' + src + '" style="height:100%;">');
+                $wrap.empty().append(img);
+            }
+
+            percentages[file.id] = [file.size, 0];
+            file.rotation = 0;
+        }
+
+        $li.append('<span class="success"></span>');
+
+        $li.on('mouseenter', function () {
+            $btns.stop().animate({height: 30});
+        });
+
+        $li.on('mouseleave', function () {
+            $btns.stop().animate({height: 0});
+        });
+
+        $btns.on('click', 'span', function () {
+            var index = $(this).index(),
+                deg;
+
+            switch (index) {
+                case 0:
+                    uploader.removeFile(file);
+                    return;
+
+                case 1:
+                    file.rotation += 90;
+                    break;
+
+                case 2:
+                    file.rotation -= 90;
+                    break;
+            }
+
+            if (supportTransition) {
+                deg = 'rotate(' + file.rotation + 'deg)';
+                $wrap.css({
+                    '-webkit-transform': deg,
+                    '-mos-transform': deg,
+                    '-o-transform': deg,
+                    'transform': deg
+                });
+            } else {
+                $wrap.css('filter', 'progid:DXImageTransform.Microsoft.BasicImage(rotation=' + (~~((file.rotation / 90) % 4 + 4) % 4) + ')');
+            }
+
+
+        });
+
+        $li.appendTo($queue);
+    }
+
+
+        function updateTotalProgress() {
         var loaded = 0,
             total = 0,
             spans = $progress.children(),
@@ -339,6 +422,64 @@ jQuery(function() {
         updateStatus();
     }
 
+//     uploader.on('ready', function() {
+//         window.uploader = uploader;
+// //            alert(WebUploader.Base.version);
+// //            alert(WebUploader.File.name);
+//         if(fileid){
+//             //获取数据
+//             $.post(getRootPath()+'/files/tsysFilesAction!findTSysFilesByParam.action',{param:" and fileid='"+fileid+"' "},function(json){
+//                 var jsonLen=json.rows.length;
+//                 if(jsonLen!=0){
+//                     fileCount=jsonLen;
+//                     $placeHolder.addClass( 'element-invisible' );
+//                     $statusBar.show();
+//                     //显示在页面上
+//                     $.each(json.rows,function(i,n){
+//                         fileSize += n.filelen;
+//                         var obj={},statusMap={}
+//                             ,file_id='WU_FILE_' + i;
+//                         obj.id=file_id ;
+//                         obj.name=n.filebasename;
+//                         obj.filename=n.filename;
+//                         obj.getStatus=function() {
+//                             return '';
+//                         };
+//                         obj.statusText='';
+//                         obj.size=n.filelen;
+//                         obj.version=WebUploader.Base.version;
+//                         obj.type=n.mimeType;
+//                         obj.filetype=n.filetype;
+//                         obj.source=this;
+//                         obj.setStatus=function( status, text ) {
+//
+//                             var prevStatus = statusMap[ this.id ];
+//
+//                             typeof text !== 'undefined' && (this.statusText = text);
+//
+//                             if ( status !== prevStatus ) {
+//                                 statusMap[ this.id ] = status;
+//                                 /**
+//                                  * 文件状态变化
+//                                  * @event statuschange
+//                                  */
+//                                 uploader.trigger( 'statuschange', status, prevStatus );
+//                             }
+//
+//                         };
+//                         editFile(obj);
+//                         $("#"+file_id).append(inputStr(i, n));
+//                     });
+//
+//                     WebUploader.Base.idSuffix=jsonLen;
+//
+//                     setState( 'ready' );
+//                     updateTotalProgress();
+//                 }
+//             },'json');
+//         }
+//     });
+
     uploader.onUploadProgress = function( file, percentage ) {
         var $li = $('#'+file.id),
             $percent = $li.find('.progress span');
@@ -400,10 +541,28 @@ jQuery(function() {
         console.log("data:"+data);
         var targetFileName = data["targetFileName"];
         var url = data["url"];
-        $('.imgWrap').attr('data-id',url);
+        $('.imgWrap').attr('data-url',url);
+        $('.imgWrap').attr('data-id',targetFileName);
+        // $('.state-complete').each(function () {
+        //     // $btns = $('<div class="file-panel">' +
+        //     //     '<span class="cancel">删除</span>' +
+        //     //     '<span class="rotateRight">向右旋转</span>' +
+        //     //     '<span class="rotateLeft">向左旋转</span></div>').appendTo(this);
+        //     $btn = $("<p>" +
+        //         "<a class='removeUpload' style='margin: 0 5px 0 5px'>删除</a></p>").appendTo(this);
+        //     console.log("this li"+this);
+        //     $(this).attr("data-id",url);
+        // });
+        // $('#WU_FILE_0').append("<p><a href='#' class='removeUpload' style='margin: 0 5px 0 5px' >删除</a></p>");
         console.log("targetFileName:"+targetFileName);
         console.log("url:"+url);
     });
+
+    $(document).delegate(".removeUpload", "click", function () {
+        var id = $(this).parent('p').parent('li').attr('data-id');
+        console.log('image id:'+id);
+        $(this).parent('p').parent('li').remove();
+    })
 
     uploader.onError = function( code ) {
         alert( 'Eroor: ' + code );

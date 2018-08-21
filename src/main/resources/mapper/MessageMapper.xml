@@ -28,7 +28,7 @@
     delete from message
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wzy.crm.pojo.Message" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.wzy.crm.pojo.Message" >
     insert into message (corp_id, suite_id,
       corpid, msgType, `type`,
       url, picurl, btntxt,

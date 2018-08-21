@@ -156,18 +156,38 @@ function deleteSend() {
 function saveContent() {
     $('#saveRichText').click(function () {
         var staffIds = [];
+        $('#toStaffs').find('span').each(function () {
+            console.log("staffId:"+$(this).attr('data-id'));
+            staffIds.push($(this).attr('data-id'));
+        });
+        var id = ($("input[name = 'id']"))[0].value;
+        if(id != null && id != ''){
+            console.log("messageId:"+id);
+            Ewin.confirm({ message: "已保存！" });
+            return ;
+        }
+        console.log('staffIds:'+staffIds);
         var tagIds = [];
-        var picUrl = $('.imgWrap').attr('data-id');
-        var title = $($('.note-editable')[0]).html();
-        var titleText = $($('.note-editable')[0]).text();
-        var description = $($('.note-editable')[1]).html();
-        var descriptionText = $($('.note-editable')[1]).text();
+        var picUrl = $('.imgWrap').attr('data-url');
+        console.log("picUrl:"+picUrl);
+        var title = $($('.note-editable')[0]).html().trim();
+        console.log("title:"+title);
         if(title == undefined || title == null || title == ''){
             Ewin.confirm({ message: "标题不能为空" });
             return ;
         }
+        var titleText = $($('.note-editable')[0]).text().trim();
+        var description = $($('.note-editable')[1]).html().trim();
+        var descriptionText = $($('.note-editable')[1]).text().trim();
+        var tags = new Array();
+        var spanTags = $(".tag").children("span");
+        for(i = 0;i<spanTags.length;i++){
+            console.log($.trim($(spanTags[i]).text().substring(0,10)));
+            tags.push($.trim($(spanTags[i]).text().substring(0,10)));
+        }
+        console.log("tags:"+tags);
         $.ajax({
-            url: "/message/save/richText?tagIds="+tagIds,
+            url: "/message/save/richText?tags="+tags,
             type: "POST",
             dataType: 'json',
             contentType: "application/json;charset=UTF-8",
@@ -180,10 +200,14 @@ function saveContent() {
                 "title":title,
                 "descriptionText":descriptionText,
                 "description":description,
-                "picurl":picUrl
+                "picUrl":picUrl
             }),
             success: function (result) {
                 if (result.code == 0) {
+                    var data = result.data;
+                    console.log("data:"+data);
+                    console.log("id:"+data.id);
+                    $("input[name = 'id']").val(data.id);
                     Ewin.confirm({ message: "保存成功" });
                 }
             },

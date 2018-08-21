@@ -245,3 +245,27 @@ INSERT INTO `group_staff_relation`(`group_id`,`staff_id`,`def_group`)VALUES
 ('34','1000',0),
 ('34','1001',0),
 ('34','1003',0);
+
+DROP TABLE IF EXISTS `message_share`;
+CREATE TABLE `message_share` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `message_id` int(11) DEFAULT NULL,
+  `staff_id` int(11) DEFAULT NULL,
+  `push_time` datetime DEFAULT NULL,
+  `share_flag` int(2) DEFAULT NULL COMMENT '0：未分享；1：已分享',
+  `share_time` datetime DEFAULT NULL,
+  `open_count` int(11) DEFAULT NULL COMMENT '客户打开次数',
+  `del_flag` int(2) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `messageId` (`message_id`),
+  KEY `delFlag_openCount` (`del_flag`,`open_count`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `message_tag_relation`;
+CREATE TABLE `message_tag_relation` (
+  `message_id` int(11) DEFAULT NULL COMMENT '消息编号',
+  `tag_id` int(11) DEFAULT NULL COMMENT '标签编号',
+  `page` int(11) DEFAULT '1' COMMENT '第几页',
+   KEY `messageId_tagId` (`message_id`,`tag_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

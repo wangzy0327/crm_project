@@ -8,7 +8,7 @@ import java.util.Map;
 public interface MessageMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Message record);
+    Integer insert(Message record);
 
     Message selectByPrimaryKey(Integer id);
 

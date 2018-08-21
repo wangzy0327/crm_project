@@ -11,7 +11,7 @@
     delete from message_tag
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wzy.crm.pojo.MessageTag" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.wzy.crm.pojo.MessageTag" >
     insert into message_tag (`name`, corpid,update_time
       )
     values (#{name,jdbcType=VARCHAR}, #{corpid,jdbcType=VARCHAR},now()
@@ -58,8 +58,13 @@
     ORDER BY update_time desc
     limit ${start},${length}
   </select>
-  <select id="selectMessageTagByName" resultType="int">
+  <select id="selectMessageTagCountByName" resultType="int">
     select count(*)
+    from message_tag
+    where `name` = #{name}
+  </select>
+  <select id="selectByTagName" resultType="int">
+    select id
     from message_tag
     where `name` = #{name}
   </select>

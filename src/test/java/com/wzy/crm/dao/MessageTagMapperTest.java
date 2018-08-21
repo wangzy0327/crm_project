@@ -19,8 +19,18 @@ public class MessageTagMapperTest {
     @Test
     public void selectMessageTagByName() throws Exception {
         String name = "生活";
-        Integer num = messageTagMapper.selectMessageTagByName(name);
+        Integer num = messageTagMapper.selectMessageTagCountByName(name);
         System.out.println("selectNum:"+num);
+    }
+
+    @Test
+    public void insertByName() throws Exception {
+        String name = "hdy";
+        MessageTag messageTag = new MessageTag();
+        messageTag.setName(name);
+        messageTagMapper.insert(messageTag);
+        Integer tagId = messageTag.getId();
+        System.out.println("insert Id:"+tagId);
     }
 
 }

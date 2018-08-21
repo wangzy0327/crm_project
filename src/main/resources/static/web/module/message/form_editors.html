@@ -17,6 +17,7 @@
     <link href="../../css/plugins/summernote/summernote.css" rel="stylesheet">
     <link href="../../css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
     <link href="../../css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../../css/jquery.tagsinput.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="../../css/plugins/webuploader/webuploader.css">
     <link rel="stylesheet" type="text/css" href="../../css/demo/webuploader-demo.css">
@@ -28,6 +29,25 @@
 </head>
 
 <body class="gray-bg">
+<style>
+    div.tagsinput span.tag{
+        border:1px solid #1eb2b2;
+        background: #18a689;
+    }
+    div.tagsinput span.tag a{
+        color: #999999;
+    }
+    .btn-success {
+        background-color: #1ab394;
+        border-color: #1ab394;
+        color: #FFFFFF;
+    }
+    .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open .dropdown-toggle.btn-success {
+        background-color: #1ab394;
+        border-color: #1ab394;
+        color: #FFFFFF;
+    }
+</style>
 <div class="wrapper wrapper-content">
     <div class="col-sm-1"></div>
     <div class="col-sm-10 animated ">
@@ -52,6 +72,14 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="ibox float-e-margins">
+                            <input name="id" type="hidden" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
                             <div id="toStaffs">
                                 <a href='#' class='changeSend' style='margin: 0 5px 0 5px'  data-target='#editSend' data-toggle='modal'>选择发送范围</a>
                             </div>
@@ -61,12 +89,32 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="ibox float-e-margins">
-                            <div id="tags">
-                                <a href='#' class='changeTag' style='margin: 0 5px 0 5px'   data-target='#editTag' data-toggle='modal'>选择标签</a>
+                            <div class="form-group">
+                                <label for="tags_1" class="col-sm-1 control-label" style="text-align: left;">标签:</label>
+                                <div class="col-sm-6">
+                                    <input id="tags_1" type="text" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label" style="text-align: left;">&nbsp;&nbsp;</label>
+                                <div class="col-sm-6">
+                                    <p class="mt8" style="margin-top: 8px;">
+                                        <span style="margin: 0;font-size: 12px;color: #999999;">最多添加5个标签</span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!--<div class="row">-->
+                    <!--<div class="col-sm-12">-->
+                        <!--<div class="ibox float-e-margins">-->
+                            <!--<div id="tags">-->
+                                <!--<a href='#' class='changeTag' style='margin: 0 5px 0 5px'   data-target='#editTag' data-toggle='modal'>选择标签</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="ibox float-e-margins">
@@ -207,6 +255,22 @@
 <!-- SUMMERNOTE -->
 <script src="../../js/plugins/summernote/summernote.min.js"></script>
 <script src="../../js/plugins/summernote/summernote-zh-CN.js"></script>
+<script src="../../js/jquery.tagsinput.min.js"></script>
+<script>
+    $(function () {
+        $('#tags_1').importTags("");
+        $('#tags_1').tagsInput({
+            width:'auto',
+            onChange: function(){
+                let len = $("#tags_1_tagsinput .tag").length;
+                tags_1_addTag.style.display = "";
+                if(len >= 5){
+                    tags_1_addTag.style.display = "none";
+                }
+            }
+        });
+    })
+</script>
 
 <script>
     $(document).ready(function () {
