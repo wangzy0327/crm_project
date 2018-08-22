@@ -27,9 +27,6 @@ public class MessageController {
     private GroupMessageRelationMapper groupMessageRelationMapper;
 
     @Autowired
-    private MessageMapper messageMapper;
-
-    @Autowired
     private IMessageService messageService;
 
     @GetMapping("/name")
@@ -57,6 +54,22 @@ public class MessageController {
         System.out.println("message:"+message);
         message.setUrl("http://crm.youitech.com/module/web/message/message-share.html");
         return messageService.saveMessage(message,tags);
+    }
+
+    @PostMapping("/parseUrl")
+    public ServerResponse parseUrl(@RequestParam String url){
+        System.out.println("url:"+url);
+        return messageService.parseUrl(url);
+    }
+
+    @PostMapping("/h5/add")
+    public ServerResponse h5add(HttpServletRequest request,@RequestParam String url,@RequestBody Message message,@RequestParam List<String> tags){
+        String realPath = request.getSession().getServletContext().getRealPath("/");
+//        String realPath = "D:\\project\\wechat-tools\\target\\crm-project\\";
+        System.out.println("11111111111111");
+        System.out.println("realPath:"+realPath);
+        message.setUrl("http://crm.youitech.com/module/web/message/h5/h5-share.html");
+        return messageService.saveH5Message(url,message,realPath,tags);
     }
 
 }

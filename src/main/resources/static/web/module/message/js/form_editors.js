@@ -195,7 +195,7 @@ function saveContent() {
                 "corpId":"wx4b8e52ee9877a5be",
                 "suiteId":"wx9b2b1532fd370525",
                 "corpid":"wx4b8e52ee9877a5be",
-                "msgType":"1",
+                "msgtype":"1",
                 "titleText":titleText,
                 "title":title,
                 "descriptionText":descriptionText,
