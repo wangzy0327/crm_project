@@ -40,9 +40,9 @@
                         <option>创可贴</option>
                     </select>
                 </div>
-                <input id="url" type="url" class="form-control" style="width: 400px;" maxlength="200"
+                <input name="url" type="url" class="form-control" style="width: 400px;" maxlength="200"
                        placeholder="请输入链接地址">
-                <button id="searchButton" class="btn btn-primary" style="margin-left: 5px" type="button"><i
+                <button id="downButton" class="btn btn-primary" style="margin-left: 5px" type="button"><i
                         class="fa fa-search"></i>&nbsp;确定
                 </button>
                 <!--<button id="up" class="btn btn-primary" style="margin-left: 5px" type="button"><i-->
@@ -64,24 +64,29 @@
                                  style="width: 320px; height: 100%;">
                                 <div class="swiper-wrapper"
                                      style="transition-duration: 0ms; transform: translate3d(0px, -1008px, 0px);">
-                                    <div class="swiper-slide swiper-slide-duplicate swiper-slide-next swiper-slide-duplicate-prev"
-                                         data-swiper-slide-index="0" style="height: 504px;">
-                                        <div class="swiper-zoom-container"><img class="swiper-lazy swiper-lazy-loaded"
-                                                                                src="//imgpub.chuangkit.com/design/2018/08/06/396232554_thumb@780w">
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide swiper-slide-duplicate-active swiper-slide-prev swiper-slide-duplicate-next"
-                                         data-swiper-slide-index="0" style="height: 504px;">
-                                        <div class="swiper-zoom-container"><img class="swiper-lazy swiper-lazy-loaded"
-                                                                                src="//imgpub.chuangkit.com/design/2018/08/06/396232554_thumb@780w">
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide swiper-slide-duplicate swiper-slide-active swiper-slide-duplicate-prev"
-                                         data-swiper-slide-index="0" style="height: 504px;">
-                                        <div class="swiper-zoom-container"><img class="swiper-lazy swiper-lazy-loaded"
-                                                                                src="//imgpub.chuangkit.com/design/2018/08/06/396232554_thumb@780w">
-                                        </div>
-                                    </div>
+                                    <!--<div class="swiper-slide swiper-slide-duplicate swiper-slide-next swiper-slide-duplicate-prev"-->
+                                         <!--data-swiper-slide-index="0" style="height: 504px;">-->
+                                        <!--<div class="swiper-zoom-container"><img class="swiper-lazy swiper-lazy-loaded"-->
+                                                                                <!--src="">-->
+                                            <!--&lt;!&ndash;//imgpub.chuangkit.com/design/2018/08/22/430860543_thumb@780w_100Q_1x.jpg?v=2018-08-22 16:49:48.0&ndash;&gt;-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="swiper-slide swiper-slide-duplicate-active swiper-slide-prev swiper-slide-duplicate-next"-->
+                                         <!--data-swiper-slide-index="0" style="height: 504px;">-->
+                                        <!--<div class="swiper-zoom-container"><img class="swiper-lazy swiper-lazy-loaded"-->
+                                                                                <!--src="">-->
+                                            <!--&lt;!&ndash;//imgpub.chuangkit.com/design/2018/08/22/430860543_thumb@780w_100Q_1x.jpg?v=2018-08-22 16:49:48.0&ndash;&gt;-->
+                                                                                <!--&lt;!&ndash;src="//imgpub.chuangkit.com/design/2018/08/06/396232554_thumb@780w">&ndash;&gt;-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="swiper-slide swiper-slide-duplicate swiper-slide-active swiper-slide-duplicate-prev"-->
+                                         <!--data-swiper-slide-index="0" style="height: 504px;">-->
+                                        <!--<div class="swiper-zoom-container"><img class="swiper-lazy swiper-lazy-loaded"-->
+                                                                                <!--src="">-->
+                                            <!--&lt;!&ndash;//imgpub.chuangkit.com/design/2018/08/22/430860543_thumb@780w_100Q_1x.jpg?v=2018-08-22 16:49:48.0&ndash;&gt;-->
+                                                                                <!--&lt;!&ndash;src="//imgpub.chuangkit.com/design/2018/08/06/396232554_thumb@780w">&ndash;&gt;-->
+                                        <!--</div>-->
+                                    <!--</div>-->
                                 </div>
                                 <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
                                     <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span></div>
@@ -100,10 +105,13 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="signupForm">
+                        <div class="form-group">
+                            <input name="id" type="hidden" class="form-control">
+                        </div>
                         <div class="form-group" >
                             <label class="col-sm-1 control-label" style="text-align: left;">标题：</label>
                             <div class="col-sm-6">
-                                <input style="text-align: left;" class="form-control" type="text" placeholder="请输入标题">
+                                <input name="title" style="text-align: left;" class="form-control" type="text" placeholder="请输入标题">
                             </div>
                         </div>
                         <div class="form-group">
@@ -131,8 +139,8 @@
                         <br><br>
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-3">
-                                <button class="btn btn-primary" type="submit" style="margin-left: 5px" >保存</button>
-                                <button class="btn btn-primary" type="submit" style="margin-left: 5px">发布</button>
+                                <button id="save" class="btn btn-primary"  style="margin-left: 5px" >保存</button>
+                                <button id="push" class="btn btn-primary"  style="margin-left: 5px">推送</button>
                             </div>
                         </div>
                     </form>
@@ -146,6 +154,9 @@
 <script src="../../js/bootstrap.min.js?v=3.3.6"></script>
 <script src="../../js/swiper.min.js"></script>
 <script src="../../js/jquery.tagsinput.min.js"></script>
+<!--提示框-->
+<script src="/lib/config.js"></script>
+<script src="js/graphic-add.js"></script>
 <script>
     $(function () {
         $('#tags_1').importTags("");

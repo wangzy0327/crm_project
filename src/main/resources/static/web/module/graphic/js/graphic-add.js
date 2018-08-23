@@ -1,13 +1,9 @@
 $(function () {
-    loadH5();
-    saveH5();
-    // $('iframe').load(function(){
-    //     var title = $('iframe').contents().find('meta[itemprop=\'name\']').attr('content');
-    //     console.log("iframe title:"+title);
-    // })
+    loadGraphic();
+    // saveGraphic();
 })
 
-function saveH5() {
+function saveGraphic() {
     $('#save').click(function () {
         var title = ($("input[name='title']"))[0].value;
         console.log("title:"+title);
@@ -60,30 +56,50 @@ function saveH5() {
     })
 }
 
-function loadH5() {
+function loadGraphic() {
     $('#downButton').click(function () {
-        var h5Url = ($("input[name = 'url']"))[0].value;
-        console.log('h5 Url:'+ h5Url);
-        if(h5Url.indexOf("?mobile")<0){
-            if(h5Url.indexOf("/aUe1Zi")>=0&&h5Url.indexOf("/m")>0){
-                h5Url = h5Url.replace("/m/","/m2/");
-            }
-            h5Url+="?mobile=1";
-        }
-        $('iframe').attr('src',h5Url);
+        var graphicUrl = ($("input[name = 'url']"))[0].value;
+        console.log('graphicUrl:'+ graphicUrl);
         $.ajax({
-            url:"/message/parseH5Url?url="+h5Url,
+            url:"/message/parseGraphicUrl?url="+graphicUrl,
             type:"POST",
             dataType: 'json',
             success:function (result) {
                 if(result.code == 0){
                     var data = result.data;
                     console.log('title:'+data.title);
+                    console.log('imgUrl:'+data.imgUrl);
+                    loadImage(data.imgUrl);
                     $("input[name='title']").val(data.title);
+                }else{
+                    var msg = result.msg;
+                    console.log("msg:"+msg);
+                    Ewin.alert({"message":msg});
                 }
             }
         })
-        // var keywords = $("meta[name='keywords']").attr('content');
-        // console.log('keywords:'+keywords);
     });
+}
+
+function loadImage(imgUrl) {
+    str = "";
+    str += "<div class=\"swiper-slide swiper-slide-duplicate swiper-slide-next swiper-slide-duplicate-prev\"\n" +
+        "data-swiper-slide-index=\"0\" style=\"height: 504px;\">\n" +
+        "<div class=\"swiper-zoom-container\"><img class=\"swiper-lazy swiper-lazy-loaded\"\n" +
+        "src=\""+imgUrl+"\">\n" +
+        "</div>\n" +
+        "</div>";
+    str+= "<div class=\"swiper-slide swiper-slide-duplicate-active swiper-slide-prev swiper-slide-duplicate-next\"\n" +
+        "data-swiper-slide-index=\"0\" style=\"height: 504px;\">\n" +
+        "<div class=\"swiper-zoom-container\"><img class=\"swiper-lazy swiper-lazy-loaded\"\n" +
+        "src=\""+imgUrl+"\">\n" +
+        "</div>\n" +
+        "</div>";
+    str+="<div class=\"swiper-slide swiper-slide-duplicate swiper-slide-active swiper-slide-duplicate-prev\"\n" +
+        "data-swiper-slide-index=\"0\" style=\"height: 504px;\">\n" +
+        "<div class=\"swiper-zoom-container\"><img class=\"swiper-lazy swiper-lazy-loaded\"\n" +
+        "src=\""+imgUrl+"\">\n" +
+        "</div>\n" +
+        "</div>";
+    $('.swiper-wrapper').html(str);
 }

@@ -1,8 +1,6 @@
 package com.wzy.crm.service;
 
-import com.google.common.collect.Lists;
 import com.wzy.crm.pojo.Message;
-import com.wzy.crm.pojo.MessageTag;
 import com.wzy.crm.vo.ResponseCode;
 import com.wzy.crm.vo.ServerResponse;
 
@@ -13,9 +11,11 @@ public interface IMessageService {
 
     List<Integer> findTags(List<String> tags);
 
-    ServerResponse parseUrl(String url);
+    ServerResponse parseH5Url(String url);
 
     ServerResponse saveH5Message(String url, Message message, String realPath, List<String> tags);
 
     ResponseCode saveH5Page(String urlStr, Message message,String realPath);
+
+    ServerResponse parseGraphicUrl(String url);
 }

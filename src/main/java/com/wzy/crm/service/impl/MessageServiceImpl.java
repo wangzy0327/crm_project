@@ -1,5 +1,6 @@
 package com.wzy.crm.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.wzy.crm.dao.MessageMapper;
 import com.wzy.crm.dao.MessageTagMapper;
@@ -7,14 +8,15 @@ import com.wzy.crm.dao.MessageTagRelationMapper;
 import com.wzy.crm.pojo.Message;
 import com.wzy.crm.pojo.MessageTag;
 import com.wzy.crm.service.IMessageService;
+import com.wzy.crm.utils.HttpApi;
 import com.wzy.crm.vo.ResponseCode;
 import com.wzy.crm.vo.ServerResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,7 +74,7 @@ public class MessageServiceImpl implements IMessageService {
     }
 
     @Override
-    public ServerResponse parseUrl(String url) {
+    public ServerResponse parseH5Url(String url) {
         try {
             Document document = Jsoup.connect(url)
                     .timeout(3000)
@@ -83,10 +85,6 @@ public class MessageServiceImpl implements IMessageService {
             String title = "";
             title = element.attr("content");
             System.out.println("title:"+title);
-//            Element ul = document.getElementsByClass("page-list").first();
-//            Elements li = ul.getElementsByTag("li");
-//            System.out.println("li_size:"+li.size());
-//            System.out.println("ul_li_size:"+ul.size());
             Message message = new Message();
             message.setTitle(title);
             return ServerResponse.createBySuccess(message);
@@ -149,5 +147,38 @@ public class MessageServiceImpl implements IMessageService {
             return ResponseCode.ERROR;
         }
     }
+
+    @Override
+    public ServerResponse parseGraphicUrl(String url) {
+        String d = url.substring(url.indexOf("?d=")+3,url.length());
+        System.out.println("params d = "+d);
+        String url_str = "https://api.chuangkit.com/share/getShareInfoV3.do?_dataType=json&d=" + d;
+        JSONObject jsonObject = HttpApi.httpsRequest(url_str,"GET",null);
+        System.out.println("jsonObject:");
+        System.out.println(jsonObject);
+//        System.out.println(jsonObject.get("header"));
+//        JSONObject header = (JSONObject) jsonObject.get("header");
+        System.out.println(jsonObject.get("body"));
+        JSONObject body = (JSONObject) jsonObject.get("body");
+        String error = String.valueOf(body.getString("error"));
+        if(error!=null && StringUtils.isNotBlank(error) && !error.equals("null")){
+            return ServerResponse.createByErrorMessage(error);
+        }else{
+            String imgUrl = String.valueOf(body
+                    .getJSONObject("bean")
+                    .getString("imgUrl"));
+            String designTitle = String.valueOf(body
+                    .getJSONObject("bean")
+                    .getString("designKindTitle"));
+            System.out.println("imgUrl:"+imgUrl);
+            System.out.println("designTitle:"+designTitle);
+            String str = "{\"imgUrl\":\""+imgUrl+"\",\"title\":\""+designTitle+"\"}";
+            System.out.println("testJsonStr:  "+str);
+            JSONObject responseJson = JSONObject.parseObject(str);
+            System.out.println(responseJson.toJSONString());
+            return ServerResponse.createBySuccess(responseJson);
+        }
+    }
+
 
 }

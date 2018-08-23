@@ -56,10 +56,10 @@ public class MessageController {
         return messageService.saveMessage(message,tags);
     }
 
-    @PostMapping("/parseUrl")
-    public ServerResponse parseUrl(@RequestParam String url){
+    @PostMapping("/parseH5Url")
+    public ServerResponse parseH5Url(@RequestParam String url){
         System.out.println("url:"+url);
-        return messageService.parseUrl(url);
+        return messageService.parseH5Url(url);
     }
 
     @PostMapping("/h5/add")
@@ -70,6 +70,12 @@ public class MessageController {
         System.out.println("realPath:"+realPath);
         message.setUrl("http://crm.youitech.com/module/web/message/h5/h5-share.html");
         return messageService.saveH5Message(url,message,realPath,tags);
+    }
+
+    @PostMapping("/parseGraphicUrl")
+    public ServerResponse parseGraphicUrl(@RequestParam String url){
+        System.out.println("url:"+url);
+        return messageService.parseGraphicUrl(url);
     }
 
 }
