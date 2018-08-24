@@ -63,9 +63,9 @@ public class MessageController {
     }
 
     @PostMapping("/h5/add")
-    public ServerResponse h5add(HttpServletRequest request,@RequestParam String url,@RequestBody Message message,@RequestParam List<String> tags){
+    public ServerResponse h5Add(HttpServletRequest request,@RequestParam String url,@RequestBody Message message,@RequestParam List<String> tags){
         String realPath = request.getSession().getServletContext().getRealPath("/");
-//        String realPath = "D:\\project\\wechat-tools\\target\\crm-project\\";
+//        String realPath = "D:\\project\\wechat-tools\\tlarget\\crm-project\\";
         System.out.println("11111111111111");
         System.out.println("realPath:"+realPath);
         message.setUrl("http://crm.youitech.com/module/web/message/h5/h5-share.html");
@@ -76,6 +76,15 @@ public class MessageController {
     public ServerResponse parseGraphicUrl(@RequestParam String url){
         System.out.println("url:"+url);
         return messageService.parseGraphicUrl(url);
+    }
+
+    @PostMapping("/graphic/add")
+    public ServerResponse graphicAdd(HttpServletRequest request,@RequestParam String imgUrl,@RequestBody Message message,@RequestParam List<String> tags){
+        String realPath = request.getSession().getServletContext().getRealPath("/");
+//        String realPath = "D:\\project\\wechat-tools\\tlarget\\crm-project\\";
+        System.out.println("realPath:"+realPath);
+        message.setUrl("http://crm.youitech.com/module/web/message/graphic/graphic-share.html");
+        return messageService.saveGraphicMessage(imgUrl,message,realPath,tags);
     }
 
 }

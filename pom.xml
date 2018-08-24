@@ -239,6 +239,13 @@
 			<!--<version>${phantomjsdriver.version}</version>-->
 		<!--</dependency>-->
 
+		<!--httpcomponents-->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.8</version>
+		</dependency>
+
 		<!--jsoup-->
 		<dependency>
 			<groupId>org.jsoup</groupId>

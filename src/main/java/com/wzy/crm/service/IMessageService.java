@@ -18,4 +18,8 @@ public interface IMessageService {
     ResponseCode saveH5Page(String urlStr, Message message,String realPath);
 
     ServerResponse parseGraphicUrl(String url);
+
+    ServerResponse saveGraphicMessage(String imgUrl, Message message, String realPath, List<String> tags);
+
+    String saveImage(String imgUrl,String path);
 }

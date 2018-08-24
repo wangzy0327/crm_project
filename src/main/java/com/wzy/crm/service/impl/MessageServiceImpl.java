@@ -8,7 +8,9 @@ import com.wzy.crm.dao.MessageTagRelationMapper;
 import com.wzy.crm.pojo.Message;
 import com.wzy.crm.pojo.MessageTag;
 import com.wzy.crm.service.IMessageService;
+import com.wzy.crm.utils.FtpUtil;
 import com.wzy.crm.utils.HttpApi;
+import com.wzy.crm.utils.PropertiesUtil;
 import com.wzy.crm.vo.ResponseCode;
 import com.wzy.crm.vo.ServerResponse;
 import org.apache.commons.io.FileUtils;
@@ -20,9 +22,8 @@ import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -178,6 +179,79 @@ public class MessageServiceImpl implements IMessageService {
             System.out.println(responseJson.toJSONString());
             return ServerResponse.createBySuccess(responseJson);
         }
+    }
+
+    @Override
+    public ServerResponse saveGraphicMessage(String imgUrl, Message message, String realPath, List<String> tags) {
+        if(imgUrl.indexOf("http:")<0){
+            imgUrl+="http:"+imgUrl;
+        }
+        String picUrl = PropertiesUtil.getProperty("ftp.server.http.prefix")+this.saveImage(imgUrl,realPath);
+        System.out.println("picUrl:"+picUrl);
+        message.setPicUrl(picUrl);
+        messageMapper.insert(message);
+        Integer messageId = message.getId();
+        System.out.println("messageId:"+messageId);
+        List<Integer> needToInsert = findTags(tags);
+        handleInsertData(messageId,needToInsert);
+        return ServerResponse.createBySuccess(message);
+    }
+
+    @Override
+    public String saveImage(String imgUrl,String path){
+        try {
+            //new一个URL对象
+            URL url = new URL(imgUrl);
+            //打开链接
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            //设置请求方式为"GET"
+            conn.setRequestMethod("GET");
+            //超时响应时间为5秒
+            conn.setConnectTimeout(5 * 1000);
+            //通过输入流获取图片数据
+            InputStream inStream = conn.getInputStream();
+            //得到图片的二进制数据，以二进制封装得到数据，具有通用性
+            byte[] data = readInputStream(inStream);
+//            byte[] data = RequestUtil.getImageBytes(imgUrl);
+            //new一个文件对象用来保存图片，默认保存当前工程根目录
+            String uuid = UUID.randomUUID().toString();
+            File imageFile = new File(path,uuid+".jpg");
+            //创建输出流
+            FileOutputStream outStream = new FileOutputStream(imageFile);
+            //写入数据
+            outStream.write(data);
+            //关闭输出流
+            outStream.close();
+            //将imageFile上传到ftp服务器中
+            FtpUtil.uploadFile(Lists.newArrayList(imageFile));
+            //上传到ftp服务器中成功
+            //上传完成之后删除upload下的文件
+            imageFile.delete();
+            return imageFile.getName();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static byte[] readInputStream(InputStream inStream) throws Exception{
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        //创建一个Buffer字符串
+        byte[] buffer = new byte[1024];
+        //每次读取的字符串长度，如果为-1，代表全部读取完毕
+        int len = 0;
+        //使用一个输入流从buffer里把数据读取出来
+        while( (len=inStream.read(buffer)) != -1 ){
+            //用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
+            outStream.write(buffer, 0, len);
+        }
+        //关闭输入流
+        inStream.close();
+        //把outStream里的数据写入内存
+        return outStream.toByteArray();
     }
 
 

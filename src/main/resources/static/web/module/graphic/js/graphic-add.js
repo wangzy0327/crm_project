@@ -1,6 +1,6 @@
 $(function () {
     loadGraphic();
-    // saveGraphic();
+    saveGraphic();
 })
 
 function saveGraphic() {
@@ -9,13 +9,13 @@ function saveGraphic() {
         console.log("title:"+title);
         var h5Url = ($("input[name = 'url']"))[0].value;
         console.log("url:"+h5Url);
-        var iframeSrc = $('iframe').attr('src');
+        var imgSrc = ($('.swiper-lazy'))[0].src;
         if(title == undefined || title == null || title == ''){
             Ewin.confirm({ message: "标题不能为空" });
             return ;
         }
-        if(iframeSrc == undefined || iframeSrc == null || iframeSrc == ''){
-            Ewin.confirm({message: "H5内容不能为空"});
+        if(imgSrc == undefined || imgSrc == null || imgSrc == ''){
+            Ewin.confirm({message: "平面内容不能为空"});
             return ;
         }
         var tags = new Array();
@@ -26,7 +26,7 @@ function saveGraphic() {
         }
         console.log("tags:"+tags);
         $.ajax({
-            url:"/message/h5/add?url="+iframeSrc+"&tags="+tags,
+            url:"/message/graphic/add?imgUrl="+imgSrc+"&tags="+tags,
             type:"POST",
             dataType: 'json',
             contentType: "application/json;charset=UTF-8",
@@ -34,7 +34,7 @@ function saveGraphic() {
                 "corpId":"wx4b8e52ee9877a5be",
                 "suiteId":"wx9b2b1532fd370525",
                 "corpid":"wx4b8e52ee9877a5be",
-                "msgtype":"5",
+                "msgtype":"6",
                 "titleText":title,
                 "title":title
             }),
