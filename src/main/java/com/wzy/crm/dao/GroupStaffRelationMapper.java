@@ -4,7 +4,6 @@ import com.wzy.crm.pojo.GroupStaffRelation;
 import java.util.List;
 import java.util.Map;
 
-import com.wzy.crm.vo.ServerResponse;
 import org.apache.ibatis.annotations.Param;
 
 public interface GroupStaffRelationMapper {

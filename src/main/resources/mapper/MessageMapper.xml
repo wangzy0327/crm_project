@@ -12,6 +12,7 @@
     <result column="picurl" property="picUrl" jdbcType="VARCHAR" />
     <result column="btntxt" property="btntxt" jdbcType="VARCHAR" />
     <result column="third_params" property="thirdParams" jdbcType="VARCHAR" />
+    <result column="third_param_id" property="thirdParamId" jdbcType="VARCHAR" />
     <result column="pageCount" property="pagecount" jdbcType="INTEGER" />
     <result column="create_userId" property="createUserId" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
@@ -74,6 +75,11 @@
     description, coverPicAttach, contentAttach
     from message
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByThirdParamId" resultMap="BaseResultMap">
+    select id,description
+    from message
+    where third_param_id = #{thirdParamId,jdbcType=VARCHAR }
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, corp_id, suite_id, corpid, msgType, `type`, url, picurl, btntxt, third_params,

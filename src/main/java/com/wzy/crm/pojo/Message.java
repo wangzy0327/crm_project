@@ -3,6 +3,7 @@ package com.wzy.crm.pojo;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class Message {
@@ -26,6 +27,8 @@ public class Message {
 
     private String thirdParams;
 
+    private String thirdParamId;
+
     private Integer pagecount;
 
     private Integer createUserId;
@@ -47,6 +50,8 @@ public class Message {
     private String coverpicattach;
 
     private String contentattach;
+
+    private List<String> tags;
 
     public String getCorpid() {
         return corpid;

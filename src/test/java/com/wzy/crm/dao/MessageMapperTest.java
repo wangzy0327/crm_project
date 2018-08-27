@@ -1,5 +1,6 @@
 package com.wzy.crm.dao;
 
+import com.wzy.crm.Application;
 import com.wzy.crm.pojo.Message;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = Application.class)
 public class MessageMapperTest {
 
     @Autowired
@@ -27,6 +28,13 @@ public class MessageMapperTest {
         message.setTitle("爱迪生所多个傻大个啊烦得很发货搭嘎 更大化的哈,");
         int count = messageMapper.insert(message);
         System.out.println("count:"+count);
+    }
+
+    @Test
+    public void selectByThirdParamId() throws Exception {
+        String thirdParamId = "neUzquH";
+        Message message = messageMapper.selectByThirdParamId(thirdParamId);
+        System.out.println(message);
     }
 
 }

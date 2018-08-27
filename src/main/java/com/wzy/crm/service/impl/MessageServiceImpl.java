@@ -2,20 +2,23 @@ package com.wzy.crm.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.wzy.crm.dao.MessageMapper;
 import com.wzy.crm.dao.MessageTagMapper;
 import com.wzy.crm.dao.MessageTagRelationMapper;
 import com.wzy.crm.pojo.Message;
 import com.wzy.crm.pojo.MessageTag;
+import com.wzy.crm.pojo.MessageTagRelation;
 import com.wzy.crm.service.IMessageService;
 import com.wzy.crm.utils.FtpUtil;
 import com.wzy.crm.utils.HttpApi;
 import com.wzy.crm.utils.PropertiesUtil;
-import com.wzy.crm.vo.ResponseCode;
-import com.wzy.crm.vo.ServerResponse;
+import com.wzy.crm.common.ResponseCode;
+import com.wzy.crm.common.ServerResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.protocol.ResponseServer;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -26,8 +29,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class MessageServiceImpl implements IMessageService {
@@ -68,6 +70,49 @@ public class MessageServiceImpl implements IMessageService {
         return tagIds;
     }
 
+    @Override
+    public void addTags(Integer messageId,Map<Integer,List<MessageTag>> map){
+        List<MessageTagRelation> messageTagRelations = new ArrayList<>();
+        for(Map.Entry<Integer, List<MessageTag>> entry : map.entrySet()){
+            Integer key = entry.getKey();
+            List<MessageTag> messageTags = entry.getValue();
+            for(int j = 0;j<messageTags.size();j++){
+                Integer tagId = messageTagMapper.selectByTagName(messageTags.get(j).getName());
+                if(tagId == null){
+                    messageTagMapper.insert(messageTags.get(j));
+                }else{
+                    messageTags.get(j).setId(tagId);
+                }
+                MessageTagRelation messageTagRelation = new MessageTagRelation();
+                messageTagRelation.setMessageId(messageId);
+                messageTagRelation.setTagId(messageTags.get(j).getId());
+                messageTagRelation.setPage(key);
+                messageTagRelations.add(messageTagRelation);
+            }
+        }
+        messageTagRelationMapper.insertByMessageTagRelation(messageTagRelations);
+    }
+
+    @Override
+    public Map<Integer, List<MessageTag>> splitTag(List<String> tags){
+        MessageTagRelation messageTagRelation = new MessageTagRelation();
+        Map<Integer,List<MessageTag>> map = Maps.newHashMap();
+        for(int i = 0;i<tags.size();i++){
+            String [] strs = tags.get(i).split(",");
+            List<MessageTag> messageTags = Lists.newArrayList();
+            if(strs!=null || strs.length>0){
+                for(int j = 0;j<strs.length;j++){
+                    MessageTag messageTag = new MessageTag();
+                    messageTag.setName(strs[j]);
+                    messageTags.add(messageTag);
+                }
+            }
+            map.put(i,messageTags);
+        }
+        return map;
+    }
+
+
     private void handleInsertData(Integer messageId,List<Integer> needToInsert){
         if(needToInsert!=null&&needToInsert.size()>0){
             messageTagRelationMapper.insertByParam(messageId,needToInsert);
@@ -96,22 +141,36 @@ public class MessageServiceImpl implements IMessageService {
     }
 
     @Override
-    public ServerResponse saveH5Message(String url,Message message,String realPath,List<String> tags) {
-        if(ResponseCode.SUCCESS == saveH5Page(url,message,realPath)){
-            //todo
-            System.out.println(message);
-            messageMapper.insert(message);
-            Integer messageId = message.getId();
-            List<Integer> needToInsert = findTags(tags);
-            handleInsertData(messageId,needToInsert);
-            return ServerResponse.createBySuccess(message);
-        }else{
+    public ServerResponse saveH5Message(String url,Message message,List<String> tags) {
+        System.out.println(message);
+        int count = messageMapper.insert(message);
+        if (count <= 0) {
             return ServerResponse.createByError();
         }
+        Map<Integer,List<MessageTag>> map = splitTag(tags);
+        addTags(message.getId(),map);
+        return ServerResponse.createBySuccess(message);
+//        if(ResponseCode.SUCCESS == saveH5Page(url,message,realPath)){
+//            //todo
+//            System.out.println(message);
+//            messageMapper.insert(message);
+//            Integer messageId = message.getId();
+//            List<Integer> needToInsert = findTags(tags);
+//            handleInsertData(messageId,needToInsert);
+//            return ServerResponse.createBySuccess(message);
+//        }else{
+//            return ServerResponse.createByError();
+//        }
     }
 
+
     @Override
-    public ResponseCode saveH5Page(String urlStr,Message message,String realPath){
+    public ServerResponse saveH5Page(String urlStr, String realPath){
+        String thirdParamId = urlStr.substring(urlStr.lastIndexOf("/")+1,urlStr.lastIndexOf("?"));
+        Message message = messageMapper.selectByThirdParamId(thirdParamId);
+        if(message!=null){
+            return ServerResponse.createBySuccess(message.getDescription());
+        }
         try {
             String uuid = UUID.randomUUID().toString();
             int ind = urlStr.indexOf("?mobile");
@@ -133,19 +192,18 @@ public class MessageServiceImpl implements IMessageService {
 //            sb.insert(index, "<script src=\"/wechat-tools/js/weui/lib/jquery-2.1.4.js\"></script>");
 
             StringBuffer pagePath = new StringBuffer();
-            pagePath.append("web/h5/page/").append(uuid+"/").append(h5Url.substring(h5Url.lastIndexOf("/")+1,h5Url.length())+".html");
+            pagePath.append("/web/h5/page/").append(uuid+"/").append(h5Url.substring(h5Url.lastIndexOf("/")+1,h5Url.length())+".html");
             File dist = new File(realPath+pagePath.toString());
             FileUtils.writeStringToFile(dist, sb.toString(), "UTF-8");
             System.out.println("文件保存成功！");
-            message.setDescription(pagePath.toString());
-            return ResponseCode.SUCCESS;
+            return ServerResponse.createBySuccess(pagePath);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            return ResponseCode.ERROR;
+            return ServerResponse.createByError();
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseCode.ERROR;
+            return ServerResponse.createByError();
         }
     }
 

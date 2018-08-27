@@ -12,4 +12,6 @@ public interface MessageTagRelationMapper {
 
     int insertByParam(@Param("messageId") Integer messageId,@Param("tagIds") List<Integer> tagIds);
 
+    int insertByMessageTagRelation(@Param("messageTagRelations") List<MessageTagRelation> messageTagRelations);
+
 }

@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import com.wzy.crm.dao.VisitLogMapper;
 import com.wzy.crm.pojo.VisitLog;
 import com.wzy.crm.service.IVisitLogService;
-import com.wzy.crm.vo.ServerResponse;
+import com.wzy.crm.common.ServerResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -12,6 +12,8 @@ public interface MessageMapper {
 
     Message selectByPrimaryKey(Integer id);
 
+    Message selectByThirdParamId(String thirdParamId);
+
     List<Message> selectAll();
 
     int updateByPrimaryKey(Message record);

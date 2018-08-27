@@ -4,8 +4,8 @@ import com.wzy.crm.dao.StaffMapper;
 import com.wzy.crm.pojo.Staff;
 import com.wzy.crm.service.IStaffService;
 import com.wzy.crm.utils.MD5Util;
-import com.wzy.crm.vo.ResponseCode;
-import com.wzy.crm.vo.ServerResponse;
+import com.wzy.crm.common.ResponseCode;
+import com.wzy.crm.common.ServerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -82,6 +82,7 @@ function loadGraphic() {
 }
 
 function loadImage(imgUrl) {
+    imgUrl = "D:\\ftpServer\\05603513-8614-43da-a17b-6893d238d0f0.jpg";
     str = "";
     str += "<div class=\"swiper-slide swiper-slide-duplicate swiper-slide-next swiper-slide-duplicate-prev\"\n" +
         "data-swiper-slide-index=\"0\" style=\"height: 504px;\">\n" +

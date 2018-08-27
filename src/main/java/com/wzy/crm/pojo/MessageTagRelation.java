@@ -8,6 +8,8 @@ public class MessageTagRelation {
 
     private Integer tagId;
 
+    private String tag;
+
     private Integer page;
 
 }

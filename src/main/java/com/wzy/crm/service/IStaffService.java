@@ -1,9 +1,7 @@
 package com.wzy.crm.service;
 
 import com.wzy.crm.pojo.Staff;
-import com.wzy.crm.vo.ServerResponse;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import com.wzy.crm.common.ServerResponse;
 
 import java.util.List;
 import java.util.Map;

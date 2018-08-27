@@ -1,10 +1,9 @@
 package com.wzy.crm.controller;
 
-import ch.qos.logback.classic.gaffer.PropertyUtil;
 import com.google.common.collect.Maps;
 import com.wzy.crm.service.IFileService;
 import com.wzy.crm.utils.PropertiesUtil;
-import com.wzy.crm.vo.ServerResponse;
+import com.wzy.crm.common.ServerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

@@ -1,4 +1,4 @@
-package com.wzy.crm.vo;
+package com.wzy.crm.common;
 
 public enum ResponseCode {
     SUCCESS(0,"alert-success", "SUCCESS"),

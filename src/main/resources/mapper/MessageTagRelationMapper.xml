@@ -24,4 +24,12 @@
       (#{messageId}, #{item.value})
     </foreach>
   </insert>
+  <insert id="insertByMessageTagRelation">
+    insert into message_tag_relation
+    (message_id,tag_id,page)
+    values
+    <foreach collection="messageTagRelations" item="item" index="index" separator=",">
+      (#{item.messageId},#{item.tagId},#{item.page})
+    </foreach>
+  </insert>
 </mapper>

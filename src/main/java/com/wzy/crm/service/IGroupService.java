@@ -1,6 +1,6 @@
 package com.wzy.crm.service;
 
-import com.wzy.crm.vo.ServerResponse;
+import com.wzy.crm.common.ServerResponse;
 
 import java.util.List;
 

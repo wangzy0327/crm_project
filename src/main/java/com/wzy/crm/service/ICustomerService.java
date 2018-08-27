@@ -1,7 +1,7 @@
 package com.wzy.crm.service;
 
 import com.wzy.crm.pojo.CustomerDetailInfo;
-import com.wzy.crm.vo.ServerResponse;
+import com.wzy.crm.common.ServerResponse;
 
 import java.util.List;
 import java.util.Map;

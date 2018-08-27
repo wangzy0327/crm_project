@@ -137,13 +137,13 @@ INSERT INTO `visit_log`(`staff_id`,`customer_id`,`way`,`result`,`requirement`)VA
  ('1004','103','微信交流','有明确意向','成功需求'),
  ('1001','104','邮件','初步洽谈','服务需求');
 
-DROP TABLE IF EXISTS `message_tag`;
- CREATE TABLE `message_tag` (
+CREATE TABLE `message_tag` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '标签编号',
   `name` varchar(20) DEFAULT NULL COMMENT '标签名称',
   `corpid` varchar(30) DEFAULT NULL COMMENT '公司id',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最后一次更新时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 INSERT INTO `message_tag`(`name`,`corpid`)VALUES
@@ -193,6 +193,7 @@ CREATE TABLE `message` (
   `coverPicAttach` longtext,
   `contentAttach` longtext,
   `third_params` varchar(255) DEFAULT NULL COMMENT '第三方参数，json格式',
+  `third_param_id` varchar(50) DEFAULT NULL COMMENT '第三方唯一标识',
   `pageCount` int(11) DEFAULT '1' COMMENT '页数',
   `create_userId` int(11) DEFAULT NULL,
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最后一次更新时间',

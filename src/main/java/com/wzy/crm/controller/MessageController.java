@@ -2,13 +2,10 @@ package com.wzy.crm.controller;
 
 import com.google.common.collect.Maps;
 import com.wzy.crm.dao.GroupMessageRelationMapper;
-import com.wzy.crm.dao.MessageMapper;
-import com.wzy.crm.pojo.Group;
 import com.wzy.crm.pojo.GroupMessageRelation;
 import com.wzy.crm.pojo.Message;
-import com.wzy.crm.pojo.MessageTag;
 import com.wzy.crm.service.IMessageService;
-import com.wzy.crm.vo.ServerResponse;
+import com.wzy.crm.common.ServerResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -57,19 +54,20 @@ public class MessageController {
     }
 
     @PostMapping("/parseH5Url")
-    public ServerResponse parseH5Url(@RequestParam String url){
+    public ServerResponse parseH5Url(HttpServletRequest request,@RequestParam String url){
         System.out.println("url:"+url);
-        return messageService.parseH5Url(url);
+        String realPath = request.getSession().getServletContext().getRealPath("/");
+        return messageService.saveH5Page(url,realPath);
+//        return messageService.parseH5Url(url);
     }
 
     @PostMapping("/h5/add")
-    public ServerResponse h5Add(HttpServletRequest request,@RequestParam String url,@RequestBody Message message,@RequestParam List<String> tags){
-        String realPath = request.getSession().getServletContext().getRealPath("/");
+    public ServerResponse h5Add(@RequestParam String url,@RequestBody Message message){
 //        String realPath = "D:\\project\\wechat-tools\\tlarget\\crm-project\\";
-        System.out.println("11111111111111");
-        System.out.println("realPath:"+realPath);
         message.setUrl("http://crm.youitech.com/module/web/message/h5/h5-share.html");
-        return messageService.saveH5Message(url,message,realPath,tags);
+        List<String> tags = message.getTags();
+        return messageService.saveH5Message(url,message,tags);
+//        return null;
     }
 
     @PostMapping("/parseGraphicUrl")

@@ -1,12 +1,18 @@
 package com.wzy.crm.service.impl;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.wzy.crm.Application;
+import com.wzy.crm.pojo.MessageTag;
 import com.wzy.crm.service.IMessageService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -38,6 +44,22 @@ public class MessageServiceImplTest {
 //        System.out.println(data);
         String picUrl = messageService.saveImage(imgUrl,path);
         System.out.println("picUrl:"+picUrl);
+    }
+
+    @Test
+    public void addTags() throws Exception {
+        Integer messageId = 999;
+        Map<Integer,List<MessageTag>> map = Maps.newHashMap();
+        MessageTag messageTag1 = new MessageTag();
+        messageTag1.setName("gan");
+        MessageTag messageTag2 = new MessageTag();
+        messageTag2.setName("gangan");
+        MessageTag messageTag3 = new MessageTag();
+        messageTag3.setName("gangangan");
+        map.put(0, Lists.newArrayList(messageTag1,messageTag2,messageTag3));
+        map.put(1, Lists.newArrayList(messageTag1,messageTag2));
+        map.put(2, Lists.newArrayList(messageTag1,messageTag3));
+        messageService.addTags(messageId,map);
     }
 
 

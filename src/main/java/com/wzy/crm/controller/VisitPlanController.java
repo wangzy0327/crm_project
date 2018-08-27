@@ -3,10 +3,9 @@ package com.wzy.crm.controller;
 
 import com.google.common.collect.Maps;
 import com.wzy.crm.dao.VisitPlanMapper;
-import com.wzy.crm.pojo.CustomerDetailInfo;
 import com.wzy.crm.pojo.VisitPlan;
 import com.wzy.crm.service.IVisitPlanService;
-import com.wzy.crm.vo.ServerResponse;
+import com.wzy.crm.common.ServerResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

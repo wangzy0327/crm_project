@@ -3,9 +3,8 @@ package com.wzy.crm.service.impl;
 import com.google.common.collect.Lists;
 import com.wzy.crm.dao.GroupMessageRelationMapper;
 import com.wzy.crm.dao.GroupStaffRelationMapper;
-import com.wzy.crm.pojo.GroupMessageRelation;
 import com.wzy.crm.service.IGroupService;
-import com.wzy.crm.vo.ServerResponse;
+import com.wzy.crm.common.ServerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

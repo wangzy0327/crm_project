@@ -1,16 +1,13 @@
 package com.wzy.crm.service.impl;
 
 import com.google.common.collect.Lists;
-import com.sun.tools.corba.se.idl.IncludeGen;
 import com.wzy.crm.dao.CustomerMapper;
 import com.wzy.crm.dao.StaffCustomerFollowRelationMapper;
 import com.wzy.crm.pojo.CustomerDetailInfo;
-import com.wzy.crm.pojo.StaffCustomerFollowRelation;
 import com.wzy.crm.service.ICustomerService;
-import com.wzy.crm.vo.ServerResponse;
+import com.wzy.crm.common.ServerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;

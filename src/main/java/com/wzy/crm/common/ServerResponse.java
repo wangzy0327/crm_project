@@ -1,4 +1,4 @@
-package com.wzy.crm.vo;
+package com.wzy.crm.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
