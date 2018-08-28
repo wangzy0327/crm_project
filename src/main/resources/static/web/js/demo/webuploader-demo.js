@@ -44,10 +44,10 @@ jQuery(function() {
         supportTransition = (function(){
             var s = document.createElement('p').style,
                 r = 'transition' in s ||
-                      'WebkitTransition' in s ||
-                      'MozTransition' in s ||
-                      'msTransition' in s ||
-                      'OTransition' in s;
+                    'WebkitTransition' in s ||
+                    'MozTransition' in s ||
+                    'msTransition' in s ||
+                    'OTransition' in s;
             s = null;
             return r;
         })(),
@@ -98,11 +98,11 @@ jQuery(function() {
     // 当有文件添加进来时执行，负责view的创建
     function addFile( file ) {
         var $li = $( '<li id="' + file.id + '">' +
-                '<p class="title" style="margin:0 auto;">' + file.name + '</p>' +
-                '<p class="imgWrap" style="margin:30px auto 10px; text-align:center;'+
+            '<p class="title" style="margin:0 auto;">' + file.name + '</p>' +
+            '<p class="imgWrap" style="margin:30px auto 10px; text-align:center;'+
             ' vertical-align:middle;"></p>'+
-                '<p class="progress"><span></span></p>' +
-                '</li>' ),
+            '<p class="progress"><span></span></p>' +
+            '</li>' ),
 
             $btns = $('<div class="file-panel">' +
                 '<span class="cancel">删除</span>' +
@@ -312,7 +312,7 @@ jQuery(function() {
     }
 
 
-        function updateTotalProgress() {
+    function updateTotalProgress() {
         var loaded = 0,
             total = 0,
             spans = $progress.children(),
@@ -335,7 +335,7 @@ jQuery(function() {
 
         if ( state === 'ready' ) {
             text = '选中' + fileCount + '张图片，共' +
-                    WebUploader.formatSize( fileSize ) + '。';
+                WebUploader.formatSize( fileSize ) + '。';
         } else if ( state === 'confirm' ) {
             stats = uploader.getStats();
             if ( stats.uploadFailNum ) {
@@ -346,8 +346,8 @@ jQuery(function() {
         } else {
             stats = uploader.getStats();
             text = '共' + fileCount + '张（' +
-                    WebUploader.formatSize( fileSize )  +
-                    '），已上传' + stats.successNum + '张';
+                WebUploader.formatSize( fileSize )  +
+                '），已上传' + stats.successNum + '张';
 
             if ( stats.uploadFailNum ) {
                 text += '，失败' + stats.uploadFailNum + '张';

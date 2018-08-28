@@ -8,8 +8,6 @@ $(function () {
         var title = $("iframe").contents().find('meta[itemprop=\'name\']').attr('content');
         console.log("title:"+title);
         $("input[name='title']").val(title);
-        var len = $("iframe").contents().find('.page-list,.page-item').length;
-        console.log("len:" + len);
 
         var iframe = document.getElementsByTagName('iframe')[0].contentWindow;
 
@@ -78,7 +76,7 @@ function saveH5() {
             Ewin.confirm({message: "H5内容不能为空"});
             return ;
         }
-        var page = $("iframe").contents().find('.page-list,.page-item').length;
+        var page = $("iframe").contents().find('ul.page-list li.page').length;
         // var tags = new Array();
         // var spanTags = $(".tag").children("span");
         // for(i = 0;i<spanTags.length;i++){

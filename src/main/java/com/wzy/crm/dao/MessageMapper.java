@@ -1,7 +1,7 @@
 package com.wzy.crm.dao;
 
-import com.wzy.crm.pojo.Group;
 import com.wzy.crm.pojo.Message;
+
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +12,7 @@ public interface MessageMapper {
 
     Message selectByPrimaryKey(Integer id);
 
-    Message selectByThirdParamId(String thirdParamId);
+    List<Message> selectByThirdParamId(String thirdParamId);
 
     List<Message> selectAll();
 

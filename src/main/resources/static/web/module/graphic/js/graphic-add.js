@@ -1,6 +1,7 @@
 $(function () {
     loadGraphic();
     saveGraphic();
+    //主要是这部分
 })
 
 function saveGraphic() {
@@ -56,6 +57,37 @@ function saveGraphic() {
     })
 }
 
+function loadSwiper() {
+    var mySwiper = new Swiper ('.swiper-container', {
+        direction: 'vertical',
+        loop: true,
+
+        // 如果需要分页器
+        pagination: {
+            el: '.swiper-pagination',
+        },
+
+        // 如果需要前进后退按钮
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+
+        // 如果需要滚动条
+        scrollbar: {
+            el: '.swiper-scrollbar',
+        },
+    })
+    mySwiper.on('slideChangeTransitionEnd', function () {
+        var imgurl = $('.swiper-slide-active img').attr("src");
+        var index = $('.swiper-slide-active').attr("data-swiper-slide-index");
+        console.log("index:"+index);
+        var txt = $('.swiper-slide-active').html();
+        console.log("内容："+txt+"===索引值："+mySwiper.activeIndex+"===图片地址："+imgurl);
+
+    });
+}
+
 function loadGraphic() {
     $('#downButton').click(function () {
         var graphicUrl = ($("input[name = 'url']"))[0].value;
@@ -76,30 +108,28 @@ function loadGraphic() {
                     console.log("msg:"+msg);
                     Ewin.alert({"message":msg});
                 }
+                loadSwiper();
             }
         })
     });
 }
 
 function loadImage(imgUrl) {
-    imgUrl = "D:\\ftpServer\\05603513-8614-43da-a17b-6893d238d0f0.jpg";
+    // imgUrl = "D:\\ftpServer\\05603513-8614-43da-a17b-6893d238d0f0.jpg";
     str = "";
-    str += "<div class=\"swiper-slide swiper-slide-duplicate swiper-slide-next swiper-slide-duplicate-prev\"\n" +
-        "data-swiper-slide-index=\"0\" style=\"height: 504px;\">\n" +
-        "<div class=\"swiper-zoom-container\"><img class=\"swiper-lazy swiper-lazy-loaded\"\n" +
-        "src=\""+imgUrl+"\">\n" +
-        "</div>\n" +
-        "</div>";
-    str+= "<div class=\"swiper-slide swiper-slide-duplicate-active swiper-slide-prev swiper-slide-duplicate-next\"\n" +
-        "data-swiper-slide-index=\"0\" style=\"height: 504px;\">\n" +
-        "<div class=\"swiper-zoom-container\"><img class=\"swiper-lazy swiper-lazy-loaded\"\n" +
-        "src=\""+imgUrl+"\">\n" +
-        "</div>\n" +
-        "</div>";
-    str+="<div class=\"swiper-slide swiper-slide-duplicate swiper-slide-active swiper-slide-duplicate-prev\"\n" +
-        "data-swiper-slide-index=\"0\" style=\"height: 504px;\">\n" +
-        "<div class=\"swiper-zoom-container\"><img class=\"swiper-lazy swiper-lazy-loaded\"\n" +
-        "src=\""+imgUrl+"\">\n" +
+
+// <div class="swiper-slide"
+//     style="height: 504px;">
+//         <div class="swiper-zoom-container"><img class=""
+//     src="http://127.0.0.1:9000/05603513-8614-43da-a17b-6893d238d0f0.jpg">
+//         <!--//imgpub.chuangkit.com/design/2018/08/22/430860543_thumb@780w_100Q_1x.jpg?v=2018-08-22 16:49:48.0-->
+//         </div>
+//         </div>
+
+    str += "<div class=\"swiper-slide\"\n" +
+        "style=\"height: 504px;\">\n" +
+        "<div class=\"swiper-zoom-container\">"+
+        "<img src=\""+imgUrl+"\">\n" +
         "</div>\n" +
         "</div>";
     $('.swiper-wrapper').html(str);

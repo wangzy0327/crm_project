@@ -39,7 +39,7 @@ public class UploadController {
         String filePath = request.getSession().getServletContext().getRealPath("imgupload/");
         System.out.println("filePath:"+filePath);
         String targetFileName = fileService.upload(file,filePath);
-        String url = PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFileName;
+        String url = PropertiesUtil.getProperty("nginx.server")+targetFileName;
 
         //初始化返回信息
         Map fileMap = Maps.newHashMap();

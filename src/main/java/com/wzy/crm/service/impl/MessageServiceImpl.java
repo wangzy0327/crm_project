@@ -100,14 +100,18 @@ public class MessageServiceImpl implements IMessageService {
         for(int i = 0;i<tags.size();i++){
             String [] strs = tags.get(i).split(",");
             List<MessageTag> messageTags = Lists.newArrayList();
-            if(strs!=null || strs.length>0){
+            if(strs!=null && strs.length>0){
                 for(int j = 0;j<strs.length;j++){
-                    MessageTag messageTag = new MessageTag();
-                    messageTag.setName(strs[j]);
-                    messageTags.add(messageTag);
+                    if(StringUtils.isNotBlank(strs[j])){
+                        MessageTag messageTag = new MessageTag();
+                        messageTag.setName(strs[j]);
+                        messageTags.add(messageTag);
+                    }
                 }
             }
-            map.put(i,messageTags);
+            if(messageTags.size()>0){
+                map.put(i,messageTags);
+            }
         }
         return map;
     }
@@ -167,9 +171,9 @@ public class MessageServiceImpl implements IMessageService {
     @Override
     public ServerResponse saveH5Page(String urlStr, String realPath){
         String thirdParamId = urlStr.substring(urlStr.lastIndexOf("/")+1,urlStr.lastIndexOf("?"));
-        Message message = messageMapper.selectByThirdParamId(thirdParamId);
-        if(message!=null){
-            return ServerResponse.createBySuccess(message.getDescription());
+        List<Message> messages = messageMapper.selectByThirdParamId(thirdParamId);
+        if(messages!=null && messages.size()>0){
+            return ServerResponse.createBySuccess(messages.get(0).getDescription());
         }
         try {
             String uuid = UUID.randomUUID().toString();
@@ -244,7 +248,8 @@ public class MessageServiceImpl implements IMessageService {
         if(imgUrl.indexOf("http:")<0){
             imgUrl+="http:"+imgUrl;
         }
-        String picUrl = PropertiesUtil.getProperty("ftp.server.http.prefix")+this.saveImage(imgUrl,realPath);
+        imgUrl += PropertiesUtil.getProperty("nginx.server")+imgUrl;
+        String picUrl = PropertiesUtil.getProperty("nginx.server")+this.saveImage(imgUrl,realPath);
         System.out.println("picUrl:"+picUrl);
         message.setPicUrl(picUrl);
         messageMapper.insert(message);
