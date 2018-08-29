@@ -40,7 +40,7 @@ function initGroupTable() {
         url: '/group',
         method: 'get',
         contentType: "application/json;charset=UTF-8",//当请求方法为post的时候,必须要有！！！！
-        toolbar: '#toobar',//工具列
+        // toolbar: '#toobar',//工具列
         striped: true,//隔行换色
         cache: false,//禁用缓存
         pageSize: 10,//单页记录数
@@ -49,7 +49,7 @@ function initGroupTable() {
         sidePagination: 'client',//分页方式
         pageNumber: 1,//初始化table时显示的页码
         showFooter: false,//是否显示列脚
-        showPaginationSwitch: true,//是否显示 数据条数选择框
+        showPaginationSwitch: false,//是否显示 数据条数选择框
         clickToSelect: true,//点击选中checkbox
         singleSelect: true,//启用单行选中
         uniquedId:"id", //每一行的唯一标识，一般为主键列

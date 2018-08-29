@@ -20,7 +20,7 @@
     <link href="../../css/jquery.tagsinput.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="../../css/plugins/webuploader/webuploader.css">
-    <link rel="stylesheet" type="text/css" href="../../css/demo/webuploader-demo.css">
+    <!--<link rel="stylesheet" type="text/css" href="../../css/demo/webuploader-demo.css">-->
 
     <!-- Data Tables -->
     <link href="../../css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
@@ -30,6 +30,28 @@
 
 <body class="gray-bg">
 <style>
+    .uploader-list {
+        /*width: 100%;*/
+        overflow: hidden;
+        float: left;
+    }
+    #uploader .thumbnail {
+        float:left;
+        width: 170px;
+        height: 170px;
+        overflow: hidden;
+    }
+    .btns{
+        clear: both;
+    }
+    .btn-primary{
+        background-color: #1ab394;
+        border-color: #1ab394;
+    }
+    .webuploader-pick{
+        background: #1ab394;
+        padding:5px 10px;
+    }
     div.tagsinput span.tag{
         border:1px solid #1eb2b2;
         background: #18a689;
@@ -126,24 +148,37 @@
                                     <!--<p>您可以尝试文件拖拽，使用QQ截屏工具，然后激活窗口后粘贴，或者点击添加图片按钮，来体验此demo.</p>-->
                                     <div id="uploader" class="wu-example">
                                         <!--用来存放文件信息-->
-                                        <div class="queueList">
-                                            <div id="dndArea" class="placeholder">
-                                                <div id="filePicker"></div>
-                                                <p>(1张，支持JPG、PNG格式，较好的效果为大图640x320，小图80x80)</p>
-                                            </div>
+                                        <div id="thelist" class="uploader-list"></div>
+                                        <div class="btns">
+                                            <button id="picker" class="btn btn-primary" style="padding:0px;margin-bottom: 0px;" type="button">
+                                                <i class="fa fa-upload"></i>&nbsp;上传图片
+                                            </button>
                                         </div>
-                                        <div class="statusBar" style="display:none;">
-                                            <div class="progress">
-                                                <span class="text">0%</span>
-                                                <span class="percentage"></span>
-                                            </div>
-                                            <div class="info"></div>
-                                            <div class="btns">
-                                                <div id="filePicker2"></div>
-                                                <div class="uploadBtn">开始上传</div>
-                                            </div>
-                                        </div>
+                                        <!--<div class="btns">-->
+                                        <!--<div id="picker">选择文件</div>-->
+                                        <!--</div>-->
                                     </div>
+
+                                    <!--<div id="uploader" class="wu-example">-->
+                                        <!--&lt;!&ndash;用来存放文件信息&ndash;&gt;-->
+                                        <!--<div class="queueList">-->
+                                            <!--<div id="dndArea" class="placeholder">-->
+                                                <!--<div id="filePicker"></div>-->
+                                                <!--<p>(1张，支持JPG、PNG格式，较好的效果为大图640x320，小图80x80)</p>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="statusBar" style="display:none;">-->
+                                            <!--<div class="progress">-->
+                                                <!--<span class="text">0%</span>-->
+                                                <!--<span class="percentage"></span>-->
+                                            <!--</div>-->
+                                            <!--<div class="info"></div>-->
+                                            <!--<div class="btns">-->
+                                                <!--<div id="filePicker2"></div>-->
+                                                <!--<div class="uploadBtn">开始上传</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
                                 </div>
                             </div>
                         </div>
@@ -301,7 +336,7 @@
 </script>
 <script src="../../js/plugins/webuploader/webuploader.min.js"></script>
 
-<script src="../../js/demo/webuploader-demo.js"></script>
+<!--<script src="../../js/demo/webuploader-demo.js"></script>-->
 <!--提示框-->
 <script src="/lib/config.js"></script>
 
@@ -310,6 +345,7 @@
 <script src="../../js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
 <script src="js/form_editors.js"></script>
+<script src="js/upload.js"></script>
 
 <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
 <!--统计代码，可删除-->

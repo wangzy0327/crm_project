@@ -17,15 +17,48 @@
     <link href="../../css/plugins/summernote/summernote.css" rel="stylesheet">
     <link href="../../css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
     <link href="../../css/style.css?v=4.1.0" rel="stylesheet">
+    <link  href="../../css/plugins/webuploader/webuploader.css" rel="stylesheet">
 </head>
 <body >
 <style>
+    .uploader-list {
+        /*width: 100%;*/
+        overflow: hidden;
+        float: left;
+    }
+    #uploader .thumbnail {
+        float:left;
+        width: 170px;
+        height: 170px;
+        overflow: hidden;
+    }
+    .btn-primary{
+        background-color: #1ab394;
+        border-color: #1ab394;
+    }
+
+</style>
+<style>
+    .webuploader-pick{
+        background: #1ab394;
+        padding:5px 10px;
+    }
     div.tagsinput span.tag{
         border:1px solid #1eb2b2;
         background: #18a689;
     }
     div.tagsinput span.tag a{
         color: #999999;
+    }
+    .btn-success {
+        background-color: #1ab394;
+        border-color: #1ab394;
+        color: #FFFFFF;
+    }
+    .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open .dropdown-toggle.btn-success {
+        background-color: #1ab394;
+        border-color: #1ab394;
+        color: #FFFFFF;
     }
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -41,9 +74,19 @@
                 </div>
                 <!--<input id="url" type="url" class="form-control" style="width: 400px;" maxlength="200"-->
                        <!--placeholder="请输入链接地址">-->
-                <button id="searchButton" class="btn btn-primary" style="margin-left: 5px" type="button"><i
-                        class="fa fa-search"></i>&nbsp;上传资料
-                </button>
+
+                <div id="uploader" class="wu-example">
+                    <!--用来存放文件信息-->
+                    <div class="btns">
+                        <button id="picker" class="btn btn-primary" style="padding:0px;margin-bottom: 0px;" type="button">
+                            <i class="fa fa-upload"></i>&nbsp;上传资料
+                        </button>
+                    </div>
+                    <div id="thelist" class="uploader-list"></div>
+                    <!--<div class="btns">-->
+                    <!--<div id="picker">选择文件</div>-->
+                    <!--</div>-->
+                </div>
                 <!--<button id="up" class="btn btn-primary" style="margin-left: 5px" type="button"><i-->
                 <!--class="fa fa-angle-up"></i>&nbsp;确定-->
                 <!--</button>-->
@@ -64,44 +107,8 @@
                                 <div class="swiper-wrapper"
                                      style="transition-duration: 0ms; transform: translate3d(0px, -1008px, 0px);">
 
-                                     <div class="swiper-slide"
-                                         style="height: 504px;">
-                                             <div class="swiper-zoom-container"><img src="http://www.govsales.cn/module/web/upload/20180712\201807121123116251\pict-1.png">
-                                             <!--//imgpub.chuangkit.com/design/2018/08/22/430860543_thumb@780w_100Q_1x.jpg?v=2018-08-22 16:49:48.0-->
-                                             </div>
-                                     </div>
 
-                                    <div class="swiper-slide"
-                                         style="height: 504px;">
-                                        <div class="swiper-zoom-container"><img src="http://www.govsales.cn/module/web/upload/20180712\201807121123116251\pict-2.png">
-                                            <!--//imgpub.chuangkit.com/design/2018/08/22/430860543_thumb@780w_100Q_1x.jpg?v=2018-08-22 16:49:48.0-->
-                                        </div>
-                                    </div>
 
-                                    <!--<div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-active"-->
-                                         <!--data-swiper-slide-index="1" style="height: 504px;">-->
-                                        <!--<div class="swiper-zoom-container"><img class="swiper-lazy swiper-lazy-loaded"-->
-                                                                                <!--src="http://www.govsales.cn/module/web/upload/20180712\201807121123116251\pict-2.png">-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <!--<div class="swiper-slide swiper-slide-prev swiper-slide-duplicate-next"-->
-                                         <!--data-swiper-slide-index="0" style="height: 504px;">-->
-                                        <!--<div class="swiper-zoom-container"><img class="swiper-lazy swiper-lazy-loaded"-->
-                                                                                <!--src="http://www.govsales.cn/module/web/upload/20180712\201807121123116251\pict-1.png">-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <!--<div class="swiper-slide swiper-slide-active" data-swiper-slide-index="1"-->
-                                         <!--style="height: 504px;">-->
-                                        <!--<div class="swiper-zoom-container"><img class="swiper-lazy swiper-lazy-loaded"-->
-                                                                                <!--src="http://www.govsales.cn/module/web/upload/20180712\201807121123116251\pict-2.png">-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <!--<div class="swiper-slide swiper-slide-duplicate swiper-slide-next swiper-slide-duplicate-prev"-->
-                                         <!--data-swiper-slide-index="0" style="height: 504px;">-->
-                                        <!--<div class="swiper-zoom-container"><img class="swiper-lazy swiper-lazy-loaded"-->
-                                                                                <!--src="http://www.govsales.cn/module/web/upload/20180712\201807121123116251\pict-1.png">-->
-                                        <!--</div>-->
-                                    <!--</div>-->
                                 </div>
                                 <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
                                     <span class="swiper-pagination-bullet"></span><span
@@ -121,10 +128,13 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="signupForm">
+                        <div class="form-group">
+                            <input name="id" type="hidden" class="form-control">
+                        </div>
                         <div class="form-group" >
-                            <label class="col-sm-1 control-label" style="text-align: left;">标题：</label>
+                            <label class="col-sm-1 control-label" style="text-align: left;">标题:</label>
                             <div class="col-sm-6">
-                                <input style="text-align: left;" class="form-control" type="text" placeholder="请输入标题">
+                                <input name="title" style="text-align: left;" class="form-control" type="text" placeholder="请输入标题">
                             </div>
                         </div>
                         <div class="form-group">
@@ -159,6 +169,7 @@
 <script src="../../js/bootstrap.min.js?v=3.3.6"></script>
 <script src="../../js/swiper.min.js"></script>
 <script src="../../js/jquery.tagsinput.min.js"></script>
+<script src="../../js/plugins/webuploader/webuploader.min.js"></script>
 <script>
     $(function () {
         $('#tags_1').importTags("");
@@ -177,5 +188,6 @@
 <script>
 </script>
 <script src="js/doc-add.js"></script>
+<script src="js/upload.js"></script>
 </body>
 </html>

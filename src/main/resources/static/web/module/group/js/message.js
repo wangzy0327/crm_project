@@ -23,7 +23,7 @@ function initMessageTable(id) {
         maintainSelected : true,    //如果是客户端分页，这个设为 true 翻页后已经选中的复选框不会丢失
         pageNumber: 1,//初始化table时显示的页码
         showFooter: false,//是否显示列脚
-        showPaginationSwitch: true,//是否显示 数据条数选择框
+        showPaginationSwitch: false,//是否显示 数据条数选择框
         clickToSelect: true,//点击选中checkbox
         // idField: 'SystemCode',//key值栏位
         // sortable: false,//排序

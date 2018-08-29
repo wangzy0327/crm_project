@@ -1,5 +1,11 @@
+pageInfo = [];
+index = 0;
+var mySwiper;
 $(function () {
-    var mySwiper = new Swiper ('.swiper-container', {
+})
+
+function loadSwiper() {
+    mySwiper = new Swiper ('.swiper-container', {
         direction: 'vertical',
         loop: true,
 
@@ -18,16 +24,43 @@ $(function () {
         scrollbar: {
             el: '.swiper-scrollbar',
         },
-    })
-    //主要是这部分
-    mySwiper.on('slideChangeTransitionEnd', function () {
-        var imgurl = $('.swiper-slide-active img').attr("src");
-        var pre = $('.swiper-slide-prev').attr("data-swiper-slide-index");
-        console.log("pre:"+pre);
-        var index = $('.swiper-slide-active').attr("data-swiper-slide-index");
-        console.log("index:"+index);
-        var txt = $('.swiper-slide-active').html();
-        console.log("内容："+txt+"===索引值："+mySwiper.activeIndex+"===图片地址："+imgurl);
-
     });
-})
+    mySwiper.on('slideChangeTransitionEnd', function () {
+        saveTags();
+        index = $('.swiper-slide-active').attr("data-swiper-slide-index"); // 当前页
+        console.log("index:"+index);
+        updateTags(index);
+        pageInfo[index] = pageInfo[index] || '';
+    });
+}
+
+// 保存刚切换页的标签
+function saveTags(){
+    var tagStr = '';
+    var tag = [];
+    $('.tag').each(function () {
+        var str = $(this).find('span').text().trim();
+        console.log("tagStr:"+str);
+        tag.push(str);
+    });
+    if(tag.length>0)
+        tagStr = tag.join(',');
+    pageInfo[index] = '';
+    pageInfo[index] = tagStr;
+    console.log("pageInfo[index]:"+pageInfo[index]+"....");
+    return pageInfo;
+}
+
+// 更新当前页面的标签
+function updateTags(index) {
+    $('#tags_1').importTags('');
+    var tagArr ;
+    if(pageInfo[index]!=undefined && pageInfo[index]!=null && pageInfo[index]!= '')
+        tagArr = pageInfo[index].split(',');
+    console.log("tagArr:"+tagArr);
+    if(tagArr!=undefined && tagArr!=null && tagArr!=''){
+        for(var i = 0;i < tagArr.length;i++){
+            $('#tags_1').addTag(tagArr[i],{focus:false,callback:false});
+        }
+    }
+}

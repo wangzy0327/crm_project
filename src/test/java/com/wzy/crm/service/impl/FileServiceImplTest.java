@@ -32,7 +32,7 @@ public class FileServiceImplTest {
         MultipartFile multipartFile = new MockMultipartFile(file.getName(), inputStream);
         String path = "/";
         System.out.println("************************");
-        System.out.println("上传文件名:"+fileService.upload(multipartFile,path));
+        System.out.println("上传文件名:"+fileService.uploadImg(multipartFile,path));
         System.out.println("************************");
     }
 

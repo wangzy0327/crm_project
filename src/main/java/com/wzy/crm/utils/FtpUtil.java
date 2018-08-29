@@ -37,6 +37,16 @@ public class FtpUtil {
         logger.info("上传文件完成：结果：{}",result);
         return result;
     }
+
+    //文件上传是否成功
+    public static boolean uploadFilePath(String path,List<File> fileList) throws IOException {
+        FtpUtil ftpUtil = new FtpUtil(ftpId,21,ftpUser,ftpPass);
+        logger.info("开始连接ftp服务器");
+        boolean result = ftpUtil.uploadFile(path,fileList);
+        logger.info("上传文件完成：结果：{}",result);
+        return result;
+    }
+
     private boolean uploadFile(String remotePath,List<File> fileList) throws IOException{
         boolean uploaded = true;
         FileInputStream fis = null;

@@ -83,7 +83,7 @@ jQuery(function() {
 
         chunked: true,
         // server: 'http://webuploader.duapp.com/server/fileupload.php',
-        server: '/upload/save',
+        server: '/upload/save/img',
         fileNumLimit: 1,
         fileSizeLimit: 1 * 1024 * 1024,    // 200 M
         fileSingleSizeLimit: 1 * 1024 * 1024    // 50 M
@@ -228,89 +228,6 @@ jQuery(function() {
         updateTotalProgress();
         $li.off().find('.file-panel').off().end().remove();
     }
-
-    function editFile( file ) {
-        var $li = $('<li id="' + file.id + '">' +
-            '<p class="title">' + file.name + '</p>' +
-            '<p class="imgWrap"></p>' +
-            '<p class="progress"><span></span></p>' +
-            '</li>'),
-
-            $btns = $('<div class="file-panel">' +
-                '<span class="cancel">删除</span>' +
-                '<span class="rotateRight">向右旋转</span>' +
-                '<span class="rotateLeft">向左旋转</span></div>').appendTo($li),
-            $prgress = $li.find('p.progress span'),
-            $wrap = $li.find('p.imgWrap'),
-            $info = $('<p class="error"></p>');
-
-
-        if (file.getStatus() === 'invalid') {
-            showError(file.statusText);
-        } else {
-            // @todo lazyload
-            $wrap.empty();
-            $wrap.text('不能预览');
-
-            var img;
-            //判断是否是图片
-            if (containsPic(file.filetype)) {
-                //读取文件流
-                var src = getRootPath() + '/download/fileDownLoadAction!showFile.action?fileName=' + file.filename;
-                img = $('<img src="' + src + '" style="height:100%;">');
-                $wrap.empty().append(img);
-            }
-
-            percentages[file.id] = [file.size, 0];
-            file.rotation = 0;
-        }
-
-        $li.append('<span class="success"></span>');
-
-        $li.on('mouseenter', function () {
-            $btns.stop().animate({height: 30});
-        });
-
-        $li.on('mouseleave', function () {
-            $btns.stop().animate({height: 0});
-        });
-
-        $btns.on('click', 'span', function () {
-            var index = $(this).index(),
-                deg;
-
-            switch (index) {
-                case 0:
-                    uploader.removeFile(file);
-                    return;
-
-                case 1:
-                    file.rotation += 90;
-                    break;
-
-                case 2:
-                    file.rotation -= 90;
-                    break;
-            }
-
-            if (supportTransition) {
-                deg = 'rotate(' + file.rotation + 'deg)';
-                $wrap.css({
-                    '-webkit-transform': deg,
-                    '-mos-transform': deg,
-                    '-o-transform': deg,
-                    'transform': deg
-                });
-            } else {
-                $wrap.css('filter', 'progid:DXImageTransform.Microsoft.BasicImage(rotation=' + (~~((file.rotation / 90) % 4 + 4) % 4) + ')');
-            }
-
-
-        });
-
-        $li.appendTo($queue);
-    }
-
 
     function updateTotalProgress() {
         var loaded = 0,
@@ -573,7 +490,34 @@ jQuery(function() {
             '<p class="state" style="display: inline-block;margin-left: 20px;">等待上传...</p>' +
             '<p class="remove-this" style="display: inline-block;margin-left: 20px;">删除</p>' +
             '</div>');
+
+
+        var $li = $(
+            '<div id="' + file.id + '" class="file-item thumbnail">' +
+            '<img>' +
+            // '<div class="info">' + file.name + '</div>' +
+            '<div class = "file-panel" style = "height: 30px;" > 删除 ' +
+            '<span class="cancel">删除</span></div>' +
+            '</div>'
+            ),
+        $img = $li.find('img');
+        $('#queueList').append($li);
+        removefiles(file); // 文件删除
     });
+
+    // 删除按钮事件
+    function removefiles(file) {
+        // 删除本条数据
+        // $('.delimgbtns').each(function(index, el) {
+        $('.cancel').click(function() {
+            // 中断 取消 传图
+            uploader.removeFile(file, true);
+            var spthisdiv = $(this).parent();
+            spthisdiv.parent('.file-item').remove();
+            $filePicker.show(); // 上传按钮显示
+        });
+        // });
+    }
 
     $upload.on('click', function() {
         if ( $(this).hasClass( 'disabled' ) ) {

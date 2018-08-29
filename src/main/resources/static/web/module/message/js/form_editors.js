@@ -168,7 +168,7 @@ function saveContent() {
         }
         console.log('staffIds:'+staffIds);
         var tagIds = [];
-        var picUrl = $('.imgWrap').attr('data-url');
+        var picUrl = $('.file-item').attr('data-url');
         console.log("picUrl:"+picUrl);
         var title = $($('.note-editable')[0]).html().trim();
         console.log("title:"+title);
