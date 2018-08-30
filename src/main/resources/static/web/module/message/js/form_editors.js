@@ -168,7 +168,7 @@ function saveContent() {
         }
         console.log('staffIds:'+staffIds);
         var tagIds = [];
-        var picUrl = $('.file-item').attr('data-url');
+        var picUrl = $('.file-item').attr('data-id');
         console.log("picUrl:"+picUrl);
         var title = $($('.note-editable')[0]).html().trim();
         console.log("title:"+title);
@@ -198,6 +198,7 @@ function saveContent() {
                 "msgtype":"1",
                 "titleText":titleText,
                 "title":title,
+                "pagecount":1,
                 "descriptionText":descriptionText,
                 "description":description,
                 "picUrl":picUrl

@@ -33,14 +33,14 @@
     insert into message (corp_id, suite_id,
       corpid, msgType,
       url, picurl, btntxt,
-      third_params, pageCount, create_userId, 
+      third_params, third_param_id,pageCount, create_userId,
       update_time, titleText, title, descriptionText,
       description, coverPicAttach, contentAttach
       )
     values ( #{corpId,jdbcType=VARCHAR}, #{suiteId,jdbcType=VARCHAR},
       #{corpid,jdbcType=VARCHAR}, #{msgtype,jdbcType=INTEGER},
       #{url,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, #{btntxt,jdbcType=VARCHAR},
-      #{thirdParams,jdbcType=VARCHAR}, #{pagecount,jdbcType=INTEGER}, #{createUserId,jdbcType=INTEGER},
+      #{thirdParams,jdbcType=VARCHAR}, #{thirdParamId,jdbcType=VARCHAR},#{pagecount,jdbcType=INTEGER}, #{createUserId,jdbcType=INTEGER},
       now(), #{titleText,jdbcType=LONGVARCHAR}, #{title,jdbcType=LONGVARCHAR}, #{descriptionText,jdbcType=LONGVARCHAR},
       #{description,jdbcType=LONGVARCHAR}, #{coverpicattach,jdbcType=LONGVARCHAR}, #{contentattach,jdbcType=LONGVARCHAR}
       )

@@ -10,7 +10,9 @@ function saveGraphic() {
         console.log("title:"+title);
         var h5Url = ($("input[name = 'url']"))[0].value;
         console.log("url:"+h5Url);
-        var imgSrc = ($('.swiper-lazy'))[0].src;
+        var d = ($("input[name = 'd']"))[0].value;
+        console.log("d:"+d);
+        var imgSrc = ($('.swiper-zoom-container img'))[0].src;
         if(title == undefined || title == null || title == ''){
             Ewin.confirm({ message: "标题不能为空" });
             return ;
@@ -37,7 +39,9 @@ function saveGraphic() {
                 "corpid":"wx4b8e52ee9877a5be",
                 "msgtype":"6",
                 "titleText":title,
-                "title":title
+                "title":title,
+                "thirdParamId":d,
+                "pagecount":1
             }),
             success:function (result) {
                 console.log(result);
@@ -103,6 +107,7 @@ function loadGraphic() {
                     console.log('imgUrl:'+data.imgUrl);
                     loadImage(data.imgUrl);
                     $("input[name='title']").val(data.title);
+                    $("input[name='d']").val(data.d);
                 }else{
                     var msg = result.msg;
                     console.log("msg:"+msg);

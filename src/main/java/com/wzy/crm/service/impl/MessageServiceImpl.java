@@ -95,7 +95,6 @@ public class MessageServiceImpl implements IMessageService {
 
     @Override
     public Map<Integer, List<MessageTag>> splitTag(List<String> tags){
-        MessageTagRelation messageTagRelation = new MessageTagRelation();
         Map<Integer,List<MessageTag>> map = Maps.newHashMap();
         for(int i = 0;i<tags.size();i++){
             String [] strs = tags.get(i).split(",");
@@ -154,17 +153,6 @@ public class MessageServiceImpl implements IMessageService {
         Map<Integer,List<MessageTag>> map = splitTag(tags);
         addTags(message.getId(),map);
         return ServerResponse.createBySuccess(message);
-//        if(ResponseCode.SUCCESS == saveH5Page(url,message,realPath)){
-//            //todo
-//            System.out.println(message);
-//            messageMapper.insert(message);
-//            Integer messageId = message.getId();
-//            List<Integer> needToInsert = findTags(tags);
-//            handleInsertData(messageId,needToInsert);
-//            return ServerResponse.createBySuccess(message);
-//        }else{
-//            return ServerResponse.createByError();
-//        }
     }
 
 
@@ -215,32 +203,41 @@ public class MessageServiceImpl implements IMessageService {
     public ServerResponse parseGraphicUrl(String url) {
         String d = url.substring(url.indexOf("?d=")+3,url.length());
         System.out.println("params d = "+d);
-        String url_str = "https://api.chuangkit.com/share/getShareInfoV3.do?_dataType=json&d=" + d;
-        JSONObject jsonObject = HttpApi.httpsRequest(url_str,"GET",null);
-        System.out.println("jsonObject:");
-        System.out.println(jsonObject);
+        List<Message> messages = messageMapper.selectByThirdParamId(d);
+        String imgUrl = "";
+        String designTitle = "";
+        if(messages == null || messages.size() == 0){
+            String url_str = "https://api.chuangkit.com/share/getShareInfoV3.do?_dataType=json&d=" + d;
+            JSONObject jsonObject = HttpApi.httpsRequest(url_str,"GET",null);
+            System.out.println("jsonObject:");
+            System.out.println(jsonObject);
 //        System.out.println(jsonObject.get("header"));
 //        JSONObject header = (JSONObject) jsonObject.get("header");
-        System.out.println(jsonObject.get("body"));
-        JSONObject body = (JSONObject) jsonObject.get("body");
-        String error = String.valueOf(body.getString("error"));
-        if(error!=null && StringUtils.isNotBlank(error) && !error.equals("null")){
-            return ServerResponse.createByErrorMessage(error);
+            System.out.println(jsonObject.get("body"));
+            JSONObject body = (JSONObject) jsonObject.get("body");
+            String error = String.valueOf(body.getString("error"));
+            if(error!=null && StringUtils.isNotBlank(error) && !error.equals("null")){
+                return ServerResponse.createByErrorMessage(error);
+            }else{
+                imgUrl = String.valueOf(body
+                        .getJSONObject("bean")
+                        .getString("imgUrl"));
+                designTitle = String.valueOf(body
+                        .getJSONObject("bean")
+                        .getString("designKindTitle"));
+                System.out.println("imgUrl:"+imgUrl);
+                System.out.println("designTitle:"+designTitle);
+            }
         }else{
-            String imgUrl = String.valueOf(body
-                    .getJSONObject("bean")
-                    .getString("imgUrl"));
-            String designTitle = String.valueOf(body
-                    .getJSONObject("bean")
-                    .getString("designKindTitle"));
-            System.out.println("imgUrl:"+imgUrl);
-            System.out.println("designTitle:"+designTitle);
-            String str = "{\"imgUrl\":\""+imgUrl+"\",\"title\":\""+designTitle+"\"}";
-            System.out.println("testJsonStr:  "+str);
-            JSONObject responseJson = JSONObject.parseObject(str);
-            System.out.println(responseJson.toJSONString());
-            return ServerResponse.createBySuccess(responseJson);
+            imgUrl = PropertiesUtil.getProperty("nginx.server")+messages.get(0).getPicUrl();
+            designTitle = messages.get(0).getTitle();
         }
+        String str = "{\"imgUrl\":\""+imgUrl+"\",\"title\":\""+designTitle+"\",\"d\":\""+d+"\"}";
+        System.out.println("testJsonStr:  "+str);
+        JSONObject responseJson = JSONObject.parseObject(str);
+        System.out.println(responseJson.toJSONString());
+        return ServerResponse.createBySuccess(responseJson);
+
     }
 
     @Override
@@ -248,8 +245,7 @@ public class MessageServiceImpl implements IMessageService {
         if(imgUrl.indexOf("http:")<0){
             imgUrl+="http:"+imgUrl;
         }
-        imgUrl += PropertiesUtil.getProperty("nginx.server")+imgUrl;
-        String picUrl = PropertiesUtil.getProperty("nginx.server")+this.saveImage(imgUrl,realPath);
+        String picUrl = this.saveImage(imgUrl,realPath);
         System.out.println("picUrl:"+picUrl);
         message.setPicUrl(picUrl);
         messageMapper.insert(message);
@@ -257,6 +253,17 @@ public class MessageServiceImpl implements IMessageService {
         System.out.println("messageId:"+messageId);
         List<Integer> needToInsert = findTags(tags);
         handleInsertData(messageId,needToInsert);
+        return ServerResponse.createBySuccess(message);
+    }
+
+    @Override
+    public ServerResponse saveDocMessage(Message message,List<String> tags) {
+        int count = messageMapper.insert(message);
+        if (count <= 0) {
+            return ServerResponse.createByError();
+        }
+        Map<Integer,List<MessageTag>> map = splitTag(tags);
+        addTags(message.getId(),map);
         return ServerResponse.createBySuccess(message);
     }
 

@@ -1,3 +1,4 @@
+imgInfo = [];
 (function () {
     var $ = jQuery,
         ratio = window.devicePixelRatio || 1,
@@ -85,6 +86,8 @@
                 "<img src=\""+imgUrl+"\">\n" +
                 "</div>\n" +
                 "</div>";
+            var imgId = data[i].name;
+            imgInfo[i-1] = imgId;
         }
         $("input[name = 'title']").val(title);
         $('.swiper-wrapper').html(str);

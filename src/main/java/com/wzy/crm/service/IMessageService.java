@@ -24,6 +24,8 @@ public interface IMessageService {
 
     ServerResponse saveGraphicMessage(String imgUrl, Message message, String realPath, List<String> tags);
 
+    ServerResponse saveDocMessage(Message message,List<String> tags);
+
     String saveImage(String imgUrl,String path);
 
     void addTags(Integer messageId,Map<Integer,List<MessageTag>> map);

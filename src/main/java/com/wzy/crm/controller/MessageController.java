@@ -85,4 +85,17 @@ public class MessageController {
         return messageService.saveGraphicMessage(imgUrl,message,realPath,tags);
     }
 
+    @PostMapping("/doc/add")
+    public ServerResponse docAdd(HttpServletRequest request,@RequestBody Message message){
+        String realPath = request.getSession().getServletContext().getRealPath("/");
+//        String realPath = "D:\\project\\wechat-tools\\tlarget\\crm-project\\";
+        System.out.println("realPath:"+realPath);
+        message.setUrl("http://crm.youitech.com/module/web/message/doc/doc-share.html");
+        System.out.println(message);
+        String contentAttach = message.getContentattach();
+        System.out.println("contentAttach:{"+contentAttach+"}");
+        List<String> tags = message.getTags();
+        return messageService.saveDocMessage(message,tags);
+    }
+
 }
