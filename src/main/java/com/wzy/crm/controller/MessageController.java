@@ -2,10 +2,12 @@ package com.wzy.crm.controller;
 
 import com.google.common.collect.Maps;
 import com.wzy.crm.dao.GroupMessageRelationMapper;
+import com.wzy.crm.dao.MessageMapper;
 import com.wzy.crm.pojo.GroupMessageRelation;
 import com.wzy.crm.pojo.Message;
 import com.wzy.crm.service.IMessageService;
 import com.wzy.crm.common.ServerResponse;
+import com.wzy.crm.vo.MessageDetail;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,9 @@ public class MessageController {
 
     @Autowired
     private IMessageService messageService;
+
+    @Autowired
+    private MessageMapper messageMapper;
 
     @GetMapping("/name")
     public List<GroupMessageRelation> findAllTitle(HttpServletRequest request, HttpSession session, @RequestParam String groupId, @RequestParam String title){
@@ -96,6 +101,44 @@ public class MessageController {
         System.out.println("contentAttach:{"+contentAttach+"}");
         List<String> tags = message.getTags();
         return messageService.saveDocMessage(message,tags);
+    }
+
+    @PostMapping("")
+    public Map<String,Object> findAll(HttpServletRequest request, HttpSession session,@RequestParam String searchValue,@RequestParam String startTime,@RequestParam String endTime){
+        String draw = request.getParameter("draw");
+        Integer start = Integer.valueOf(request.getParameter("start"));
+        Integer length = Integer.valueOf(request.getParameter("length"));
+        System.out.println("searchValue:"+searchValue);
+//        String sv = request.getParameter("search[value]");
+        String orderColumnIndex = request.getParameter("order[0][column]");
+        String orderType = request.getParameter("order[0][dir]");
+        String orderColumnName = request.getParameter("columns["+orderColumnIndex+"][name]");
+
+        Map<String,String> param = Maps.newHashMap();
+        param.put("start",String.valueOf(start));
+        param.put("length",String.valueOf(length));
+        if(StringUtils.isNotEmpty(searchValue)) {
+//            param.put("title","%" + (searchValue) + "%");
+//            param.put("category","%" + (searchValue) + "%");
+            param.put("keyword", "%" + (searchValue) + "%");
+        }
+        param.put("orderColumn",orderColumnName);
+        param.put("orderType",orderType);
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
+
+        Map<String,Object> result = Maps.newHashMap();
+        List<MessageDetail> messageDetails = this.messageService.findMessageByParam(param);
+        Integer count = messageMapper.findMessageCount();
+        Integer filteredCount = messageMapper.findMessageCountByParam(param);
+
+        result.put("draw",draw);
+        result.put("recordsTotal",count); //总记录数
+        result.put("recordsFiltered",filteredCount); //过滤出来的数量
+        result.put("data",messageDetails);
+
+        return result;
+
     }
 
 }

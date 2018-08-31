@@ -4,6 +4,7 @@ import com.wzy.crm.pojo.Message;
 import com.wzy.crm.common.ResponseCode;
 import com.wzy.crm.common.ServerResponse;
 import com.wzy.crm.pojo.MessageTag;
+import com.wzy.crm.vo.MessageDetail;
 import org.apache.http.protocol.ResponseServer;
 
 import java.util.List;
@@ -23,6 +24,8 @@ public interface IMessageService {
     ServerResponse parseGraphicUrl(String url);
 
     ServerResponse saveGraphicMessage(String imgUrl, Message message, String realPath, List<String> tags);
+
+    List<MessageDetail> findMessageByParam(Map<String,String> map);
 
     ServerResponse saveDocMessage(Message message,List<String> tags);
 

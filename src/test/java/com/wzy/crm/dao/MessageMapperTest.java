@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -37,6 +39,19 @@ public class MessageMapperTest {
         String thirdParamId = "neUzquH";
         List<Message> messages = messageMapper.selectByThirdParamId(thirdParamId);
         System.out.println(messages);
+    }
+
+    @Test
+    public void findMessageCountByParam() throws Exception {
+        Map<String,String> param = new HashMap<String,String>();
+        String searchValue = "admin";
+        String startTime = "2017-01-01 00:00:00";
+        String endTime = "2018-03-01 00:00:00";
+        param.put("keyword", "%" + (searchValue) + "%");
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
+        int count = messageMapper.findMessageCountByParam(param);
+        System.out.println("count:"+count);
     }
 
 }

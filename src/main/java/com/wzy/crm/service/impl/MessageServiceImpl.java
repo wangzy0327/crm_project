@@ -3,6 +3,7 @@ package com.wzy.crm.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.wzy.crm.common.MessageType;
 import com.wzy.crm.dao.MessageMapper;
 import com.wzy.crm.dao.MessageTagMapper;
 import com.wzy.crm.dao.MessageTagRelationMapper;
@@ -15,6 +16,7 @@ import com.wzy.crm.utils.HttpApi;
 import com.wzy.crm.utils.PropertiesUtil;
 import com.wzy.crm.common.ResponseCode;
 import com.wzy.crm.common.ServerResponse;
+import com.wzy.crm.vo.MessageDetail;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -254,6 +256,17 @@ public class MessageServiceImpl implements IMessageService {
         List<Integer> needToInsert = findTags(tags);
         handleInsertData(messageId,needToInsert);
         return ServerResponse.createBySuccess(message);
+    }
+
+    @Override
+    public List<MessageDetail> findMessageByParam(Map<String, String> map) {
+        List<MessageDetail> messageDetails = messageMapper.selectMessageByParam(map);
+        for(int i = 0;i<messageDetails.size();i++){
+            MessageDetail messageDetail = messageDetails.get(i);
+            Integer msgId = messageDetail.getMsgtype();
+            messageDetail.setMsgName(MessageType.map.get(msgId));
+        }
+        return messageDetails;
     }
 
     @Override

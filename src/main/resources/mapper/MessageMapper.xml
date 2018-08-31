@@ -25,6 +25,20 @@
     <result column="coverPicAttach" property="coverpicattach" jdbcType="LONGVARCHAR" />
     <result column="contentAttach" property="contentattach" jdbcType="LONGVARCHAR" />
   </resultMap>
+  <resultMap id="MessageDetail" type="com.wzy.crm.vo.MessageDetail">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="corp_id" property="corpId" jdbcType="VARCHAR" />
+    <result column="suite_id" property="suiteId" jdbcType="VARCHAR" />
+    <result column="corpid" property="corpid" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="LONGVARCHAR" />
+    <result column="msgType" property="msgtype" jdbcType="INTEGER" />
+    <result column="create_userId" property="createUserId" jdbcType="INTEGER" />
+    <result column="name" property="createUserName" jdbcType="VARCHAR"/>
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="delFlag" property="delflag" jdbcType="INTEGER" />
+  </resultMap>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from message
     where id = #{id,jdbcType=INTEGER}
@@ -91,9 +105,51 @@
     select id,title
     from message
     <where>
+      message.delFlag = 0
       <if test="keyword != null and keyword != ''">
         AND message.title LIKE #{keyword}
       </if>
     </where>
+  </select>
+  <select id="findMessageCount" resultType="int">
+      SELECT COUNT(*) FROM message
+      where message.delFlag = 0
+  </select>
+  <select id="findMessageCountByParam" resultType="int">
+    SELECT COUNT(*) FROM message
+    LEFT JOIN staff
+    ON message.create_userId = staff.id
+    <where>
+      message.delFlag = 0
+      <if test="keyword != null and keyword != ''">
+        AND CONCAT(`title`,staff.`name`) LIKE #{keyword}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND message.`update_time` <![CDATA[>=]]> #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND message.`update_time` <![CDATA[<=]]> #{endTime}
+      </if>
+    </where>
+  </select>
+  <select id="selectMessageByParam" resultMap="MessageDetail" >
+    SELECT message.id,corp_id,suite_id,corpid,title,msgType,create_userId,`name`,message.update_time,status
+    FROM message
+    LEFT JOIN staff
+    ON message.create_userId = staff.id
+    <where>
+      message.delFlag = 0
+      <if test="keyword != null and keyword != ''">
+        AND CONCAT(message.`title`,staff.`name`) LIKE #{keyword}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND message.`update_time` <![CDATA[>=]]> #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND message.`update_time` <![CDATA[<=]]> #{endTime}
+      </if>
+    </where>
+    ORDER BY ${orderColumn} ${orderType}
+    limit ${start},${length}
   </select>
 </mapper>

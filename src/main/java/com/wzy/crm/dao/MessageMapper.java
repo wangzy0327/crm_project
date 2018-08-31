@@ -1,6 +1,7 @@
 package com.wzy.crm.dao;
 
 import com.wzy.crm.pojo.Message;
+import com.wzy.crm.vo.MessageDetail;
 
 import java.util.List;
 import java.util.Map;
@@ -19,4 +20,10 @@ public interface MessageMapper {
     int updateByPrimaryKey(Message record);
 
     List<Message> selectMessageTitleByParam(Map<String, String> param);
+
+    Integer findMessageCount();
+
+    Integer findMessageCountByParam(Map<String,String> param);
+
+    List<MessageDetail> selectMessageByParam(Map<String,String> map);
 }

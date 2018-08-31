@@ -1,13 +1,14 @@
-package com.wzy.crm.pojo;
+package com.wzy.crm.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
-public class Message {
+public class MessageDetail {
+
     private Integer id;
 
     private String corpId;
@@ -18,26 +19,21 @@ public class Message {
 
     private Integer msgtype;
 
-    private Integer type;
+    //类型名称 1-文章 2-资料 3-图片 4-没有二维码图片 5-H5 6平面
+    private String msgName;
 
-    private String url;
-
-    private String picUrl;
-
-    private String btntxt;
-
-    private String thirdParams;
-
-    private String thirdParamId;
-
-    private Integer pagecount;
+    //分享详情
+    private String shareMessage;
 
     private Integer createUserId;
+
+    private String createUserName;
 
     /**
      * 最近更新时间
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
 
     private Integer status;
@@ -47,16 +43,6 @@ public class Message {
     private String titleText;
 
     private String title;
-
-    private String descriptionText;
-
-    private String description;
-
-    private String coverpicattach;
-
-    private String contentattach;
-
-    private List<String> tags;
 
     public String getCorpid() {
         return corpid;
@@ -73,4 +59,5 @@ public class Message {
     public void setCorpId(String corpId) {
         this.corpId = corpId;
     }
+
 }
