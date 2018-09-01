@@ -91,7 +91,7 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectByThirdParamId" resultMap="BaseResultMap">
-    select id,description
+    select id,title,description,picurl
     from message
     where third_param_id = #{thirdParamId,jdbcType=VARCHAR }
   </select>
@@ -152,4 +152,14 @@
     ORDER BY ${orderColumn} ${orderType}
     limit ${start},${length}
   </select>
+  <update id="updateStatusStop" parameterType="int">
+    update message
+    set status = 0
+    where id = #{id}
+  </update>
+  <update id="updateStatusStart" parameterType="int">
+    update message
+    set status = 1
+    where id = #{id}
+  </update>
 </mapper>

@@ -141,4 +141,24 @@ public class MessageController {
 
     }
 
+    @GetMapping("/stop")
+    public ServerResponse stopMessage(@RequestParam Integer id){
+        System.out.println("id:"+id);
+        int count = messageMapper.updateStatusStop(id);
+        if(count > 0)
+            return ServerResponse.createBySuccess();
+        else
+            return ServerResponse.createByError();
+    }
+
+    @GetMapping("/start")
+    public ServerResponse startMessage(@RequestParam Integer id){
+        System.out.println("id:"+id);
+        int count = messageMapper.updateStatusStart(id);
+        if(count > 0)
+            return ServerResponse.createBySuccess();
+        else
+            return ServerResponse.createByError();
+    }
+
 }

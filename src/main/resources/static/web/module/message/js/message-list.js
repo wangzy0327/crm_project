@@ -8,8 +8,72 @@ $(function () {
         $('#startTime').val('');
         $('#endTime').val('');
     });
+    toggle();
 
-})
+});
+
+function toggleOn() {
+    
+}
+
+function toggle() {
+    $(document).delegate(".toggle", "click", function () {
+        var id = $(this).attr("data-id");
+        var className = $(this).children("i").attr('class');
+        console.log("className:"+className);
+        if($(this).children("i").hasClass('fa-toggle-on')){
+            $(this).children("i").removeClass('fa-toggle-on');
+            $(this).children("i").addClass('fa-toggle-off');
+            // var editButton = $(this).find('.editLink').attr('class');
+            // var id = $(this).children('td').find('.editLink').attr('data-id');
+            // console.log("editButton:"+editButton);
+            // console.log("id:"+id);
+            $.ajax({
+                url:"/message/stop?id="+id,
+                type:"GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType:'json',
+                success:function (result) {
+                    if(result.code == 0){
+                        var data = result.data;
+                        Ewin.confirm({message: "停用成功!"});
+                    }
+                    $("#editMessage").DataTable().ajax.reload(null,false);
+                },
+                error:function (result) {
+                    console.log(result);
+                    alert(result.status);
+                    $("#editMessage").DataTable().ajax.reload(null,false);
+                }
+            });
+            // $($(this).find('.editLink')).hide();
+            // ($(this).find('.delLink'))[0].hide();
+        }else{
+            $(this).children("i").removeClass('fa-toggle-off');
+            $(this).children("i").addClass('fa-toggle-on');
+            $.ajax({
+                url:"/message/start?id="+id,
+                type:"GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType:'json',
+                success:function (result) {
+                    if(result.code == 0){
+                        Ewin.confirm({message: "启用成功!"});
+                    }
+                    $("#editMessage").DataTable().ajax.reload(null,false);
+                },
+                error:function (result) {
+                    console.log(result);
+                    alert(result.status);
+                    $("#editMessage").DataTable().ajax.reload(null,false);
+                }
+            });
+
+            // $(this).find('.editLink').show();
+            // $(this).find('.delLink').show();
+        }
+    })
+}
 
 //加载数据
 function loadMessageData() {
@@ -68,13 +132,22 @@ function loadMessageData() {
             },
             {
                 "data": function (row) {
-                    return "<a href='#' class='editLink' style='margin: 0 5px 0 5px' data-id='" + row.id + "' data-target='#editModal' data-toggle='modal'><i class='fa fa-toggle-on'></i></a> ";
+                    if(row.status == 1)
+                        return "<a href='#' class='toggle' style='margin: 0 5px 0 5px' data-id='" + row.id + "' data-target='#editModal' data-toggle='modal'><i class='fa fa-toggle-on'></i></a> ";
+                    else{
+                        return "<a href='#' class='toggle' style='margin: 0 5px 0 5px' data-id='" + row.id + "' data-target='#editModal' data-toggle='modal'><i class='fa fa-toggle-off'></i></a> ";
+                    }
                 }
             },
             {
                 "data": function (row) {
-                    return  "<a href='#' class='editLink' style='margin: 0 5px 0 5px' data-id='" + row.id + "' data-target='#editModal' data-toggle='modal'><i class='fa fa-edit'></i></a> " +
-                        "<a href='#' class='delLink' style='margin: 0 5px 0 5px' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";
+                    if(row.status == 1){
+                        return  "<a href='#' class='editLink' style='margin: 0 5px 0 5px' data-id='" + row.id + "' data-target='#editModal' data-toggle='modal'><i class='fa fa-edit'></i></a> " +
+                            "<a href='#' class='delLink' style='margin: 0 5px 0 5px' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";
+                    }else{
+                        return  "<a href='#' class='editLink' style='margin: 0 5px 0 5px;display: none;' data-id='" + row.id + "' data-target='#editModal' data-toggle='modal'><i class='fa fa-edit'></i></a> " +
+                            "<a href='#' class='delLink' style='margin: 0 5px 0 5px;display: none;' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";
+                    }
                 }
             }
         ],

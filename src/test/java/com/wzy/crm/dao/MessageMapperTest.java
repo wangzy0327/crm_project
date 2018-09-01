@@ -54,4 +54,19 @@ public class MessageMapperTest {
         System.out.println("count:"+count);
     }
 
+    @Test
+    public void updateStatusStop() throws Exception {
+        Integer id = 100;
+        int count = messageMapper.updateStatusStop(id);
+        System.out.println("count:"+count);
+    }
+
+    @Test
+    public void updateStatusStart() throws Exception {
+        Integer id = 100;
+        int count = messageMapper.updateStatusStart(id);
+        System.out.println("count:"+count);
+    }
+
+
 }

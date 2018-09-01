@@ -26,4 +26,8 @@ public interface MessageMapper {
     Integer findMessageCountByParam(Map<String,String> param);
 
     List<MessageDetail> selectMessageByParam(Map<String,String> map);
+
+    Integer updateStatusStop(Integer id);
+
+    Integer updateStatusStart(Integer id);
 }
