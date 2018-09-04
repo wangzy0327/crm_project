@@ -61,26 +61,59 @@
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.Message" >
     update message
-    set corp_id = #{corpId,jdbcType=VARCHAR},
+    set
+    <if test="corpId != null and corpId != ''">
+      corp_id = #{corpId,jdbcType=VARCHAR},
+    </if>
+    <if test="suiteId != null and suiteId != ''">
       suite_id = #{suiteId,jdbcType=VARCHAR},
+    </if>
+    <if test="corpid != null and corpid != ''">
       corpid = #{corpid,jdbcType=VARCHAR},
+    </if>
+    <if test="msgtype != null and msgtype != ''">
       msgType = #{msgtype,jdbcType=INTEGER},
+    </if>
+    <if test="type != null and type != ''">
       `type` = #{type,jdbcType=INTEGER},
+    </if>
+    <if test="url != null and url != ''">
       url = #{url,jdbcType=VARCHAR},
+    </if>
+    <if test="picUrl != null and picUrl != ''">
       picurl = #{picUrl,jdbcType=VARCHAR},
+    </if>
+    <if test="btntxt != null and btntxt != ''">
       btntxt = #{btntxt,jdbcType=VARCHAR},
+    </if>
+    <if test="thirdParams != null and thirdParams != ''">
       third_params = #{thirdParams,jdbcType=VARCHAR},
+    </if>
+    <if test="pagecount != null and pagecount != ''">
       pageCount = #{pagecount,jdbcType=INTEGER},
-      create_userId = #{createUserid,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER},
-      delFlag = #{delflag,jdbcType=INTEGER},
-      titleText = #{titletext,jdbcType=LONGVARCHAR},
+    </if>
+    <if test="createUserId != null and createUserId != ''">
+      create_userId = #{createUserId,jdbcType=INTEGER},
+    </if>
+    <if test="titleText != null and titleText != ''">
+      titleText = #{titleText,jdbcType=LONGVARCHAR},
+    </if>
+    <if test="title != null and title != ''">
       title = #{title,jdbcType=LONGVARCHAR},
-      descriptionText = #{descriptiontext,jdbcType=LONGVARCHAR},
+    </if>
+    <if test="descriptionText != null and descriptionText != ''">
+      descriptionText = #{descriptionText,jdbcType=LONGVARCHAR},
+    </if>
+    <if test="description != null and description != ''">
       description = #{description,jdbcType=LONGVARCHAR},
+    </if>
+    <if test="coverpicattach != null and coverpicattach != ''">
       coverPicAttach = #{coverpicattach,jdbcType=LONGVARCHAR},
-      contentAttach = #{contentattach,jdbcType=LONGVARCHAR}
+    </if>
+    <if test="contentattach != null and contentattach != ''">
+      contentAttach = #{contentattach,jdbcType=LONGVARCHAR},
+    </if>
+    update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

@@ -62,5 +62,17 @@ public class MessageServiceImplTest {
         messageService.addTags(messageId,map);
     }
 
+    @Test
+    public void findH5Message() throws Exception {
+        Integer id = 153;
+        messageService.findH5Message(id);
+    }
+
+    @Test
+    public void needToDelTags() throws Exception {
+        Integer id = 165;
+        messageService.needToDelTags(id);
+    }
+
 
 }

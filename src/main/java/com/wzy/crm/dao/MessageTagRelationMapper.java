@@ -14,4 +14,8 @@ public interface MessageTagRelationMapper {
 
     int insertByMessageTagRelation(@Param("messageTagRelations") List<MessageTagRelation> messageTagRelations);
 
+    List<MessageTagRelation> selectTags(Integer id);
+
+    int deleteByMessageId(Integer id);
+
 }

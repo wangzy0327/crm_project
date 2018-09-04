@@ -1,6 +1,7 @@
 package com.wzy.crm.dao;
 
-import com.google.common.collect.Lists;
+import com.wzy.crm.Application;
+import com.wzy.crm.pojo.MessageTagRelation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = Application.class)
 public class MessageTagRelationMapperTest {
 
     @Autowired
@@ -25,6 +24,15 @@ public class MessageTagRelationMapperTest {
         Integer messageId = 1;
         List<Integer> tagIds = new ArrayList<Integer>(Arrays.asList(1,2,3,4));
         System.out.println("num:"+messageTagRelationMapper.insertByParam(messageId,tagIds));
+    }
+
+    @Test
+    public void selectTags() throws Exception {
+        Integer id = 165;
+        List<MessageTagRelation> messageTagRelations = messageTagRelationMapper.selectTags(id);
+        for(int i = 0;i<messageTagRelations.size();i++){
+            System.out.println(messageTagRelations.get(i));
+        }
     }
 
 }

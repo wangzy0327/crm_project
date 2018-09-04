@@ -33,6 +33,7 @@
 		<selenium.java.version>3.12.0</selenium.java.version>
 		<phantomjsdriver.version>1.4.4</phantomjsdriver.version>
 		<pdfbox.version>2.0.1</pdfbox.version>
+		<weixin-java-cp.version>3.1.7.BETA</weixin-java-cp.version>
 	</properties>
 
 	<dependencies>
@@ -274,6 +275,12 @@
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
 			<version>2.0.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>weixin-java-cp</artifactId>
+			<version>${weixin-java-cp.version}</version>
 		</dependency>
 
 	</dependencies>

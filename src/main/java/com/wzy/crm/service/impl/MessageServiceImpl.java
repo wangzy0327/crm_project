@@ -73,6 +73,12 @@ public class MessageServiceImpl implements IMessageService {
     }
 
     @Override
+    public void needToDelTags(Integer messageId){
+        int count = messageTagRelationMapper.deleteByMessageId(messageId);
+        System.out.println("delCount:"+count);
+    }
+
+    @Override
     public void addTags(Integer messageId,Map<Integer,List<MessageTag>> map){
         List<MessageTagRelation> messageTagRelations = new ArrayList<>();
         for(Map.Entry<Integer, List<MessageTag>> entry : map.entrySet()){
@@ -92,7 +98,8 @@ public class MessageServiceImpl implements IMessageService {
                 messageTagRelations.add(messageTagRelation);
             }
         }
-        messageTagRelationMapper.insertByMessageTagRelation(messageTagRelations);
+        if(messageTagRelations.size()>0)
+            messageTagRelationMapper.insertByMessageTagRelation(messageTagRelations);
     }
 
     @Override
@@ -146,8 +153,36 @@ public class MessageServiceImpl implements IMessageService {
     }
 
     @Override
+    public ServerResponse findH5Message(Integer id){
+        Message message = messageMapper.selectByPrimaryKey(id);
+        Integer pages = message.getPagecount();
+        List<MessageTagRelation> messageTagRelations = messageTagRelationMapper.selectTags(id);
+        List<String> tags = new ArrayList<>();
+        for(int i = 0;i<pages;i++){
+            List<String> tagStrs = new ArrayList<>();
+            for(int j = 0;j<messageTagRelations.size();j++){
+                if(messageTagRelations.get(j).getPage().equals(Integer.valueOf(i))){
+                    tagStrs.add(messageTagRelations.get(j).getTag());
+                }
+            }
+            if(tagStrs == null || tagStrs.size() == 0){
+                tags.add("");
+            }else{
+                tags.add(String.join(",",tagStrs));
+            }
+        }
+        message.setTags(tags);
+        return ServerResponse.createBySuccess(message);
+    }
+
+    @Override
     public ServerResponse saveH5Message(String url,Message message,List<String> tags) {
         System.out.println(message);
+        JSONObject thirdParam = JSONObject.parseObject(message.getThirdParams());
+        String thirdUrl = thirdParam.getString("url");
+        String thirdParamId = thirdUrl.substring(thirdUrl.lastIndexOf("/")+1,thirdUrl.length());
+        System.out.println("thirdParamId:"+thirdParamId);
+        message.setThirdParamId(thirdParamId);
         int count = messageMapper.insert(message);
         if (count <= 0) {
             return ServerResponse.createByError();
@@ -157,10 +192,30 @@ public class MessageServiceImpl implements IMessageService {
         return ServerResponse.createBySuccess(message);
     }
 
+    @Override
+    public ServerResponse updateH5Message(Message message,List<String> tags) {
+        System.out.println(message);
+        JSONObject thirdParam = JSONObject.parseObject(message.getThirdParams());
+        String thirdUrl = thirdParam.getString("url");
+        String thirdParamId = thirdUrl.substring(thirdUrl.lastIndexOf("/")+1,thirdUrl.length());
+        System.out.println("thirdParamId:"+thirdParamId);
+        message.setThirdParamId(thirdParamId);
+        int count = messageMapper.updateByPrimaryKey(message);
+        if (count <= 0) {
+            return ServerResponse.createByError();
+        }
+        Map<Integer,List<MessageTag>> map = splitTag(tags);
+        needToDelTags(message.getId());
+        addTags(message.getId(),map);
+        return ServerResponse.createBySuccess(message);
+    }
+
 
     @Override
     public ServerResponse saveH5Page(String urlStr, String realPath){
         String thirdParamId = urlStr.substring(urlStr.lastIndexOf("/")+1,urlStr.lastIndexOf("?"));
+        String thirdParamUrl = urlStr.substring(0,urlStr.lastIndexOf("?"));
+        System.out.println("thirdParamUrl:"+thirdParamUrl);
         List<Message> messages = messageMapper.selectByThirdParamId(thirdParamId);
         if(messages!=null && messages.size()>0){
             return ServerResponse.createBySuccess(messages.get(0).getDescription());
@@ -190,7 +245,11 @@ public class MessageServiceImpl implements IMessageService {
             File dist = new File(realPath+pagePath.toString());
             FileUtils.writeStringToFile(dist, sb.toString(), "UTF-8");
             System.out.println("文件保存成功！");
-            return ServerResponse.createBySuccess(pagePath);
+            String str = "{\"thirdParamUrl\":\""+thirdParamUrl+"\",\"pageUrl\":\""+pagePath+"\"}";
+            System.out.println("responseJsonStr:  "+str);
+            JSONObject responseJson = JSONObject.parseObject(str);
+            System.out.println(responseJson.toJSONString());
+            return ServerResponse.createBySuccess(responseJson);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

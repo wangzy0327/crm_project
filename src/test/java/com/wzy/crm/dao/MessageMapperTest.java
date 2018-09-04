@@ -21,6 +21,13 @@ public class MessageMapperTest {
     @Autowired
     private MessageMapper messageMapper;
 
+
+    @Test
+    public void selectByPrimaryKey() throws Exception {
+        Integer id = 164;
+        Message message = messageMapper.selectByPrimaryKey(id);
+    }
+
     @Test
     public void insert() throws Exception {
         Message message = new Message();

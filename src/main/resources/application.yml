@@ -1,0 +1,86 @@
+#server.port=8080
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+#server.address=192.168.33.1
+#server.address=192.168.33.1
+
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/crm_project?useUnicode=true&charsetEncoding=utf8&&autoReconnect=true
+    username: root
+    password: root
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      test-on-borrow: true
+      stat-view-servlet.allow: true
+
+
+# mybatis 配置
+mybatis:
+  type-aliases-package: com.wzy.crm.pojo
+  mapper-locations: classpath:mapper/*.xml
+
+# 通用Mapper配置
+
+#com.wzy.crm.dao sql日志 DEBUG级别输出
+logging:
+  file: logs/spring-boot-logging.log
+  level:
+    com.wzy.crm: debug
+    org.springframework.web: INFO
+    me.chanjar.weixin: DEBUG
+  pattern:
+    console:  '%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n'
+    file:  '%d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n'
+
+
+# 分页插件配置
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count-countSql
+
+
+#ftp
+ftp:
+  server:
+    ip: 127.0.0.1
+    port: 21
+    user: wzy
+    password: wzy
+    http.prefix: D:\\ftpServer\\
+
+
+#nginx
+nginx:
+  server: http://127.0.0.1:9000/
+
+
+#盐值
+password:
+  salt: wangzysdafaqj23ou89ZXcj@#$@#$#@KJdjklj;D../dSF.,
+
+
+restart:
+  include:
+    mapper: /mapper-[\\w-\\.]+jar
+    pagehelper: /pagehelper-[\\w-\\.]+jar
+
+#wechat
+wechat:
+  cp:
+    corpId: wx4b8e52ee9877a5be
+    appConfigs:
+      - agentId: 1000175
+        secret: NTpqd1NKG869xGn1FV2MosN6TS7hE08KWr2yVDwtnKE
+        token: fyrCutNbkI
+        aesKey: s2cxdQlN0B0IIGGRuSSiYeKudtMB6cHTTCgx2vIhbYc

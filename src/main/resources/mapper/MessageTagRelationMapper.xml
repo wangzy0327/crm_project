@@ -5,6 +5,7 @@
     <result column="message_id" property="messageId" jdbcType="INTEGER" />
     <result column="tag_id" property="tagId" jdbcType="INTEGER" />
     <result column="page" property="page" jdbcType="INTEGER" />
+    <result column="name" property="tag" jdbcType="VARCHAR"/>
   </resultMap>
   <insert id="insert" parameterType="com.wzy.crm.pojo.MessageTagRelation" >
     insert into message_tag_relation (message_id, tag_id, page
@@ -32,4 +33,18 @@
       (#{item.messageId},#{item.tagId},#{item.page})
     </foreach>
   </insert>
+  <select id="selectTags" resultMap="BaseResultMap">
+    select mtr.message_id,mtr.tag_id,mtr.page,message_tag.`name`
+    from
+   (select message_id,tag_id,page
+    from message_tag_relation
+    where message_id = #{id}) mtr
+    left join message_tag
+    on mtr.tag_id = message_tag.id
+  </select>
+  <delete id="deleteByMessageId">
+    delete
+    from message_tag_relation
+    where message_id = #{id}
+  </delete>
 </mapper>

@@ -17,7 +17,13 @@ public interface IMessageService {
 
     ServerResponse parseH5Url(String url);
 
+    ServerResponse findH5Message(Integer id);
+
     ServerResponse saveH5Message(String url, Message message, List<String> tags);
+
+    ServerResponse updateH5Message(Message message,List<String> tags);
+
+    void needToDelTags(Integer messageId);
 
     ServerResponse saveH5Page(String urlStr, String realPath);
 

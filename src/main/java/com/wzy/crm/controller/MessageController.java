@@ -66,12 +66,25 @@ public class MessageController {
 //        return messageService.parseH5Url(url);
     }
 
+    @PostMapping("/h5")
+    public ServerResponse loadH5Message(@RequestParam Integer id){
+//        String realPath = "D:\\project\\wechat-tools\\tlarget\\crm-project\\";
+        return messageService.findH5Message(id);
+//        return null;
+    }
+
     @PostMapping("/h5/add")
     public ServerResponse h5Add(@RequestParam String url,@RequestBody Message message){
-//        String realPath = "D:\\project\\wechat-tools\\tlarget\\crm-project\\";
         message.setUrl("http://crm.youitech.com/module/web/message/h5/h5-share.html");
         List<String> tags = message.getTags();
         return messageService.saveH5Message(url,message,tags);
+    }
+
+    @PostMapping("/h5/update")
+    public ServerResponse h5Update(@RequestBody Message message){
+        message.setUrl("http://crm.youitech.com/module/web/message/h5/h5-share.html");
+        List<String> tags = message.getTags();
+        return messageService.updateH5Message(message,tags);
 //        return null;
     }
 

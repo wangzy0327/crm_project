@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="en">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1"/>
+    <meta name="keywords" content="登录" />
+    <meta name="description" content="登录" />
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="../css/weui.min.css">
+    <link rel="stylesheet" href="../css/jquery-weui.min.css">
+    <link rel="stylesheet" href="../iconfont/iconfont.css">
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+<div style="margin: 10px auto;text-align: center;">
+    <div style="font-weight: 700;font-size: 20px;">
+        欢迎使用销售助手！
+    </div>
+    <!--<div>-->
+        <!--<span style="font-weight: 700;font-size: 18px;">使用具体功能</span></br>-->
+        <!--请前往"企业微信"消息模块"营销助手"！</br>-->
+        <!--或前往微信企业号"营销助手"！</br>-->
+        <!--<span style="font-weight: 700;font-size: 18px;">管理消息、统计数据</span></br>-->
+        <!--前往网页端"管理后台"请先进行登录！-->
+    <!--</div>-->
+    <a href="javascript:;" class="weui-btn weui-btn_primary" id="admin_login" style="width:90%;">登录</a>
+    <!--<a href="javascript:;" class="weui-btn weui-btn_primary" id="admin_login" style="width:90%;">管理员登录(微信扫描)</a>-->
+    <!--<a href="javascript:;" class="weui-btn weui-btn_primary" id="member_login" style="width:90%;">成员登录(企业微信扫描)</a>-->
+    <div id="code" ></div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script src="http://rescdn.qqmail.com/node/ww/wwopenmng/js/sso/wwLogin-1.0.0.js" type="text/javascript" charset="utf-8"></script>
+<script>
+//    window.WwLogin({
+//        "id" : "code",  //显示二维码的容器id
+//        "appid" : "wx4b8e52ee9877a5be",
+//        "agentid" : "1000175",  //企业微信的cropID，在 企业微信管理端->我的企业 中查看
+//        "redirect_uri" :"http%3A%2F%2Fwangzy.tunnl.qydev.com%2Fwechatlogin%2FpageLogin",   //重定向地址，需要进行UrlEncode
+////        "redirect_uri" :"http%3A%2F%2Fwangzy.tunnl.qydev.com%2Fwechatlogin%2FpageLogin",   //重定向地址，需要进行UrlEncode
+//        "state" : "3828293919281",   //用于保持请求和回调的状态，授权请求后原样带回给企业。该参数可用于防止csrf攻击（跨站请求伪造攻击），建议企业带上该参数
+//        "href" : "",    //自定义样式链接，企业可根据实际需求覆盖默认样式。详见文档底部FAQ
+//
+//    });
+    $(function () {
+        $('#admin_login').click(function(){
+//            location.href="https://open.work.weixin.qq.com/wwopen/sso/qrConnect?appid=wx4b8e52ee9877a5be&agentid=\n" +
+//                "1000175&redirect_uri=http%3A%2F%2Fwangzy.tunnel.qydev.com%2Fwechatlogin%2FpageLogin&state=";
+            location.href="https://open.work.weixin.qq.com/wwopen/sso/3rd_qrConnect?appid=wx4b8e52ee9877a5be" +
+                "&redirect_uri=http%3A%2F%2Fwangzy.tunnel.qydev.com%2Fwechatlogin%2FpageLogin&state=usertype=admin";
+        });
+        $('#member_login').click(function(){
+//            location.href="https://open.work.weixin.qq.com/wwopen/sso/qrConnect?appid=wx4b8e52ee9877a5be&agentid=\n" +
+//                "1000175&redirect_uri=http%3A%2F%2Fwangzy.tunnel.qydev.com%2Fwechatlogin%2FpageLogin&state=";
+            location.href="https://open.work.weixin.qq.com/wwopen/sso/3rd_qrConnect?appid=wx4b8e52ee9877a5be" +
+                "&redirect_uri=http%3A%2F%2Fwangzy.tunnel.qydev.com%2Fwechatlogin%2FpageLogin&state=usertype=member";
+        });
+    });
+</script>
+</body>
+</html>
