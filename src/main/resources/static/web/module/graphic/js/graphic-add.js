@@ -28,6 +28,9 @@ function saveGraphic() {
             tags.push($.trim($(spanTags[i]).text().substring(0,10)));
         }
         console.log("tags:"+tags);
+        var third_url = ($("input[name = 'third_url']"))[0].value;
+        var third_params = {"type":"chuangkit","url":third_url};
+        var third_params_str = JSON.stringify(third_params);
         $.ajax({
             url:"/message/graphic/add?imgUrl="+imgSrc+"&tags="+tags,
             type:"POST",
@@ -40,6 +43,7 @@ function saveGraphic() {
                 "msgtype":"6",
                 "titleText":title,
                 "title":title,
+                "thirdParams":third_params_str,
                 "thirdParamId":d,
                 "pagecount":1
             }),
@@ -108,6 +112,7 @@ function loadGraphic() {
                     loadImage(data.imgUrl);
                     $("input[name='title']").val(data.title);
                     $("input[name='d']").val(data.d);
+                    $("input[name='third_url']").val(graphicUrl);
                 }else{
                     var msg = result.msg;
                     console.log("msg:"+msg);
@@ -122,14 +127,6 @@ function loadGraphic() {
 function loadImage(imgUrl) {
     // imgUrl = "D:\\ftpServer\\05603513-8614-43da-a17b-6893d238d0f0.jpg";
     str = "";
-
-// <div class="swiper-slide"
-//     style="height: 504px;">
-//         <div class="swiper-zoom-container"><img class=""
-//     src="http://127.0.0.1:9000/05603513-8614-43da-a17b-6893d238d0f0.jpg">
-//         <!--//imgpub.chuangkit.com/design/2018/08/22/430860543_thumb@780w_100Q_1x.jpg?v=2018-08-22 16:49:48.0-->
-//         </div>
-//         </div>
 
     str += "<div class=\"swiper-slide\"\n" +
         "style=\"height: 504px;\">\n" +

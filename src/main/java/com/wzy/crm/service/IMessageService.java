@@ -19,9 +19,17 @@ public interface IMessageService {
 
     ServerResponse findH5Message(Integer id);
 
+    ServerResponse findGraphicMessage(Integer id);
+
+    ServerResponse findDocMessage(Integer id);
+
     ServerResponse saveH5Message(String url, Message message, List<String> tags);
 
     ServerResponse updateH5Message(Message message,List<String> tags);
+
+    ServerResponse updateGraphic(Message message,List<String> tags);
+
+    ServerResponse updateDocMessage(Message message);
 
     void needToDelTags(Integer messageId);
 

@@ -30,6 +30,7 @@ imgInfo = [];
             auto: true,
             headers: {'userName': 'emi', 'token': '123456'}
         });
+    // $('#picker').hide();
     // 当有文件被添加进队列的时候，添加到页面预览
     uploader.on( 'fileQueued', function( file ) {
         var $li = $('<div id="' + file.id + '" class="file-item">' +
@@ -58,7 +59,7 @@ imgInfo = [];
         }
     });
 
-    uploader.on( 'uploadSuccess', function(file,response ) {
+    uploader.on('uploadSuccess', function(file,response ) {
         console.log(file);
         console.log(file.id);
         var id = file.id;

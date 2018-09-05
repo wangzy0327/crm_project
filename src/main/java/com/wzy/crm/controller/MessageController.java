@@ -68,9 +68,17 @@ public class MessageController {
 
     @PostMapping("/h5")
     public ServerResponse loadH5Message(@RequestParam Integer id){
-//        String realPath = "D:\\project\\wechat-tools\\tlarget\\crm-project\\";
         return messageService.findH5Message(id);
-//        return null;
+    }
+
+    @PostMapping("/graphic")
+    public ServerResponse loadGraphicMessage(@RequestParam Integer id){
+        return messageService.findGraphicMessage(id);
+    }
+
+    @PostMapping("/doc")
+    public ServerResponse loadDocMessage(@RequestParam Integer id){
+        return messageService.findDocMessage(id);
     }
 
     @PostMapping("/h5/add")
@@ -86,6 +94,18 @@ public class MessageController {
         List<String> tags = message.getTags();
         return messageService.updateH5Message(message,tags);
 //        return null;
+    }
+
+    @PostMapping("/graphic/update")
+    public ServerResponse graphicUpdate(@RequestBody Message message,@RequestParam List<String> tags){
+        message.setUrl("http://crm.youitech.com/module/web/message/graphic/graphic-share.html");
+        return messageService.updateGraphic(message,tags);
+    }
+
+    @PostMapping("/doc/update")
+    public ServerResponse docUpdate(@RequestBody Message message){
+        message.setUrl("http://crm.youitech.com/module/web/message/doc/doc-share.html");
+        return messageService.updateDocMessage(message);
     }
 
     @PostMapping("/parseGraphicUrl")

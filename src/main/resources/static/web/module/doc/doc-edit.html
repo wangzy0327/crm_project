@@ -1,10 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>文档资料编辑</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link href="../../css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../../css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../../css/animate.css" rel="stylesheet">
+    <link href="../../css/swiper.min.css" rel="stylesheet">
+    <link href="../../css/jquery.tagsinput.min.css" rel="stylesheet">
+    <link href="../../css/message-common.css" rel="stylesheet">
+    <link href="../../css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="../../css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <link href="../../css/style.css?v=4.1.0" rel="stylesheet">
+    <link  href="../../css/plugins/webuploader/webuploader.css" rel="stylesheet">
+</head>
+<body >
+<style>
+    .uploader-list {
+        /*width: 100%;*/
+        overflow: hidden;
+        float: left;
+    }
+    #uploader .thumbnail {
+        float:left;
+        width: 170px;
+        height: 170px;
+        overflow: hidden;
+    }
+    .btn-primary{
+        background-color: #1ab394;
+        border-color: #1ab394;
+    }
+
+</style>
+<style>
+    .webuploader-pick{
+        background: #1ab394;
+        padding:5px 10px;
+    }
+    div.tagsinput span.tag{
+        border:1px solid #1eb2b2;
+        background: #18a689;
+    }
+    div.tagsinput span.tag a{
+        color: #999999;
+    }
+    .btn-success {
+        background-color: #1ab394;
+        border-color: #1ab394;
+        color: #FFFFFF;
+    }
+    .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open .dropdown-toggle.btn-success {
+        background-color: #1ab394;
+        border-color: #1ab394;
+        color: #FFFFFF;
+    }
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <div class="row form-inline" style="margin-left: 20px">
+                <!--<label class="col-sm-2 control-label" style="font-size: 14px;padding-right: 10px;">H5设计网址</label>-->
+                <label class="col-sm-2 control-label">文件类型</label>
+                <div class="col-sm-1">
+                    <select class="form-control m-b" name="account">
+                        <option>PDF</option>
+                    </select>
+                </div>
+                <!--<input id="url" type="url" class="form-control" style="width: 400px;" maxlength="200"-->
+                <!--placeholder="请输入链接地址">-->
+
+                <div id="uploader" class="wu-example">
+                    <!--用来存放文件信息-->
+                    <div class="btns">
+                        <button id="picker" class="btn btn-primary" style="padding:0px;margin-bottom: 0px;" type="button">
+                            <i class="fa fa-upload"></i>&nbsp;上传资料
+                        </button>
+                    </div>
+                    <!--<div id="uploaded" style="overflow: hidden;float: left;"></div>-->
+                    <div id="thelist" class="uploader-list"></div>
+                </div>
+                <div id="uploaded" style="overflow: hidden;float: left;"></div>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="col-sm-10" style="margin:0 auto;">
+                        <div id="page-view" class="" style="width: 320px; height: 504px;">
+                            <div class="swiper-container swiper-container-vertical" id="swiperWrap"
+                                 style="width: 320px; height: 100%;">
+                                <div class="swiper-wrapper"
+                                     style="transition-duration: 0ms; transform: translate3d(0px, -1008px, 0px);">
+
+
+
+                                </div>
+                                <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
+                                    <span class="swiper-pagination-bullet"></span><span
+                                        class="swiper-pagination-bullet swiper-pagination-bullet-active"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-sm-2" style="margin: 200px auto;">-->
+                    <!--<i class="fa fa-angle-up"></i>-->
+                    <!--<br><br>-->
+                    <!--<i class="fa fa-angle-down"></i>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <div class="form-group">
+                            <input name="id" type="hidden" class="form-control">
+                        </div>
+                        <div class="form-group" >
+                            <label class="col-sm-1 control-label" style="text-align: left;">标题:</label>
+                            <div class="col-sm-6">
+                                <input name="title" style="text-align: left;" class="form-control" type="text" placeholder="请输入标题">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tags_1" class="col-sm-1 control-label" style="text-align: left;">标签:</label>
+                            <div class="col-sm-6" >
+                                <input id="tags_1" type="text" class="form-control"  />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label" style="text-align: left;">&nbsp;&nbsp;</label>
+                            <div class="col-sm-6" >
+                                <p class="mt8" style="margin-top: 8px;">
+                                    <span style="margin: 0;font-size: 12px;color: #999999;">最多添加5个标签</span>
+                                </p>
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button id="save" class="btn btn-primary" type="button" style="margin-left: 5px" >保存</button>
+                                <button id="push" class="btn btn-primary" type="button" style="margin-left: 5px">发布</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="../../js/jquery.min.js?v=2.1.4"></script>
+<script src="../../js/bootstrap.min.js?v=3.3.6"></script>
+<script src="../../js/swiper.min.js"></script>
+<script src="../../js/jquery.tagsinput.min.js"></script>
+<script src="../../js/plugins/webuploader/webuploader.min.js"></script>
+<!--提示框-->
+<script src="/lib/config.js"></script>
+<script>
+    $(function () {
+        $('#tags_1').importTags("");
+        $('#tags_1').tagsInput({
+            width:'auto',
+            onChange: function(){
+                let len = $("#tags_1_tagsinput .tag").length;
+                tags_1_addTag.style.display = "";
+                if(len >= 5){
+                    tags_1_addTag.style.display = "none";
+                }
+            }
+        });
+    })
+</script>
+<script src="js/doc-edit.js"></script>
+<script src="js/upload.js"></script>
 </body>
 </html>

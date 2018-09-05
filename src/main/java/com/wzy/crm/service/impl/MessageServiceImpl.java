@@ -155,7 +155,44 @@ public class MessageServiceImpl implements IMessageService {
     @Override
     public ServerResponse findH5Message(Integer id){
         Message message = messageMapper.selectByPrimaryKey(id);
+        List<String> tags = getMultiPageTags(message);
+        message.setTags(tags);
+        return ServerResponse.createBySuccess(message);
+    }
+
+    @Override
+    public ServerResponse findGraphicMessage(Integer id){
+        Message message = messageMapper.selectByPrimaryKey(id);
+        List<String> tags = new ArrayList<>();
+        String picUrl = PropertiesUtil.getProperty("nginx.server")+ message.getPicUrl();
+        message.setPicUrl(picUrl);
+        List<MessageTagRelation> messageTagRelations = messageTagRelationMapper.selectTags(id);
+        for(int i = 0;i<messageTagRelations.size();i++){
+            tags.add(messageTagRelations.get(i).getTag());
+        }
+        message.setTags(tags);
+        return ServerResponse.createBySuccess(message);
+    }
+
+    @Override
+    public ServerResponse findDocMessage(Integer id){
+        Message message = messageMapper.selectByPrimaryKey(id);
+        String coverPicAttach = message.getCoverpicattach();
+        String[] cpa = coverPicAttach.split(",");
+        List<String> coverPicAttachs = new ArrayList<>();
+        for(int i = 0;i<cpa.length;i++){
+            coverPicAttachs.add(PropertiesUtil.getProperty("nginx.server")+cpa[i]);
+        }
+        coverPicAttach = String.join(",",coverPicAttachs);
+        message.setCoverpicattach(coverPicAttach);
+        List<String> tags = getMultiPageTags(message);
+        message.setTags(tags);
+        return ServerResponse.createBySuccess(message);
+    }
+
+    public List<String> getMultiPageTags(Message message){
         Integer pages = message.getPagecount();
+        Integer id = message.getId();
         List<MessageTagRelation> messageTagRelations = messageTagRelationMapper.selectTags(id);
         List<String> tags = new ArrayList<>();
         for(int i = 0;i<pages;i++){
@@ -171,9 +208,9 @@ public class MessageServiceImpl implements IMessageService {
                 tags.add(String.join(",",tagStrs));
             }
         }
-        message.setTags(tags);
-        return ServerResponse.createBySuccess(message);
+        return tags;
     }
+
 
     @Override
     public ServerResponse saveH5Message(String url,Message message,List<String> tags) {
@@ -200,6 +237,29 @@ public class MessageServiceImpl implements IMessageService {
         String thirdParamId = thirdUrl.substring(thirdUrl.lastIndexOf("/")+1,thirdUrl.length());
         System.out.println("thirdParamId:"+thirdParamId);
         message.setThirdParamId(thirdParamId);
+        int count = messageMapper.updateByPrimaryKey(message);
+        if (count <= 0) {
+            return ServerResponse.createByError();
+        }
+        Map<Integer,List<MessageTag>> map = splitTag(tags);
+        needToDelTags(message.getId());
+        addTags(message.getId(),map);
+        return ServerResponse.createBySuccess(message);
+    }
+
+    @Override
+    public ServerResponse updateGraphic(Message message,List<String> tags){
+        Integer messageId = message.getId();
+        needToDelTags(messageId);
+        List<Integer> needToInsert = findTags(tags);
+        handleInsertData(messageId,needToInsert);
+        messageMapper.updateByPrimaryKey(message);
+        return ServerResponse.createBySuccess(message);
+    }
+
+    @Override
+    public ServerResponse updateDocMessage(Message message){
+        List<String> tags = message.getTags();
         int count = messageMapper.updateByPrimaryKey(message);
         if (count <= 0) {
             return ServerResponse.createByError();
