@@ -190,6 +190,21 @@ public class MessageServiceImpl implements IMessageService {
         return ServerResponse.createBySuccess(message);
     }
 
+    @Override
+    public ServerResponse findRichTextMessage(Integer id){
+        Message message = messageMapper.selectByPrimaryKey(id);
+        List<String> tags = new ArrayList<>();
+        String picUrl = PropertiesUtil.getProperty("nginx.server")+ message.getPicUrl();
+        message.setPicUrl(picUrl);
+        List<MessageTagRelation> messageTagRelations = messageTagRelationMapper.selectTags(id);
+        for(int i = 0;i<messageTagRelations.size();i++){
+            tags.add(messageTagRelations.get(i).getTag());
+        }
+        message.setTags(tags);
+        return ServerResponse.createBySuccess(message);
+    }
+
+
     public List<String> getMultiPageTags(Message message){
         Integer pages = message.getPagecount();
         Integer id = message.getId();

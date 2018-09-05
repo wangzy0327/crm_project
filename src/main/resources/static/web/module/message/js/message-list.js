@@ -142,11 +142,34 @@ function loadMessageData() {
             {
                 "data": function (row) {
                     if(row.status == 1){
-                        return  "<a href='#' class='editLink' style='margin: 0 5px 0 5px' data-id='" + row.id + "' data-target='#editModal' data-toggle='modal'><i class='fa fa-edit'></i></a> " +
-                            "<a href='#' class='delLink' style='margin: 0 5px 0 5px' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";
-                    }else{
-                        return  "<a href='#' class='editLink' style='margin: 0 5px 0 5px;display: none;' data-id='" + row.id + "' data-target='#editModal' data-toggle='modal'><i class='fa fa-edit'></i></a> " +
-                            "<a href='#' class='delLink' style='margin: 0 5px 0 5px;display: none;' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";
+                        if(row.msgtype == 1){
+                            return "<a href='../richtext/richtext-edit.html?id="+row.id+"'  class='editLink' style='margin: 0 5px 0 5px;' data-id='" + row.id + "' ><i class='fa fa-edit'></i></a> "+
+                                "<a href='#' class='delLink' style='margin: 0 5px 0 5px' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";;
+                        }else if(row.msgtype == 2){
+                            return "<a href='../doc/doc-edit.html?id="+row.id+"'  class='editLink' style='margin: 0 5px 0 5px;' data-id='" + row.id + "' ><i class='fa fa-edit'></i></a> "+
+                                "<a href='#' class='delLink' style='margin: 0 5px 0 5px' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";;
+                        }else if(row.msgtype == 5){
+                            return "<a href='../h5/h5-edit.html?id="+row.id+"'  class='editLink' style='margin: 0 5px 0 5px;' data-id='" + row.id + "' ><i class='fa fa-edit'></i></a> "+
+                                "<a href='#' class='delLink' style='margin: 0 5px 0 5px' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";;
+                        }else if(row.msgtype == 6){
+                            return "<a href='../graphic/graphic-edit.html?id="+row.id+"' class='editLink' style='margin: 0 5px 0 5px;' data-id='" + row.id + "' ><i class='fa fa-edit'></i></a> "+
+                                "<a href='#' class='delLink' style='margin: 0 5px 0 5px' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";;
+                        }
+                    }
+                    else{
+                        if(row.msgtype == 1){
+                            return "<a href='../richtext/richtext-edit.html?id="+row.id+"' class='editLink' style='margin: 0 5px 0 5px;display: none;' data-id='" + row.id + "' ><i class='fa fa-edit'></i></a> "+
+                                "<a href='#' class='delLink' style='margin: 0 5px 0 5px;display: none;' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";;
+                        }else if(row.msgtype == 2){
+                            return "<a href='../doc/doc-edit.html?id="+row.id+"' class='editLink' style='margin: 0 5px 0 5px;display: none;' data-id='" + row.id + "' ><i class='fa fa-edit'></i></a> "+
+                                "<a href='#' class='delLink' style='margin: 0 5px 0 5px;display: none;' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";;
+                        }else if(row.msgtype == 5){
+                            return "<a href='../h5/h5-edit.html?id="+row.id+"'  class='editLink' style='margin: 0 5px 0 5px;display: none;' data-id='" + row.id + "' ><i class='fa fa-edit'></i></a> "+
+                                "<a href='#' class='delLink' style='margin: 0 5px 0 5px;display: none;' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";;
+                        }else if(row.msgtype == 6){
+                            return "<a href='../graphic/graphic-edit.html?id="+row.id+"' class='editLink' style='margin: 0 5px 0 5px;display: none;' data-id='" + row.id + "' ><i class='fa fa-edit'></i></a> "+
+                                "<a href='#' class='delLink' style='margin: 0 5px 0 5px;display: none;' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";;
+                        }
                     }
                 }
             }

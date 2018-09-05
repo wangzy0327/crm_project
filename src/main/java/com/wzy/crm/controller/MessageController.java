@@ -81,6 +81,9 @@ public class MessageController {
         return messageService.findDocMessage(id);
     }
 
+    @PostMapping("/richText")
+    public ServerResponse loadRichTextMessage(@RequestParam Integer id){ return messageService.findRichTextMessage(id); }
+
     @PostMapping("/h5/add")
     public ServerResponse h5Add(@RequestParam String url,@RequestBody Message message){
         message.setUrl("http://crm.youitech.com/module/web/message/h5/h5-share.html");
@@ -104,6 +107,12 @@ public class MessageController {
 
     @PostMapping("/doc/update")
     public ServerResponse docUpdate(@RequestBody Message message){
+        message.setUrl("http://crm.youitech.com/module/web/message/doc/doc-share.html");
+        return messageService.updateDocMessage(message);
+    }
+
+    @PostMapping("/richText/update")
+    public ServerResponse richTextUpdate(@RequestBody Message message){
         message.setUrl("http://crm.youitech.com/module/web/message/doc/doc-share.html");
         return messageService.updateDocMessage(message);
     }

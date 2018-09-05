@@ -9,6 +9,10 @@ server:
 #server.address=192.168.33.1
 
 spring:
+  mvc:
+    view:
+      suffix: .html
+      prefix: /
   datasource:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/crm_project?useUnicode=true&charsetEncoding=utf8&&autoReconnect=true

@@ -6,7 +6,7 @@ $(function () {
     }else{
         $.ajax({
             type: 'post',
-            url: "/wechatlogin/userInfo?userId="+userId,
+            url: "/wechat/userInfo?userId="+userId,
             contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (result) {

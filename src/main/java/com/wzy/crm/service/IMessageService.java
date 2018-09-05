@@ -23,6 +23,8 @@ public interface IMessageService {
 
     ServerResponse findDocMessage(Integer id);
 
+    ServerResponse findRichTextMessage(Integer id);
+
     ServerResponse saveH5Message(String url, Message message, List<String> tags);
 
     ServerResponse updateH5Message(Message message,List<String> tags);
