@@ -89,6 +89,8 @@ function saveH5() {
         var third_url = ($("input[name = 'third_url']"))[0].value;
         var third_params = {"type":"rabbitpre","url":third_url};
         var third_params_str = JSON.stringify(third_params);
+        var createUserId = $.cookie('staffId');
+        console.log("createUserId:"+createUserId);
         $.ajax({
             url:"/message/h5/add?url="+iframeSrc,
             type:"POST",
@@ -103,6 +105,7 @@ function saveH5() {
                 "title":title,
                 "description":iframeSrc,
                 "pagecount":page,
+                "createUserId":createUserId,
                 "thirdParams":third_params_str,
                 "tags":pageInfo
             }),

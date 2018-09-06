@@ -47,8 +47,8 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
 
-        <!--<table tableName="staff" domainObjectName="Staff">-->
-        <!--</table>-->
+        <table tableName="staff" domainObjectName="Staff">
+        </table>
         <!--<table tableName="customer" domainObjectName="Customer">-->
         <!--</table>-->
         <!--<table tableName="staff_customer_create_relation" domainObjectName="StaffCustomerCreateRelation">-->
@@ -71,10 +71,10 @@
         <!--<table tableName="group_staff_relation" domainObjectName="GroupStaffRelation">-->
         <!--</table>-->
 
-        <table tableName="message_share" domainObjectName="MessageShare">
-        </table>
-        <table tableName="message_tag_relation" domainObjectName="MessageTagRelation">
-        </table>
+        <!--<table tableName="message_share" domainObjectName="MessageShare">-->
+        <!--</table>-->
+        <!--<table tableName="message_tag_relation" domainObjectName="MessageTagRelation">-->
+        <!--</table>-->
 
     </context>
 </generatorConfiguration>

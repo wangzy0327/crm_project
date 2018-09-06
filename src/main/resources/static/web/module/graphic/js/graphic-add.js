@@ -31,6 +31,8 @@ function saveGraphic() {
         var third_url = ($("input[name = 'third_url']"))[0].value;
         var third_params = {"type":"chuangkit","url":third_url};
         var third_params_str = JSON.stringify(third_params);
+        var createUserId = $.cookie('staffId');
+        console.log("createUserId:"+createUserId);
         $.ajax({
             url:"/message/graphic/add?imgUrl="+imgSrc+"&tags="+tags,
             type:"POST",
@@ -43,6 +45,7 @@ function saveGraphic() {
                 "msgtype":"6",
                 "titleText":title,
                 "title":title,
+                "createUserId":createUserId,
                 "thirdParams":third_params_str,
                 "thirdParamId":d,
                 "pagecount":1

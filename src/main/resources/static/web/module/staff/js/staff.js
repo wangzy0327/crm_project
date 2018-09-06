@@ -42,6 +42,11 @@ function loadData() {
 //                {"data":"itemId","name":"item_id"},
             {
                 "data": function (row) {
+                    return row.userid;
+                }, "name": "userid"
+            },
+            {
+                "data": function (row) {
                     if (row.name.length > 15) {
                         return row.name.substring(0, 15) + "...";
                     } else {
@@ -51,27 +56,28 @@ function loadData() {
             },
             {
                 "data": function (row) {
-                    if (row.role == 0) {
+                    if (row.isleader == 0) {
                         return "普通成员";
                     } else {
                         return "管理员";
                     }
-                }, "name": "role"
+                }, "name": "isleader"
             },
             {
                 "data": function (row) {
-                    return row.age;
-                }, "name": "age"
+                    if (row.gender == 1) {
+                        return "男";
+                    } else if (row.gender == 2){
+                        return "女";
+                    }else{
+                        return "未知";
+                    }
+                }, "name": "gender"
             },
             {
                 "data": function (row) {
-                    return row.wx;
-                }, "name": "wx"
-            },
-            {
-                "data": function (row) {
-                    return row.phone;
-                }, "name": "phone"
+                    return row.mobile;
+                }, "name": "mobile"
             },
             {
                 "data": function (row) {
@@ -139,10 +145,12 @@ function updateDetail(dt) {
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify({
                 "id":$("input[name='id']").val(),
+                "userid":$("input[name='userid']").val(),
                 "name":$("input[name='name']").val(),
-                "age":$("input[name='age']").val(),
                 "wx":$("input[name='wx']").val(),
-                "phone":$("input[name='phone']").val(),
+                "position":$("input[name='position']").val(),
+                "avatar":$("input[name='avatar']").val(),
+                "mobile":$("input[name='mobile']").val(),
                 "email":$("input[name='email']").val()
             }),
             dataType:'json',
@@ -174,10 +182,12 @@ function queryDetail(id) {
             if(result.code == 0){
                 var data = result.data;
                 $("input[name='id']").val(data.id);
+                $("input[name='userid']").val(data.userid);
                 $("input[name='name']").val(data.name);
-                $("input[name='age']").val(data.age);
+                $("input[name='position']").val(data.position);
                 $("input[name='wx']").val(data.wx);
-                $("input[name='phone']").val(data.phone);
+                $("input[name='avatar']").val(data.avatar);
+                $("input[name='mobile']").val(data.mobile);
                 $("input[name='email']").val(data.email);
             }
         },

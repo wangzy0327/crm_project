@@ -2,6 +2,7 @@ package com.wzy.crm.wx.cp.utils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.wzy.crm.pojo.Staff;
 import com.wzy.crm.utils.PropertiesUtil;
 import com.wzy.crm.wx.cp.common.ErrCode;
 import com.wzy.crm.wx.cp.utils.wechat.*;
@@ -243,8 +244,8 @@ public class WxApiClient {
      * @param
      * @return
      */
-    public static Users getUserInfo(String userId){ return getUserInfo(userId, mpAccount); }
-    public static Users getUserInfo(String userId,MpAccount mpAccount) {
+    public static Staff getUserInfo(String userId){ return getUserInfo(userId, mpAccount); }
+    public static Staff getUserInfo(String userId,MpAccount mpAccount) {
         String accessToken = getAccessToken(mpAccount);
         String url = WxApi.getUsersDetailInfoUrl(accessToken, userId);
         JSONObject jsonObj = WxApi.httpsRequest(url, "GET", null);
@@ -252,37 +253,37 @@ public class WxApiClient {
             String errorcode = jsonObj.getString("errcode");
             if (Integer.valueOf(errorcode).equals(Integer.valueOf(0))) {
 
-                Users users = new Users();
-                users.setUserid(jsonObj.getString("userid"));
+                Staff staff = new Staff();
+                staff.setUserid(jsonObj.getString("userid"));
                 if(jsonObj.containsKey("name")){
-                    users.setName(jsonObj.getString("name"));
+                    staff.setName(jsonObj.getString("name"));
                 }
                 if(jsonObj.containsKey("position")){// 昵称
                     String position = jsonObj.getString("position");
-                    users.setPosition(position);
+                    staff.setPosition(position);
                 }
                 if(jsonObj.containsKey("gender")){// 用户的性别（1是男性，2是女性，0是未知）
-                    users.setGender(Integer.valueOf(jsonObj.getString("gender")));
+                    staff.setGender(Integer.valueOf(jsonObj.getString("gender")));
                 }
                 if(jsonObj.containsKey("mobile")){// 用户的语言，简体中文为zh_CN
-                    users.setMobile(jsonObj.getString("mobile"));
+                    staff.setMobile(jsonObj.getString("mobile"));
                 }
                 if(jsonObj.containsKey("email")){// 用户所在国家
-                    users.setEmail(jsonObj.getString("email"));
+                    staff.setEmail(jsonObj.getString("email"));
                 }
                 if(jsonObj.containsKey("isleader")){// 用户所在省份
-                    users.setIsleader(Integer.valueOf(jsonObj.getString("isleader")));
+                    staff.setIsleader(Integer.valueOf(jsonObj.getString("isleader")));
                 }
                 if(jsonObj.containsKey("avatar")){// 用户所在城市
-                    users.setAvatar(jsonObj.getString("avatar"));
+                    staff.setAvatar(jsonObj.getString("avatar"));
                 }
                 if(jsonObj.containsKey("telephone")){// 用户头像
-                    users.setTelephone(jsonObj.getString("telephone"));
+                    staff.setTelephone(jsonObj.getString("telephone"));
                 }
                 if(jsonObj.containsKey("alias")){
-                    users.setAlias(jsonObj.getString("alias"));
+                    staff.setAlias(jsonObj.getString("alias"));
                 }
-                return users;
+                return staff;
             } else {
                 int errorCode = Integer.valueOf(jsonObj.getString("errcode"));
                 System.out.println(String.format("获取用户信息失败 errcode:{} errmsg:{}", errorCode, ErrCode.errMsg(errorCode)));

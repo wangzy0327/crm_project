@@ -8,19 +8,41 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `staff`;
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '销售人员id',
-  `role` int(4) NOT NULL COMMENT '角色  0-普通员工 1-管理员',
+  `isleader` int(4) NOT NULL COMMENT '角色  0-普通员工 1-管理员',
+  `userid` varchar(30) NOT NULL COMMENT '用户id',
   `name` varchar(50) NOT NULL COMMENT '姓名',
-  `username` varchar(50) NOT NULL COMMENT '用户名',
-  `password` varchar(50) NOT NULL COMMENT '用户密码，MD5加密',
-  `age` int(4) DEFAULT NULL COMMENT '年龄',
+  `position` varchar(50) NOT NULL COMMENT '职位',
+  `mobile` varchar(20) DEFAULT NULL COMMENT '手机号',
+  `gender` int(2) DEFAULT 0 COMMENT '性别 1-男 2-女 0-未知',
+  `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像路径',
+  `telephone` varchar(20) DEFAULT NULL COMMENT '电话',
+  `alias` varchar(255) DEFAULT NULL COMMENT '昵称',
   `wx` varchar(100) DEFAULT NULL COMMENT '微信号',
-  `email` varchar(50) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL,
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最后一次更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `phone_unique` (`phone`) USING BTREE
+  UNIQUE KEY `userid` (`userid`),
+  UNIQUE KEY `phone_unique` (`telephone`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COMMENT='员工表';
+
+# * Users{userid='wzy', name='王紫阳', position='', mobile='17326930327', gender=1, email='', isleader=0, avatar='http://p.qlogo.cn/bizmail/rM5EfD5dic7nWib8Yxic4TcGlCpibQYmzaY9mZRaE7e3JVNWfgibwB7HZBA/0', telephone='', alias=''}
+# * Users{userid='yanxg', name='晏小刚', position='软件工程师', mobile='18914147690', gender=1, email='yanxg@youitech.com', isleader=0, avatar='http://shp.qpic.cn/bizmp/qUz2yxpF8KibjVaXRZ3IHhjZFKcsmbTyEswRibtCLydQLYias5NicMfGpA/', telephone='', alias=''}
+# * Users{userid='ZhangChi2Hao', name='张驰2号', position='', mobile='15861668054', gender=0, email='', isleader=0, avatar='http://p.qlogo.cn/bizmail/MW1YFC6YNqztsj81dqUd2SOzicZiaGsDoR9vpg6Z3jPZlh71KS4JccAg/0', telephone='', alias=''}
+# * Users{userid='zhangc', name='张驰', position='软件工程师', mobile='13771071503', gender=1, email='zhangc@youitech.com', isleader=0, avatar='http://p.qlogo.cn/bizmail/yEoPDtQXubvfzQNrJqAl6WDg52JskgvYwCM9fO4lica9hA78JFIibCKA/0', telephone='', alias=''}
+# * Users{userid='hdy', name='黄大烨', position='', mobile='18262396031', gender=1, email='', isleader=0, avatar='http://p.qlogo.cn/bizmail/EEGhYtER3JotMxbWkbYGsP4bUnRfyGUr7J4cjHDBw8Adpc9DpsKhnw/0', telephone='', alias=''}
+# * Users{userid='clx', name='陈丽霞', position='前端工程师', mobile='13914266226', gender=2, email='clx@youitech.com', isleader=0, avatar='http://shp.qpic.cn/bizmp/qUz2yxpF8Kicr6ZZJiaRrJeO0micoMK0lhFh9VmiaGB0sCcaWRIJ8XJhpA/', telephone='', alias=''}
+# * Users{userid='cyt', name = '程言同', position = '软件工程师',mobile='18088129009',gender=1,email = 'cyt@youitech.com',isleader=0,avatar='http://p.qlogo.cn/bizmail/GticMyWDkNEjyYJwiafqlmqQDmEHMaicoafS9wwn9Bv9uHRyo9mNTictibQ/0',telephone='',alias=''}
+
+INSERT INTO `staff`(`isleader`,`userid`,`name`,`position`,`mobile`,`gender`,`email`,`avatar`) VALUES
+  ('1', 'wzy', '王紫阳', '','17326930327','1', '', 'http://p.qlogo.cn/bizmail/rM5EfD5dic7nWib8Yxic4TcGlCpibQYmzaY9mZRaE7e3JVNWfgibwB7HZBA/0'),
+  ('1', 'yanxg', '晏小刚', '软件工程师','18914147690','1', 'yanxg@youitech.com', 'http://shp.qpic.cn/bizmp/qUz2yxpF8KibjVaXRZ3IHhjZFKcsmbTyEswRibtCLydQLYias5NicMfGpA/'),
+  ('1', 'ZhangChi2Hao', '张驰2号', '','15861668054','0', '', 'http://p.qlogo.cn/bizmail/MW1YFC6YNqztsj81dqUd2SOzicZiaGsDoR9vpg6Z3jPZlh71KS4JccAg/0'),
+  ('1', 'zhangc', '张驰', '软件工程师','13771071503','1', 'zhangc@youitech.com', 'http://p.qlogo.cn/bizmail/yEoPDtQXubvfzQNrJqAl6WDg52JskgvYwCM9fO4lica9hA78JFIibCKA/0'),
+  ('0', 'hdy', '黄大烨', '','18262396031','1', '', 'http://p.qlogo.cn/bizmail/EEGhYtER3JotMxbWkbYGsP4bUnRfyGUr7J4cjHDBw8Adpc9DpsKhnw/0'),
+  ('0', 'clx', '陈丽霞', '前端工程师','13914266226','2', 'clx@youitech.com', 'http://shp.qpic.cn/bizmp/qUz2yxpF8Kicr6ZZJiaRrJeO0micoMK0lhFh9VmiaGB0sCcaWRIJ8XJhpA/'),
+  ('0', 'cyt', '程言同', '软件工程师','18088129009','1', 'cyt@youitech.com', 'http://p.qlogo.cn/bizmail/GticMyWDkNEjyYJwiafqlmqQDmEHMaicoafS9wwn9Bv9uHRyo9mNTictibQ/0');
+
+
 
 DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer`(

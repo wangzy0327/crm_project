@@ -3,60 +3,93 @@
 <mapper namespace="com.wzy.crm.dao.StaffMapper" >
   <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.Staff" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="role" property="role" jdbcType="INTEGER" />
+    <result column="isleader" property="isleader" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="age" property="age" jdbcType="INTEGER" />
-    <result column="wx" property="wx" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
     <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="alias" property="alias" jdbcType="VARCHAR" />
+    <result column="wx" property="wx" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from staff
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wzy.crm.pojo.Staff" useGeneratedKeys="true" keyProperty="id">
-    insert into staff (id, role, `name`,username,
-      password, age, wx, 
-      email, phone, update_time
-      )
-    values (#{id}, #{role}, #{name},#{username}
-      #{password}, #{age}, #{wx},
-      #{email}, #{phone}, now()
-     )
+  <insert id="insert" parameterType="com.wzy.crm.pojo.Staff" >
+    insert into staff (id, isleader, userid, 
+      `name`, `position`, mobile,
+      gender, email, avatar, 
+      telephone, alias, wx, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{isleader,jdbcType=INTEGER}, #{userid,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{alias,jdbcType=VARCHAR}, #{wx,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.Staff" >
     update staff
     set
-    <if test="role != null and role != ''">
-      role = #{role,jdbcType=INTEGER},
+    <if test="isleader != null and isleader != ''">
+     isleader = #{isleader,jdbcType=INTEGER},
     </if>
-    <if test="name != null and name != ''">
+    <if test="isleader != null and isleader != ''">
+      userid = #{userid,jdbcType=VARCHAR},
+    </if>
+    <if test="isleader != null and isleader != ''">
       `name` = #{name,jdbcType=VARCHAR},
     </if>
-    <if test="age != null and age != ''">
-      age = #{age,jdbcType=INTEGER},
+    <if test="isleader != null and isleader != ''">
+      `position` = #{position,jdbcType=VARCHAR},
     </if>
-    <if test="wx != null and wx != ''">
-      `wx` = #{wx,jdbcType=VARCHAR},
+    <if test="mobile != null and mobile != ''">
+      mobile = #{mobile,jdbcType=VARCHAR},
+    </if>
+    <if test="gender != null and gender != ''">
+      gender = #{gender,jdbcType=INTEGER},
     </if>
     <if test="email != null and email != ''">
       email = #{email,jdbcType=VARCHAR},
     </if>
-    <if test="phone != null and phone != ''">
-      phone = #{phone,jdbcType=VARCHAR},
+    <if test="avatar != null and avatar != ''">
+      avatar = #{avatar,jdbcType=VARCHAR},
+    </if>
+    <if test="telephone != null and telephone != ''">
+      telephone = #{telephone,jdbcType=VARCHAR},
+    </if>
+    <if test="alias != null and alias != ''">
+      alias = #{alias,jdbcType=VARCHAR},
+    </if>
+    <if test="wx != null and wx != ''">
+      wx = #{wx,jdbcType=VARCHAR},
     </if>
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, isleader, userid, `name`, `position`, mobile, gender, email, avatar, telephone,
+    alias, wx, update_time
+    from staff
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="string">
+    select id, isleader, userid, `name`, `position`, mobile, gender, email, avatar, telephone,
+    alias, wx, update_time
+    from staff
+    where userid = #{userId}
+  </select>
   <select id="selectStaffByParam" parameterType="map" resultMap="BaseResultMap">
-    SELECT id,`name`,username,role,age,wx,phone,email,update_time
+    SELECT id, isleader, userid, `name`, `position`, mobile, gender, email, avatar, telephone,
+    alias, wx, update_time
     FROM staff
     <where>
       <if test="keyword != null and keyword != ''">
-        AND CONCAT(`name`,`wx`) LIKE #{keyword}
+        AND CONCAT(`name`,`userid`) LIKE #{keyword}
       </if>
       <if test="startTime != null and startTime != ''">
         AND `update_time` <![CDATA[>=]]> #{startTime}
@@ -69,13 +102,13 @@
     limit ${start},${length}
   </select>
   <select id="findStaffCount" resultType="int">
-    SELECT COUNT(*) FROM staff
+        SELECT COUNT(*) FROM staff
   </select>
   <select id="findStaffCountByParam" resultType="int">
     SELECT COUNT(*) FROM staff
     <where>
       <if test="keyword != null and keyword != ''">
-        AND CONCAT(`name`,`wx`) LIKE #{keyword}
+        AND CONCAT(`name`,`userid`) LIKE #{keyword}
       </if>
       <if test="startTime != null and startTime != ''">
         AND `update_time` <![CDATA[>=]]> #{startTime}
@@ -94,19 +127,9 @@
       </if>
     </where>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, role, `name`,username, password, age, wx, email, phone, update_time
-    from staff
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectByPhone" resultMap="BaseResultMap" parameterType="string">
-    select id,role,`name`,username,password,age,wx,email,phone
-    from staff
-    where phone = #{phone}
-  </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, role, `name`,username, age, wx, email, phone, update_time
+    select id, isleader, userid, `name`, `position`, mobile, gender, email, avatar, telephone
+    alias, wx, update_time
     from staff
-    order by update_time desc;
   </select>
 </mapper>

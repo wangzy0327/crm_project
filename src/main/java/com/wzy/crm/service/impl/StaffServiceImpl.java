@@ -22,10 +22,9 @@ public class StaffServiceImpl implements IStaffService {
     public ServerResponse<Staff> saveStaff(Staff staff) {
         // 密码登录MD5
         staff.setId(null);
-        if(staffMapper.selectByPhone(staff.getPhone())!=null){
+        if(staffMapper.selectByUserId(staff.getUserid())!=null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.DUPLICATE.getCode(),ResponseCode.DUPLICATE.getStatus(),"手机号已被注册！");
         }
-        staff.setPassword(MD5Util.MD5EncodeUtf8(staff.getPassword()));
         if(this.staffMapper.insert(staff)>0){
             return ServerResponse.createBySuccess(staff);
         }else{

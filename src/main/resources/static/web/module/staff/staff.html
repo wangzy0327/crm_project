@@ -27,7 +27,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row form-inline" style="margin-left: 20px">
         <label class="i-checks" style="font-size: 14px;padding-right: 10px;">查询条件</label>
-        <input id="title" type="text" class="form-control" placeholder="姓名/微信">
+        <input id="title" type="text" class="form-control" placeholder="姓名/员工号">
         <div class="form-group" id="begin">
             <div class="input-group date">
                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -61,10 +61,10 @@
                     <table class="table table-striped table-bordered table-hover " style="text-align: center" id="editable">
                         <thead>
                         <tr>
-                            <th style="text-align: center">员工姓名</th>
+                            <th style="text-align: center">员工号</th>
+                            <th style="text-align: center">姓名</th>
                             <th style="text-align: center">角色</th>
-                            <th style="text-align: center">年龄</th>
-                            <th style="text-align: center">微信号</th>
+                            <th style="text-align: center">性别</th>
                             <th style="text-align: center">手机号</th>
                             <th style="text-align: center">邮箱</th>
                             <th style="text-align: center">操作</th>
@@ -93,10 +93,12 @@
                 <div class="modal-body">
                     <!--<p><strong>H+</strong> 是一个完全响应式，基于Bootstrap3.3.6最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术，她提供了诸多的强大的可以重新组合的UI组件，并集成了最新的jQuery版本(v2.1.1)，当然，也集成了很多功能强大，用途广泛的jQuery插件，她可以用于所有的Web应用程序，如网站管理后台，网站会员中心，CMS，CRM，OA等等，当然，您也可以对她进行深度定制，以做出更强系统。</p>-->
                     <input name="id" type="hidden"  class="form-control">
+                    <div class="form-group"><label>员工号</label> <input name="userid" type="text"  class="form-control" disabled="disabled"></div>
                     <div class="form-group"><label>姓名</label> <input name="name" type="text" placeholder="请输入姓名" class="form-control"></div>
                     <div class="form-group"><label>微信</label> <input name="wx" type="text" placeholder="请输入微信" class="form-control"></div>
-                    <div class="form-group"><label>年龄</label> <input name="age" type="number" max="120" placeholder="请输入年龄" class="form-control"></div>
-                    <div class="form-group"><label>手机</label> <input name="phone" type="number" maxlength="11" placeholder="请输入手机" class="form-control"></div>
+                    <div class="form-group"><label>职位</label> <input name="position" type="text"  placeholder="请输入职位" class="form-control"></div>
+                    <div class="form-group"><label>昵称</label> <input name="alias" type="text"  placeholder="请输入昵称" class="form-control"></div>
+                    <div class="form-group"><label>手机</label> <input name="mobile" type="number" maxlength="11" placeholder="请输入手机" class="form-control"></div>
                     <div class="form-group"><label>邮箱</label> <input name="email" type="email" placeholder="请输入Email" class="form-control"></div>
                 </div>
                 <div class="modal-footer">

@@ -29,16 +29,16 @@ public class StaffController {
     @Autowired
     private GroupStaffRelationMapper groupStaffRelationMapper;
 
-    @GetMapping("/hello")
-    public ServerResponse<Staff> hello(){
-        Staff staff = new Staff();
-        staff.setName("hdy");
-        staff.setPassword("123456");
-        staff.setAge(19);
-        staff.setPhone("13809880912");
-        staff.setEmail("hdy@test.com");
-        return ServerResponse.createBySuccess(staff);
-    }
+//    @GetMapping("/hello")
+//    public ServerResponse<Staff> hello(){
+//        Staff staff = new Staff();
+//        staff.setName("hdy");
+//        staff.setPassword("123456");
+//        staff.setAge(19);
+//        staff.setPhone("13809880912");
+//        staff.setEmail("hdy@test.com");
+//        return ServerResponse.createBySuccess(staff);
+//    }
 
     @PostMapping("/save")
     public ServerResponse<Staff> saveStaff(@RequestBody Staff staff){
