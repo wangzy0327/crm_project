@@ -51,8 +51,8 @@ public class StaffController {
     }
 
     @DeleteMapping("/delete")
-    public ServerResponse deleteStaff(@RequestParam String id){
-        if(this.staffMapper.deleteByPrimaryKey(Integer.parseInt(id))>0){
+    public ServerResponse deleteStaff(@RequestParam String userId){
+        if(this.staffMapper.deleteByKey(userId)>0){
             return ServerResponse.createBySuccess("删除成功");
         }else{
             return ServerResponse.createByErrorMessage("删除失败");
@@ -107,8 +107,8 @@ public class StaffController {
     }
 
     @GetMapping("/one")
-    public ServerResponse<Staff> findStaff(@RequestParam String id){
-        return ServerResponse.createBySuccess(staffMapper.selectByPrimaryKey(Integer.parseInt(id)));
+    public ServerResponse<Staff> findStaff(@RequestParam String userId){
+        return ServerResponse.createBySuccess(staffMapper.selectByKey(userId));
     }
 
     @GetMapping("/getAll")
@@ -116,7 +116,7 @@ public class StaffController {
         return ServerResponse.createBySuccess(staffMapper.selectAll());
     }
 
-    @PostMapping("/staffIds")
+    @PostMapping("/userIds")
     public ServerResponse getAllStaffIds(@RequestParam Integer groupId){
         System.out.println("groupId:"+groupId);
         return ServerResponse.createBySuccess(groupStaffRelationMapper.selectAllStaffIdsByGroupId(groupId));

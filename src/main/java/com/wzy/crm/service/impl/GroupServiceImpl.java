@@ -20,17 +20,17 @@ public class GroupServiceImpl implements IGroupService {
     private GroupMessageRelationMapper groupMessageRelationMapper;
 
     @Override
-    public ServerResponse updateStaffRelation(Integer groupId, List<Integer> staffIds) {
-        List<Integer> oldRel = groupStaffRelationMapper.selectStaffIdsByParam(groupId);
-        List<Integer> needToDel = Lists.newArrayList();
-        List<Integer> needToInsert = Lists.newArrayList();
+    public ServerResponse updateStaffRelation(Integer groupId, List<String> userIds) {
+        List<String> oldRel = groupStaffRelationMapper.selectStaffIdsByParam(groupId);
+        List<String> needToDel = Lists.newArrayList();
+        List<String> needToInsert = Lists.newArrayList();
         for(int i = 0;i<oldRel.size();i++){
-            if(!staffIds.contains(oldRel.get(i)))
+            if(!userIds.contains(oldRel.get(i)))
                 needToDel.add(oldRel.get(i));
         }
-        for(int i = 0;i<staffIds.size();i++){
-            if(!oldRel.contains(staffIds.get(i))){
-                needToInsert.add(staffIds.get(i));
+        for(int i = 0;i<userIds.size();i++){
+            if(!oldRel.contains(userIds.get(i))){
+                needToInsert.add(userIds.get(i));
             }
         }
         handleStaffRelData(groupId,needToDel,needToInsert);
@@ -64,7 +64,7 @@ public class GroupServiceImpl implements IGroupService {
         }
     }
 
-    private void handleStaffRelData(Integer groupId, List<Integer> needToDel, List<Integer> needToInsert){
+    private void handleStaffRelData(Integer groupId, List<String> needToDel, List<String> needToInsert){
         synchronized (this){
             if(needToDel!=null&&needToDel.size()>0)
                 groupStaffRelationMapper.deleteByParam(groupId,needToDel);

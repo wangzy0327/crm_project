@@ -31,14 +31,6 @@ $(document).ready(function () {
         $(this).removeData('bs.modal');
     });
 
-    // $('.changeFollow').unbind().on('click',function () {
-    //     var id = $(this).attr("data-id");
-    //     console.log(id);
-    //     loadFollowModalData();
-    //     loadFollowStaff(id);
-    //     updateFollow(id);
-    // });
-
     loadFollowData();
     // loadPlanData();
     chooseFollow();
@@ -230,7 +222,7 @@ $(document).ready(function () {
                 },
                 {
                     "data": function (row) {
-                        return "<a href='#' class='choose' style='margin: 0 5px 0 5px' data-name='"+row.name+"' data-id='" + row.id+"' >选择</a> ";
+                        return "<a href='#' class='choose' style='margin: 0 5px 0 5px' data-name='"+row.name+"' data-id='" + row.userid+"' >选择</a> ";
                     }
                 }
             ],
@@ -280,7 +272,7 @@ $(document).ready(function () {
                     console.log(data);
                     $('#staffs').html('<span>人员：</span>');
                     for(var i = 0;i<data.length;i++){
-                        $('#staffs').append("<span style='margin-left: 5px;margin-right: 5px;' data-id='"+data[i].id+"'>"+data[i].name+"<a href='#' onclick='javascript:void(0);' data-id='"+id+"'>[删除]</a></span>");
+                        $('#staffs').append("<span style='margin-left: 5px;margin-right: 5px;' data-id='"+data[i].userid+"'>"+data[i].name+"<a href='#' onclick='javascript:void(0);' data-id='"+data[i].userid+"'>[删除]</a></span>");
                     }
                 }
             },
@@ -323,17 +315,17 @@ $(document).ready(function () {
 
     function updateFollow(customerId) {
         $("#modalSave").unbind().click(function () {
-            var staffIds = [];
+            var userIds = [];
             $("#staffs span").each(function(){
-                var staffId = $(this).attr("data-id");
-                if(staffId != undefined && staffId!= '')
-                    staffIds.push(staffId);
+                var userId = $(this).attr("data-id");
+                if(userId != undefined && userId!= '')
+                    userIds.push(userId);
             });
             console.log("customerId:"+customerId);
-            var params = {"customerId":customerId,"staffIds":staffIds};
+            var params = {"customerId":customerId,"userIds":userIds};
             console.log(jQuery.param(params));
             $.ajax({
-                url:"/customer/relation/edit?customerId="+customerId+"&staffIds="+staffIds,
+                url:"/customer/relation/edit?customerId="+customerId+"&userIds="+userIds,
                 type:"PUT",
                 contentType: "application/json;charset=UTF-8",
                 dataType:'json',

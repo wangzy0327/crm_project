@@ -33,7 +33,7 @@ public class Message {
 
     private Integer pagecount;
 
-    private Integer createUserId;
+    private String createUserId;
 
     /**
      * 最近更新时间

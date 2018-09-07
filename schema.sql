@@ -32,6 +32,10 @@ CREATE TABLE `staff` (
 # * Users{userid='hdy', name='黄大烨', position='', mobile='18262396031', gender=1, email='', isleader=0, avatar='http://p.qlogo.cn/bizmail/EEGhYtER3JotMxbWkbYGsP4bUnRfyGUr7J4cjHDBw8Adpc9DpsKhnw/0', telephone='', alias=''}
 # * Users{userid='clx', name='陈丽霞', position='前端工程师', mobile='13914266226', gender=2, email='clx@youitech.com', isleader=0, avatar='http://shp.qpic.cn/bizmp/qUz2yxpF8Kicr6ZZJiaRrJeO0micoMK0lhFh9VmiaGB0sCcaWRIJ8XJhpA/', telephone='', alias=''}
 # * Users{userid='cyt', name = '程言同', position = '软件工程师',mobile='18088129009',gender=1,email = 'cyt@youitech.com',isleader=0,avatar='http://p.qlogo.cn/bizmail/GticMyWDkNEjyYJwiafqlmqQDmEHMaicoafS9wwn9Bv9uHRyo9mNTictibQ/0',telephone='',alias=''}
+# * Users{"userid":"zhoutao","name":"周涛","department":[9],"position":"软件工程师","mobile":"15751014845","gender":"1","email":"zhoutao@youitech.com","avatar":"http://shp.qpic.cn/bizmp/qUz2yxpF8K9nnJdEicNBrltF2lg3xKy5tstE5Wvq2zicqTM32fchvtkQ/","status":2,"isleader":0,"extattr":{"attrs":[]},"english_name":"","telephone":"","enable":0,"hide_mobile":0,"order":[0],"qr_code":"http://open.work.weixin.qq.com/wwopen/userQRCode?vcode=vce4684a2a07628ba4","alias":""
+# * Users {"userid":"wangjian","name":"王健","department":[9],"position":"软件工程师","mobile":"18861871386","gender":"1","email":"wangjian@youitech.com","avatar":"","status":2,"isleader":0,"extattr":{"attrs":[]},"english_name":"","telephone":"","enable":0,"hide_mobile":0,"order":[0],"qr_code":"http://open.work.weixin.qq.com/wwopen/userQRCode?vcode=vc78f418618d845467","alias":""}
+# * Users {"userid":"zjw","name":"朱嘉威","department":[9],"position":"项目经理","mobile":"15896483625","gender":"1","email":"zjw@youitech.com","avatar":"","status":2,"isleader":0,"extattr":{"attrs":[]},"english_name":"","telephone":"","enable":0,"hide_mobile":0,"order":[0],"qr_code":"http://open.work.weixin.qq.com/wwopen/userQRCode?vcode=vc7fd24bc6b2562a6c","alias":""}
+
 
 INSERT INTO `staff`(`isleader`,`userid`,`name`,`position`,`mobile`,`gender`,`email`,`avatar`) VALUES
   ('1', 'wzy', '王紫阳', '','17326930327','1', '', 'http://p.qlogo.cn/bizmail/rM5EfD5dic7nWib8Yxic4TcGlCpibQYmzaY9mZRaE7e3JVNWfgibwB7HZBA/0'),
@@ -41,6 +45,9 @@ INSERT INTO `staff`(`isleader`,`userid`,`name`,`position`,`mobile`,`gender`,`ema
   ('0', 'hdy', '黄大烨', '','18262396031','1', '', 'http://p.qlogo.cn/bizmail/EEGhYtER3JotMxbWkbYGsP4bUnRfyGUr7J4cjHDBw8Adpc9DpsKhnw/0'),
   ('0', 'clx', '陈丽霞', '前端工程师','13914266226','2', 'clx@youitech.com', 'http://shp.qpic.cn/bizmp/qUz2yxpF8Kicr6ZZJiaRrJeO0micoMK0lhFh9VmiaGB0sCcaWRIJ8XJhpA/'),
   ('0', 'cyt', '程言同', '软件工程师','18088129009','1', 'cyt@youitech.com', 'http://p.qlogo.cn/bizmail/GticMyWDkNEjyYJwiafqlmqQDmEHMaicoafS9wwn9Bv9uHRyo9mNTictibQ/0');
+INSERT INTO `staff` VALUES ('1007', '0', 'zhoutao', '周涛', '软件工程师', '15751014845', '1', 'zhoutao@youitech.com', 'http://shp.qpic.cn/bizmp/qUz2yxpF8K9nnJdEicNBrltF2lg3xKy5tstE5Wvq2zicqTM32fchvtkQ/', null, null, null, '2018-09-06 21:57:32');
+INSERT INTO `staff` VALUES ('1008', '0', 'wangjian', '王健', '软件工程师', '18861871386', '1', 'wangjian@youitech.com', 'https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=vc78f418618d845467', null, null, null, '2018-09-06 21:57:32');
+INSERT INTO `staff` VALUES ('1009', '1', 'zjw', '朱嘉威', '项目经理', '15896483625', '0', 'zjw@youitech.com', 'http://open.work.weixin.qq.com/wwopen/userQRCode?vcode=vc7fd24bc6b2562a6c', null, null, null, '2018-09-06 21:57:32');
 
 
 
@@ -73,38 +80,52 @@ INSERT INTO `customer`(`name`,`mobile`,`wechat`,`company`,`position`,`address`,`
 COMMIT;
 
 DROP TABLE IF EXISTS `staff_customer_follow_relation`;
-CREATE TABLE `staff_customer_follow_relation`(
-  `staff_id` int(11) NOT NULL COMMENT '销售id',
+CREATE TABLE `staff_customer_follow_relation` (
+  `user_id` varchar(30) DEFAULT NULL COMMENT '员工user_id',
   `customer_id` int(11) NOT NULL COMMENT '客户id',
-  `is_follow` int(4) DEFAULT 1 COMMENT '是否跟进该客户 0-否 1-是',
-  UNIQUE KEY `staff_id` (`staff_id`,`customer_id`),
-  KEY `customerId_isFollow_staffId` (`customer_id`,`is_follow`,`staff_id`) USING BTREE
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工与客户跟进关系';
+  `is_follow` int(4) DEFAULT '1' COMMENT '是否跟进该客户 0-否 1-是',
+  UNIQUE KEY `staff_id` (`user_id`,`customer_id`),
+  KEY `customerId_isFollow_staffId` (`customer_id`,`is_follow`,`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工与客户跟进关系';
 
-INSERT INTO `staff_customer_follow_relation` VALUES ('1001', '100', '1');
-INSERT INTO `staff_customer_follow_relation` VALUES ('1000', '100', '1');
-INSERT INTO `staff_customer_follow_relation` VALUES ('1002', '101', '1');
-INSERT INTO `staff_customer_follow_relation` VALUES ('1004', '103', '1');
+-- ----------------------------
+-- Records of staff_customer_follow_relation
+-- ----------------------------
+INSERT INTO `staff_customer_follow_relation` VALUES ('clx', '100', '1');
+INSERT INTO `staff_customer_follow_relation` VALUES ('hdy', '100', '1');
+INSERT INTO `staff_customer_follow_relation` VALUES ('ZhangChi2Hao', '100', '1');
+INSERT INTO `staff_customer_follow_relation` VALUES ('wzy', '101', '1');
+INSERT INTO `staff_customer_follow_relation` VALUES ('zhangc', '101', '1');
+INSERT INTO `staff_customer_follow_relation` VALUES ('hdy', '102', '1');
+INSERT INTO `staff_customer_follow_relation` VALUES ('clx', '103', '1');
+INSERT INTO `staff_customer_follow_relation` VALUES ('wzy', '103', '1');
+INSERT INTO `staff_customer_follow_relation` VALUES ('clx', '104', '1');
+INSERT INTO `staff_customer_follow_relation` VALUES ('yanxg', '104', '1');
+INSERT INTO `staff_customer_follow_relation` VALUES ('cyt', '105', '1');
+INSERT INTO `staff_customer_follow_relation` VALUES ('zhangc', '105', '1');
 
 
 DROP TABLE IF EXISTS `staff_customer_create_relation`;
-CREATE TABLE `staff_customer_create_relation`(
-  `staff_id` int(11) NOT NULL COMMENT '销售id',
+CREATE TABLE `staff_customer_create_relation` (
+  `user_id` varchar(30) DEFAULT NULL COMMENT '员工user_id',
   `customer_id` int(11) NOT NULL COMMENT '客户id',
-  `is_create` int(4) DEFAULT 0 COMMENT '是否创建该客户 0-否 1-是',
+  `is_create` int(4) DEFAULT '0' COMMENT '是否创建该客户 0-否 1-是',
   KEY `customerId_isCreate` (`customer_id`,`is_create`) USING BTREE
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工与客户创建关系';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工与客户创建关系';
 
-INSERT INTO `staff_customer_create_relation` VALUES ('1000', '100', '1');
-INSERT INTO `staff_customer_create_relation` VALUES ('1002', '101', '1');
-INSERT INTO `staff_customer_create_relation` VALUES ('1003', '102', '1');
-INSERT INTO `staff_customer_create_relation` VALUES ('1004', '103', '1');
+-- ----------------------------
+-- Records of staff_customer_create_relation
+-- ----------------------------
+INSERT INTO `staff_customer_create_relation` VALUES ('wzy', '100', '1');
+INSERT INTO `staff_customer_create_relation` VALUES ('ZhangChi2Hao', '101', '1');
+INSERT INTO `staff_customer_create_relation` VALUES ('zhangc', '102', '1');
+INSERT INTO `staff_customer_create_relation` VALUES ('hdy', '103', '1');
 
 
-DROP TABLE IF EXISTS  `visit_plan`;
+DROP TABLE IF EXISTS `visit_plan`;
 CREATE TABLE `visit_plan` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '拜访计划id',
-  `staff_id` int(11) DEFAULT NULL COMMENT '销售员id',
+  `user_id` varchar(30) DEFAULT NULL COMMENT '员工user_id',
   `customer_id` int(11) DEFAULT NULL COMMENT '客户id',
   `time` datetime DEFAULT NULL COMMENT '时间',
   `place` varchar(100) DEFAULT NULL COMMENT '拜访地点',
@@ -115,25 +136,30 @@ CREATE TABLE `visit_plan` (
   `to_staff` varchar(255) DEFAULT NULL COMMENT '发送给谁',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最后一次更新时间',
   PRIMARY KEY (`id`),
-  KEY `customerId_staffId_time` (`customer_id`,`staff_id`,`time`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='拜访计划';
+  KEY `customerId_staffId_time` (`customer_id`,`user_id`,`time`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COMMENT='拜访计划';
 
+-- ----------------------------
+-- Records of visit_plan
+-- ----------------------------
+INSERT INTO `visit_plan` VALUES ('19', 'wzy', '100', '2018-07-28 17:45:00', '北京 北京市 朝阳区', null, null, '洽谈具体业务', '2018-07-28 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('20', 'wzy', '100', '2018-07-27 17:45:00', '北京 北京市 朝阳区', null, null, '洽谈具体业务', '2018-07-26 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('21', 'yanxg', '100', '2018-07-22 17:45:00', '天津 天津市 和平区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('22', 'yanxg', '100', '2018-07-21 17:45:00', '天津 天津市 和平区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('23', 'yanxg', '100', '2018-07-23 17:45:00', '天津 天津市 和平区', null, null, '洽谈具体业务', '2018-07-23 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('24', 'ZhangChi2Hao', '100', '2018-07-25 17:45:00', '辽宁省 沈阳市 铁西区', null, null, '洽谈具体业务', '2018-07-23 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('25', 'zhangc', '100', '2018-07-26 17:45:00', '上海 上海市 黄埔区', null, null, '洽谈具体业务', '2018-07-25 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('26', 'hdy', '100', '2018-07-21 17:45:00', '江苏省 南京市 玄武区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('27', 'wzy', '101', '2018-07-22 17:45:00', '江苏省 无锡市 滨湖区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('28', 'ZhangChi2Hao', '102', '2018-07-23 17:45:00', '北京 北京市 海淀区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('29', 'hdy', '103', '2018-07-24 17:45:00', '北京 北京市 石景山区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('30', 'yanxg', '104', '2018-07-25 17:45:00', '北京 北京市 丰台区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
 
-INSERT INTO `visit_plan`(`staff_id`,`customer_id`,`time`,`place`,`content`,`remind`)VALUES
-('1000','100','2018-07-28 17:45:00','北京 北京市 朝阳区','洽谈具体业务','2018-07-28 17:35:00'),
- ('1001','100','2018-07-23 17:45:00','天津 天津市 和平区','洽谈具体业务','2018-07-23 17:35:00'),
- ('1002','100','2018-07-25 17:45:00','辽宁省 沈阳市 铁西区','洽谈具体业务','2018-07-23 17:35:00'),
- ('1003','100','2018-07-26 17:45:00','上海 上海市 黄埔区','洽谈具体业务','2018-07-25 17:35:00'),
- ('1004','100','2018-07-21 17:45:00','江苏省 南京市 玄武区','洽谈具体业务','2018-07-20 17:35:00'),
- ('1000','101','2018-07-22 17:45:00','江苏省 无锡市 滨湖区','洽谈具体业务','2018-07-20 17:35:00'),
- ('1002','102','2018-07-23 17:45:00','北京 北京市 海淀区','洽谈具体业务','2018-07-20 17:35:00'),
- ('1004','103','2018-07-24 17:45:00','北京 北京市 石景山区','洽谈具体业务','2018-07-20 17:35:00'),
- ('1001','104','2018-07-25 17:45:00','北京 北京市 丰台区','洽谈具体业务','2018-07-20 17:35:00');
 
 DROP TABLE IF EXISTS `visit_log`;
 CREATE TABLE `visit_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '拜访记录id',
-  `staff_id` int(11) DEFAULT NULL COMMENT '销售员id',
+  `user_id` varchar(30) DEFAULT NULL COMMENT '员工user_id',
   `customer_id` int(11) DEFAULT NULL COMMENT '客户id',
   `way` varchar(20) DEFAULT NULL COMMENT '拜访方式',
   `result` varchar(50) DEFAULT NULL COMMENT '拜访结果',
@@ -144,21 +170,28 @@ CREATE TABLE `visit_log` (
   `to_staff` varchar(255) DEFAULT NULL COMMENT '发送给谁',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最后一次更新时间',
   PRIMARY KEY (`id`),
-  KEY `customerId_staffId` (`customer_id`,`staff_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='拜访记录';
+  KEY `customerId_staffId` (`customer_id`,`user_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COMMENT='拜访记录';
+
+-- ----------------------------
+-- Records of visit_log
+-- ----------------------------
+INSERT INTO `visit_log` VALUES ('21', 'wzy', '100', '电话拜访', '初步洽谈', null, null, '产品需求', null, null, '2018-08-01 20:38:14');
+INSERT INTO `visit_log` VALUES ('22', 'yanxg', '100', '实地拜访', '有明确意向', null, null, '服务需求', null, null, '2018-08-01 20:38:14');
+INSERT INTO `visit_log` VALUES ('23', 'yanxg', '100', '实地拜访', '签订合同', null, null, '服务需求', null, null, '2018-07-20 20:38:14');
+INSERT INTO `visit_log` VALUES ('24', 'yanxg', '100', '实地拜访', '初步洽谈', null, null, '体验需求', null, null, '2018-08-01 20:38:14');
+INSERT INTO `visit_log` VALUES ('25', 'ZhangChi2Hao', '100', '微信交流', '客户无意向', null, null, '无需求', null, null, '2018-07-28 20:38:14');
+INSERT INTO `visit_log` VALUES ('26', 'zhangc', '100', '邮件', '客户无意向', null, null, '无需求', null, null, '2018-08-01 20:38:14');
+INSERT INTO `visit_log` VALUES ('27', 'hdy', '100', '其他方式交流', '客户无意向', null, null, '无需求', null, null, '2018-08-01 20:38:14');
+INSERT INTO `visit_log` VALUES ('28', 'wzy', '101', '实地拜访', '初步洽谈', null, null, '关系需求', null, null, '2018-08-01 20:38:14');
+INSERT INTO `visit_log` VALUES ('29', 'ZhangChi2Hao', '102', '实地拜访', '签订合同', null, null, '体验需求', null, null, '2018-08-01 20:38:14');
+INSERT INTO `visit_log` VALUES ('30', 'ZhangChi2Hao', '102', '实地拜访', '有明确意向', null, null, '体验需求', null, null, '2018-08-01 20:38:14');
+INSERT INTO `visit_log` VALUES ('31', 'ZhangChi2Hao', '102', '实地拜访', '初步洽谈', null, null, '体验需求', null, null, '2018-08-01 20:38:14');
+INSERT INTO `visit_log` VALUES ('32', 'hdy', '103', '微信交流', '有明确意向', null, null, '成功需求', null, null, '2018-08-01 20:38:14');
+INSERT INTO `visit_log` VALUES ('33', 'yanxg', '104', '邮件', '初步洽谈', null, null, '服务需求', null, null, '2018-08-01 20:38:14');
 
 
-INSERT INTO `visit_log`(`staff_id`,`customer_id`,`way`,`result`,`requirement`)VALUES
-('1000','100','电话拜访','初步洽谈','产品需求'),
- ('1001','100','实地拜访','有明确意向','服务需求'),
- ('1002','100','微信交流','客户无意向','无需求'),
- ('1003','100','邮件','客户无意向','无需求'),
- ('1004','100','其他方式交流','客户无意向','无需求'),
- ('1000','101','实地拜访','初步洽谈','关系需求'),
- ('1002','102','实地拜访','签订合同','体验需求'),
- ('1004','103','微信交流','有明确意向','成功需求'),
- ('1001','104','邮件','初步洽谈','服务需求');
-
+DROP TABLE IF EXISTS `message_tag`;
 CREATE TABLE `message_tag` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '标签编号',
   `name` varchar(20) DEFAULT NULL COMMENT '标签名称',
@@ -166,18 +199,74 @@ CREATE TABLE `message_tag` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最后一次更新时间',
   PRIMARY KEY (`id`),
   KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8;
 
-INSERT INTO `message_tag`(`name`,`corpid`)VALUES
-('2018','wx4b8e52ee9877a5be'),
- ('盛典','wx4b8e52ee9877a5be'),
- ('致辞','wx4b8e52ee9877a5be'),
- ('邀请函','wx4b8e52ee9877a5be'),
- ('九零','wx4b8e52ee9877a5be'),
- ('周报','wx4b8e52ee9877a5be'),
- ('销售助手','wx4b8e52ee9877a5be'),
- ('发布会','wx4b8e52ee9877a5be'),
- ('迎春','wx4b8e52ee9877a5be');
+-- ----------------------------
+-- Records of message_tag
+-- ----------------------------
+INSERT INTO `message_tag` VALUES ('10', '2018', 'wx4b8e52ee9877a5be', '2018-08-03 11:26:45');
+INSERT INTO `message_tag` VALUES ('11', '盛典', 'wx4b8e52ee9877a5be', '2018-08-03 11:26:45');
+INSERT INTO `message_tag` VALUES ('13', '邀请函', 'wx4b8e52ee9877a5be', '2018-08-03 11:26:45');
+INSERT INTO `message_tag` VALUES ('14', '九零', 'wx4b8e52ee9877a5be', '2018-08-03 11:26:45');
+INSERT INTO `message_tag` VALUES ('15', '周报', 'wx4b8e52ee9877a5be', '2018-08-03 11:26:45');
+INSERT INTO `message_tag` VALUES ('16', '销售助手', 'wx4b8e52ee9877a5be', '2018-08-03 11:26:45');
+INSERT INTO `message_tag` VALUES ('17', '发布会', 'wx4b8e52ee9877a5be', '2018-08-03 11:26:45');
+INSERT INTO `message_tag` VALUES ('18', '迎春', 'wx4b8e52ee9877a5be', '2018-08-03 11:26:45');
+INSERT INTO `message_tag` VALUES ('19', '生活', null, '2018-08-03 15:27:40');
+INSERT INTO `message_tag` VALUES ('21', '数码', null, '2018-08-03 16:33:05');
+INSERT INTO `message_tag` VALUES ('23', '餐饮', null, '2018-08-03 17:19:52');
+INSERT INTO `message_tag` VALUES ('24', '时尚', null, '2018-08-03 16:43:41');
+INSERT INTO `message_tag` VALUES ('47', 'adad', null, '2018-08-04 15:46:59');
+INSERT INTO `message_tag` VALUES ('49', '打算的撒发生', null, '2018-08-04 16:05:05');
+INSERT INTO `message_tag` VALUES ('52', '山大发', null, '2018-08-04 16:43:10');
+INSERT INTO `message_tag` VALUES ('56', 'hdy', null, '2018-08-21 11:22:34');
+INSERT INTO `message_tag` VALUES ('57', '阿凡达', null, '2018-08-21 13:44:41');
+INSERT INTO `message_tag` VALUES ('58', '阿道夫', null, '2018-08-21 13:50:55');
+INSERT INTO `message_tag` VALUES ('59', '大师傅', null, '2018-08-21 13:58:23');
+INSERT INTO `message_tag` VALUES ('60', '碧桂园', null, '2018-08-22 11:11:22');
+INSERT INTO `message_tag` VALUES ('61', '房地产', null, '2018-08-22 11:11:22');
+INSERT INTO `message_tag` VALUES ('62', '幼师', null, '2018-08-22 16:33:49');
+INSERT INTO `message_tag` VALUES ('63', '幼儿园', null, '2018-08-22 16:33:49');
+INSERT INTO `message_tag` VALUES ('64', '祭祀', null, '2018-08-24 16:05:27');
+INSERT INTO `message_tag` VALUES ('65', '中元节', null, '2018-08-24 16:05:27');
+INSERT INTO `message_tag` VALUES ('74', '青春', null, '2018-08-27 23:11:52');
+INSERT INTO `message_tag` VALUES ('75', '再来1桶', null, '2018-08-27 23:11:53');
+INSERT INTO `message_tag` VALUES ('76', '促销', null, '2018-08-27 23:11:53');
+INSERT INTO `message_tag` VALUES ('77', '业务员', null, '2018-08-27 23:11:53');
+INSERT INTO `message_tag` VALUES ('78', '秘笈', null, '2018-08-28 10:34:09');
+INSERT INTO `message_tag` VALUES ('80', '兑奖', null, '2018-08-28 10:34:09');
+INSERT INTO `message_tag` VALUES ('81', '面', null, '2018-08-28 10:42:01');
+INSERT INTO `message_tag` VALUES ('82', '业务', null, '2018-08-29 20:21:58');
+INSERT INTO `message_tag` VALUES ('83', '大辣椒', null, '2018-08-29 20:21:58');
+INSERT INTO `message_tag` VALUES ('84', '爱心', null, '2018-08-29 20:34:51');
+INSERT INTO `message_tag` VALUES ('85', 'task', null, '2018-08-30 14:22:41');
+INSERT INTO `message_tag` VALUES ('86', '再来一桶', null, '2018-08-30 14:24:44');
+INSERT INTO `message_tag` VALUES ('87', '开学季', null, '2018-08-30 15:49:58');
+INSERT INTO `message_tag` VALUES ('88', '富文本编辑器', null, '2018-08-30 16:00:36');
+INSERT INTO `message_tag` VALUES ('89', '职业', null, '2018-08-31 10:33:33');
+INSERT INTO `message_tag` VALUES ('90', 'test', null, '2018-08-31 14:19:34');
+INSERT INTO `message_tag` VALUES ('91', '感谢', null, '2018-08-31 16:29:45');
+INSERT INTO `message_tag` VALUES ('92', '教师节', null, '2018-08-31 16:29:45');
+INSERT INTO `message_tag` VALUES ('93', '高能', null, '2018-08-31 16:59:16');
+INSERT INTO `message_tag` VALUES ('94', '周六', null, '2018-08-31 16:59:16');
+INSERT INTO `message_tag` VALUES ('95', '风暴', null, '2018-08-31 16:59:16');
+INSERT INTO `message_tag` VALUES ('96', '湖南卫视', null, '2018-08-31 16:59:16');
+INSERT INTO `message_tag` VALUES ('97', '中非合作', null, '2018-08-31 17:00:07');
+INSERT INTO `message_tag` VALUES ('98', '人民大会堂', null, '2018-08-31 17:00:07');
+INSERT INTO `message_tag` VALUES ('99', '五月天', null, '2018-08-31 17:13:28');
+INSERT INTO `message_tag` VALUES ('100', '知足', null, '2018-08-31 17:13:28');
+INSERT INTO `message_tag` VALUES ('101', '20年', null, '2018-08-31 17:13:28');
+INSERT INTO `message_tag` VALUES ('102', '歌迷', null, '2018-08-31 17:17:12');
+INSERT INTO `message_tag` VALUES ('103', '童装', null, '2018-08-31 17:18:28');
+INSERT INTO `message_tag` VALUES ('104', '潮流', null, '2018-08-31 17:18:28');
+INSERT INTO `message_tag` VALUES ('105', '金螳螂', null, '2018-09-03 16:28:03');
+INSERT INTO `message_tag` VALUES ('106', '幼儿', null, '2018-09-05 14:17:24');
+INSERT INTO `message_tag` VALUES ('107', '开学', null, '2018-09-05 14:24:45');
+INSERT INTO `message_tag` VALUES ('108', '深圳', null, '2018-09-06 14:31:31');
+INSERT INTO `message_tag` VALUES ('109', '家具展', null, '2018-09-06 14:31:31');
+INSERT INTO `message_tag` VALUES ('110', '家居生活', null, '2018-09-06 14:31:31');
+INSERT INTO `message_tag` VALUES ('111', '广场', null, '2018-09-06 14:31:31');
+
 
 DROP TABLE IF EXISTS `group`;
 CREATE TABLE `group` (
@@ -187,14 +276,18 @@ CREATE TABLE `group` (
   `def_group` int(1) DEFAULT '0' COMMENT '组 0新增 1默认 2公司',
   `create_group` int(11) DEFAULT NULL COMMENT '当del_group=1时，值代表成员主键（staff_id）',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
-INSERT INTO `group`(`name`,`corpid`,`def_group`,`create_group`)VALUES
-('admin的默认组','wx4b8e52ee9877a5be',1,'1000'),
-('admin3的默认组','wx4b8e52ee9877a5be',1,'1001'),
-('hdy的默认组','wx4b8e52ee9877a5be',1,'1003'),
-('mike的默认组','wx4b8e52ee9877a5be',1,'1005'),
-('蚂蚁技术','wwd700d514cc421397',2,'1000');
+-- ----------------------------
+-- Records of group
+-- ----------------------------
+INSERT INTO `group` VALUES ('30', 'admin的默认组', 'wx4b8e52ee9877a5be', '1', '1000');
+INSERT INTO `group` VALUES ('31', 'admin默认组', 'wx4b8e52ee9877a5be', '1', '1001');
+INSERT INTO `group` VALUES ('32', 'hdy的默认组', 'wx4b8e52ee9877a5be', '1', '1003');
+INSERT INTO `group` VALUES ('33', 'mike的默认组', 'wx4b8e52ee9877a5be', '1', '1005');
+INSERT INTO `group` VALUES ('34', '蚂蚁技术', 'wwd700d514cc421397', '2', '1000');
+INSERT INTO `group` VALUES ('35', 'test1默认组', null, '0', null);
+INSERT INTO `group` VALUES ('36', 'test2默认组', null, '0', null);
 
 
 DROP TABLE IF EXISTS `message`;
@@ -225,19 +318,59 @@ CREATE TABLE `message` (
   KEY `query` (`corp_id`,`suite_id`,`corpid`,`delFlag`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
 
-INSERT INTO `message`(`corp_id`,`suite_id`,`corpid`,`msgType`,`titleText`,`title`
-,`descriptionText`,`description`,`url`,`picurl`,`btntxt`,`coverPicAttach`
-,`contentAttach`,`third_params`,`pageCount`,`create_userId`,`update_time`
-,`status`,`delFlag`)VALUES
-('wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '5', '大辣娇--加1元再来1桶', '大辣娇--加1元再来1桶'
-, null, '/module/web/message/h5/page/3e29e698-7995-4f0f-9443-29bc3ecbd717/neUzquH', 'http://crm.youitech.com/module/web/message/h5/h5-share.html', '', '阅读全文', '[]'
-, '[]', '{"d":"neUzquH\","type":"rabbitpre","url":"http://v1.rabbitpre.com/m/neUzquH"}', '16', '1000', '2018-01-27 16:11:49', '1', '0'),
-('wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '5', '腊八节/腊八粥/传统节日/企业宣传祝福', '腊八节/腊八粥/传统节日/企业宣传祝福'
-, null, '/module/web/message/h5/page/ead64920-f3ef-462c-85f8-3bfe9273cf8c/y7AQQuiFp', 'http://crm.youitech.com/module/web/message/h5/h5-share.html', '', '阅读全文', '[]'
-, '[]', '{"d":"y7AQQuiFp","type":"rabbitpre","url":"http://v1.rabbitpre.com/m/y7AQQuiFp"}', '7', '1000', '2018-01-24 10:13:44', '1', '0'),
-('wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '1', '企业微信注册', '<p>企业微信注册</p>'
-, ' 以下是简单的注册「企业微信 / 微信企业号」操作步骤：1、登录【微信企业号官网/企业微信官网】-【企业注册】 2、填写【企业信息&管理员信息】★温馨提示：','<p>★温馨提示</p>','http://crm.youitech.com/module/web/message/message-share.html', '', '阅读全文', '[]'
-, '[]', null, '1', '1000', '2017-12-07 08:11:49', '1', '0');
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `corp_id` varchar(255) NOT NULL COMMENT '第三方id',
+  `suite_id` varchar(255) NOT NULL COMMENT '套件id',
+  `corpid` varchar(255) NOT NULL COMMENT '公司id',
+  `msgType` int(2) DEFAULT '1' COMMENT '1-文章 2-资料 3-图片 4-没有二维码图片 5-H5 6平面',
+  `type` int(2) DEFAULT '1' COMMENT '1:图文消息',
+  `titleText` longtext NOT NULL COMMENT '标题文本',
+  `title` longtext NOT NULL COMMENT '标题',
+  `descriptionText` longtext COMMENT '内容文本',
+  `description` longtext COMMENT '描述上部分',
+  `url` varchar(255) NOT NULL COMMENT '点击后跳转的链接',
+  `picurl` varchar(255) DEFAULT NULL COMMENT '图文消息的图片链接，支持JPG、PNG格式，较好的效果为大图640x320，小图80x80',
+  `btntxt` varchar(4) DEFAULT NULL COMMENT '按钮文字，仅在图文数为1条时才生效。 默认为“阅读全文”。',
+  `coverPicAttach` longtext,
+  `contentAttach` longtext,
+  `third_params` varchar(255) DEFAULT NULL COMMENT '第三方参数，json格式',
+  `third_param_id` varchar(50) DEFAULT NULL COMMENT '第三方唯一标识',
+  `pageCount` int(11) DEFAULT '1' COMMENT '页数',
+  `create_user_id` varchar(30) DEFAULT NULL COMMENT '员工user_id',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最后一次更新时间',
+  `status` int(2) DEFAULT '1' COMMENT '状态 0停用 1启用',
+  `delFlag` int(2) DEFAULT '0' COMMENT '删除标志位 0未删除 1删除',
+  PRIMARY KEY (`id`),
+  KEY `query` (`corp_id`,`suite_id`,`corpid`,`delFlag`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of message
+-- ----------------------------
+INSERT INTO `message` VALUES ('100', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '5', '1', '大辣娇--加1元再来1桶', '大辣娇--加1元再来1桶', null, '/web/h5/page/bf3ec1f4-8eac-4de7-9054-06db97ea4606/neUzquH.html', 'http://crm.youitech.com/module/web/message/h5/h5-share.html', '', '阅读全文', '[]', '[]', '{\"d\":\"neUzquH\",\"type\":\"rabbitpre\",\"url\":\"http://v1.rabbitpre.com/m/neUzquH\"}', 'neUzquH', '16', 'wzy', '2018-01-27 16:11:49', '1', '0');
+INSERT INTO `message` VALUES ('101', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '5', '1', '腊八节/腊八粥/传统节日/企业宣传祝福', '腊八节/腊八粥/传统节日/企业宣传祝福', null, '/module/web/message/h5/page/ead64920-f3ef-462c-85f8-3bfe9273cf8c/y7AQQuiFp', 'http://crm.youitech.com/module/web/message/h5/h5-share.html', '', '阅读全文', '[]', '[]', '{\"d\":\"y7AQQuiFp\",\"type\":\"rabbitpre\",\"url\":\"http://v1.rabbitpre.com/m/y7AQQuiFp\"}', null, '7', 'wzy', '2018-01-24 10:13:44', '1', '0');
+INSERT INTO `message` VALUES ('102', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '1', '1', '企业微信注册', '<p>企业微信注册</p>', ' 以下是简单的注册「企业微信 / 微信企业号」操作步骤：1、登录【微信企业号官网/企业微信官网】-【企业注册】 2、填写【企业信息&管理员信息】★温馨提示：', '<p>★温馨提示</p>', 'http://crm.youitech.com/module/web/message/message-share.html', '', '阅读全文', '[]', '[]', null, null, '1', 'wzy', '2017-12-07 08:11:49', '1', '0');
+INSERT INTO `message` VALUES ('110', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '1', '1', '大法师发发多少大神啊', '大法师发发多少<div><span style=\"background-color: yellow;\">大神啊</span></div>', '大法师发发多少大神啊', '大法师发发多少<div><span style=\"background-color: yellow;\">大神啊</span></div>', 'http://crm.youitech.com/module/web/message/message-share.html', null, null, null, null, null, null, null, 'wzy', '2018-08-21 13:44:20', '1', '0');
+INSERT INTO `message` VALUES ('111', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '1', '1', 'testtesttest', 'testtesttest', '', '', 'http://crm.youitech.com/module/web/message/message-share.html', null, null, null, null, null, null, null, 'yanxg', '2018-08-21 13:50:55', '1', '0');
+INSERT INTO `message` VALUES ('112', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '1', '1', '大师傅', '大师傅', '', '', 'http://crm.youitech.com/module/web/message/message-share.html', null, null, null, null, null, null, null, 'ZhangChi2Hao', '2018-08-21 13:58:23', '1', '0');
+INSERT INTO `message` VALUES ('113', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '1', '1', '33333333', '33333333', '', '', 'http://crm.youitech.com/module/web/message/message-share.html', null, null, null, null, null, null, null, 'yanxg', '2018-08-21 14:03:17', '1', '0');
+INSERT INTO `message` VALUES ('129', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '5', '1', '我是幼师，我承诺！', '我是幼师，我承诺！', null, '/web/h5/page/bb8b00e1-51ca-4793-832f-76794a0c74c9/BRNBJv3.html', 'http://crm.youitech.com/module/web/message/h5/h5-share.html', null, null, null, null, '', 'BRNBJv3', null, 'ZhangChi2Hao', '2018-08-22 16:33:48', '0', '0');
+INSERT INTO `message` VALUES ('130', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '5', '1', '祝所有正在拥有以及曾经拥有童年的孩子', '祝所有正在拥有以及曾经拥有童年的孩子', null, '/web/h5/page/120d1848-002e-45ba-beaa-5c135bb608aa/aUe1ZicDXY.html', 'http://crm.youitech.com/module/web/message/h5/h5-share.html', null, null, null, null, '', 'aUe1ZicDXY', null, 'yanxg', '2018-08-23 14:34:04', '1', '0');
+INSERT INTO `message` VALUES ('152', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '2', '1', '任务一', '任务一', null, null, 'http://crm.youitech.com/module/web/message/doc/doc-share.html', null, null, 'eda8eda2-f4c0-43ab-bdf1-80ef3cbedf4f__pdf__pic_1.png,385b3131-d08e-4aea-8873-ff61f3ac0e93__pdf__pic_2.png', '{\"saveFileName\":\"04af5143-fd49-428d-b417-13072ae22db9.pdf\",\"uploadFileName\":\"任务一.pdf\"}', null, null, '2', 'ZhangChi2Hao', '2018-08-30 14:22:40', '1', '0');
+INSERT INTO `message` VALUES ('153', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '5', '1', '大辣娇--加1元再来1桶', '大辣娇', null, '/web/h5/page/bf3ec1f4-8eac-4de7-9054-06db97ea4606/neUzquH.html', 'http://crm.youitech.com/module/web/message/h5/h5-share.html', null, null, null, null, '{\"type\":\"rabbitpre\",\"url\":\"http://v1.rabbitpre.com/m/neUzquH\"}', 'neUzquH', '16', 'wzy', '2018-08-30 14:24:44', '1', '0');
+INSERT INTO `message` VALUES ('155', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '1', '1', '测试文章 富文本编辑器', '测试文章&nbsp;<span style=\"color: inherit; background-color: yellow;\">富文本编辑器</span>', '富文本编辑器内容内容', '<span style=\"background-color: yellow;\">富文本编辑器内容</span><div><span style=\"background-color: yellow;\">内容</span></div>', 'http://crm.youitech.com/module/web/message/message-share.html', 'be1ba8dc-8fe8-44f0-bfee-d81a6b486b12.jpg', null, null, null, null, null, '1', 'wzy', '2018-08-30 16:00:36', '1', '0');
+INSERT INTO `message` VALUES ('161', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '6', '1', '幼儿园开学季', '幼儿园开学季', null, null, 'http://crm.youitech.com/module/web/message/graphic/graphic-share.html', 'b1907f79-6853-4216-b67a-62509cd8e511.jpg', null, null, null, '{\"type\":\"chuangkit\",\"url\":\"https://www.chuangkit.com/sharedesign?d=058db75b-2228-45d0-8c40-42b540a0e86e\"}', '058db75b-2228-45d0-8c40-42b540a0e86e', '1', 'ZhangChi2Hao', '2018-09-05 14:24:45', '1', '0');
+INSERT INTO `message` VALUES ('162', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '1', '1', '富文本编辑器 重复三遍', '富文本编辑器 重复三遍', '富文本编辑器 富文本编辑器，富文本编辑器 重复三遍', '<span style=\"background-color: yellow;\">富文本编辑器&nbsp;</span>富文本编辑器，富文本编辑器 重复三遍<div><span style=\"background-color: yellow;\">&nbsp;&nbsp;&nbsp;&nbsp;<br></span></div>', 'http://crm.youitech.com/module/web/message/doc/doc-share.html', '5ebb5609-29f4-4473-9d80-18bb74f3db52.jpg', null, null, null, null, null, '1', 'yanxg', '2018-09-05 17:20:53', '1', '0');
+INSERT INTO `message` VALUES ('164', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '6', '1', '教师节快乐', '教师节快乐', null, null, 'http://crm.youitech.com/module/web/message/graphic/graphic-share.html', 'c94d4003-c3ef-4377-82b4-ab51185b0e6c.jpg', null, null, null, '{\"type\":\"chuangkit\",\"url\":\"https://www.chuangkit.com/sharedesign?d=19aabc86-d124-49fc-9a8b-dc60683867e4\"}', '19aabc86-d124-49fc-9a8b-dc60683867e4', '1', 'zhangc', '2018-08-31 16:29:45', '1', '0');
+INSERT INTO `message` VALUES ('168', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '5', '1', '人生中最好的一天，一生活一场五月天', '人生中最好的一天，一生活一场五月天', null, '/web/h5/page/0dd6c0df-46d2-407d-9862-78194ec28879/UZjYBjz.html', 'http://crm.youitech.com/module/web/message/h5/h5-share.html', null, null, null, null, null, null, '9', 'hdy', '2018-08-31 17:17:12', '1', '0');
+INSERT INTO `message` VALUES ('169', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '2', '1', '中非合作论坛', '中非合作论坛', null, null, 'http://crm.youitech.com/module/web/message/doc/doc-share.html', null, null, '24f88c1a-55dd-48ea-87ad-53243a963ac3__pdf__pic_1.png,036dc02d-84d4-47c5-a1fd-9cf50abb696a__pdf__pic_2.png', '{\"uploadFileName\":\"tetete.pdf\"}', null, null, '2', 'clx', '2018-09-05 15:49:23', '1', '0');
+INSERT INTO `message` VALUES ('170', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '6', '1', '印刷海报', '印刷海报', null, null, 'http://crm.youitech.com/module/web/message/graphic/graphic-share.html', '29a1d510-cd5e-4a53-939b-b0033f65e63c.jpg', null, null, null, '{\"type\":\"chuangkit\",\"url\":\"https://www.chuangkit.com/sharedesign?d=3711282f-b1dc-4b0d-b2b9-0149ce0440ca\"}', '3711282f-b1dc-4b0d-b2b9-0149ce0440ca', '1', 'zhangc', '2018-08-31 17:18:28', '0', '0');
+INSERT INTO `message` VALUES ('178', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '5', '1', '金螳螂 家', '金螳螂 家', null, '/web/h5/page/e2729013-6f02-47de-86cc-a657bcc09d51/NeiFJnbEx.html', 'http://crm.youitech.com/module/web/message/h5/h5-share.html', null, null, null, null, '{\"type\":\"rabbitpre\",\"url\":\"http://www.rabbitpre.com/m/NeiFJnbEx\"}', 'NeiFJnbEx', '15', 'cyt', '2018-09-03 16:29:23', '1', '0');
+INSERT INTO `message` VALUES ('179', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '6', '1', '微信公众号首图', '微信公众号首图', null, null, 'http://crm.youitech.com/module/web/message/graphic/graphic-share.html', '65cb047a-fc6b-4bfd-960e-69b5919f7ab2.jpg', null, null, null, '{\"type\":\"chuangkit\",\"url\":\"https://www.chuangkit.com/sharedesign?d=99c4ebeb-f913-44d4-8cd3-022641cef682\"}', '99c4ebeb-f913-44d4-8cd3-022641cef682', '1', 'clx', '2018-09-04 21:36:27', '1', '0');
+INSERT INTO `message` VALUES ('180', 'wx4b8e52ee9877a5be', 'wx9b2b1532fd370525', 'wx4b8e52ee9877a5be', '5', '1', '深圳国际家具展邀请函', '深圳国际家具展邀请函', null, '/web/h5/page/da3cd323-9026-44b5-92c1-5e797ab0471a/6fiaI37.html', 'http://crm.youitech.com/module/web/message/h5/h5-share.html', null, null, null, null, '{\"type\":\"rabbitpre\",\"url\":\"http://www.rabbitpre.com/m/6fiaI37\"}', '6fiaI37', '14', 'wzy', '2018-09-06 14:31:31', '1', '0');
+
 
 DROP TABLE IF EXISTS `group_message_relation`;
 CREATE TABLE `group_message_relation` (
@@ -261,13 +394,28 @@ CREATE TABLE `group_staff_relation` (
   PRIMARY KEY (`group_id`,`staff_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `group_staff_relation`(`group_id`,`staff_id`,`def_group`)VALUES
-('30','1000',1),
-('31','1001',1),
-('32','1003',1),
-('34','1000',0),
-('34','1001',0),
-('34','1003',0);
+DROP TABLE IF EXISTS `group_staff_relation`;
+CREATE TABLE `group_staff_relation` (
+  `group_id` int(11) NOT NULL COMMENT '组编号',
+  `user_id` varchar(30) NOT NULL COMMENT '员工user_id',
+  `def_group` int(1) DEFAULT '0' COMMENT '组 0新增 1默认 2公司',
+  PRIMARY KEY (`group_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of group_staff_relation
+-- ----------------------------
+INSERT INTO `group_staff_relation` VALUES ('30', 'cyt', '0');
+INSERT INTO `group_staff_relation` VALUES ('31', 'clx', '0');
+INSERT INTO `group_staff_relation` VALUES ('31', 'yanxg', '0');
+INSERT INTO `group_staff_relation` VALUES ('32', 'clx', '0');
+INSERT INTO `group_staff_relation` VALUES ('32', 'zhangc', '1');
+INSERT INTO `group_staff_relation` VALUES ('33', 'clx', '0');
+INSERT INTO `group_staff_relation` VALUES ('33', 'ZhangChi2Hao', '0');
+INSERT INTO `group_staff_relation` VALUES ('34', 'cyt', '1');
+INSERT INTO `group_staff_relation` VALUES ('34', 'wzy', '0');
+INSERT INTO `group_staff_relation` VALUES ('34', 'yanxg', '0');
+INSERT INTO `group_staff_relation` VALUES ('34', 'zhangc', '0');
 
 DROP TABLE IF EXISTS `message_share`;
 CREATE TABLE `message_share` (

@@ -20,6 +20,8 @@ public class WxApi {
     //获取用户信息
     private static final String GET_USER_INFO = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=%s&code=%s";
     private static final String GET_USER_DETAIL_INFO = "https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token=%s&userid=%s";
+    private static final String GET_DEPARTMENT_USER_INFO = "https://qyapi.weixin.qq.com/cgi-bin/user/simplelist?access_token=%s&department_id=%s&fetch_child=%s";
+
     //获取账号粉丝信息
     private static final String GET_FANS_INFO = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
 
@@ -69,6 +71,13 @@ public class WxApi {
     public static String getUsersDetailInfoUrl(String token,String userId){
         return String.format(GET_USER_DETAIL_INFO,token,userId);
     }
+
+
+    //获取部门用户接口
+    public static String getDepartmentUserInfoUrl(String token,String departmentId,String fetchChild){
+        return String.format(GET_DEPARTMENT_USER_INFO,token,departmentId,fetchChild);
+    }
+
 
     //获取粉丝信息接口
     public static String getFansInfoUrl(String token, String openid) {

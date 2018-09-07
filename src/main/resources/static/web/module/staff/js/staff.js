@@ -86,9 +86,9 @@ function loadData() {
             },
             {
                 "data": function (row) {
-                    return "<a href='" + '#' + "' target='view_window' style='margin: 0 5px 0 5px' class='previewLink' data-id='" + row.id + "'><i class='fa fa-eye'></i></a> " +
-                        "<a href='#' class='editLink' style='margin: 0 5px 0 5px' data-id='" + row.id + "' data-target='#editModal' data-toggle='modal'><i class='fa fa-edit'></i></a> " +
-                        "<a href='#' class='delLink' style='margin: 0 5px 0 5px' data-id='" + row.id + "' ><i class='fa fa-trash'></i></a>";
+                    return "<a href='" + '#' + "' target='view_window' style='margin: 0 5px 0 5px' class='previewLink' data-id='" + row.userid + "'><i class='fa fa-eye'></i></a> " +
+                        "<a href='#' class='editLink' style='margin: 0 5px 0 5px' data-id='" + row.userid + "' data-target='#editModal' data-toggle='modal'><i class='fa fa-edit'></i></a> " +
+                        "<a href='#' class='delLink' style='margin: 0 5px 0 5px' data-id='" + row.userid + "' ><i class='fa fa-trash'></i></a>";
                 }
             }
         ],
@@ -175,7 +175,7 @@ function updateDetail(dt) {
 function queryDetail(id) {
     console.log("id"+id);
     $.ajax({
-        url:"/staff/one?id="+id,
+        url:"/staff/one?userId="+id,
         type:"GET",
         dataType: 'json',
         success:function (result) {
@@ -201,7 +201,7 @@ function queryDetail(id) {
 function deleteData(dt,id) {
     console.log("id"+id);
     $.ajax({
-        url:"/staff/delete?id="+id,
+        url:"/staff/delete?userId="+id,
         type:"DELETE",
         dataType:'json',
         success:function (result) {

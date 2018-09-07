@@ -1,5 +1,6 @@
 package com.wzy.crm.dao;
 
+import com.wzy.crm.Application;
 import com.wzy.crm.pojo.Staff;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
@@ -14,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = Application.class)
 public class StaffCustomerFollowRelationMapperTest {
 
     @Autowired
@@ -33,7 +34,8 @@ public class StaffCustomerFollowRelationMapperTest {
 
     @Test
     public void insertByParam() throws Exception {
-        List<Integer> needToInsert = Lists.newArrayList(Arrays.asList(1002,1005));
+        String[] str = {"wzy","yanxg"};
+        List<String> needToInsert = Lists.newArrayList(Arrays.asList(str));
         Integer customerId = 100;
         Integer insertNum = staffCustomerFollowRelationMapper.insertByParam(customerId,needToInsert);
         System.out.println("**************");
@@ -43,12 +45,22 @@ public class StaffCustomerFollowRelationMapperTest {
 
     @Test
     public void deleteByParam() throws Exception {
-        List<Integer> needToDel = Lists.newArrayList(Arrays.asList(1002,1005));
+        String[] str = {"wzy","yanxg"};
+        List<String> needToDel = Lists.newArrayList(Arrays.asList(str));
         Integer customerId = 100;
         Integer delNum = staffCustomerFollowRelationMapper.deleteByParam(customerId,needToDel);
         System.out.println("**************");
         System.out.println("delNum:"+delNum);
         System.out.println("**************");
+    }
+
+    @Test
+    public void selectStaffIdsByParam() throws Exception {
+        Integer customerId = 100;
+        List<String> staffIds = staffCustomerFollowRelationMapper.selectStaffIdsByParam(customerId);
+        for(int i = 0;i<staffIds.size();i++){
+            System.out.println((i+1)+":  "+staffIds.get(i));
+        }
     }
 
 }

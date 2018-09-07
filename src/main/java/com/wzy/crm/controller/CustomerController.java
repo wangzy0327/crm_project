@@ -72,9 +72,9 @@ public class CustomerController {
     }
 
     @PutMapping("/relation/edit")
-    public ServerResponse editCustomerStaffRelation(@RequestParam Integer customerId,@RequestParam List<Integer> staffIds){
+    public ServerResponse editCustomerStaffRelation(@RequestParam Integer customerId,@RequestParam List<String> userIds){
         System.out.println("customerId:"+customerId);
-        return customerService.updateFollow(customerId,staffIds);
+        return customerService.updateFollow(customerId,userIds);
     }
 
 }

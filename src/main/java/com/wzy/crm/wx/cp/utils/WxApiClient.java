@@ -294,6 +294,37 @@ public class WxApiClient {
     }
 
 
+    /**
+     * 根据部门获取部门下用户信息
+     * @param departmentId
+     * @param
+     * @return
+     */
+    public static List<Staff> getDepartmentUserInfo(String departmentId,String fetchChild){ return getDepartmentUserInfo(departmentId,fetchChild, mpAccount); }
+    public static List<Staff> getDepartmentUserInfo(String departmentId,String fetchChild,MpAccount mpAccount) {
+        String accessToken = getAccessToken(mpAccount);
+        String url = WxApi.getDepartmentUserInfoUrl(accessToken, departmentId,fetchChild);
+        JSONObject jsonObj = WxApi.httpsRequest(url, "GET", null);
+        if (null != jsonObj) {
+            String errorcode = jsonObj.getString("errcode");
+            if (Integer.valueOf(errorcode).equals(Integer.valueOf(0))) {
+
+                List<Staff> staffs = new ArrayList<>();
+                JSONArray array = jsonObj.getJSONArray("userlist");
+                for(int i = 0;i<array.size();i++){
+                    staffs.add((Staff)array.get(i));
+                }
+                return staffs;
+            } else {
+                int errorCode = Integer.valueOf(jsonObj.getString("errcode"));
+                System.out.println(String.format("获取用户信息失败 errcode:{} errmsg:{}", errorCode, ErrCode.errMsg(errorCode)));
+            }
+            return null;
+        }
+        return null;
+    }
+
+
 
 
 

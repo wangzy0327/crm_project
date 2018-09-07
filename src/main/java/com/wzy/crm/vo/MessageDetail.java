@@ -25,7 +25,7 @@ public class MessageDetail {
     //分享详情
     private String shareMessage;
 
-    private Integer createUserId;
+    private String createUserId;
 
     private String createUserName;
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IGroupService {
 
-    ServerResponse updateStaffRelation(Integer groupId,List<Integer> staffIds);
+    ServerResponse updateStaffRelation(Integer groupId, List<String> userIds);
 
     ServerResponse updateMessageRelation(Integer groupId, List<Integer> messageIds);
 }

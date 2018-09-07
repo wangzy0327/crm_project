@@ -10,7 +10,7 @@ public class MessageShare {
 
     private Integer messageId;
 
-    private Integer staffId;
+    private Integer userId;
 
     private Date pushTime;
 

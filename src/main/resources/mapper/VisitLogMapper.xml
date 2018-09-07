@@ -3,7 +3,7 @@
 <mapper namespace="com.wzy.crm.dao.VisitLogMapper">
   <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.VisitLog">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="staff_id" jdbcType="INTEGER" property="staffId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="customer_id" jdbcType="INTEGER" property="customerId" />
     <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
     <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
@@ -21,18 +21,18 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wzy.crm.pojo.VisitLog">
-    insert into visit_log (id, staff_id, customer_id, 
+    insert into visit_log (id, user_id, customer_id,
       way, result, requirement, 
       memo, to_staff, update_time, 
       picture, attachment)
-    values (#{id,jdbcType=INTEGER}, #{staffId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{customerId,jdbcType=INTEGER},
       #{way,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, #{requirement,jdbcType=VARCHAR}, 
       #{memo,jdbcType=VARCHAR}, #{toStaff,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{picture,jdbcType=LONGVARCHAR}, #{attachment,jdbcType=LONGVARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.VisitLog">
     update visit_log
-    set staff_id = #{staffId,jdbcType=INTEGER},
+    set user_id = #{userId,jdbcType=VARCHAR},
       customer_id = #{customerId,jdbcType=INTEGER},
       way = #{way,jdbcType=VARCHAR},
       result = #{result,jdbcType=VARCHAR},
@@ -45,22 +45,22 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select visit_log.id, staff_id,staff.`name` staff_name, customer_id,customer.`name` customer_name, way, result, requirement, memo, to_staff, visit_log.update_time,
+    select visit_log.id, user_id,staff.`name` staff_name, customer_id,customer.`name` customer_name, way, result, requirement, memo, to_staff, visit_log.update_time,
     picture, attachment
     from visit_log,staff,customer
     where visit_log.id = #{id,jdbcType=INTEGER}
-    and staff.id = visit_log.staff_id
+    and staff.userid = visit_log.user_id
     and customer.id = visit_log.customer_id
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, staff_id, customer_id, way, result, requirement, memo, to_staff, update_time, 
+    select id, user_id, customer_id, way, result, requirement, memo, to_staff, update_time,
     picture, attachment
     from visit_log
   </select>
   <select id="selectLogByParam" resultMap="BaseResultMap">
-    select sc.id,sc.staff_id,staff.`name` staff_name,sc.customer_id,customer.`name` customer_name,sc.way,sc.result,sc.requirement
+    select sc.id,sc.user_id,staff.`name` staff_name,sc.customer_id,customer.`name` customer_name,sc.way,sc.result,sc.requirement
     from
-    (select id,staff_id,customer_id,way,result,requirement,update_time
+    (select id,user_id,customer_id,way,result,requirement,update_time
     from visit_log
     <where>
       visit_log.customer_id = #{customerId,jdbcType=INTEGER}
@@ -75,7 +75,7 @@
     LEFT JOIN customer
     ON customer.id = sc.customer_id
     LEFT JOIN staff
-    ON staff.id = sc.staff_id
+    ON staff.userid = sc.user_id
     <where>
       <if test="keyword != null and keyword != ''">
         AND staff.name LIKE #{keyword}
@@ -87,7 +87,7 @@
   <select id="findLogCountByParam" resultType="int">
     select count(DISTINCT (sc.id))
     from
-    (select id,staff_id,customer_id,update_time
+    (select id,user_id,customer_id,update_time
     from visit_log
     <where>
       visit_log.customer_id = #{customerId,jdbcType=INTEGER}
@@ -102,7 +102,7 @@
     LEFT JOIN customer
     ON customer.id = sc.customer_id
     LEFT JOIN staff
-    ON staff.id = sc.staff_id
+    ON staff.userid = sc.user_id
     <where>
       <if test="keyword != null and keyword != ''">
         AND staff.name LIKE #{keyword}

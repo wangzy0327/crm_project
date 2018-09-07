@@ -14,7 +14,7 @@
     <result column="third_params" property="thirdParams" jdbcType="VARCHAR" />
     <result column="third_param_id" property="thirdParamId" jdbcType="VARCHAR" />
     <result column="pageCount" property="pagecount" jdbcType="INTEGER" />
-    <result column="create_userId" property="createUserId" jdbcType="INTEGER" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="delFlag" property="delflag" jdbcType="INTEGER" />
@@ -32,7 +32,7 @@
     <result column="corpid" property="corpid" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="LONGVARCHAR" />
     <result column="msgType" property="msgtype" jdbcType="INTEGER" />
-    <result column="create_userId" property="createUserId" jdbcType="INTEGER" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
     <result column="name" property="createUserName" jdbcType="VARCHAR"/>
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="INTEGER" />
@@ -47,7 +47,7 @@
     insert into message (corp_id, suite_id,
       corpid, msgType,
       url, picurl, btntxt,
-      third_params, third_param_id,pageCount, create_userId,
+      third_params, third_param_id,pageCount, create_user_id,
       update_time, titleText, title, descriptionText,
       description, coverPicAttach, contentAttach
       )
@@ -93,7 +93,7 @@
       pageCount = #{pagecount,jdbcType=INTEGER},
     </if>
     <if test="createUserId != null and createUserId != ''">
-      create_userId = #{createUserId,jdbcType=INTEGER},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
     </if>
     <if test="titleText != null and titleText != ''">
       titleText = #{titleText,jdbcType=LONGVARCHAR},
@@ -118,7 +118,7 @@
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select id, corp_id, suite_id, corpid, msgType, `type`, url, picurl, btntxt, third_params,
-    pageCount, create_userId, update_time, status, delFlag, titleText, title, descriptionText, 
+    pageCount, create_user_id, update_time, status, delFlag, titleText, title, descriptionText,
     description, coverPicAttach, contentAttach
     from message
     where id = #{id,jdbcType=INTEGER}
@@ -130,7 +130,7 @@
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, corp_id, suite_id, corpid, msgType, `type`, url, picurl, btntxt, third_params,
-    pageCount, create_userId, update_time, status, delFlag, titleText, title, descriptionText, 
+    pageCount, create_user_id, update_time, status, delFlag, titleText, title, descriptionText,
     description, coverPicAttach, contentAttach
     from message
   </select>
@@ -151,7 +151,7 @@
   <select id="findMessageCountByParam" resultType="int">
     SELECT COUNT(*) FROM message
     LEFT JOIN staff
-    ON message.create_userId = staff.id
+    ON message.create_user_id = staff.userid
     <where>
       message.delFlag = 0
       <if test="keyword != null and keyword != ''">
@@ -166,10 +166,10 @@
     </where>
   </select>
   <select id="selectMessageByParam" resultMap="MessageDetail" >
-    SELECT message.id,corp_id,suite_id,corpid,title,msgType,create_userId,`name`,message.update_time,status
+    SELECT message.id,corp_id,suite_id,corpid,title,msgType,create_user_id,`name`,message.update_time,status
     FROM message
     LEFT JOIN staff
-    ON message.create_userId = staff.id
+    ON message.create_user_id = staff.userid
     <where>
       message.delFlag = 0
       <if test="keyword != null and keyword != ''">

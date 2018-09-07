@@ -47,7 +47,7 @@ function initStaffTable(id) {
                 align: 'center',
                 checkbox: true,
                 formatter:function (value,row,index) {
-                    if($.inArray(row.staffId,overAllStaffIds)!=-1){// 因为 判断数组里有没有这个 id
+                    if($.inArray(row.userId,overAllStaffIds)!=-1){// 因为 判断数组里有没有这个 id
                         return {
                             checked : true               // 存在则选中
                         }
@@ -67,9 +67,9 @@ function initStaffTable(id) {
             }
         ],
         rowAttributes:function (row,index) {
-            console.log("staffId:"+row.staffId);
+            console.log("userId:"+row.userId);
             return {
-                'data-id':row.staffId
+                'data-id':row.userId
             }
         }
 
@@ -86,7 +86,7 @@ var overAllStaffIds ;  //全局数组
 
 function initStaffIds(groupId) {
     $.ajax({
-        url:"/staff/staffIds?groupId="+groupId,
+        url:"/staff/userIds?groupId="+groupId,
         type:"POST",
         contentType: "application/json;charset=UTF-8",
         dataType:'json',
@@ -95,8 +95,8 @@ function initStaffIds(groupId) {
                 var data = result.data;
                 console.log("data:"+data);
                 overAllStaffIds = [];
-                for(var staffId in data)
-                    overAllStaffIds.push(data[staffId]);
+                for(var userId in data)
+                    overAllStaffIds.push(data[userId]);
                 console.log("overAllStaffIds:"+overAllStaffIds);
             }
         },
@@ -111,12 +111,12 @@ function examine(type,datas){
     if(type.indexOf('uncheck')==-1){
         $.each(datas,function(i,v){
             // 添加时，判断一行或多行的 id 是否已经在数组里 不存则添加　
-            overAllStaffIds.indexOf(v.staffId) == -1 ? overAllStaffIds.push(v.staffId) : -1;
+            overAllStaffIds.indexOf(v.userId) == -1 ? overAllStaffIds.push(v.userId) : -1;
         });
         console.log("overAllStaffsIds:"+overAllStaffIds);
     }else{
         $.each(datas,function(i,v){
-            overAllStaffIds.splice(overAllStaffIds.indexOf(v.staffId),1);    //删除取消选中行
+            overAllStaffIds.splice(overAllStaffIds.indexOf(v.userId),1);    //删除取消选中行
         });
     }
 
@@ -128,20 +128,20 @@ function correlGroupStaff() {
     $('#addName').unbind().click(function (){
         var groupId = $('#groupTable input:checkbox:checked').val();
         console.log("ajax groupId:"+groupId);
-        var staffIds = [];
+        // var userIds = [];
         // $('#staffTable input:checkbox').each(function () {
-        //     var staffId = $(this).parent('td').parent('tr').attr('data-id');
-        //     console.log("data-id:"+staffId);
-        //     if(this.checked == true && staffId != undefined && staffId != null){
-        //         staffIds.push(staffId);
+        //     var userId = $(this).parent('td').parent('tr').attr('data-id');
+        //     console.log("data-id:"+userId);
+        //     if(this.checked == true && userId != undefined && userId != null){
+        //         userIds.push(userId);
         //     }
         // });
-        // console.log(staffIds);
-        var paramsJson = {"groupId":groupId,"staffIds":overAllStaffIds};
+        // console.log(userIds);
+        var paramsJson = {"groupId":groupId,"userIds":overAllStaffIds};
         var param = jQuery.param(paramsJson);
         console.log(param);
         $.ajax({
-            url:"/group/staffRelation/edit?groupId="+groupId+"&staffIds="+overAllStaffIds,
+            url:"/group/staffRelation/edit?groupId="+groupId+"&userIds="+overAllStaffIds,
             type:"PUT",
             contentType: "application/json;charset=UTF-8",
             dataType:'json',

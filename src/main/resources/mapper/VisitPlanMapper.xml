@@ -3,7 +3,7 @@
 <mapper namespace="com.wzy.crm.dao.VisitPlanMapper">
   <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.VisitPlan">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="staff_id" jdbcType="INTEGER" property="staffId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="customer_id" jdbcType="INTEGER" property="customerId" />
     <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
     <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
@@ -21,20 +21,20 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wzy.crm.pojo.VisitPlan">
-    insert into visit_plan (id, staff_id, customer_id, 
-      time, place, content, 
+    insert into visit_plan (id, user_id, customer_id,
+      `time`, place, content,
       remind, to_staff, update_time, 
       picture, attachment)
-    values (#{id,jdbcType=INTEGER}, #{staffId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER},
       #{time,jdbcType=TIMESTAMP}, #{place,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
       #{remind,jdbcType=TIMESTAMP}, #{toStaff,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{picture,jdbcType=LONGVARCHAR}, #{attachment,jdbcType=LONGVARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.VisitPlan">
     update visit_plan
-    set staff_id = #{staffId,jdbcType=INTEGER},
+    set user_id = #{userId,jdbcType=INTEGER},
       customer_id = #{customerId,jdbcType=INTEGER},
-      time = #{time,jdbcType=TIMESTAMP},
+      `time` = #{time,jdbcType=TIMESTAMP},
       place = #{place,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       remind = #{remind,jdbcType=TIMESTAMP},
@@ -45,22 +45,22 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select visit_plan.id, staff_id,staff.`name` staff_name, customer_id,customer.`name` customer_name, `time`, place, content, remind, to_staff, visit_plan.update_time,
+    select visit_plan.id, user_id,staff.`name` staff_name, customer_id,customer.`name` customer_name, `time`, place, content, remind, to_staff, visit_plan.update_time,
     picture, attachment
     from visit_plan,staff,customer
     where visit_plan.id = #{id,jdbcType=INTEGER}
-    and staff.id = visit_plan.staff_id
+    and staff.userid = visit_plan.user_id
     and customer.id = visit_plan.customer_id
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, staff_id, customer_id, time, place, content, remind, to_staff, update_time, 
+    select id, user_id, customer_id, time, place, content, remind, to_staff, update_time,
     picture, attachment
     from visit_plan
   </select>
   <select id="selectPlanByParam" parameterType="map" resultMap="BaseResultMap">
-    select sc.id,sc.staff_id,staff.`name` staff_name,sc.customer_id,customer.`name` customer_name,sc.`time`,sc.remind,sc.place,sc.content
+    select sc.id,sc.user_id,staff.`name` staff_name,sc.customer_id,customer.`name` customer_name,sc.`time`,sc.remind,sc.place,sc.content
     from
-    (select id,staff_id,customer_id,`time`,remind,place,content
+    (select id,user_id,customer_id,`time`,remind,place,content
     from visit_plan
     <where>
       visit_plan.customer_id = #{customerId,jdbcType=INTEGER}
@@ -75,7 +75,7 @@
     LEFT JOIN customer
     ON customer.id = sc.customer_id
     LEFT JOIN staff
-    ON staff.id = sc.staff_id
+    ON staff.userid = sc.user_id
     <where>
       <if test="keyword != null and keyword != ''">
         AND staff.name LIKE #{keyword}
@@ -87,7 +87,7 @@
   <select id="findPlanCountByParam" resultType="int">
     select count(DISTINCT (sc.id))
     from
-    (select id,staff_id,customer_id,`time`
+    (select id,user_id,customer_id,`time`
     from visit_plan
     <where>
       visit_plan.customer_id = #{customerId,jdbcType=INTEGER}
@@ -102,7 +102,7 @@
     LEFT JOIN customer
     ON customer.id = sc.customer_id
     LEFT JOIN staff
-    ON staff.id = sc.staff_id
+    ON staff.userid = sc.user_id
     <where>
       <if test="keyword != null and keyword != ''">
         AND staff.name LIKE #{keyword}

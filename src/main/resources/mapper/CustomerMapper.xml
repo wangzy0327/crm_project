@@ -96,7 +96,7 @@
     LEFT JOIN staff_customer_follow_relation
     ON c.id = staff_customer_follow_relation.customer_id AND staff_customer_follow_relation.is_follow = 1
     LEFT JOIN staff
-    ON staff.id = staff_customer_follow_relation.staff_id
+    ON staff.userid = staff_customer_follow_relation.user_id
   </select>
   <select id="selectCustomerDetail" resultMap="CustomerDetailMap">
     select c.id,c.name,c.company,c.position,c.mobile,c.email,staff.name follow_name
@@ -104,7 +104,7 @@
     LEFT JOIN staff_customer_follow_relation
     ON c.id = staff_customer_follow_relation.customer_id AND staff_customer_follow_relation.is_follow = 1
     LEFT JOIN staff
-    ON staff.id = staff_customer_follow_relation.staff_id
+    ON staff.userid = staff_customer_follow_relation.user_id
   </select>
   <select id="findCustomerCount" resultType="int">
     SELECT COUNT(*) FROM customer
@@ -129,6 +129,6 @@
     LEFT JOIN staff_customer_follow_relation
     ON c.id = staff_customer_follow_relation.customer_id AND staff_customer_follow_relation.is_follow = 1
     LEFT JOIN staff
-    ON staff.id = staff_customer_follow_relation.staff_id
+    ON staff.userid = staff_customer_follow_relation.user_id
   </select>
 </mapper>

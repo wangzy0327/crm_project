@@ -2,40 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wzy.crm.dao.StaffCustomerFollowRelationMapper" >
   <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.StaffCustomerFollowRelation" >
-    <result column="staff_id" property="staffId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
     <result column="customer_id" property="customerId" jdbcType="INTEGER" />
     <result column="is_follow" property="isFollow" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="StaffMap" type="com.wzy.crm.pojo.Staff" >
     <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="userid" property="userid" jdbcType="VARCHAR"/>
     <result column="name" property="name" jdbcType="VARCHAR" />
   </resultMap>
   <insert id="insert" parameterType="com.wzy.crm.pojo.StaffCustomerFollowRelation" >
-    insert into staff_customer_follow_relation (staff_id, customer_id, is_follow
+    insert into staff_customer_follow_relation (user_id, customer_id, is_follow
       )
-    values (#{staffId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, 1
+    values (#{userId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, 1
       )
   </insert>
   <insert id="insertByParam">
    insert into staff_customer_follow_relation
-    (customer_id,staff_id,is_follow)
+    (customer_id,user_id,is_follow)
     values
-    <foreach collection="staffIds" item="item" index="index" separator=",">
-      (#{customerId}, #{item.value}, 1)
+    <foreach collection="userIds" item="item" index="index" separator=",">
+      (#{customerId}, #{item}, 1)
     </foreach>
   </insert>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select staff_id, customer_id, is_follow
+    select user_id, customer_id, is_follow
     from staff_customer_follow_relation
   </select>
   <select id="selectStaffsByParam" resultMap="StaffMap">
-    select id,`name`
+    select userid,`name`
     from staff_customer_follow_relation,staff
     where staff_customer_follow_relation.customer_id = #{customerId}
-     and staff_customer_follow_relation.staff_id = staff.id
+     and staff_customer_follow_relation.user_id = staff.userid
   </select>
-  <select id="selectStaffIdsByParam" resultType="int">
-    select staff_id
+  <select id="selectStaffIdsByParam" resultType="string">
+    select user_id
     from staff_customer_follow_relation
     where customer_id = #{customerId}
   </select>
@@ -43,8 +44,8 @@
     delete
     from staff_customer_follow_relation
     where
-    <foreach collection="staffIds" item="item" index="index" separator="or">
-      (customer_id = #{customerId} and staff_id = #{item.value})
+    <foreach collection="userIds" item="item" index="index" separator="or">
+      (customer_id = #{customerId} and user_id = #{item})
     </foreach>
   </delete>
 </mapper>

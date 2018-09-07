@@ -8,6 +8,8 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,6 +35,14 @@ public class WxApiClientTest {
         System.out.println("****************************");
         System.out.println(staff);
         System.out.println("****************************");
+    }
+
+    @Test
+    public void getUserInfo1() throws Exception {
+        String departmentId = String.valueOf(1);
+        String fetchChild = String.valueOf(1);
+        List<Staff> staffList = WxApiClient.getDepartmentUserInfo(departmentId,fetchChild);
+        System.out.println(staffList);
     }
 
 }

@@ -27,24 +27,24 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public ServerResponse updateFollow(Integer customerId, List<Integer> staffIds) {
-        List<Integer> oldFollow = staffCustomerFollowRelationMapper.selectStaffIdsByParam(customerId);
-        List<Integer> needToDel = Lists.newArrayList();
-        List<Integer> needToInsert = Lists.newArrayList();
+    public ServerResponse updateFollow(Integer customerId, List<String> userIds) {
+        List<String> oldFollow = staffCustomerFollowRelationMapper.selectStaffIdsByParam(customerId);
+        List<String> needToDel = Lists.newArrayList();
+        List<String> needToInsert = Lists.newArrayList();
         for(int i = 0;i<oldFollow.size();i++){
-            if(!staffIds.contains(oldFollow.get(i)))
+            if(!userIds.contains(oldFollow.get(i)))
                 needToDel.add(oldFollow.get(i));
         }
-        for(int i = 0;i<staffIds.size();i++){
-            if(!oldFollow.contains(staffIds.get(i))){
-                needToInsert.add(staffIds.get(i));
+        for(int i = 0;i<userIds.size();i++){
+            if(!oldFollow.contains(userIds.get(i))){
+                needToInsert.add(userIds.get(i));
             }
         }
         handleFollowData(customerId,needToDel,needToInsert);
         return ServerResponse.createBySuccess();
     }
 
-    private void handleFollowData(Integer customerId, List<Integer> needToDel, List<Integer> needToInsert){
+    private void handleFollowData(Integer customerId, List<String> needToDel, List<String> needToInsert){
         if(needToDel!=null&&needToDel.size()>0)
             staffCustomerFollowRelationMapper.deleteByParam(customerId,needToDel);
         if(needToInsert!=null&&needToInsert.size()>0)

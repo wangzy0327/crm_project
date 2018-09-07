@@ -78,9 +78,9 @@ public class GroupController {
     }
 
     @PutMapping("/staffRelation/edit")
-    public ServerResponse editGroupStaffRelation(@RequestParam Integer groupId,@RequestParam List<Integer> staffIds ){
+    public ServerResponse editGroupStaffRelation(@RequestParam Integer groupId,@RequestParam List<String> userIds ){
         System.out.println("groupId:"+groupId);
-        return groupService.updateStaffRelation(groupId,staffIds);
+        return groupService.updateStaffRelation(groupId,userIds);
     }
 
     @PutMapping("/messageRelation/edit")

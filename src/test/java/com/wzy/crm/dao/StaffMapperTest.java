@@ -23,12 +23,6 @@ public class StaffMapperTest {
         System.out.println("id:"+staff.getId());
     }
 
-    @Test
-    public void selectByPrimaryKey() throws Exception {
-        Integer id = 1000;
-        Staff staff = staffMapper.selectByPrimaryKey(id);
-        System.out.println(staff);
-    }
 
     @Test
     public void selectByUserId() throws Exception {

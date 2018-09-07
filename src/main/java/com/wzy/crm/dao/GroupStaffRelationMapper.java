@@ -7,11 +7,11 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 public interface GroupStaffRelationMapper {
-    int deleteByPrimaryKey(@Param("groupId") Integer groupId, @Param("staffId") Integer staffId);
+    int deleteByPrimaryKey(@Param("groupId") Integer groupId, @Param("userId") Integer userId);
 
     int insert(GroupStaffRelation record);
 
-    GroupStaffRelation selectByPrimaryKey(@Param("groupId") Integer groupId, @Param("staffId") Integer staffId);
+    GroupStaffRelation selectByPrimaryKey(@Param("groupId") Integer groupId, @Param("userId") Integer userId);
 
     List<GroupStaffRelation> selectAll();
 
@@ -19,11 +19,11 @@ public interface GroupStaffRelationMapper {
 
     List<GroupStaffRelation> selectStaffNameByParam(Map<String, String> param);
 
-    List<Integer> selectStaffIdsByParam(Integer groupId);
+    List<String> selectStaffIdsByParam(Integer groupId);
 
-    void deleteByParam(@Param("groupId") Integer groupId, @Param("staffIds") List<Integer> needToDel);
+    void deleteByParam(@Param("groupId") Integer groupId, @Param("userIds") List<String> needToDel);
 
-    void insertByParam(@Param("groupId") Integer groupId, @Param("staffIds") List<Integer> needToInsert);
+    void insertByParam(@Param("groupId") Integer groupId, @Param("userIds") List<String> needToInsert);
 
-    List<Integer> selectAllStaffIdsByGroupId(Integer groupId);
+    List<String> selectAllStaffIdsByGroupId(Integer groupId);
 }

@@ -19,6 +19,6 @@ public interface VisitLogMapper {
 
     Integer findLogCountByParam(Map<String, String> param);
 
-    Integer findLogCount(Integer integer);
+    Integer findLogCount(Integer customerId);
 
 }

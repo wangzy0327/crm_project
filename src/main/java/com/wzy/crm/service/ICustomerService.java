@@ -10,7 +10,7 @@ public interface ICustomerService {
 
     List<CustomerDetailInfo> findCustomerByParam(Map<String,String> map);
 
-    ServerResponse updateFollow(Integer customerId,List<Integer> staffIds);
+    ServerResponse updateFollow(Integer customerId,List<String> userIds);
 
 
 }

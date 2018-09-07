@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface StaffMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByKey(String userId);
 
     int insert(Staff record);
 
-    Staff selectByPrimaryKey(Integer id);
+    Staff selectByKey(String userId);
 
     Staff selectByUserId(String userId);
 

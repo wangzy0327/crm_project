@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class VisitLogMapperTest {
-
     @Autowired
     private VisitLogMapper visitLogMapper;
 
@@ -20,5 +19,10 @@ public class VisitLogMapperTest {
         VisitLog visitLog = visitLogMapper.selectByPrimaryKey(logId);
         System.out.println(visitLog);
     }
+
+    @Test
+    public void selectLogByParam() throws Exception {
+    }
+
 
 }

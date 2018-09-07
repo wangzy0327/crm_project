@@ -16,9 +16,9 @@
     <result column="wx" property="wx" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByKey" parameterType="java.lang.String" >
     delete from staff
-    where id = #{id,jdbcType=INTEGER}
+    where userid = #{userId}
   </delete>
   <insert id="insert" parameterType="com.wzy.crm.pojo.Staff" >
     insert into staff (id, isleader, userid, 
@@ -71,11 +71,11 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select id, isleader, userid, `name`, `position`, mobile, gender, email, avatar, telephone,
     alias, wx, update_time
     from staff
-    where id = #{id,jdbcType=INTEGER}
+    where userid = #{userId,jdbcType=INTEGER}
   </select>
   <select id="selectByUserId" resultMap="BaseResultMap" parameterType="string">
     select id, isleader, userid, `name`, `position`, mobile, gender, email, avatar, telephone,
