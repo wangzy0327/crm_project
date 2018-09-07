@@ -46,11 +46,12 @@ public class GroupStaffRelationMapperTest {
     @Test
     public void selectAllStaffIdsByGroupId() throws Exception {
         Integer groupId = 30;
-        List<String> userIds = groupStaffRelationMapper.selectAllStaffIdsByGroupId(groupId);
-        for(int i = 0;i<userIds.size();i++){
-            System.out.println((i+1)+":"+userIds.get(i));
+        List<Integer> staffIds = groupStaffRelationMapper.selectAllStaffIdsByGroupId(groupId);
+        for(int i = 0;i<staffIds.size();i++){
+            System.out.println((i+1)+":"+staffIds.get(i));
         }
     }
+
 
     @Test
     public void deleteByParam() throws Exception {

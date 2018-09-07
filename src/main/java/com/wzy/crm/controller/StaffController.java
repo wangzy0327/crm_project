@@ -116,7 +116,7 @@ public class StaffController {
         return ServerResponse.createBySuccess(staffMapper.selectAll());
     }
 
-    @PostMapping("/userIds")
+    @PostMapping("/staffIds")
     public ServerResponse getAllStaffIds(@RequestParam Integer groupId){
         System.out.println("groupId:"+groupId);
         return ServerResponse.createBySuccess(groupStaffRelationMapper.selectAllStaffIdsByGroupId(groupId));

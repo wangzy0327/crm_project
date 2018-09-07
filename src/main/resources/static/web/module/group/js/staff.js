@@ -47,7 +47,7 @@ function initStaffTable(id) {
                 align: 'center',
                 checkbox: true,
                 formatter:function (value,row,index) {
-                    if($.inArray(row.userId,overAllStaffIds)!=-1){// 因为 判断数组里有没有这个 id
+                    if($.inArray(row.staffId,overAllStaffIds)!=-1){// 因为 判断数组里有没有这个 id
                         return {
                             checked : true               // 存在则选中
                         }
@@ -66,18 +66,18 @@ function initStaffTable(id) {
                 sortable: true
             }
         ],
-        rowAttributes:function (row,index) {
-            console.log("userId:"+row.userId);
-            return {
-                'data-id':row.userId
-            }
-        }
+        // rowAttributes:function (row,index) {
+        //     console.log("userId:"+row.id);
+        //     return {
+        //         'data-id':row.id
+        //     }
+        // }
 
     });
 
     $('#staffTable').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table',function(e,rows){
         var datas = $.isArray(rows) ? rows : [rows];        // 点击时获取选中的行或取消选中的行
-        examine(e.type,datas);                              // 保存到全局 Array() 里
+        examineStaff(e.type,datas);                              // 保存到全局 Array() 里
     });
 
 }
@@ -86,7 +86,7 @@ var overAllStaffIds ;  //全局数组
 
 function initStaffIds(groupId) {
     $.ajax({
-        url:"/staff/userIds?groupId="+groupId,
+        url:"/staff/staffIds?groupId="+groupId,
         type:"POST",
         contentType: "application/json;charset=UTF-8",
         dataType:'json',
@@ -107,16 +107,16 @@ function initStaffIds(groupId) {
     });
 }
 
-function examine(type,datas){
+function examineStaff(type,datas){
     if(type.indexOf('uncheck')==-1){
         $.each(datas,function(i,v){
             // 添加时，判断一行或多行的 id 是否已经在数组里 不存则添加　
-            overAllStaffIds.indexOf(v.userId) == -1 ? overAllStaffIds.push(v.userId) : -1;
+            overAllStaffIds.indexOf(v.staffId) == -1 ? overAllStaffIds.push(v.staffId) : -1;
         });
         console.log("overAllStaffsIds:"+overAllStaffIds);
     }else{
         $.each(datas,function(i,v){
-            overAllStaffIds.splice(overAllStaffIds.indexOf(v.userId),1);    //删除取消选中行
+            overAllStaffIds.splice(overAllStaffIds.indexOf(v.staffId),1);    //删除取消选中行
         });
     }
 
@@ -137,11 +137,11 @@ function correlGroupStaff() {
         //     }
         // });
         // console.log(userIds);
-        var paramsJson = {"groupId":groupId,"userIds":overAllStaffIds};
+        var paramsJson = {"groupId":groupId,"staffIds":overAllStaffIds};
         var param = jQuery.param(paramsJson);
         console.log(param);
         $.ajax({
-            url:"/group/staffRelation/edit?groupId="+groupId+"&userIds="+overAllStaffIds,
+            url:"/group/staffRelation/edit?groupId="+groupId+"&staffIds="+overAllStaffIds,
             type:"PUT",
             contentType: "application/json;charset=UTF-8",
             dataType:'json',

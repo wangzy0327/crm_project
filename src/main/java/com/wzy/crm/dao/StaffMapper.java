@@ -1,6 +1,8 @@
 package com.wzy.crm.dao;
 
 import com.wzy.crm.pojo.Staff;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +24,8 @@ public interface StaffMapper {
     List<Staff> selectStaffNameByParam(Map<String, String> param);
 
     List<Staff> selectAll();
+
+    List<String> selectUserIds(@Param("staffIds") List<Integer> staffIds);
 
     int updateByPrimaryKey(Staff record);
 }

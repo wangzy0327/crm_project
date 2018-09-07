@@ -70,7 +70,7 @@ function initMessageTable(id) {
 
     $('#messageTable').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table',function(e,rows){
         var datas = $.isArray(rows) ? rows : [rows];        // 点击时获取选中的行或取消选中的行
-        examine(e.type,datas);                              // 保存到全局 Array() 里
+        examineMessage(e.type,datas);                              // 保存到全局 Array() 里
     });
 }
 
@@ -99,7 +99,7 @@ function initMessageIds(groupId) {
     });
 }
 
-function examine(type,datas){
+function examineMessage(type,datas){
     if(type.indexOf('uncheck')==-1){
         $.each(datas,function(i,v){
             // 添加时，判断一行或多行的 id 是否已经在数组里 不存则添加　

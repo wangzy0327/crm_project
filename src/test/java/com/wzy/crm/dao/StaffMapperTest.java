@@ -8,9 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
 public class StaffMapperTest {
+
 
     @Autowired
     private StaffMapper staffMapper;
@@ -29,6 +34,15 @@ public class StaffMapperTest {
         String userId = "hdy";
         Staff staff = staffMapper.selectByUserId(userId);
         System.out.println("staff: "+staff);
+    }
+
+    @Test
+    public void selectUserIds() throws Exception {
+        List<Integer> staffIds = Arrays.asList(1000,1001,1002);
+        List<String> userIds = staffMapper.selectUserIds(staffIds);
+        for(int i = 0;i<userIds.size();i++){
+            System.out.println("userId:"+userIds.get(i));
+        }
     }
 
 }

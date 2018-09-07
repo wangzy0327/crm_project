@@ -6,6 +6,8 @@ import lombok.Data;
 public class GroupStaffRelation {
     private Integer groupId;
 
+    private Integer staffId;
+
     private String userId;
 
     private Integer defGroup;

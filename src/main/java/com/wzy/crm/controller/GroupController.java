@@ -2,6 +2,7 @@ package com.wzy.crm.controller;
 
 import com.google.common.collect.Maps;
 import com.wzy.crm.dao.GroupMapper;
+import com.wzy.crm.dao.StaffMapper;
 import com.wzy.crm.pojo.Group;
 import com.wzy.crm.service.IGroupService;
 import com.wzy.crm.common.ResponseCode;
@@ -24,6 +25,9 @@ public class GroupController {
 
     @Autowired
     private GroupMapper groupMapper;
+
+    @Autowired
+    private StaffMapper staffMapper;
 
     @GetMapping("")
     public List<Group> findAll(HttpServletRequest request, HttpSession session, @RequestParam String title){
@@ -78,8 +82,9 @@ public class GroupController {
     }
 
     @PutMapping("/staffRelation/edit")
-    public ServerResponse editGroupStaffRelation(@RequestParam Integer groupId,@RequestParam List<String> userIds ){
+    public ServerResponse editGroupStaffRelation(@RequestParam Integer groupId,@RequestParam List<Integer> staffIds ){
         System.out.println("groupId:"+groupId);
+        List<String> userIds = staffMapper.selectUserIds(staffIds);
         return groupService.updateStaffRelation(groupId,userIds);
     }
 

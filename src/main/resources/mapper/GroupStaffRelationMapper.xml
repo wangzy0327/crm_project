@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.GroupStaffRelation" >
     <id column="group_id" property="groupId" jdbcType="INTEGER" />
     <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="INTEGER"/>
     <result column="def_group" property="defGroup" jdbcType="INTEGER" />
     <result column="name" property="staffName" jdbcType="VARCHAR" />
   </resultMap>
@@ -35,7 +36,7 @@
     from group_staff_relation
   </select>
   <select id="selectStaffNameByParam" resultMap="BaseResultMap">
-    select staff.userid user_id,staff.`name`,`group`.id group_id
+    select staff.id staff_id,staff.userid user_id,staff.`name`,`group`.id group_id
     from staff
     LEFT JOIN
     (SELECT group_id,user_id
@@ -72,9 +73,9 @@
       (#{groupId}, #{item})
     </foreach>
   </insert>
-  <select id="selectAllStaffIdsByGroupId" resultType="string">
-    select user_id
-    from group_staff_relation
-    where group_id = #{groupId}
+  <select id="selectAllStaffIdsByGroupId" resultType="int">
+    select staff.id staff_id
+    from group_staff_relation,staff
+    where group_id = #{groupId} and staff.userid = group_staff_relation.user_id
   </select>
 </mapper>

@@ -132,4 +132,13 @@
     alias, wx, update_time
     from staff
   </select>
+  <select id="selectUserIds" resultType="string">
+    select userid
+    from staff
+    where id
+    in
+    <foreach collection="staffIds" item="item" open="(" close=")" separator=",">
+      #{item.value}
+    </foreach>
+  </select>
 </mapper>

@@ -25,5 +25,5 @@ public interface GroupStaffRelationMapper {
 
     void insertByParam(@Param("groupId") Integer groupId, @Param("userIds") List<String> needToInsert);
 
-    List<String> selectAllStaffIdsByGroupId(Integer groupId);
+    List<Integer> selectAllStaffIdsByGroupId(Integer groupId);
 }
