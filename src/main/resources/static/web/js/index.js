@@ -16,14 +16,15 @@ $(function () {
                     $.cookie('staffId',data.id,{expires:1/48});
                     console.log("userId:"+data.userid);
                     $.cookie('userId',data.userid,{expires:1/48});
+                    console.log("name:"+data.name);
                     $('.font-bold').text(data.name);
                     if(data.isleader == 0){
-                        $('.font-bold').text("普通成员");
+                        $('.is-leader').text("普通成员");
                         $('.admin').each(function () {
                             $(this).hide();
                         })
                     }else if(data.isleader == 1){
-                        $('.font-bold').text("管理员");
+                        $('.is-leader').text("管理员");
                     }
                     $('.img-circle').attr('src',data.avatar);
                 }else{

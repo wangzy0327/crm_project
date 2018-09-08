@@ -186,7 +186,7 @@ function saveContent() {
             tags.push($.trim($(spanTags[i]).text().substring(0,10)));
         }
         console.log("tags:"+tags);
-        var createUserId = $.cookie('staffId');
+        var createUserId = $.cookie('userId');
         console.log("createUserId:"+createUserId);
         $.ajax({
             url: "/message/save/richText?tags="+tags,

@@ -101,7 +101,7 @@ function saveDoc() {
         console.log("tags:"+pageInfo);
         var contentAttach = {"saveFileName":saveFileName,"uploadFileName":uploadFileName};
         var contentAttachStr = JSON.stringify(contentAttach);
-        var createUserId = $.cookie('staffId');
+        var createUserId = $.cookie('userId');
         console.log("createUserId:"+createUserId);
         $.ajax({
             url:"/message/doc/add",

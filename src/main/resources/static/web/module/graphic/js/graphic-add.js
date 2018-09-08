@@ -31,7 +31,7 @@ function saveGraphic() {
         var third_url = ($("input[name = 'third_url']"))[0].value;
         var third_params = {"type":"chuangkit","url":third_url};
         var third_params_str = JSON.stringify(third_params);
-        var createUserId = $.cookie('staffId');
+        var createUserId = $.cookie('userId');
         console.log("createUserId:"+createUserId);
         $.ajax({
             url:"/message/graphic/add?imgUrl="+imgSrc+"&tags="+tags,
