@@ -39,18 +39,24 @@ common.select = {
 
         var self = this;
 
-        var data = {
-            m: 1010000,
-            t: 'staffs',
-            params: JSON.stringify({operator_id: '<>'})
-        };
-
-        YT.query({
-            data: data,
-            successCallback: function (data) {
-                if (200 == data.status) {
+        // var data = {
+        //     m: 1010000,
+        //     t: 'staffs',
+        //     params: JSON.stringify({operator_id: '<>'})
+        // };
+        console.log("module.data.userid:"+module.data.user_id);
+        $.ajax({
+            type: 'get',
+            url: "/staff/send?userid="+module.data.user_id,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if(result.code == 0){
+                    var data = result.data;
                     self.data[flag + ''] = {
-                        list: data.object,
+                        list: data,
                         ids: [],
                         selectId: [],
                         userIds: []
@@ -58,8 +64,8 @@ common.select = {
 
                     // 加载列表
                     var html = '';
-                    for (var i in data.object) {
-                        html += self.createListHtml(data.object[i], []);
+                    for (var i in data) {
+                        html += self.createListHtml(data[i], []);
                     }
                     $(ele).find('.weui-panel__bd').append(html);
 
@@ -69,10 +75,38 @@ common.select = {
                     });
 
                     self.handleClosePopup(ele, btn, self.data[flag].ids, self.data[flag].selectId, self.data[flag].userIds);
-
                 }
             }
         });
+
+        // YT.query({
+        //     data: data,
+        //     successCallback: function (data) {
+        //         if (200 == data.status) {
+        //             self.data[flag + ''] = {
+        //                 list: data.object,
+        //                 ids: [],
+        //                 selectId: [],
+        //                 userIds: []
+        //             };
+        //
+        //             // 加载列表
+        //             var html = '';
+        //             for (var i in data.object) {
+        //                 html += self.createListHtml(data.object[i], []);
+        //             }
+        //             $(ele).find('.weui-panel__bd').append(html);
+        //
+        //             // 搜索事件
+        //             $(ele).find('.searchInput').bind('input propertychange', function (e) {
+        //                 self.searchStaffs($(this).val(), ele, self.data[flag].list, self.data[flag].ids);
+        //             });
+        //
+        //             self.handleClosePopup(ele, btn, self.data[flag].ids, self.data[flag].selectId, self.data[flag].userIds);
+        //
+        //         }
+        //     }
+        // });
     },
 
     // 打开Popup
@@ -361,6 +395,8 @@ common.visit = {
     },
 
     initDom_plan: function () {
+        console.log()
+
         $('#customerName').text(module.data.customer_name);
 
         $("#visitName").datetimePicker({
@@ -419,7 +455,7 @@ common.visit = {
         }
 
         var data = {
-            customer_id: customer_id,
+            customerId: customer_id,
             time: time || null,
             location: ($('#visitPicker').val() || '') + ' ' + ($('#visitAddress').val() || ''),
             // ios注意：new Date('2017-10-01'..replace(/-/g,'/'))
@@ -432,9 +468,7 @@ common.visit = {
         };
 
         return {
-            data: data,
-            t: 'visit_plan',
-            ai: true
+            data: data
         };
     },
 

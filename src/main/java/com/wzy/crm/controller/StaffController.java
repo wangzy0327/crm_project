@@ -122,4 +122,10 @@ public class StaffController {
         return ServerResponse.createBySuccess(groupStaffRelationMapper.selectAllStaffIdsByGroupId(groupId));
     }
 
+    @GetMapping("/send")
+    public ServerResponse getAllSendStaff(@RequestParam String userid){
+        System.out.println("userid:"+userid);
+        return ServerResponse.createBySuccess(staffMapper.selectByUserIdNot(userid));
+    }
+
 }

@@ -11,6 +11,21 @@
     <result column="userid" property="userid" jdbcType="VARCHAR"/>
     <result column="name" property="name" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="CustomerMap" type="com.wzy.crm.pojo.Customer">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="wechat" property="wechat" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="webSite" property="website" jdbcType="VARCHAR" />
+    <result column="fax" property="fax" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
   <insert id="insert" parameterType="com.wzy.crm.pojo.StaffCustomerFollowRelation" >
     insert into staff_customer_follow_relation (user_id, customer_id, is_follow
       )
@@ -48,4 +63,26 @@
       (customer_id = #{customerId} and user_id = #{item})
     </foreach>
   </delete>
+  <select id="selectCustomersByUserId" resultMap="CustomerMap">
+    select customer.id,customer.`name`,customer.mobile,customer.wechat,customer.company,customer.position,customer.address,customer.telephone,customer.email,
+    customer.webSite,customer.fax,customer.remark
+    from
+    (select customer_id
+    from staff_customer_follow_relation
+    where user_id = #{userid} and is_follow = 1
+    limit #{start},#{length}
+    ) scf
+    left join customer
+    on scf.customer_id  = customer.id
+  </select>
+  <select id="selectCustomerCountsByUserId" resultType="int">
+    select count(customer.id)
+    from
+    (select customer_id
+    from staff_customer_follow_relation
+    where user_id = #{userid} and is_follow = 1
+    ) scf
+    left join customer
+    on scf.customer_id  = customer.id
+  </select>
 </mapper>

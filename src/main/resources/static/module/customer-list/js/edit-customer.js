@@ -1,8 +1,6 @@
 var editCustomer = {
-    m: 1010000,
-    customerData: {},
-    callback: function () {
-
+    callback:function () {
+        
     },
 
     init: function (e,customerData) {
@@ -25,7 +23,7 @@ var editCustomer = {
             {id: 'address', name: '地址', type: 'text', p_name: 'maxlength', p_val: '50'},
             {id: 'telephone', name: '座机', type: 'text', p_name: 'maxlength', p_val: '13'},
             {id: 'email', name: '邮箱', type: 'text', p_name: 'maxlength', p_val: '30'},
-            {id: 'webSite', name: '网址', type: 'text', p_name: 'maxlength', p_val: '50'},
+            {id: 'website', name: '网址', type: 'text', p_name: 'maxlength', p_val: '50'},
             {id: 'fax', name: '传真', type: 'text', p_name: 'maxlength', p_val: '30'}
         ];
 
@@ -75,26 +73,25 @@ var editCustomer = {
                 if (mobile) {
                     var reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/i;
                     reg = /^1\d{10}$/i;
+                    var obj = self.getCustomerVal();
+                    obj['id'] = customer_id;
+                    console.log("id:"+obj['id']);
+                    console.log("name:"+obj['name']);
                     if (reg.test(mobile)) {
-                        var filter = [
-                            {field: 'mobile', value: mobile, operator: '=', relation: 'and'},
-                            {field: 'corpid', value: YT.getCorpId(), operator: '=', relation: 'and'}
-                        ];
+                        $.ajax({
+                            type: 'put',
+                            url: "/customer/update",
+                            contentType: "application/json;charset=UTF-8",
+                            data: JSON.stringify(obj),
+                            dataType: 'json',
+                            error: function (request) {
 
-                        YT.query({
-                            data: {
-                                m: self.m,
-                                t: 'v_customers_distinct',
-                                filter: JSON.stringify(filter)
                             },
-                            successCallback: function (data) {
-                                if (200 == data.status) {
-                                    if (data.object.length >= 1 && data.object[0].id != customer_id) {
-                                        $.alert('手机号已存在！');
-                                    } else {
-                                        // todo 座机、邮箱、网址、传真需要做验证
-                                        self.ajaxData();
-                                    }
+                            success: function (result) {
+                                if (result.code == 0) {
+                                    $.alert('保存成功！', function () {
+                                        self.callback();
+                                    });
                                 }
                             }
                         });
@@ -124,13 +121,13 @@ var editCustomer = {
             customer_address = customer_data.address || '',
             customer_telephone = customer_data.telephone || '',
             customer_email = customer_data.email || '',
-            customer_webSite = customer_data.webSite || '',
+            customer_webSite = customer_data.website || '',
             customer_fax = customer_data.fax || '',
             customer_remark = customer_data.remark || '';
 
         if (obj.mobile == customer_mobile && obj.name == customer_name && obj.position == customer_position &&
             obj.department == customer_department && obj.wechat == customer_wechat && obj.address == customer_address &&
-            obj.telephone == customer_telephone && obj.email == customer_email && obj.webSite == customer_webSite &&
+            obj.telephone == customer_telephone && obj.email == customer_email && obj.website == customer_webSite &&
             obj.fax == customer_fax && obj.remark == customer_remark) {
             return {
                 obj: obj,
@@ -148,12 +145,12 @@ var editCustomer = {
         var mobile = $('#mobile').val();
         var name = $.trim($('#name').val());
         var position = $.trim($('#position').val());
-        var department = $.trim($('#department').val());
+        var company = $.trim($('#department').val());
         var wechat = $.trim($('#wechat').val());
         var address = $.trim($('#address').val());
         var telephone = $('#telephone').val();
         var email = $.trim($('#email').val());
-        var webSite = $.trim($('#webSite').val());
+        var website = $.trim($('#website').val());
         var fax = $.trim($('#fax').val());
         var remark = $.trim($('#remark').val());
 
@@ -161,12 +158,12 @@ var editCustomer = {
             mobile: mobile,
             name: name,
             position: position,
-            department: department,
+            company: company,
             wechat: wechat,
             address: address,
             telephone: telephone,
             email: email,
-            webSite: webSite,
+            website: website,
             fax: fax,
             remark: remark
         }
@@ -182,19 +179,22 @@ var editCustomer = {
             address: '',
             telephone: '',
             email: '',
-            webSite: '',
+            website: '',
             fax: '',
             remark: ''
         }, data);
+
+        console.log(data);
+
         $('#mobile').val(obj.mobile);
         $('#name').val(obj.name);
         $('#position').val(obj.position);
-        $('#department').val(obj.department);
+        $('#department').val(obj.company);
         $('#wechat').val(obj.wechat);
         $('#address').val(obj.address);
         $('#telephone').val(obj.telephone);
         $('#email').val(obj.email);
-        $('#webSite').val(obj.webSite);
+        $('#website').val(obj.website);
         $('#fax').val(obj.fax);
         $('#remark').val(obj.remark);
     },

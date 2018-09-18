@@ -1,6 +1,7 @@
 package com.wzy.crm.dao;
 
 import com.wzy.crm.Application;
+import com.wzy.crm.pojo.Customer;
 import com.wzy.crm.pojo.Staff;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
 public class StaffCustomerFollowRelationMapperTest {
+
 
     @Autowired
     private StaffCustomerFollowRelationMapper staffCustomerFollowRelationMapper;
@@ -61,6 +63,24 @@ public class StaffCustomerFollowRelationMapperTest {
         for(int i = 0;i<staffIds.size();i++){
             System.out.println((i+1)+":  "+staffIds.get(i));
         }
+    }
+
+    @Test
+    public void selectCustomersByUserId() throws Exception {
+        Integer start = 1;
+        Integer length = 8;
+        String userid = "wzy";
+        List<Customer> customers = staffCustomerFollowRelationMapper.selectCustomersByUserId(userid,start,length);
+        for(int i = 0;i<customers.size();i++){
+            System.out.println((i+1)+": "+customers.get(i));
+        }
+    }
+
+    @Test
+    public void selectCustomerCountsByUserId() throws Exception {
+        String userid = "wzy";
+        Integer count = staffCustomerFollowRelationMapper.selectCustomerCountsByUserId(userid);
+        System.out.println("count:"+count);
     }
 
 }

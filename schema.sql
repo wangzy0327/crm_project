@@ -129,6 +129,7 @@ CREATE TABLE `visit_plan` (
   `customer_id` int(11) DEFAULT NULL COMMENT '客户id',
   `time` datetime DEFAULT NULL COMMENT '时间',
   `place` varchar(100) DEFAULT NULL COMMENT '拜访地点',
+  `location` varchar(50) DEFAULT NULL COMMENT '详细地址',
   `picture` longtext COMMENT '图片路径',
   `attachment` longtext COMMENT '附件路径',
   `content` varchar(255) DEFAULT NULL COMMENT '内容',
@@ -137,23 +138,23 @@ CREATE TABLE `visit_plan` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最后一次更新时间',
   PRIMARY KEY (`id`),
   KEY `customerId_staffId_time` (`customer_id`,`user_id`,`time`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COMMENT='拜访计划';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='拜访计划';
 
 -- ----------------------------
 -- Records of visit_plan
 -- ----------------------------
-INSERT INTO `visit_plan` VALUES ('19', 'wzy', '100', '2018-07-28 17:45:00', '北京 北京市 朝阳区', null, null, '洽谈具体业务', '2018-07-28 17:35:00', null, '2018-08-01 17:36:51');
-INSERT INTO `visit_plan` VALUES ('20', 'wzy', '100', '2018-07-27 17:45:00', '北京 北京市 朝阳区', null, null, '洽谈具体业务', '2018-07-26 17:35:00', null, '2018-08-01 17:36:51');
-INSERT INTO `visit_plan` VALUES ('21', 'yanxg', '100', '2018-07-22 17:45:00', '天津 天津市 和平区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
-INSERT INTO `visit_plan` VALUES ('22', 'yanxg', '100', '2018-07-21 17:45:00', '天津 天津市 和平区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
-INSERT INTO `visit_plan` VALUES ('23', 'yanxg', '100', '2018-07-23 17:45:00', '天津 天津市 和平区', null, null, '洽谈具体业务', '2018-07-23 17:35:00', null, '2018-08-01 17:36:51');
-INSERT INTO `visit_plan` VALUES ('24', 'ZhangChi2Hao', '100', '2018-07-25 17:45:00', '辽宁省 沈阳市 铁西区', null, null, '洽谈具体业务', '2018-07-23 17:35:00', null, '2018-08-01 17:36:51');
-INSERT INTO `visit_plan` VALUES ('25', 'zhangc', '100', '2018-07-26 17:45:00', '上海 上海市 黄埔区', null, null, '洽谈具体业务', '2018-07-25 17:35:00', null, '2018-08-01 17:36:51');
-INSERT INTO `visit_plan` VALUES ('26', 'hdy', '100', '2018-07-21 17:45:00', '江苏省 南京市 玄武区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
-INSERT INTO `visit_plan` VALUES ('27', 'wzy', '101', '2018-07-22 17:45:00', '江苏省 无锡市 滨湖区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
-INSERT INTO `visit_plan` VALUES ('28', 'ZhangChi2Hao', '102', '2018-07-23 17:45:00', '北京 北京市 海淀区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
-INSERT INTO `visit_plan` VALUES ('29', 'hdy', '103', '2018-07-24 17:45:00', '北京 北京市 石景山区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
-INSERT INTO `visit_plan` VALUES ('30', 'yanxg', '104', '2018-07-25 17:45:00', '北京 北京市 丰台区', null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('19', 'wzy', '100', '2018-07-28 17:45:00', '北京 北京市 朝阳区', null, null, null, '洽谈具体业务', '2018-07-28 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('20', 'wzy', '100', '2018-07-27 17:45:00', '北京 北京市 朝阳区', null, null, null, '洽谈具体业务', '2018-07-26 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('21', 'yanxg', '100', '2018-07-22 17:45:00', '天津 天津市 和平区', null, null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('22', 'yanxg', '100', '2018-07-21 17:45:00', '天津 天津市 和平区', null, null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('23', 'yanxg', '100', '2018-07-23 17:45:00', '天津 天津市 和平区', null, null, null, '洽谈具体业务', '2018-07-23 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('24', 'ZhangChi2Hao', '100', '2018-07-25 17:45:00', '辽宁省 沈阳市 铁西区', null, null, null, '洽谈具体业务', '2018-07-23 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('25', 'zhangc', '100', '2018-07-26 17:45:00', '上海 上海市 黄埔区', null, null, null, '洽谈具体业务', '2018-07-25 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('26', 'hdy', '100', '2018-07-21 17:45:00', '江苏省 南京市 玄武区', null, null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('27', 'wzy', '101', '2018-07-22 17:45:00', '江苏省 无锡市 滨湖区', null, null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('28', 'ZhangChi2Hao', '102', '2018-07-23 17:45:00', '北京 北京市 海淀区', null, null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('29', 'hdy', '103', '2018-07-24 17:45:00', '北京 北京市 石景山区', null, null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
+INSERT INTO `visit_plan` VALUES ('30', 'yanxg', '104', '2018-07-25 17:45:00', '北京 北京市 丰台区', null, null, null, '洽谈具体业务', '2018-07-20 17:35:00', null, '2018-08-01 17:36:51');
 
 
 DROP TABLE IF EXISTS `visit_log`;
@@ -171,7 +172,7 @@ CREATE TABLE `visit_log` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最后一次更新时间',
   PRIMARY KEY (`id`),
   KEY `customerId_staffId` (`customer_id`,`user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COMMENT='拜访记录';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='拜访记录';
 
 -- ----------------------------
 -- Records of visit_log
@@ -199,7 +200,7 @@ CREATE TABLE `message_tag` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最后一次更新时间',
   PRIMARY KEY (`id`),
   KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of message_tag
@@ -276,7 +277,7 @@ CREATE TABLE `group` (
   `def_group` int(1) DEFAULT '0' COMMENT '组 0新增 1默认 2公司',
   `create_group` int(11) DEFAULT NULL COMMENT '当del_group=1时，值代表成员主键（staff_id）',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of group
@@ -344,7 +345,7 @@ CREATE TABLE `message` (
   `delFlag` int(2) DEFAULT '0' COMMENT '删除标志位 0未删除 1删除',
   PRIMARY KEY (`id`),
   KEY `query` (`corp_id`,`suite_id`,`corpid`,`delFlag`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of message
@@ -525,7 +526,7 @@ CREATE TABLE `city` (
   `name` varchar(255) DEFAULT NULL,
   `cp` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=368 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 INSERT INTO `city` VALUES ('1', '合肥', '[117.283042,31.86119]');
 INSERT INTO `city` VALUES ('2', '芜湖', '[118.376451,31.326319]');

@@ -16,7 +16,6 @@ import java.util.List;
 @SpringBootTest(classes = Application.class)
 public class StaffMapperTest {
 
-
     @Autowired
     private StaffMapper staffMapper;
 
@@ -42,6 +41,15 @@ public class StaffMapperTest {
         List<String> userIds = staffMapper.selectUserIds(staffIds);
         for(int i = 0;i<userIds.size();i++){
             System.out.println("userId:"+userIds.get(i));
+        }
+    }
+
+    @Test
+    public void selectByUserIdNot() throws Exception {
+        String userid = "wzy";
+        List<Staff> staffs = staffMapper.selectByUserIdNot(userid);
+        for(int i = 0;i<staffs.size();i++){
+            System.out.println(staffs.get(i));
         }
     }
 

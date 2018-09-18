@@ -9,6 +9,7 @@
     <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
     <result column="time" jdbcType="TIMESTAMP" property="time" />
     <result column="place" jdbcType="VARCHAR" property="place" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="remind" jdbcType="TIMESTAMP" property="remind" />
     <result column="to_staff" jdbcType="VARCHAR" property="toStaff" />

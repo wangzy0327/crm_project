@@ -239,6 +239,23 @@ public class WxApiClient {
     }
 
     /**
+     * 根据code跟获取用户信息UserId
+     * @param code
+     * @param
+     * @return
+     */
+    public static JSONObject getUserJson(String code){ return getUserJson(code, mpAccount); }
+    public static JSONObject getUserJson(String code,MpAccount mpAccount) {
+        String accessToken = getAccessToken(mpAccount);
+        String url = WxApi.getUsersInfoUrl(accessToken, code);
+        JSONObject jsonObj = WxApi.httpsRequest(url, "GET", null);
+        if (null != jsonObj) {
+            return jsonObj;
+        }
+        return null;
+    }
+
+    /**
      * 根据userId跟获取用户详细信息
      * @param userId
      * @param

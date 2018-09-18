@@ -1,8 +1,10 @@
 package com.wzy.crm.controller;
 
 import com.google.common.collect.Maps;
+import com.mysql.fabric.Server;
 import com.wzy.crm.dao.CustomerMapper;
 import com.wzy.crm.dao.StaffCustomerFollowRelationMapper;
+import com.wzy.crm.pojo.Customer;
 import com.wzy.crm.pojo.CustomerDetailInfo;
 import com.wzy.crm.pojo.Staff;
 import com.wzy.crm.service.ICustomerService;
@@ -76,5 +78,22 @@ public class CustomerController {
         System.out.println("customerId:"+customerId);
         return customerService.updateFollow(customerId,userIds);
     }
+
+    @GetMapping("/self")
+    public ServerResponse selfCustomers(@RequestParam String userid,@RequestParam Integer page,@RequestParam Integer size){
+        System.out.println("userid:"+userid);
+        System.out.println("page:"+page);
+        System.out.println("size:"+size);
+        Integer start = (page - 1)*size;
+        return ServerResponse.createBySuccess(staffCustomerFollowRelationMapper.selectCustomersByUserId(userid,start,size));
+    }
+
+    @PutMapping("/update")
+    public ServerResponse updateCustomer(@RequestBody Customer customer){
+        System.out.println("id:"+customer.getId());
+        System.out.println("name:"+customer.getName());
+        return ServerResponse.createBySuccess(customerMapper.updateByPrimaryKey(customer));
+    }
+
 
 }

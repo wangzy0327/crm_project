@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wzy.crm.common.MessageType;
+import com.wzy.crm.config.NginxConfig;
 import com.wzy.crm.dao.MessageMapper;
 import com.wzy.crm.dao.MessageTagMapper;
 import com.wzy.crm.dao.MessageTagRelationMapper;
@@ -35,6 +36,9 @@ import java.util.*;
 
 @Service
 public class MessageServiceImpl implements IMessageService {
+
+    @Autowired
+    private NginxConfig nginxConfig;
 
     @Autowired
     private MessageMapper messageMapper;
@@ -239,6 +243,7 @@ public class MessageServiceImpl implements IMessageService {
         if (count <= 0) {
             return ServerResponse.createByError();
         }
+        message.setUrl(nginxConfig.getServer()+message.getUrl());
         Map<Integer,List<MessageTag>> map = splitTag(tags);
         addTags(message.getId(),map);
         return ServerResponse.createBySuccess(message);

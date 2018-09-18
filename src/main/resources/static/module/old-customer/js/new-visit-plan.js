@@ -1,10 +1,9 @@
 var module = {};
 
 module.data = {
-    m: 1010000,
-    customer_id: YT.getUrlParam("customer_id"),
-    customer_name: YT.getUrlParam("customer_name"),
-    company: YT.getUrlParam('company')
+    user_id:getUrlParam("userid"),
+    customer_id: getUrlParam("customer_id"),
+    customer_name:getUrlParam("customer_name")
 };
 
 module.service = {

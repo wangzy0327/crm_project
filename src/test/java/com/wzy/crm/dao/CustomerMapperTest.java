@@ -1,6 +1,7 @@
 package com.wzy.crm.dao;
 
 import com.google.common.collect.Maps;
+import com.wzy.crm.CrmApplication;
 import com.wzy.crm.pojo.Customer;
 import com.wzy.crm.pojo.CustomerDetailInfo;
 import org.junit.Test;
@@ -16,7 +17,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = CrmApplication.class)
 public class CustomerMapperTest {
 
     @Autowired
@@ -63,6 +64,15 @@ public class CustomerMapperTest {
         Integer id = 100;
         Customer customer = customerMapper.selectByPrimaryKey(id);
         System.out.println(customer);
+    }
+
+    @Test
+    public void updateByPrimaryKey() throws Exception {
+        Integer id = 100;
+        Customer customer = customerMapper.selectByPrimaryKey(id);
+        customer.setWechat("zs");
+        int count = customerMapper.updateByPrimaryKey(customer);
+        System.out.println("count:"+count);
     }
 
 

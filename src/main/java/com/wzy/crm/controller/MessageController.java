@@ -1,6 +1,8 @@
 package com.wzy.crm.controller;
 
 import com.google.common.collect.Maps;
+import com.wzy.crm.config.NginxConfig;
+import com.wzy.crm.config.RequestPathConfig;
 import com.wzy.crm.dao.GroupMessageRelationMapper;
 import com.wzy.crm.dao.MessageMapper;
 import com.wzy.crm.pojo.GroupMessageRelation;
@@ -21,6 +23,9 @@ import java.util.Map;
 @RequestMapping("/message")
 public class MessageController {
 
+
+    @Autowired
+    private NginxConfig nginxConfig;
 
     @Autowired
     private GroupMessageRelationMapper groupMessageRelationMapper;
@@ -61,7 +66,8 @@ public class MessageController {
     @PostMapping("/parseH5Url")
     public ServerResponse parseH5Url(HttpServletRequest request,@RequestParam String url){
         System.out.println("url:"+url);
-        String realPath = request.getSession().getServletContext().getRealPath("/");
+        String realPath = nginxConfig.getServer();
+//        String realPath = request.getSession().getServletContext().getRealPath("/");
         return messageService.saveH5Page(url,realPath);
 //        return messageService.parseH5Url(url);
     }
@@ -126,7 +132,7 @@ public class MessageController {
     @PostMapping("/graphic/add")
     public ServerResponse graphicAdd(HttpServletRequest request,@RequestParam String imgUrl,@RequestBody Message message,@RequestParam List<String> tags){
         String realPath = request.getSession().getServletContext().getRealPath("/");
-//        String realPath = "D:\\project\\wechat-tools\\tlarget\\crm-project\\";
+//        String realPath = "D:\\project\\wechat-tools\\target\\crm-project\\";
         System.out.println("realPath:"+realPath);
         message.setUrl("http://crm.youitech.com/module/web/message/graphic/graphic-share.html");
         return messageService.saveGraphicMessage(imgUrl,message,realPath,tags);
@@ -134,7 +140,8 @@ public class MessageController {
 
     @PostMapping("/doc/add")
     public ServerResponse docAdd(HttpServletRequest request,@RequestBody Message message){
-        String realPath = request.getSession().getServletContext().getRealPath("/");
+        String realPath = nginxConfig.getServer();
+//        String realPath = request.getSession().getServletContext().getRealPath("/");
 //        String realPath = "D:\\project\\wechat-tools\\tlarget\\crm-project\\";
         System.out.println("realPath:"+realPath);
         message.setUrl("http://crm.youitech.com/module/web/message/doc/doc-share.html");

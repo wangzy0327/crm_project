@@ -66,6 +66,7 @@ ftp:
 
 #nginx
 nginx:
+#  server: http://ftp.tunnel.qydev.com/
   server: http://127.0.0.1:9000/
 
 
@@ -78,6 +79,16 @@ restart:
   include:
     mapper: /mapper-[\\w-\\.]+jar
     pagehelper: /pagehelper-[\\w-\\.]+jar
+
+
+#targetPath
+target:
+  path: D:\project\crm-project\src\main\resources\static\
+#  D:\project\crm-project\src\main\resources\static\web\h5\page\
+
+domain:
+  url: http://20e2b18746.iask.in:45407/
+#  url:http://wangzy.tunnel.qydev.com/
 
 #wechat
 wechat:

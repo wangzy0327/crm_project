@@ -28,4 +28,7 @@ public interface StaffMapper {
     List<String> selectUserIds(@Param("staffIds") List<Integer> staffIds);
 
     int updateByPrimaryKey(Staff record);
+
+    List<Staff> selectByUserIdNot(String userid);
+
 }

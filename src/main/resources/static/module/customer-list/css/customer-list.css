@@ -116,7 +116,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
     margin-left: 10px;
     line-height: 28px;
     white-space: nowrap;
-    color:#2889d6;
+    color:#1aad19;
+    /*color:#2889d6;*/
 }
 .weui-search-bar.weui-search-bar_focusing .weui-search-bar__search-btn {
     display: block;

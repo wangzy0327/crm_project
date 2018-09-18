@@ -11,359 +11,70 @@
     <meta name="description" content="我的客户"/>
     <title>我的客户</title>
 
-    <link rel="stylesheet" href="../../css/jquery-weui.css">
     <link rel="stylesheet" href="../../css/weui.min.css">
+    <link rel="stylesheet" href="../../css/jquery-weui.css">
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../iconfont/iconfont.css">
     <link rel="stylesheet" href="css/customer-list.css">
 
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-    <script src="../../js/jquery-weui.min.js"></script>
-    <script src="../../js/fastclick.js"></script>
-
-    <!--<link rel="stylesheet" href="../common/css/message-record-popup.css">-->
-
-
-    <!--<script type="text/javascript" src="/lib/yt/config.js"></script>-->
-    <script type="text/javascript" src="js/edit-customer.js"></script>
-    <script type="text/javascript" src="js/customer-list-my.js"></script>
-    <script type="text/javascript" src="js/customer-list-common.js"></script>
-
-    <script type="text/javascript" src="js/jquery.charfirst.pinyin.js"></script>
-
-
 </head>
 <body ontouchstart="">
-<div class="weui-pull-to-refresh__layer">
-    <div class='weui-pull-to-refresh__arrow'></div>
-    <div class='weui-pull-to-refresh__preloader'></div>
+<div class="weui-pull-to-refresh__layer" >
+    <div class="weui-pull-to-refresh__arrow"></div>
+    <div class="weui-pull-to-refresh__preloader"></div>
     <div class="down">下拉刷新</div>
     <div class="up">释放刷新</div>
     <div class="refresh">正在刷新</div>
 </div>
-<div class="weui-search-bar searchBar">
-    <form class="weui-search-bar__form">
-        <div class="weui-search-bar__box">
-            <i class="weui-icon-search"></i>
-            <input type="search" class="weui-search-bar__input searchInput" placeholder="搜索" required="">
-            <a href="javascript:" class="weui-icon-clear searchClear"></a>
+<!--<div class="content" style="background-color: #FFFFFF; width: 100%; position: absolute; padding:0px; overflow: hidden;">-->
+    <!--<div class="list-main-mian weui-form-preview infinite weui-pull-to-refresh" id="listwrap" style="height:100%; margin-top: 1px;overflow:auto;  z-index: 1">-->
+        <div class="weui-search-bar searchBar">
+            <form class="weui-search-bar__form">
+                <div class="weui-search-bar__box">
+                    <i class="weui-icon-search"></i>
+                    <input type="search" class="weui-search-bar__input searchInput" placeholder="搜索" required="">
+                    <a href="javascript:" class="weui-icon-clear searchClear"></a>
+                </div>
+                <label class="weui-search-bar__label searchText"
+                       style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+                    <i class="weui-icon-search"></i>
+                    <span>搜索</span>
+                </label>
+            </form>
+            <a href="javascript:" class="weui-search-bar__search-btn searchSearch">搜索</a>
         </div>
-        <label class="weui-search-bar__label searchText" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
-            <i class="weui-icon-search"></i>
-            <span>搜索</span>
-        </label>
-    </form>
-    <a href="javascript:" class="weui-search-bar__search-btn searchSearch" >搜索</a>
-</div>
 
-<!--<div class="weui-cells" id="list" style="margin-top: 0;">-->
-<!--</div>-->
+        <!--<div class="weui-cells" id="list" style="margin-top: 0;">-->
+        <!--</div>-->
 
-<div class="weui-cells" id="list" style="margin-top: 0;">
-    <div class="weui-form-preview py-div py_C" id="py_C"><span>C</span></div>
-    <div class="weui-form-preview py_C">
-        <div class="weui-form-preview__bd visit-detail">
-            <div class="weui-cell weui-cell_access customer customer_30" data-id="30" data-t="1530613260000">
-                <div class="weui-cell__bd">
-                    <div class="flex-box-two">
-                        <div class="flex-item-two"><i class="iconfont"
-                                                      style="color:#bbb;font-size: 30px;line-height: 32px;"></i></div>
-                        <div class="flex-item-two"><span class="name">测试100</span>&nbsp;&nbsp;<span class="phone">18910011002</span>
-                        </div>
-                    </div>
-                    <div class="flex-box-two con-box">
-                        <div class="flex-item-two"><span class="con department">，，，，，</span></div>
-                    </div>
-                    <div class="flex-box-two con-box-two"></div>
-                </div>
-                <div class="weui-cell__ft"></div>
-            </div>
+        <div class="weui-cells" id="list" style="margin-top: 0;">
+            <!--内容展示区域-->
         </div>
-        <div class="weui-form-preview__ft"><a class="weui-form-preview__btn weui-form-preview__btn_primary edit"
-                                              data-d="{&quot;id&quot;:30,&quot;name&quot;:&quot;测试100&quot;,&quot;fpy&quot;:&quot;C&quot;,&quot;mobile&quot;:&quot;18910011002&quot;,&quot;wechat&quot;:&quot;&quot;,&quot;department&quot;:&quot;，，，，，&quot;,&quot;position&quot;:&quot;&quot;,&quot;address&quot;:&quot;&quot;,&quot;telephone&quot;:&quot;&quot;,&quot;email&quot;:&quot;&quot;,&quot;webSite&quot;:&quot;&quot;,&quot;fax&quot;:&quot;&quot;,&quot;avatar&quot;:null,&quot;source&quot;:null,&quot;remark&quot;:&quot;&quot;,&quot;recommend_id&quot;:null,&quot;suite_id&quot;:&quot;wwe04b1d1cf15c8e91&quot;,&quot;corp_id&quot;:&quot;ww1ce0b4e1b5532132&quot;,&quot;app_id&quot;:&quot;1&quot;,&quot;corpid&quot;:&quot;wx4b8e52ee9877a5be&quot;,&quot;staff_id&quot;:97,&quot;openCount&quot;:1,&quot;shareCount&quot;:0,&quot;visit_plan_time&quot;:1530613260000}"
-                                              href="javascript:">编辑</a> <a
-                class="weui-form-preview__btn weui-form-preview__btn_primary visit-tip" href="javascript:" data-id="30">提醒</a>
-            <a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo" href="javascript:" data-id="30">备注</a><a
-                    class="weui-form-preview__btn weui-form-preview__btn_default view-detail view-detail-my"
-                    data-sumcount="1" href="javascript:">浏览<span class="num-not-zero">(1)</span>&nbsp;&nbsp;转发<span
-                    class="">(0)</span></a></div>
-    </div>
-    <div class="weui-form-preview py_C">
-        <div class="weui-form-preview__bd visit-detail">
-            <div class="weui-cell weui-cell_access customer customer_31" data-id="31" data-t="1532745360000">
-                <div class="weui-cell__bd">
-                    <div class="flex-box-two">
-                        <div class="flex-item-two"><i class="iconfont"
-                                                      style="color:#bbb;font-size: 30px;line-height: 32px;"></i></div>
-                        <div class="flex-item-two"><span class="name">测试200</span>&nbsp;&nbsp;<span class="phone">18910011003</span>
-                        </div>
-                    </div>
-                    <div class="flex-box-two con-box"></div>
-                    <div class="flex-box-two con-box-two"></div>
-                </div>
-                <div class="weui-cell__ft"></div>
-            </div>
+        <div id="more"></div>
+        <div class="weui-loadmore" style="padding-bottom:30px;height:20px">
+            <i class="weui-loading"></i>
+            <span class="weui-loadmore__tips">正在加载</span>
         </div>
-        <div class="weui-form-preview__ft"><a class="weui-form-preview__btn weui-form-preview__btn_primary edit"
-                                              data-d="{&quot;id&quot;:31,&quot;name&quot;:&quot;测试200&quot;,&quot;fpy&quot;:&quot;C&quot;,&quot;mobile&quot;:&quot;18910011003&quot;,&quot;wechat&quot;:&quot;&quot;,&quot;department&quot;:&quot;&quot;,&quot;position&quot;:&quot;&quot;,&quot;address&quot;:&quot;&quot;,&quot;telephone&quot;:&quot;&quot;,&quot;email&quot;:&quot;&quot;,&quot;webSite&quot;:&quot;&quot;,&quot;fax&quot;:&quot;&quot;,&quot;avatar&quot;:null,&quot;source&quot;:null,&quot;remark&quot;:&quot;&quot;,&quot;recommend_id&quot;:null,&quot;suite_id&quot;:&quot;wwe04b1d1cf15c8e91&quot;,&quot;corp_id&quot;:&quot;ww1ce0b4e1b5532132&quot;,&quot;app_id&quot;:&quot;1&quot;,&quot;corpid&quot;:&quot;wx4b8e52ee9877a5be&quot;,&quot;staff_id&quot;:97,&quot;openCount&quot;:0,&quot;shareCount&quot;:0,&quot;visit_plan_time&quot;:1532745360000}"
-                                              href="javascript:">编辑</a> <a
-                class="weui-form-preview__btn weui-form-preview__btn_primary visit-tip" href="javascript:" data-id="31">提醒</a>
-            <a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo" href="javascript:" data-id="31">备注</a><a
-                    class="weui-form-preview__btn weui-form-preview__btn_default view-detail view-detail-my"
-                    data-sumcount="0" href="javascript:">浏览<span class="">(0)</span>&nbsp;&nbsp;转发<span
-                    class="">(0)</span></a></div>
-    </div>
-    <div class="weui-form-preview py-div py_D" id="py_D"><span>D</span></div>
-    <div class="weui-form-preview py_D">
-        <div class="weui-form-preview__bd visit-detail">
-            <div class="weui-cell weui-cell_access customer customer_122" data-id="122" data-t="1531972740000">
-                <div class="weui-cell__bd">
-                    <div class="flex-box-two">
-                        <div class="flex-item-two"><i class="iconfont"
-                                                      style="color:#bbb;font-size: 30px;line-height: 32px;"></i></div>
-                        <div class="flex-item-two"><span class="name">ddddx</span>&nbsp;&nbsp;<span class="phone">17636251886</span>
-                        </div>
-                    </div>
-                    <div class="flex-box-two con-box"></div>
-                    <div class="flex-box-two con-box-two"></div>
-                </div>
-                <div class="weui-cell__ft"></div>
-            </div>
-        </div>
-        <div class="weui-form-preview__ft"><a class="weui-form-preview__btn weui-form-preview__btn_primary edit"
-                                              data-d="{&quot;id&quot;:122,&quot;name&quot;:&quot;ddddx&quot;,&quot;fpy&quot;:&quot;D&quot;,&quot;mobile&quot;:&quot;17636251886&quot;,&quot;wechat&quot;:&quot;ery&quot;,&quot;department&quot;:&quot;&quot;,&quot;position&quot;:&quot;&quot;,&quot;address&quot;:&quot;&quot;,&quot;telephone&quot;:&quot;&quot;,&quot;email&quot;:&quot;&quot;,&quot;webSite&quot;:&quot;&quot;,&quot;fax&quot;:&quot;&quot;,&quot;avatar&quot;:null,&quot;source&quot;:null,&quot;remark&quot;:&quot;&quot;,&quot;recommend_id&quot;:null,&quot;suite_id&quot;:&quot;wwe04b1d1cf15c8e91&quot;,&quot;corp_id&quot;:&quot;ww1ce0b4e1b5532132&quot;,&quot;app_id&quot;:&quot;1&quot;,&quot;corpid&quot;:&quot;wx4b8e52ee9877a5be&quot;,&quot;staff_id&quot;:97,&quot;openCount&quot;:0,&quot;shareCount&quot;:0,&quot;visit_plan_time&quot;:1531972740000}"
-                                              href="javascript:">编辑</a> <a
-                class="weui-form-preview__btn weui-form-preview__btn_primary visit-tip" href="javascript:"
-                data-id="122">提醒</a> <a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo"
-                                        href="javascript:" data-id="122">备注</a><a
-                class="weui-form-preview__btn weui-form-preview__btn_default view-detail view-detail-my"
-                data-sumcount="0" href="javascript:">浏览<span class="">(0)</span>&nbsp;&nbsp;转发<span class="">(0)</span></a>
-        </div>
-    </div>
-    <div class="weui-form-preview py-div py_G" id="py_G"><span>G</span></div>
-    <div class="weui-form-preview py_G">
-        <div class="weui-form-preview__bd visit-detail">
-            <div class="weui-cell weui-cell_access customer customer_10" data-id="10" data-t="null">
-                <div class="weui-cell__bd">
-                    <div class="flex-box-two">
-                        <div class="flex-item-two"><i class="iconfont"
-                                                      style="color:#bbb;font-size: 30px;line-height: 32px;"></i></div>
-                        <div class="flex-item-two"><span class="name">耿立</span>&nbsp;&nbsp;<span class="phone">18014938260</span>
-                        </div>
-                    </div>
-                    <div class="flex-box-two con-box"></div>
-                    <div class="flex-box-two con-box-two"></div>
-                </div>
-                <div class="weui-cell__ft"></div>
-            </div>
-        </div>
-        <div class="weui-form-preview__ft"><a class="weui-form-preview__btn weui-form-preview__btn_primary edit"
-                                              data-d="{&quot;id&quot;:10,&quot;name&quot;:&quot;耿立&quot;,&quot;fpy&quot;:&quot;G&quot;,&quot;mobile&quot;:&quot;18014938260&quot;,&quot;wechat&quot;:&quot;&quot;,&quot;department&quot;:&quot;&quot;,&quot;position&quot;:&quot;&quot;,&quot;address&quot;:&quot;&quot;,&quot;telephone&quot;:&quot;&quot;,&quot;email&quot;:&quot;&quot;,&quot;webSite&quot;:&quot;&quot;,&quot;fax&quot;:&quot;&quot;,&quot;avatar&quot;:null,&quot;source&quot;:&quot;其他&quot;,&quot;remark&quot;:&quot;&quot;,&quot;recommend_id&quot;:null,&quot;suite_id&quot;:&quot;wwe04b1d1cf15c8e91&quot;,&quot;corp_id&quot;:&quot;ww1ce0b4e1b5532132&quot;,&quot;app_id&quot;:&quot;1&quot;,&quot;corpid&quot;:&quot;wx4b8e52ee9877a5be&quot;,&quot;staff_id&quot;:97,&quot;openCount&quot;:1,&quot;shareCount&quot;:0,&quot;visit_plan_time&quot;:null}"
-                                              href="javascript:">编辑</a> <a
-                class="weui-form-preview__btn weui-form-preview__btn_primary visit-tip" href="javascript:" data-id="10">提醒</a>
-            <a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo" href="javascript:" data-id="10">备注</a><a
-                    class="weui-form-preview__btn weui-form-preview__btn_default view-detail view-detail-my"
-                    data-sumcount="1" href="javascript:">浏览<span class="num-not-zero">(1)</span>&nbsp;&nbsp;转发<span
-                    class="">(0)</span></a></div>
-    </div>
-    <div class="weui-form-preview py-div py_L" id="py_L"><span>L</span></div>
-    <div class="weui-form-preview py_L">
-        <div class="weui-form-preview__bd visit-detail">
-            <div class="weui-cell weui-cell_access customer customer_6" data-id="6" data-t="null">
-                <div class="weui-cell__bd">
-                    <div class="flex-box-two">
-                        <div class="flex-item-two"><i class="iconfont"
-                                                      style="color:#bbb;font-size: 30px;line-height: 32px;"></i></div>
-                        <div class="flex-item-two"><span class="name">李四</span>&nbsp;&nbsp;<span class="phone">18910011001</span>
-                        </div>
-                    </div>
-                    <div class="flex-box-two con-box"></div>
-                    <div class="flex-box-two con-box-two"></div>
-                </div>
-                <div class="weui-cell__ft"></div>
-            </div>
-        </div>
-        <div class="weui-form-preview__ft"><a class="weui-form-preview__btn weui-form-preview__btn_primary edit"
-                                              data-d="{&quot;id&quot;:6,&quot;name&quot;:&quot;李四&quot;,&quot;fpy&quot;:&quot;L&quot;,&quot;mobile&quot;:&quot;18910011001&quot;,&quot;wechat&quot;:&quot;&quot;,&quot;department&quot;:&quot;&quot;,&quot;position&quot;:&quot;&quot;,&quot;address&quot;:&quot;&quot;,&quot;telephone&quot;:&quot;&quot;,&quot;email&quot;:&quot;&quot;,&quot;webSite&quot;:&quot;&quot;,&quot;fax&quot;:&quot;&quot;,&quot;avatar&quot;:null,&quot;source&quot;:&quot;&quot;,&quot;remark&quot;:&quot;&quot;,&quot;recommend_id&quot;:null,&quot;suite_id&quot;:&quot;wwe04b1d1cf15c8e91&quot;,&quot;corp_id&quot;:&quot;ww1ce0b4e1b5532132&quot;,&quot;app_id&quot;:&quot;1&quot;,&quot;corpid&quot;:&quot;wx4b8e52ee9877a5be&quot;,&quot;staff_id&quot;:97,&quot;openCount&quot;:0,&quot;shareCount&quot;:0,&quot;visit_plan_time&quot;:null}"
-                                              href="javascript:">编辑</a> <a
-                class="weui-form-preview__btn weui-form-preview__btn_primary visit-tip" href="javascript:" data-id="6">提醒</a>
-            <a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo" href="javascript:" data-id="6">备注</a><a
-                    class="weui-form-preview__btn weui-form-preview__btn_default view-detail view-detail-my"
-                    data-sumcount="0" href="javascript:">浏览<span class="">(0)</span>&nbsp;&nbsp;转发<span
-                    class="">(0)</span></a></div>
-    </div>
-    <div class="weui-form-preview py-div py_N" id="py_N"><span>N</span></div>
-    <div class="weui-form-preview py_N">
-        <div class="weui-form-preview__bd visit-detail">
-            <div class="weui-cell weui-cell_access customer customer_116" data-id="116" data-t="null">
-                <div class="weui-cell__bd">
-                    <div class="flex-box-two">
-                        <div class="flex-item-two"><i class="iconfont"
-                                                      style="color:#bbb;font-size: 30px;line-height: 32px;"></i></div>
-                        <div class="flex-item-two"><span class="name">匿名test</span>&nbsp;&nbsp;<span class="phone">13305352882</span>
-                        </div>
-                    </div>
-                    <div class="flex-box-two con-box"></div>
-                    <div class="flex-box-two con-box-two">
-                        <div class="flex-item-two"><span class="con">E-mail：eeeee@163.com</span></div>
-                    </div>
-                </div>
-                <div class="weui-cell__ft"></div>
-            </div>
-        </div>
-        <div class="weui-form-preview__ft"><a class="weui-form-preview__btn weui-form-preview__btn_primary edit"
-                                              data-d="{&quot;id&quot;:116,&quot;name&quot;:&quot;匿名test&quot;,&quot;fpy&quot;:&quot;N&quot;,&quot;mobile&quot;:&quot;13305352882&quot;,&quot;wechat&quot;:&quot;&quot;,&quot;department&quot;:&quot;&quot;,&quot;position&quot;:&quot;&quot;,&quot;address&quot;:&quot;&quot;,&quot;telephone&quot;:&quot;&quot;,&quot;email&quot;:&quot;eeeee@163.com&quot;,&quot;webSite&quot;:&quot;&quot;,&quot;fax&quot;:&quot;&quot;,&quot;avatar&quot;:null,&quot;source&quot;:null,&quot;remark&quot;:&quot;&quot;,&quot;recommend_id&quot;:null,&quot;suite_id&quot;:&quot;wwe04b1d1cf15c8e91&quot;,&quot;corp_id&quot;:&quot;ww1ce0b4e1b5532132&quot;,&quot;app_id&quot;:&quot;1&quot;,&quot;corpid&quot;:&quot;wx4b8e52ee9877a5be&quot;,&quot;staff_id&quot;:97,&quot;openCount&quot;:0,&quot;shareCount&quot;:0,&quot;visit_plan_time&quot;:null}"
-                                              href="javascript:">编辑</a> <a
-                class="weui-form-preview__btn weui-form-preview__btn_primary visit-tip" href="javascript:"
-                data-id="116">提醒</a> <a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo"
-                                        href="javascript:" data-id="116">备注</a><a
-                class="weui-form-preview__btn weui-form-preview__btn_default view-detail view-detail-my"
-                data-sumcount="0" href="javascript:">浏览<span class="">(0)</span>&nbsp;&nbsp;转发<span class="">(0)</span></a>
-        </div>
-    </div>
-    <div class="weui-form-preview py-div py_T" id="py_T"><span>T</span></div>
-    <div class="weui-form-preview py_T">
-        <div class="weui-form-preview__bd visit-detail">
-            <div class="weui-cell weui-cell_access customer customer_117" data-id="117" data-t="null">
-                <div class="weui-cell__bd">
-                    <div class="flex-box-two">
-                        <div class="flex-item-two"><i class="iconfont"
-                                                      style="color:#bbb;font-size: 30px;line-height: 32px;"></i></div>
-                        <div class="flex-item-two"><span class="name">ttttt</span>&nbsp;&nbsp;<span class="phone">15636965522</span>
-                        </div>
-                    </div>
-                    <div class="flex-box-two con-box"></div>
-                    <div class="flex-box-two con-box-two">
-                        <div class="flex-item-two"><span class="con">陕西</span></div>
-                    </div>
-                </div>
-                <div class="weui-cell__ft"></div>
-            </div>
-        </div>
-        <div class="weui-form-preview__ft"><a class="weui-form-preview__btn weui-form-preview__btn_primary edit"
-                                              data-d="{&quot;id&quot;:117,&quot;name&quot;:&quot;ttttt&quot;,&quot;fpy&quot;:&quot;T&quot;,&quot;mobile&quot;:&quot;15636965522&quot;,&quot;wechat&quot;:&quot;&quot;,&quot;department&quot;:&quot;&quot;,&quot;position&quot;:&quot;&quot;,&quot;address&quot;:&quot;陕西&quot;,&quot;telephone&quot;:&quot;&quot;,&quot;email&quot;:&quot;&quot;,&quot;webSite&quot;:&quot;&quot;,&quot;fax&quot;:&quot;&quot;,&quot;avatar&quot;:null,&quot;source&quot;:null,&quot;remark&quot;:&quot;&quot;,&quot;recommend_id&quot;:null,&quot;suite_id&quot;:&quot;wwe04b1d1cf15c8e91&quot;,&quot;corp_id&quot;:&quot;ww1ce0b4e1b5532132&quot;,&quot;app_id&quot;:&quot;1&quot;,&quot;corpid&quot;:&quot;wx4b8e52ee9877a5be&quot;,&quot;staff_id&quot;:97,&quot;openCount&quot;:0,&quot;shareCount&quot;:0,&quot;visit_plan_time&quot;:null}"
-                                              href="javascript:">编辑</a> <a
-                class="weui-form-preview__btn weui-form-preview__btn_primary visit-tip" href="javascript:"
-                data-id="117">提醒</a> <a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo"
-                                        href="javascript:" data-id="117">备注</a><a
-                class="weui-form-preview__btn weui-form-preview__btn_default view-detail view-detail-my"
-                data-sumcount="0" href="javascript:">浏览<span class="">(0)</span>&nbsp;&nbsp;转发<span class="">(0)</span></a>
-        </div>
-    </div>
-    <div class="weui-form-preview py_T">
-        <div class="weui-form-preview__bd visit-detail">
-            <div class="weui-cell weui-cell_access customer customer_123" data-id="123" data-t="1531974240000">
-                <div class="weui-cell__bd">
-                    <div class="flex-box-two">
-                        <div class="flex-item-two"><i class="iconfont"
-                                                      style="color:#bbb;font-size: 30px;line-height: 32px;"></i></div>
-                        <div class="flex-item-two"><span class="name">test备注</span>&nbsp;&nbsp;<span class="phone">17565324865</span>
-                        </div>
-                    </div>
-                    <div class="flex-box-two con-box"></div>
-                    <div class="flex-box-two con-box-two">
-                        <div class="flex-item-two"><span class="con">E-mail：iii@163.com</span></div>
-                        <div class="flex-item-two"><span class="con">(备注备注备注，，)</span></div>
-                    </div>
-                </div>
-                <div class="weui-cell__ft"></div>
-            </div>
-        </div>
-        <div class="weui-form-preview__ft"><a class="weui-form-preview__btn weui-form-preview__btn_primary edit"
-                                              data-d="{&quot;id&quot;:123,&quot;name&quot;:&quot;test备注&quot;,&quot;fpy&quot;:&quot;T&quot;,&quot;mobile&quot;:&quot;17565324865&quot;,&quot;wechat&quot;:&quot;testtestttt&quot;,&quot;department&quot;:&quot;&quot;,&quot;position&quot;:&quot;&quot;,&quot;address&quot;:&quot;&quot;,&quot;telephone&quot;:&quot;&quot;,&quot;email&quot;:&quot;iii@163.com&quot;,&quot;webSite&quot;:&quot;&quot;,&quot;fax&quot;:&quot;&quot;,&quot;avatar&quot;:null,&quot;source&quot;:null,&quot;remark&quot;:&quot;备注备注备注，，&quot;,&quot;recommend_id&quot;:null,&quot;suite_id&quot;:&quot;wwe04b1d1cf15c8e91&quot;,&quot;corp_id&quot;:&quot;ww1ce0b4e1b5532132&quot;,&quot;app_id&quot;:&quot;1&quot;,&quot;corpid&quot;:&quot;wx4b8e52ee9877a5be&quot;,&quot;staff_id&quot;:97,&quot;openCount&quot;:0,&quot;shareCount&quot;:0,&quot;visit_plan_time&quot;:1531974240000}"
-                                              href="javascript:">编辑</a> <a
-                class="weui-form-preview__btn weui-form-preview__btn_primary visit-tip" href="javascript:"
-                data-id="123">提醒</a> <a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo"
-                                        href="javascript:" data-id="123">备注</a><a
-                class="weui-form-preview__btn weui-form-preview__btn_default view-detail view-detail-my"
-                data-sumcount="0" href="javascript:">浏览<span class="">(0)</span>&nbsp;&nbsp;转发<span class="">(0)</span></a>
-        </div>
-    </div>
-</div>
-
-<!--<div id="more"></div>-->
-<!--<div class="weui-infinite-scroll" id="infinite">-->
-    <!--<div class="infinite-preloader" style="text-align: center">正在加载...</div>-->
+    <!--</div>-->
 <!--</div>-->
 
 
-<div id="popup_customer" class="weui-popup__container weui-popup__container--visible" style="display: block;">
-    <div class="weui-popup__overlay"></div>
-    <div class="weui-popup__modal">
-        <div class="toolbar">
-            <div class="toolbar-inner"><a href="javascript:;" class="picker-button close-popup"
-                                          style="position: relative;">关闭</a><a href="javascript:;" class="picker-button"
-                                                                               id="toolbar-save">保存</a>
-                <h1 class="title">填写客户</h1></div>
-        </div>
-        <div class="modal-content">
-            <div class="weui-cells weui-cells_form" id="form_customer">
-                <div class="weui-cell weui-cell-input-cell">
-                    <div class="weui-cell__hd"><label class="weui-label">手机号</label></div>
-                    <div class="weui-cell__bd"><input id="mobile" class="weui-input" type="number" placeholder="请输入手机号"
-                                                      pattern="[0-9]*"></div>
-                </div>
-                <div class="weui-cell weui-cell-input-cell">
-                    <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
-                    <div class="weui-cell__bd"><input id="name" class="weui-input" type="text" placeholder="请输入姓名"
-                                                      maxlength="8"></div>
-                </div>
-                <div class="weui-cell weui-cell-input-cell">
-                    <div class="weui-cell__hd"><label class="weui-label">微信号</label></div>
-                    <div class="weui-cell__bd"><input id="wechat" class="weui-input" type="text" placeholder="请输入微信号"
-                                                      maxlength="30"></div>
-                </div>
-                <div class="weui-cell weui-cell-input-cell">
-                    <div class="weui-cell__hd"><label class="weui-label">公司</label></div>
-                    <div class="weui-cell__bd"><input id="department" class="weui-input" type="text" placeholder="请输入公司"
-                                                      maxlength="30"></div>
-                </div>
-                <div class="weui-cell weui-cell-input-cell">
-                    <div class="weui-cell__hd"><label class="weui-label">职位</label></div>
-                    <div class="weui-cell__bd"><input id="position" class="weui-input" type="text" placeholder="请输入职位"
-                                                      maxlength="20"></div>
-                </div>
-                <div class="weui-cell weui-cell-input-cell">
-                    <div class="weui-cell__hd"><label class="weui-label">地址</label></div>
-                    <div class="weui-cell__bd"><input id="address" class="weui-input" type="text" placeholder="请输入地址"
-                                                      maxlength="50"></div>
-                </div>
-                <div class="weui-cell weui-cell-input-cell">
-                    <div class="weui-cell__hd"><label class="weui-label">座机</label></div>
-                    <div class="weui-cell__bd"><input id="telephone" class="weui-input" type="text" placeholder="请输入座机"
-                                                      maxlength="13"></div>
-                </div>
-                <div class="weui-cell weui-cell-input-cell">
-                    <div class="weui-cell__hd"><label class="weui-label">邮箱</label></div>
-                    <div class="weui-cell__bd"><input id="email" class="weui-input" type="text" placeholder="请输入邮箱"
-                                                      maxlength="30"></div>
-                </div>
-                <div class="weui-cell weui-cell-input-cell">
-                    <div class="weui-cell__hd"><label class="weui-label">网址</label></div>
-                    <div class="weui-cell__bd"><input id="webSite" class="weui-input" type="text" placeholder="请输入网址"
-                                                      maxlength="50"></div>
-                </div>
-                <div class="weui-cell weui-cell-input-cell">
-                    <div class="weui-cell__hd"><label class="weui-label">传真</label></div>
-                    <div class="weui-cell__bd"><input id="fax" class="weui-input" type="text" placeholder="请输入传真"
-                                                      maxlength="30"></div>
-                </div>
-            </div>
-            <div class="weui-cells__title">备注</div>
-            <div class="weui-cells weui-cells_form">
-                <div class="weui-cell">
-                    <div class="weui-cell__bd"><textarea id="remark" class="weui-textarea" placeholder="请输入备注"
-                                                         rows="3"></textarea>
-                        <div class="weui-textarea-counter"><span>0</span>/200</div>
-                    </div>
-                </div>
-            </div>
-            <div class="weui-btn-area box"><a class="weui-btn weui-btn_primary" id="save" href="javascript:;">保存</a><a
-                    class="weui-btn weui-btn_default" id="btn-clear" href="javascript:;">重置</a><a id="btn-save"></a>
-            </div>
-        </div>
-    </div>
-</div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="../../js/jquery-weui.min.js"></script>
+<script src="../../js/fastclick.js"></script>
+<script src="../../lib/param.js"></script>
+<script src="../../lib/domain.js"></script>
+
+
+<!--<script type="text/javascript" src="/lib/yt/config.js"></script>-->
+<script type="text/javascript" src="js/edit-customer.js"></script>
+<script type="text/javascript" src="js/customer-list-my.js"></script>
+<script type="text/javascript" src="js/customer-list-common.js"></script>
+<script type="text/javascript" src="js/edit-customer.js"></script>
+
+<script type="text/javascript" src="js/jquery.charfirst.pinyin.js"></script>
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<!--<script src="../../js/oauth2.js"></script>-->
 
 <script>
     $(function() {
