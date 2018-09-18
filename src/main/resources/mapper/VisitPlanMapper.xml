@@ -23,11 +23,11 @@
   </delete>
   <insert id="insert" parameterType="com.wzy.crm.pojo.VisitPlan">
     insert into visit_plan (id, user_id, customer_id,
-      `time`, place, content,
+      `time`, place, location,content,
       remind, to_staff, update_time, 
       picture, attachment)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER},
-      #{time,jdbcType=TIMESTAMP}, #{place,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{time,jdbcType=TIMESTAMP}, #{place,jdbcType=VARCHAR},#{location,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
       #{remind,jdbcType=TIMESTAMP}, #{toStaff,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{picture,jdbcType=LONGVARCHAR}, #{attachment,jdbcType=LONGVARCHAR})
   </insert>
@@ -54,7 +54,7 @@
     and customer.id = visit_plan.customer_id
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, user_id, customer_id, time, place, content, remind, to_staff, update_time,
+    select id, user_id, customer_id, `time`, place,location, content, remind, to_staff, update_time,
     picture, attachment
     from visit_plan
   </select>

@@ -24,51 +24,74 @@ module.eventHandler = {
     handleBtnSave: function () {
         $('#btn-save').click(function () {
             var customer_id = module.data.customer_id;
-
+            console.log("customer_id:"+customer_id);
             var info = common.visit.getPlanData(customer_id);
-
-            var data = {
-                m: module.data.m,
-                t: 'visit_plan',
-                v: JSON.stringify([info]),
-                params: JSON.stringify({customer_id: customer_id, plan_staff: info.data.to_staff})
-            };
-
-            YT.insert({
-                data: data,
-                successCallback: function (data) {
-                    if (data.status == 200) {
-                        var planVisitId = data.object['visit_plan'][0];
-                        var planAutoIds = data.object['plan'];
-
-                        common.service.getUserInfo(function (data) {
-                            // 推送消息
-                            var userIds = common.select.data['plan'].userIds;
-                            var ids = common.select.data['plan'].ids;
-
-                            common.visit.pushMsg({
-                                staff_id: data.id,
-                                staff_name: data.name,
-                                time: info.data.time,
-                                company: module.data.company,
-                                customer_name: module.data.customer_name,
-                                visit_id: planVisitId,
-                                comment_id: planAutoIds,
-                                userIds: userIds,
-                                ids: ids,
-                                type: 1,
-                                isComment: 0
-                            });
-
-                            $.alert('提交成功', function () {
-                                $(location).attr('href', '/module/customer-list/customer-list-my.html' + YT.setUrlParams());
-                            });
+            console.log("info:"+info);
+            // var data = {
+            //     m: module.data.m,
+            //     t: 'visit_plan',
+            //     v: JSON.stringify([info]),
+            //     params: JSON.stringify({customer_id: customer_id, plan_staff: info.data.to_staff})
+            // };
+            info['userId'] = module.data.user_id;
+            console.log("info userId:"+info['userId']);
+            console.log("info customerId:"+info['customerId']);
+            console.log("info time:"+info['time']);
+            console.log("info place:"+info['place']);
+            console.log("info remind:"+info['remind']);
+            console.log("info toStaff:"+info['toStaff']);
+            $.ajax({
+                type: 'post',
+                url: "/plan/add",
+                data:JSON.stringify(info),
+                contentType: "application/json;charset=UTF-8",
+                dataType: 'json',
+                error: function (request) {
+                },
+                success: function (result) {
+                    if (result.code == 0) {
+                        $.alert('提交成功', function () {
+                            $(location).attr('href', '/module/customer-list/customer-list-my.html?userid='+module.data.user_id);
                         });
-                    } else {
-                        $.alert(data.message);
                     }
                 }
             });
+
+            // YT.insert({
+            //     data: data,
+            //     successCallback: function (data) {
+            //         if (data.status == 200) {
+            //             var planVisitId = data.object['visit_plan'][0];
+            //             var planAutoIds = data.object['plan'];
+            //
+            //             common.service.getUserInfo(function (data) {
+            //                 // 推送消息
+            //                 var userIds = common.select.data['plan'].userIds;
+            //                 var ids = common.select.data['plan'].ids;
+            //
+            //                 common.visit.pushMsg({
+            //                     staff_id: data.id,
+            //                     staff_name: data.name,
+            //                     time: info.data.time,
+            //                     company: module.data.company,
+            //                     customer_name: module.data.customer_name,
+            //                     visit_id: planVisitId,
+            //                     comment_id: planAutoIds,
+            //                     userIds: userIds,
+            //                     ids: ids,
+            //                     type: 1,
+            //                     isComment: 0
+            //                 });
+            //
+            //                 $.alert('提交成功', function () {
+            //                     $(location).attr('href', '/module/customer-list/customer-list-my.html' + YT.setUrlParams());
+            //                 });
+            //             });
+            //         } else {
+            //             $.alert(data.message);
+            //         }
+            //     }
+            // });
         });
     }
 };

@@ -39,11 +39,6 @@ common.select = {
 
         var self = this;
 
-        // var data = {
-        //     m: 1010000,
-        //     t: 'staffs',
-        //     params: JSON.stringify({operator_id: '<>'})
-        // };
         console.log("module.data.userid:"+module.data.user_id);
         $.ajax({
             type: 'get',
@@ -78,35 +73,6 @@ common.select = {
                 }
             }
         });
-
-        // YT.query({
-        //     data: data,
-        //     successCallback: function (data) {
-        //         if (200 == data.status) {
-        //             self.data[flag + ''] = {
-        //                 list: data.object,
-        //                 ids: [],
-        //                 selectId: [],
-        //                 userIds: []
-        //             };
-        //
-        //             // 加载列表
-        //             var html = '';
-        //             for (var i in data.object) {
-        //                 html += self.createListHtml(data.object[i], []);
-        //             }
-        //             $(ele).find('.weui-panel__bd').append(html);
-        //
-        //             // 搜索事件
-        //             $(ele).find('.searchInput').bind('input propertychange', function (e) {
-        //                 self.searchStaffs($(this).val(), ele, self.data[flag].list, self.data[flag].ids);
-        //             });
-        //
-        //             self.handleClosePopup(ele, btn, self.data[flag].ids, self.data[flag].selectId, self.data[flag].userIds);
-        //
-        //         }
-        //     }
-        // });
     },
 
     // 打开Popup
@@ -424,7 +390,7 @@ common.visit = {
     },
 
     getPlanData: function (customer_id) {
-        var time = $('#visitName').val(),
+        var time = $('#visitTime').val(),
             remind = $('#remindTime').val(),
             remindTime = 0;
 
@@ -454,21 +420,31 @@ common.visit = {
                 break;
         }
 
-        var data = {
+        // var data = {
+        //     customerId: customer_id,
+        //     time: time || null,
+        //     place:($('#visitPicker').val() || ''),
+        //     location: ($('#visitAddress').val() || ''),
+        //     // ios注意：new Date('2017-10-01'..replace(/-/g,'/'))
+        //     remind: remindTime ? new Date(new Date(time.replace(/-/g, '/')).getTime() - remindTime).Format('yyyy-MM-dd hh:mm') : null,
+        //     content: $('#visitContent').val(),
+        //     picture: uploader.component.getImageData(),
+        //     attachment: uploader.component.getFileData(),
+        //     toStaff: common.select.data['plan'].userIds.join(','),
+        //     // time: new Date().Format('yyyy-MM-dd hh:mm:ss')
+        // };
+
+        return {
             customerId: customer_id,
-            time: time || null,
-            location: ($('#visitPicker').val() || '') + ' ' + ($('#visitAddress').val() || ''),
+            time: new Date(time.replace(/-/g, '/')).Format('yyyy-MM-dd hh:mm:ss') || null,
+            place:($('#visitPicker').val() || ''),
+            location: ($('#visitAddress').val() || ''),
             // ios注意：new Date('2017-10-01'..replace(/-/g,'/'))
-            remind: remindTime ? new Date(new Date(time.replace(/-/g, '/')).getTime() - remindTime).Format('yyyy-MM-dd hh:mm') : null,
+            remind: remindTime ? new Date(new Date(time.replace(/-/g, '/')).getTime() - remindTime).Format('yyyy-MM-dd hh:mm:ss') : null,
             content: $('#visitContent').val(),
             picture: uploader.component.getImageData(),
             attachment: uploader.component.getFileData(),
-            to_staff: common.select.data['plan'].ids.join(','),
-            recordTime: new Date().Format('yyyy-MM-dd hh:mm:ss')
-        };
-
-        return {
-            data: data
+            toStaff: common.select.data['plan'].userIds.join(','),
         };
     },
 

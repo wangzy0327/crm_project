@@ -8,10 +8,7 @@ import com.wzy.crm.service.IVisitPlanService;
 import com.wzy.crm.common.ServerResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -69,6 +66,12 @@ public class VisitPlanController {
     @GetMapping("/detail")
     public ServerResponse<VisitPlan> findPlanDetail(@RequestParam String id){
         return ServerResponse.createBySuccess(visitPlanMapper.selectByPrimaryKey(Integer.valueOf(id)));
+    }
+
+    @PostMapping("/add")
+    public ServerResponse addPlan(@RequestBody VisitPlan visitPlan){
+        System.out.println(visitPlan);
+        return ServerResponse.createBySuccess(visitPlanMapper.insert(visitPlan));
     }
 
 }
