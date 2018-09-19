@@ -1,16 +1,15 @@
 package com.wzy.crm.controller;
 
 import com.google.common.collect.Maps;
+import com.mysql.fabric.Server;
 import com.wzy.crm.dao.VisitLogMapper;
 import com.wzy.crm.pojo.VisitLog;
 import com.wzy.crm.service.IVisitLogService;
 import com.wzy.crm.common.ServerResponse;
+import com.wzy.crm.vo.PlanAndLog;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -68,6 +67,15 @@ public class VisitLogController {
     @GetMapping("/detail")
     public ServerResponse<VisitLog> findPlanDetail(@RequestParam String id){
         return ServerResponse.createBySuccess(visitLogMapper.selectByPrimaryKey(Integer.valueOf(id)));
+    }
+
+    @PostMapping("/add")
+    public ServerResponse addVisitLog(@RequestBody PlanAndLog planAndLog){
+        System.out.println(planAndLog);
+        System.out.println(planAndLog.getTags());
+        System.out.println("plan:  "+planAndLog.getVisitPlan());
+        System.out.println("log:  "+planAndLog.getVisitLog());
+        return visitLogService.addLogAndPlan(planAndLog.getVisitLog(),planAndLog.getVisitPlan(),planAndLog.getTags());
     }
 
 }

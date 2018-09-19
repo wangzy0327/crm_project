@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wzy.crm.dao.CustomerTagRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.CustomerTagRelation" >
+    <result column="customer_id" property="customerId" jdbcType="INTEGER" />
+    <result column="tag_id" property="tagId" jdbcType="INTEGER" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="CustomerTagMap" type="com.wzy.crm.pojo.CustomerTag">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="CustomerTagVoMap" type="com.wzy.crm.vo.CustomerTagVo">
+    <id column="customer_id" property="customerId" jdbcType="INTEGER" />
+    <collection property="tags" ofType="com.wzy.crm.pojo.CustomerTag">
+      <id property="id" column="id" />
+      <result column="name" property="name" />
+      <result column="num" property="num"  />
+    </collection>
+  </resultMap>
+  <insert id="insert" parameterType="com.wzy.crm.pojo.CustomerTagRelation" >
+    insert into customer_tag_relation (customer_id, tag_id, num
+      )
+    values (#{customerId,jdbcType=INTEGER}, #{tagId,jdbcType=INTEGER}, #{num,jdbcType=INTEGER}
+      )
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select customer_id, tag_id, num
+    from customer_tag_relation
+  </select>
+  <select id="selectHotTags" resultMap="CustomerTagMap">
+    select ctr.tag_id id,customer_tag.`name` `name`
+    from
+    (select tag_id,sum(num) num
+    from customer_tag_relation
+    GROUP BY tag_id
+    order by sum(num) desc limit 0,5) ctr
+    LEFT JOIN customer_tag
+    ON ctr.tag_id = customer_tag.id;
+  </select>
+
+  <update id="updateByCustomerIdAndTagId" >
+    update customer_tag_relation
+    set num = num + 1
+    where customer_id = #{customerId} and tag_id = #{tagId}
+  </update>
+  <insert id="insertByCustomerIdAndTagId">
+    insert into customer_tag_relation (customer_id, tag_id, num)
+    values (#{customerId},#{tagId},1)
+  </insert>
+  <select id="selectByCustomerId" resultMap="CustomerTagVoMap">
+    select ctr.customer_id,ctr.tag_id id,customer_tag.`name`,ctr.num
+     from
+		(select customer_id,tag_id,num
+    from customer_tag_relation
+    where customer_id = #{customerId}) ctr
+    left join customer_tag
+    on ctr.tag_id = customer_tag.id
+  </select>
+</mapper>

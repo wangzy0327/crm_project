@@ -1,8 +1,8 @@
 var module = {};
 
 module.data = {
-    m: 1010000,
-    customer_id: YT.getUrlParam('customer_id')
+    user_id: getUrlParam("userid"),
+    customer_id: getUrlParam('customer_id')
 };
 
 var pager = {
@@ -18,21 +18,28 @@ module.service = {
     },
 
     initCustomer: function () {
-        var filter = [
-            {field: 'id', value: module.data.customer_id, operator: '=', relation: 'and'}
-        ];
+        // var filter = [
+        //     {field: 'id', value: module.data.customer_id, operator: '=', relation: 'and'}
+        // ];
+        //
+        // var data = {
+        //     m: module.data.m,
+        //     t: 'customers',
+        //     filter: JSON.stringify(filter)
+        // };
 
-        var data = {
-            m: module.data.m,
-            t: 'customers',
-            filter: JSON.stringify(filter)
-        };
-
-        YT.query({
-            data: data,
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    var item = data.object[0], html = '';
+        $.ajax({
+            type: 'post',
+            url: "/customer/detail?customerId="+module.data.customer_id,
+            // data:JSON.stringify(info),
+            contentType: "application/json;charset=UTF-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    var data = result.data;
+                    var item = data, html = '';
                     module.data.name = item.name;
 
                     html += '<table style="margin:0 auto;font-size:15px;text-align:center;padding:20px 0;">';
@@ -45,11 +52,11 @@ module.service = {
                     html += '<th style="font-size:20px;text-align:left;padding-top:10px;padding-left:10px;">' + (item.position || '') + '</th>';
                     html += '</tr>';
                     html += '<tr>';
-                    html += '<th colspan="3" style="font-size:20px;vertical-align:top;padding-left:10px;">' + (item.department || '') + '</th>';
+                    html += '<th colspan="3" style="font-size:20px;vertical-align:top;padding-left:10px;">' + (item.company || '') + '</th>';
                     html += '</tr>';
                     html += '<tr height="30px">';
                     html += '<td>地址</td>';
-                    html += '<td style="text-align:left;padding-left:10px;" colspan="2" >' + (item.department || '') + '</td>';
+                    html += '<td style="text-align:left;padding-left:10px;" colspan="2" >' + (item.position || '') + '</td>';
                     html += '</tr>';
                     html += '<tr height="30px">';
                     html += '<td>手机</td>';
@@ -63,11 +70,50 @@ module.service = {
 
                     $("#customer-table").append(html);
                     module.service.initSearch();
-                } else {
-                    $.alert(data.message);
                 }
             }
         });
+
+        // YT.query({
+        //     data: data,
+        //     successCallback: function (data) {
+        //         if (200 == data.status) {
+        //             var item = data.object[0], html = '';
+        //             module.data.name = item.name;
+        //
+        //             html += '<table style="margin:0 auto;font-size:15px;text-align:center;padding:20px 0;">';
+        //             html += '<tr>';
+        //             html += '<th rowspan="2" width="100px" height="100px">';
+        //             html += '<i class="iconfont" style="color:#bbb;font-size: 100px;line-height: 100px;">&#xe008;</i>';
+        //             //html += '<img src="' + (item.avatar || '/images/head.jpg') + '" style="width:100px;height:100px;border-radius:50%;vertical-align:middle;">';
+        //             html += '</th>';
+        //             html += '<th style="font-size:30px;text-align:right;padding-left:10px;">' + item.name + '</th>';
+        //             html += '<th style="font-size:20px;text-align:left;padding-top:10px;padding-left:10px;">' + (item.position || '') + '</th>';
+        //             html += '</tr>';
+        //             html += '<tr>';
+        //             html += '<th colspan="3" style="font-size:20px;vertical-align:top;padding-left:10px;">' + (item.department || '') + '</th>';
+        //             html += '</tr>';
+        //             html += '<tr height="30px">';
+        //             html += '<td>地址</td>';
+        //             html += '<td style="text-align:left;padding-left:10px;" colspan="2" >' + (item.department || '') + '</td>';
+        //             html += '</tr>';
+        //             html += '<tr height="30px">';
+        //             html += '<td>手机</td>';
+        //             html += '<td style="text-align:left;padding-left:10px;" colspan="2">' + (item.mobile || '') + '</td>';
+        //             html += '</tr>';
+        //             html += '<tr height="30px">';
+        //             html += '<td>微信</td>';
+        //             html += '<td style="text-align:left;padding-left:10px;" colspan="2">' + (item.wechat || '') + '</td>';
+        //             html += '</tr>';
+        //             html += '</table>';
+        //
+        //             $("#customer-table").append(html);
+        //             module.service.initSearch();
+        //         } else {
+        //             $.alert(data.message);
+        //         }
+        //     }
+        // });
     },
 
     // 初始化列表
@@ -94,64 +140,128 @@ module.service = {
             '无更多记录' +
             '</div> ';
 
-        YT.query({
-            data: data,
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    if (pager.page == 1) {
-                        $("#noMore").remove();
-                    }
-
-                    var items = data.object.items, html = '';
-                    pager.page = data.object.idx + 1;
-
-                    for (var i in items) {
-                        var item = items[i],
-                            recordTime = new Date(item.recordTime).Format('yyyy-MM-dd hh:mm:ss');
-
-                        if (+i) {
-                            html += '<div class="weui-form-preview__hd information-topic" style="border-top:1vw solid;border-color:#ddd;">';
-                        } else {
-                            html += '<div class="weui-form-preview__hd information-topic">';
-                        }
-
-                        html += '<label class="weui-form-preview__label">';
-                        html += '<span style="color: red">*</span>' + module.data.name + '<span>&nbsp;(拜访计划)</span>';
-                        html += '</label>';
-                        html += '<em class="weui-form-preview__value" style="text-align: right">' + recordTime + '</em>';
-                        html += '</div>';
-                        html += '<div class="weui-form-preview__bd detail-plan" data-id="' + item.id + '" data-staffid="' + item.staff_id + '">';
-                        html += '<div class="weui-form-preview__item">';
-                        html += '<label class="weui-form-preview__label">拜访时间</label>';
-                        html += '<span class="weui-form-preview__value">' + (item.time ? new Date(item.time).Format('yyyy-MM-dd hh:mm:ss') : '') + '</span>';
-                        html += '</div>';
-                        html += '<div class="weui-form-preview__item">';
-                        html += '<label class="weui-form-preview__label">拜访地点</label>';
-                        html += '<span class="weui-form-preview__value">' + (item.location || '') + '</span>';
-                        html += '</div>';
-                        html += '<div class="weui-form-preview__item">';
-                        html += '<label class="weui-form-preview__label">拜访内容</label>';
-                        html += '<span class="weui-form-preview__value">' + (item.content || '') + '</span>';
-                        html += '</div>';
-                        html += '</div>';
-
-                    }
-
-                    $("#plan-list").append(html);
-
-                    if (data.object.idx >= data.object.pageCount) {
-                        //最后一页
-                        pager.loading = true;
-                        $('#infinite').remove();
-                        $("body").append(noMore);
-                        return;
-                    }
-                } else {
-                    $.alert(data.message);
+        $.ajax({
+            type: 'post',
+            url: "/plan/list?userId="+module.data.user_id+"&customerId=" + module.data.customer_id+"&page="+pager.page+"&size="+pager.rows,
+            // data:JSON.stringify(info),
+            contentType: "application/json;charset=UTF-8",
+            dataType: 'json',
+            error: function (result) {
+            },
+            success: function (result) {
+                if (pager.page == 1) {
+                    $("#noMore").remove();
                 }
-                pager.loading = false;
+                var data = result.data;
+                var items = data, html = '';
+                // pager.page = data.idx + 1;
+
+                for (var i in items) {
+                    var item = items[i],
+                        recordTime = new Date(item.time).Format('yyyy-MM-dd hh:mm:ss');
+
+                    if (+i) {
+                        html += '<div class="weui-form-preview__hd information-topic" style="border-top:1vw solid;border-color:#ddd;">';
+                    } else {
+                        html += '<div class="weui-form-preview__hd information-topic">';
+                    }
+
+                    html += '<label class="weui-form-preview__label">';
+                    html += '<span style="color: red">*</span>' + module.data.name + '<span>&nbsp;(拜访计划)</span>';
+                    html += '</label>';
+                    html += '<em class="weui-form-preview__value" style="text-align: right">' + recordTime + '</em>';
+                    html += '</div>';
+                    html += '<div class="weui-form-preview__bd detail-plan" data-id="' + item.id + '" data-staffid="' + item.staff_id + '">';
+                    html += '<div class="weui-form-preview__item">';
+                    html += '<label class="weui-form-preview__label">拜访时间</label>';
+                    html += '<span class="weui-form-preview__value">' + (item.time ? new Date(item.time).Format('yyyy-MM-dd hh:mm:ss') : '') + '</span>';
+                    html += '</div>';
+                    html += '<div class="weui-form-preview__item">';
+                    html += '<label class="weui-form-preview__label">拜访地点</label>';
+                    html += '<span class="weui-form-preview__value">' + (item.location || '') + '</span>';
+                    html += '</div>';
+                    html += '<div class="weui-form-preview__item">';
+                    html += '<label class="weui-form-preview__label">拜访内容</label>';
+                    html += '<span class="weui-form-preview__value">' + (item.content || '') + '</span>';
+                    html += '</div>';
+                    html += '</div>';
+
+                }
+
+                $("#plan-list").append(html);
+
+                pager.loading = true;
+                $('#infinite').remove();
+                $("body").append(noMore);
+                return;
+                // if (data.object.idx >= data.object.pageCount) {
+                //     //最后一页
+                //     pager.loading = true;
+                //     $('#infinite').remove();
+                //     $("body").append(noMore);
+                //     return;
+                // }
             }
-        })
+        });
+
+        // YT.query({
+        //     data: data,
+        //     successCallback: function (data) {
+        //         if (200 == data.status) {
+        //             if (pager.page == 1) {
+        //                 $("#noMore").remove();
+        //             }
+        //
+        //             var items = data.object.items, html = '';
+        //             pager.page = data.object.idx + 1;
+        //
+        //             for (var i in items) {
+        //                 var item = items[i],
+        //                     recordTime = new Date(item.recordTime).Format('yyyy-MM-dd hh:mm:ss');
+        //
+        //                 if (+i) {
+        //                     html += '<div class="weui-form-preview__hd information-topic" style="border-top:1vw solid;border-color:#ddd;">';
+        //                 } else {
+        //                     html += '<div class="weui-form-preview__hd information-topic">';
+        //                 }
+        //
+        //                 html += '<label class="weui-form-preview__label">';
+        //                 html += '<span style="color: red">*</span>' + module.data.name + '<span>&nbsp;(拜访计划)</span>';
+        //                 html += '</label>';
+        //                 html += '<em class="weui-form-preview__value" style="text-align: right">' + recordTime + '</em>';
+        //                 html += '</div>';
+        //                 html += '<div class="weui-form-preview__bd detail-plan" data-id="' + item.id + '" data-staffid="' + item.staff_id + '">';
+        //                 html += '<div class="weui-form-preview__item">';
+        //                 html += '<label class="weui-form-preview__label">拜访时间</label>';
+        //                 html += '<span class="weui-form-preview__value">' + (item.time ? new Date(item.time).Format('yyyy-MM-dd hh:mm:ss') : '') + '</span>';
+        //                 html += '</div>';
+        //                 html += '<div class="weui-form-preview__item">';
+        //                 html += '<label class="weui-form-preview__label">拜访地点</label>';
+        //                 html += '<span class="weui-form-preview__value">' + (item.location || '') + '</span>';
+        //                 html += '</div>';
+        //                 html += '<div class="weui-form-preview__item">';
+        //                 html += '<label class="weui-form-preview__label">拜访内容</label>';
+        //                 html += '<span class="weui-form-preview__value">' + (item.content || '') + '</span>';
+        //                 html += '</div>';
+        //                 html += '</div>';
+        //
+        //             }
+        //
+        //             $("#plan-list").append(html);
+        //
+        //             if (data.object.idx >= data.object.pageCount) {
+        //                 //最后一页
+        //                 pager.loading = true;
+        //                 $('#infinite').remove();
+        //                 $("body").append(noMore);
+        //                 return;
+        //             }
+        //         } else {
+        //             $.alert(data.message);
+        //         }
+        //         pager.loading = false;
+        //     }
+        // })
     }
 };
 
@@ -174,18 +284,23 @@ module.eventHandler = {
 
     handleBtnLog: function () {
         $('.btn-log').click(function () {
-            location.href = 'visit-detail-log.html' + YT.setUrlParams({customer_id: module.data.customer_id});
+            location.href = 'visit-detail-log.html?customer_id=' + module.data.customer_id;
         });
     },
 
     handleToDetail: function () {
         $('#plan-list').on('click', '.detail-plan', function () {
-            location.href = '/module/discuss/visit-detail-evaluation.html' + YT.setUrlParams({
-                    staff_id: $(this).data('staffid'),
-                    visit_id: $(this).data('id'),
-                    type: 1,
-                    iscomment: 1
-                });
+            var url = '/module/discuss/visit-detail-evaluation.html';
+            var url1 = $.UrlUpdateParams(url,"userid",module.data.user_id);
+            var url2 = $.UrlUpdateParams(url1,"staffid",$(this).data('staffid'));
+            var url3 = $.UrlUpdateParams(url2,"staffid",$(this).$(this).data('id'));
+            location.href = url3;
+            // location.href = '/module/discuss/visit-detail-evaluation.html' + YT.setUrlParams({
+            //         staff_id: $(this).data('staffid'),
+            //         visit_id: $(this).data('id'),
+            //         type: 1,
+            //         iscomment: 1
+            //     });
         });
     },
 

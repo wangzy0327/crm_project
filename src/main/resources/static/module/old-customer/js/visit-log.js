@@ -1,11 +1,9 @@
 var module = {};
 
 module.data = {
-    m: 1010000,
-    customer_id: YT.getUrlParam("customer_id"),
-    customer_name: YT.getUrlParam("customer_name"),
-    company: YT.getUrlParam('company'),
-    visit_plan_time: YT.getUrlParam('visit_plan_time')
+    user_id:getUrlParam("userid"),
+    customer_id: getUrlParam("customer_id"),
+    customer_name:getUrlParam("customer_name")
 };
 
 module.service = {
@@ -87,18 +85,18 @@ module.eventHandler = {
         $('.tag-box').on('click', '.tag', function () {
             var $img = $(this).parent().find('img');
             if ($img.hasClass('action')) {
-                $img.removeClass('action').attr('src', '/image/unChecked.svg');
+                $img.removeClass('action').attr('src', '/images/unChecked.svg');
             } else {
-                $img.addClass('action').attr('src', '/image/checked.svg');
+                $img.addClass('action').attr('src', '/images/checked.svg');
             }
         });
 
         $('.tag-box').on('click', 'img', function () {
             var $img = $(this);
             if ($img.hasClass('action')) {
-                $img.removeClass('action').attr('src', '/image/unChecked.svg');
+                $img.removeClass('action').attr('src', '/images/unChecked.svg');
             } else {
-                $img.addClass('action').attr('src', '/image/checked.svg');
+                $img.addClass('action').attr('src', '/images/checked.svg');
             }
         });
     },
@@ -124,101 +122,105 @@ module.eventHandler = {
                 return false;
             }
 
-            var info = [
-                {
-                    data: {
-                        customer_id: customer_id,
-                        way: $("#visitWay").val(),
-                        result: $("#visitResult").val(),
-                        requirement: $.trim($("#requirement").val()),
-                        memo: visitMemo,
-                        picture: uploader.component.getImageData('log'),
-                        attachment: uploader.component.getFileData('log'),
-                        to_staff: common.select.data['log'].ids.join(','),
-                        recordTime: new Date().Format('yyyy-MM-dd hh:mm:ss')
-                    },
-                    t: 'visit_log',
-                    ai: true
+            var info = {
+                visitLog:{
+                    customerId: customer_id,
+                    way: $("#visitWay").val(),
+                    result: $("#visitResult").val(),
+                    requirement: $.trim($("#requirement").val()),
+                    memo: visitMemo,
+                    picture: uploader.component.getImageData('log'),
+                    attachment: uploader.component.getFileData('log'),
+                    to_staff: common.select.data['log'].userIds.join(','),
+                    recordTime: new Date().Format('yyyy-MM-dd hh:mm:ss')
                 }
-            ];
+            };
+
+            info['visitLog']['userId'] = module.data.user_id;
+            console.log("log info userid:"+info['visitLog']['userId']);
+            console.log("log info customerid:"+info['visitLog']['customerId']);
 
             // 获取计划数据
             if (!$("#btn-del").is(":hidden")) {
-                info.push(common.visit.getPlanData(customer_id));
+                info['visitPlan'] = common.visit.getPlanData(customer_id);
+                info['visitPlan']['userId'] = module.data.user_id;
+                console.log("plan info userid:"+info['visitPlan']['userId']);
+                console.log("plan info customerid:"+info['visitPlan']['customerId']);
+                // info.push(common.visit.getPlanData(customer_id));
             }
 
-            var params = {
-                customer_id: customer_id,
-                log_staff: info[0].data.to_staff,
-                plan_staff: info[1] && info[1].data.to_staff || '',
-                slave_label: slave_label
-            };
+            info['tags'] = slave_label;
 
-            var visit_plan_time = +module.data.visit_plan_time;
-            if (!isNaN(visit_plan_time)) {
-                params.visit_plan_time = new Date(visit_plan_time).Format('yyyy-MM-dd hh:mm:ss')
-            }
-
-            var postData = {
-                m: module.data.m,
-                t: 'visit_log',
-                v: JSON.stringify(info),
-                params: JSON.stringify(params)
-            };
-
-            YT.insert({
-                data: postData,
-                successCallback: function (data) {
-                    if (data.status == 200) {
-                        var logVisitId = data.object['visit_log'][0];
-                        var logAutoIds = data.object['log'];
-                        var planVisitId = data.object['visit_plan'] && data.object['visit_plan'][0];
-                        var planAutoIds = data.object['plan'];
-
-                        common.service.getUserInfo(function (data) {
-                            // 推送消息
-                            var logUserIds = common.select.data['log'].userIds;
-                            var logIds = common.select.data['log'].ids;
-                            var planUserIds = common.select.data['plan'].userIds;
-                            var planIds = common.select.data['plan'].ids;
-
-                            common.visit.pushMsg({
-                                staff_id: data.id,
-                                staff_name: data.name,
-                                company: module.data.company,
-                                customer_name: module.data.customer_name,
-                                isComment: 0,
-                                time: visitLogTime,
-                                visit_id: logVisitId,
-                                comment_id: logAutoIds,
-                                userIds: logUserIds,
-                                ids: logIds,
-                                type: 2
-                            });
-
-                            common.visit.pushMsg({
-                                staff_id: data.id,
-                                staff_name: data.name,
-                                company: module.data.company,
-                                customer_name: module.data.customer_name,
-                                isComment: 0,
-                                time: info[1] && info[1].data.time,
-                                visit_id: planVisitId,
-                                comment_id: planAutoIds,
-                                userIds: planUserIds,
-                                ids: planIds,
-                                type: 1
-                            });
-
-                            $.alert('提交成功', function () {
-                                $(location).attr('href', '/module/customer-list/customer-list-my.html' + YT.setUrlParams());
-                            });
+            $.ajax({
+                type: 'post',
+                url: "/log/add",
+                data:JSON.stringify(info),
+                contentType: "application/json;charset=UTF-8",
+                dataType: 'json',
+                error: function (request) {
+                },
+                success: function (result) {
+                    if (result.code == 0) {
+                        $.alert('提交成功', function () {
+                            $(location).attr('href', '/module/customer-list/customer-list-my.html?userid='+module.data.user_id);
                         });
-                    } else {
-                        $.alert(data.message);
                     }
                 }
             });
+
+            // YT.insert({
+            //     data: postData,
+            //     successCallback: function (data) {
+            //         if (data.status == 200) {
+            //             var logVisitId = data.object['visit_log'][0];
+            //             var logAutoIds = data.object['log'];
+            //             var planVisitId = data.object['visit_plan'] && data.object['visit_plan'][0];
+            //             var planAutoIds = data.object['plan'];
+            //
+            //             common.service.getUserInfo(function (data) {
+            //                 // 推送消息
+            //                 var logUserIds = common.select.data['log'].userIds;
+            //                 var logIds = common.select.data['log'].ids;
+            //                 var planUserIds = common.select.data['plan'].userIds;
+            //                 var planIds = common.select.data['plan'].ids;
+            //
+            //                 common.visit.pushMsg({
+            //                     staff_id: data.id,
+            //                     staff_name: data.name,
+            //                     company: module.data.company,
+            //                     customer_name: module.data.customer_name,
+            //                     isComment: 0,
+            //                     time: visitLogTime,
+            //                     visit_id: logVisitId,
+            //                     comment_id: logAutoIds,
+            //                     userIds: logUserIds,
+            //                     ids: logIds,
+            //                     type: 2
+            //                 });
+            //
+            //                 common.visit.pushMsg({
+            //                     staff_id: data.id,
+            //                     staff_name: data.name,
+            //                     company: module.data.company,
+            //                     customer_name: module.data.customer_name,
+            //                     isComment: 0,
+            //                     time: info[1] && info[1].data.time,
+            //                     visit_id: planVisitId,
+            //                     comment_id: planAutoIds,
+            //                     userIds: planUserIds,
+            //                     ids: planIds,
+            //                     type: 1
+            //                 });
+            //
+            //                 $.alert('提交成功', function () {
+            //                     $(location).attr('href', '/module/customer-list/customer-list-my.html' + YT.setUrlParams());
+            //                 });
+            //             });
+            //         } else {
+            //             $.alert(data.message);
+            //         }
+            //     }
+            // });
         });
     }
 };

@@ -74,4 +74,12 @@ public class VisitPlanController {
         return ServerResponse.createBySuccess(visitPlanMapper.insert(visitPlan));
     }
 
+    @PostMapping("/list")
+    public ServerResponse loadPlan(@RequestParam String userId,@RequestParam Integer customerId,@RequestParam Integer page,@RequestParam Integer size){
+        System.out.println("page:"+page);
+        System.out.println("size:"+size);
+        Integer start = (page - 1)*size;
+        return ServerResponse.createBySuccess(visitPlanMapper.selectByUserIdAndCustomerId(userId,customerId,start,size));
+    }
+
 }

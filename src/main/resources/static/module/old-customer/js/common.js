@@ -361,11 +361,10 @@ common.visit = {
     },
 
     initDom_plan: function () {
-        console.log()
 
         $('#customerName').text(module.data.customer_name);
 
-        $("#visitName").datetimePicker({
+        $("#visitTime").datetimePicker({
             title: "请选择拜访时间"
         });
 
@@ -420,20 +419,6 @@ common.visit = {
                 break;
         }
 
-        // var data = {
-        //     customerId: customer_id,
-        //     time: time || null,
-        //     place:($('#visitPicker').val() || ''),
-        //     location: ($('#visitAddress').val() || ''),
-        //     // ios注意：new Date('2017-10-01'..replace(/-/g,'/'))
-        //     remind: remindTime ? new Date(new Date(time.replace(/-/g, '/')).getTime() - remindTime).Format('yyyy-MM-dd hh:mm') : null,
-        //     content: $('#visitContent').val(),
-        //     picture: uploader.component.getImageData(),
-        //     attachment: uploader.component.getFileData(),
-        //     toStaff: common.select.data['plan'].userIds.join(','),
-        //     // time: new Date().Format('yyyy-MM-dd hh:mm:ss')
-        // };
-
         return {
             customerId: customer_id,
             time: new Date(time.replace(/-/g, '/')).Format('yyyy-MM-dd hh:mm:ss') || null,
@@ -452,18 +437,24 @@ common.visit = {
     initHotTagList: function () {
         var self = this;
 
-        var data = {
-            m: 1010000,
-            t: 'v_customers_tag_hot',
-            order: 'count desc, tag_id',
-            r: 10
-        };
+        // var data = {
+        //     m: 1010000,
+        //     t: 'v_customers_tag_hot',
+        //     order: 'count desc, tag_id',
+        //     r: 10
+        // };
 
-        YT.query({
-            data: data,
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    var items = data.object, html = '';
+        $.ajax({
+            type: 'get',
+            url: "/customer/hot/tags",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    var data = result.data;
+                    var items = data, html = '';
                     var defaultClass = ['blue', 'green', 'orange', 'red', 'purple', 'grey'];
                     var tagClass = [].concat(defaultClass);
 
@@ -473,37 +464,65 @@ common.visit = {
                             tagClass = [].concat(defaultClass);
                         }
                         var index = Math.floor(Math.random() * tagClass.length);
-                        html += self.createTagHtml_unChecked(tagClass.splice(index, 1)[0], item.tag_id, item.tag_name);
+                        html += self.createTagHtml_unChecked(tagClass.splice(index, 1)[0], item.id, item.name);
                     }
 
                     $('.tag-box').append(html);
                 }
-            }
+            },
         });
+
+        // YT.query({
+        //     data: data,
+        //     successCallback: function (data) {
+        //         if (200 == data.status) {
+        //             var items = data.object, html = '';
+        //             var defaultClass = ['blue', 'green', 'orange', 'red', 'purple', 'grey'];
+        //             var tagClass = [].concat(defaultClass);
+        //
+        //             for (var i in items) {
+        //                 var item = items[i];
+        //                 if (tagClass.length == 0) {
+        //                     tagClass = [].concat(defaultClass);
+        //                 }
+        //                 var index = Math.floor(Math.random() * tagClass.length);
+        //                 html += self.createTagHtml_unChecked(tagClass.splice(index, 1)[0], item.tag_id, item.tag_name);
+        //             }
+        //
+        //             $('.tag-box').append(html);
+        //         }
+        //     }
+        // });
     },
 
     // 加载客户标签
     initTagList: function () {
         var self = this;
 
-        var filter = [
-            {field: 'customer_id', value: module.data.customer_id, operator: '=', relation: 'and'}
-        ];
+        // var filter = [
+        //     {field: 'customer_id', value: module.data.customer_id, operator: '=', relation: 'and'}
+        // ];
+        //
+        // var data = {
+        //     m: 1010000,
+        //     t: 'v_customers_tag',
+        //     filter: JSON.stringify(filter),
+        //     order: 'num desc, tag_id'
+        // };
 
-        var data = {
-            m: 1010000,
-            t: 'v_customers_tag',
-            filter: JSON.stringify(filter),
-            order: 'num desc, tag_id'
-        };
-
-        YT.query({
-            data: data,
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    var items = data.object, html = '';
-
-                    if (items.length) {
+        $.ajax({
+            type: 'post',
+            url: "/customer/tags?customerId="+module.data.customer_id,
+            // data:JSON.stringify(info),
+            contentType: "application/json;charset=UTF-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    var data = result.data;
+                    var items = data.tags, html = '';
+                    if (items!=null && items.length) {
                         $('.customerTag').show();
                         var defaultClass = ['blue', 'green', 'orange', 'red', 'purple', 'grey'];
                         var tagClass = [].concat(defaultClass);
@@ -514,15 +533,41 @@ common.visit = {
                                 tagClass = [].concat(defaultClass);
                             }
                             var index = Math.floor(Math.random() * tagClass.length);
-                            html += self._createTagHtml(tagClass.splice(index, 1)[0], item.tag_id, item.tag_name, item.num);
+                            html += self._createTagHtml(tagClass.splice(index, 1)[0], item.id, item.name, item.num);
                         }
 
                         $('.tag-box').append(html);
                     }
-
                 }
             }
         });
+
+        // YT.query({
+        //     data: data,
+        //     successCallback: function (data) {
+        //         if (200 == data.status) {
+        //             var items = data.object, html = '';
+        //
+        //             if (items.length) {
+        //                 $('.customerTag').show();
+        //                 var defaultClass = ['blue', 'green', 'orange', 'red', 'purple', 'grey'];
+        //                 var tagClass = [].concat(defaultClass);
+        //
+        //                 for (var i in items) {
+        //                     var item = items[i];
+        //                     if (tagClass.length == 0) {
+        //                         tagClass = [].concat(defaultClass);
+        //                     }
+        //                     var index = Math.floor(Math.random() * tagClass.length);
+        //                     html += self._createTagHtml(tagClass.splice(index, 1)[0], item.tag_id, item.tag_name, item.num);
+        //                 }
+        //
+        //                 $('.tag-box').append(html);
+        //             }
+        //
+        //         }
+        //     }
+        // });
     },
 
     // 拜访记录添加客户标签
@@ -537,7 +582,7 @@ common.visit = {
         var html = '';
         html += '<div class="tag-warp">';
         html += '<div class="tag ' + tagClass + '" data-id="' + id + '">' + name + '</div>';
-        html += '<img src="/image/unChecked.svg">';
+        html += '<img src="/images/unChecked.svg">';
         html += '</div>';
         return html;
     },
@@ -547,7 +592,7 @@ common.visit = {
         var html = '';
         html += '<div class="tag-warp">';
         html += '<div class="tag ' + tagClass + '" data-id="' + id + '">' + name + '</div>';
-        html += '<img class="action" src="/image/checked.svg">';
+        html += '<img class="action" src="/images/checked.svg">';
         html += '</div>';
         return html;
     },

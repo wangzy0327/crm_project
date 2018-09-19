@@ -28,7 +28,7 @@
       picture, attachment)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER},
       #{time,jdbcType=TIMESTAMP}, #{place,jdbcType=VARCHAR},#{location,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
-      #{remind,jdbcType=TIMESTAMP}, #{toStaff,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{remind,jdbcType=TIMESTAMP}, #{toStaff,jdbcType=VARCHAR}, now(),
       #{picture,jdbcType=LONGVARCHAR}, #{attachment,jdbcType=LONGVARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.VisitPlan">
@@ -40,7 +40,7 @@
       content = #{content,jdbcType=VARCHAR},
       remind = #{remind,jdbcType=TIMESTAMP},
       to_staff = #{toStaff,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_time = now(),
       picture = #{picture,jdbcType=LONGVARCHAR},
       attachment = #{attachment,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
@@ -114,5 +114,13 @@
     select count(DISTINCT (id))
     from visit_plan
     where customer_id = #{customerId}
+  </select>
+  <select id="selectByUserIdAndCustomerId" resultMap="BaseResultMap">
+    select id,`time`, place, location,content,
+      remind, to_staff, update_time,
+      picture, attachment
+    from visit_plan
+    where user_id = #{userId} and customer_id = #{customerId}
+    limit #{start},#{size}
   </select>
 </mapper>

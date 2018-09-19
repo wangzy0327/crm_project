@@ -442,7 +442,7 @@ CREATE TABLE `message_tag_relation` (
    KEY `messageId_tagId` (`message_id`,`tag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
+DROP TABLE IF EXISTS `message_share`;
 CREATE TABLE `message_share` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message_id` int(11) DEFAULT NULL,
@@ -457,7 +457,7 @@ CREATE TABLE `message_share` (
   KEY `delFlag_openCount` (`del_flag`,`open_count`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='员工消息分享表';
 
-
+DROP TABLE IF EXISTS `message_share_customer`;
 CREATE TABLE `message_share_customer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `share_id` int(11) DEFAULT NULL,
@@ -489,7 +489,7 @@ CREATE TABLE `message_share_customer` (
   KEY `shareId_staffId` (`share_id`,`staff_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='客户消息分享表';
 
-
+DROP TABLE IF EXISTS `message_share_customer_area`;
 CREATE TABLE `message_share_customer_area` (
   `id` int(11) NOT NULL,
   `cid` varchar(11) DEFAULT NULL,
@@ -497,13 +497,7 @@ CREATE TABLE `message_share_customer_area` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `city` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `cp` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
+DROP TABLE IF EXISTS `message_share_uid`;
 CREATE TABLE `message_share_uid` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `share_id` int(11) DEFAULT NULL COMMENT '分享编号',
@@ -521,6 +515,7 @@ CREATE TABLE `message_share_uid` (
   KEY `shareId_shareDetailId` (`share_id`,`share_detail_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='转发、分享记录';
 
+DROP TABLE IF EXISTS `city`;
 CREATE TABLE `city` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
@@ -895,3 +890,20 @@ INSERT INTO `city` VALUES ('364', '上海', '[121.472644,31.231706]');
 INSERT INTO `city` VALUES ('365', '重庆', '[106.504962,29.533155]');
 INSERT INTO `city` VALUES ('366', '香港', '[114.173355,22.320048]');
 INSERT INTO `city` VALUES ('367', '澳门', '[113.54909,22.198951]');
+
+
+DROP TABLE IF EXISTS `customer_tag`;
+CREATE TABLE `customer_tag` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '标签编号',
+  `name` varchar(30) DEFAULT NULL COMMENT '标签名称',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `customer_tag_relation`;
+CREATE TABLE `customer_tag_relation` (
+  `customer_id` int(11) DEFAULT NULL COMMENT '客户编号',
+  `tag_id` int(11) DEFAULT NULL COMMENT '标签编号',
+  `num` int(11) DEFAULT '1' COMMENT '被勾选的数量',
+  KEY `customerId_tagId_num` (`customer_id`,`tag_id`,`num`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

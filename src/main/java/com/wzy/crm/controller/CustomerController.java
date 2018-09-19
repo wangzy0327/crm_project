@@ -3,12 +3,13 @@ package com.wzy.crm.controller;
 import com.google.common.collect.Maps;
 import com.mysql.fabric.Server;
 import com.wzy.crm.dao.CustomerMapper;
+import com.wzy.crm.dao.CustomerTagMapper;
+import com.wzy.crm.dao.CustomerTagRelationMapper;
 import com.wzy.crm.dao.StaffCustomerFollowRelationMapper;
-import com.wzy.crm.pojo.Customer;
-import com.wzy.crm.pojo.CustomerDetailInfo;
-import com.wzy.crm.pojo.Staff;
+import com.wzy.crm.pojo.*;
 import com.wzy.crm.service.ICustomerService;
 import com.wzy.crm.common.ServerResponse;
+import com.wzy.crm.vo.CustomerTagVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,9 @@ public class CustomerController {
 
     @Autowired
     private CustomerMapper customerMapper;
+
+    @Autowired
+    private CustomerTagRelationMapper customerTagRelationMapper;
 
     @Autowired
     private StaffCustomerFollowRelationMapper staffCustomerFollowRelationMapper;
@@ -93,6 +97,26 @@ public class CustomerController {
         System.out.println("id:"+customer.getId());
         System.out.println("name:"+customer.getName());
         return ServerResponse.createBySuccess(customerMapper.updateByPrimaryKey(customer));
+    }
+
+    @GetMapping("/hot/tags")
+    public ServerResponse getHotTag(){
+        return ServerResponse.createBySuccess(customerTagRelationMapper.selectHotTags());
+    }
+
+    @PostMapping("/detail")
+    public ServerResponse getCustomerDetail(@RequestParam Integer customerId){
+        return ServerResponse.createBySuccess(customerMapper.selectByPrimaryKey(customerId));
+    }
+
+    @PostMapping("/tags")
+    public ServerResponse getCustomerTags(@RequestParam Integer customerId){
+        CustomerTagVo customerTagVo = customerTagRelationMapper.selectByCustomerId(customerId);
+        List<CustomerTag> tags = customerTagVo.getTags();
+        for(int i = 0;i<tags.size();i++){
+            System.out.println(tags.get(i));
+        }
+        return ServerResponse.createBySuccess(customerTagRelationMapper.selectByCustomerId(customerId));
     }
 
 

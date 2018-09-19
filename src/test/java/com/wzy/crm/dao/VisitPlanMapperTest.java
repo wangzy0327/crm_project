@@ -1,6 +1,7 @@
 package com.wzy.crm.dao;
 
 import com.google.common.collect.Maps;
+import com.wzy.crm.CrmApplication;
 import com.wzy.crm.pojo.VisitPlan;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +15,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = CrmApplication.class)
 public class VisitPlanMapperTest {
 
     @Autowired
@@ -51,6 +52,16 @@ public class VisitPlanMapperTest {
         System.out.println("************************");
         System.out.println(visitPlan);
         System.out.println("************************");
+    }
+
+    @Test
+    public void selectByUserIdAndCustomerId() throws Exception {
+        String userId = "wzy";
+        Integer customerId = 101;
+        List<VisitPlan> visitPlans = visitPlanMapper.selectByUserIdAndCustomerId(userId,customerId,0,10);
+        for(int i = 0;i<visitPlans.size();i++){
+            System.out.println(visitPlans.get(i));
+        }
     }
 
 }

@@ -27,19 +27,9 @@ module.eventHandler = {
             console.log("customer_id:"+customer_id);
             var info = common.visit.getPlanData(customer_id);
             console.log("info:"+info);
-            // var data = {
-            //     m: module.data.m,
-            //     t: 'visit_plan',
-            //     v: JSON.stringify([info]),
-            //     params: JSON.stringify({customer_id: customer_id, plan_staff: info.data.to_staff})
-            // };
             info['userId'] = module.data.user_id;
             console.log("info userId:"+info['userId']);
             console.log("info customerId:"+info['customerId']);
-            console.log("info time:"+info['time']);
-            console.log("info place:"+info['place']);
-            console.log("info remind:"+info['remind']);
-            console.log("info toStaff:"+info['toStaff']);
             $.ajax({
                 type: 'post',
                 url: "/plan/add",

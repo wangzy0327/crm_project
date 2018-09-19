@@ -17,11 +17,6 @@
     <link rel="stylesheet" href="../../iconfont/iconfont.css">
     <link rel="stylesheet" href="css/customer-comm.css">
 
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-    <script src="../../js/jquery-weui.min.js"></script>
-    <script src="../../js/fastclick.js"></script>
-    <script src="../../js/city-picker.min.js"></script>
-
 
     <!--<script type="text/javascript" src="/lib/yt/config.js"></script>-->
     <!--<script type="text/javascript" src="/module/tool/push-msg.js"></script>-->
@@ -69,31 +64,6 @@
         <div class="weui-cell__bd weui-media-box_appmsg">
 
             <div class="box tag-box">
-                <!--<div class="tag-warp">
-                    <label class="tag blue">看板 83</label>
-                    <img class="action" src="/image/checked.svg">
-                </div>
-                <div class="tag-warp">
-                    <label class="tag green">数据源 23</label>
-                    <img src="/image/unChecked.svg">
-                </div>
-                <div class="tag-warp">
-                    <label class="tag red">管理 23</label>
-                    <img/>
-                </div>
-                <div class="tag-warp">
-                    <label class="tag purple">工作表 15</label>
-                    <img class="active"/>
-                </div>
-                <div class="tag-warp">
-                    <label class="tag grey">图表 5</label>
-                </div>
-                <div class="tag-warp">
-                    <label class="tag orange">产品 2</label>
-                </div>
-                <div class="tag-warp">
-                    <label class="tag purple">首页 1</label>
-                </div>-->
             </div>
 
             <i class="iconfont" style="font-size: 35px;color:#d9d9d9" id="btn-tag">&#xe639;</i>
@@ -188,16 +158,32 @@
         <div class="weui-cell">
             <div class="weui-cell__hd"><label class="weui-label">拜访时间</label></div>
             <div class="weui-cell__bd">
-                <input class="weui-input" type="text" id="visitName" placeholder="请输入时间"/>
+                <input class="weui-input" type="text" id="visitTime" placeholder="请输入时间"/>
             </div>
         </div>
+
+        <!--<div class="weui-cell">-->
+            <!--<div class="weui-cell__hd"><label class="weui-label">拜访地点</label></div>-->
+            <!--<div class="weui-cell__bd">-->
+                <!--<i class="iconfont" style="color:#2889d6;font-size: 20px;">&#xe600;</i>-->
+                <!--<input class="weui-input" type="text" id="visitPicker" style="width: 40%"/>-->
+                <!--<input class="weui-input" type="text" id="visitAddress" placeholder="请填写具体地址" style="width: 50%"/>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div class="weui-cell">
             <div class="weui-cell__hd"><label class="weui-label">拜访地点</label></div>
             <div class="weui-cell__bd">
-                <i class="iconfont" style="color:#2889d6;font-size: 20px;">&#xe600;</i>
-                <input class="weui-input" type="text" id="visitPicker" style="width: 40%"/>
-                <input class="weui-input" type="text" id="visitAddress" placeholder="请填写具体地址" style="width: 50%"/>
+                <!--<i class="iconfont" style="color:#2889d6;font-size: 20px;">&#xe600;</i>-->
+                <i class="iconfont" style="color:#3cc51f;font-size: 20px;">&#xe600;</i>
+                <input class="weui-input" type="text" id="visitPicker" style="width: 80%"/>
+            </div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">具体地址</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" id="visitAddress" placeholder="请填写具体地址" />
             </div>
         </div>
 
@@ -274,6 +260,17 @@
 <div class="weui-btn-area">
     <a class="weui-btn weui-btn_primary" href="javascript:" id="btn-save">保存</a>
 </div>
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="../../js/jquery-weui.min.js"></script>
+<script src="../../js/fastclick.js"></script>
+<script src="../../js/city-picker.min.js"></script>
+<script src="../../lib/param.js"></script>
+<script src="../../lib/domain.js"></script>
+<script src="../../lib/formatTime.js"></script>
+<script src="../lib/upload.js"></script>
+<script src="js/common.js"></script>
+<script src="js/visit-log.js"></script>
 
 <script>
     $("#btn-add").click(function () {

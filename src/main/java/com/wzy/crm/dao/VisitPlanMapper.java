@@ -1,6 +1,8 @@
 package com.wzy.crm.dao;
 
 import com.wzy.crm.pojo.VisitPlan;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
 
@@ -20,4 +22,6 @@ public interface VisitPlanMapper {
     Integer findPlanCountByParam(Map<String, String> param);
 
     Integer findPlanCount(Integer customerId);
+
+    List<VisitPlan> selectByUserIdAndCustomerId(@Param("userId") String userId, @Param("customerId") Integer customerId,@Param("start")Integer start,@Param("size")Integer size);
 }
