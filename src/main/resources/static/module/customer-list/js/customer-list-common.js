@@ -117,8 +117,8 @@ function loadlist() {
                                 '</div>\n' +
                                 '<div class="weui-form-preview__ft">' +
                                 '<a class="weui-form-preview__btn weui-form-preview__btn_primary edit" data-d="'+JSON.stringify(data[i]).replace(/"/g, "&quot;")+'" href="javascript:">编辑</a>' +
-                                '<a class="weui-form-preview__btn weui-form-preview__btn_primary visit-tip" href="javascript:" data-id="30">提醒</a>\n' +
-                                '<a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo" href="javascript:" data-id="30">备注</a>' +
+                                '<a class="weui-form-preview__btn weui-form-preview__btn_primary visit-tip" href="javascript:" >提醒</a>\n' +
+                                '<a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo" href="javascript:" >备注</a>' +
                                 '<a class="weui-form-preview__btn weui-form-preview__btn_default view-detail view-detail-my"\n' +
                                 'data-sumcount="1" href="javascript:">浏览<span class=""></span>&nbsp;&nbsp;转发' +
                                 '<span class=""></span></a></div>\n' +
@@ -174,9 +174,10 @@ function handleOp() {
         var url1 = $.UrlUpdateParams(url,"userid",userid);
         var url2 = $.UrlUpdateParams(url1,"customer_id",$(customer).data('id'));
         var url3 = $.UrlUpdateParams(url2,"customer_name",$(customer).find('.name').text());
+        var url4 = $.UrlUpdateParams(url3,"company",$(customer).find('.department').text());
         // url3=encodeURI(url3);   //对URL的地址进行encodeURI编码，实际上只有中文的部分被修改编码
-        console.log("url encode: "+url3);
-        location.href  = url3;
+        console.log("url encode: "+url4);
+        location.href  = url4;
         // location.href = '/module/old-customer/new-visit-plan.html' + YT.setUrlParams({
         //     customer_id: $ele.data('id'),
         //     customer_name:$ele.find('.name').text(),
@@ -192,9 +193,10 @@ function handleOp() {
         var url1 = $.UrlUpdateParams(url,"userid",userid);
         var url2 = $.UrlUpdateParams(url1,"customer_id",$(customer).data('id'));
         var url3 = $.UrlUpdateParams(url2,"customer_name",$(customer).find('.name').text());
+        var url4 = $.UrlUpdateParams(url3,"company",$(customer).find('.department').text());
         // url3=encodeURI(url3);   //对URL的地址进行encodeURI编码，实际上只有中文的部分被修改编码
-        console.log("url encode: "+url3);
-        location.href = url3;
+        console.log("url encode: "+url4);
+        location.href = url4;
         // location.href = '/module/old-customer/visit-log.html' + YT.setUrlParams({
         //     customer_id: $ele.data('id'),
         //     customer_name:$ele.find('.name').text(),

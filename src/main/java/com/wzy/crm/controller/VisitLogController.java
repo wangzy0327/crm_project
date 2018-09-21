@@ -6,6 +6,7 @@ import com.wzy.crm.dao.VisitLogMapper;
 import com.wzy.crm.pojo.VisitLog;
 import com.wzy.crm.service.IVisitLogService;
 import com.wzy.crm.common.ServerResponse;
+import com.wzy.crm.utils.SendWxMessage;
 import com.wzy.crm.vo.PlanAndLog;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,20 @@ public class VisitLogController {
         System.out.println("plan:  "+planAndLog.getVisitPlan());
         System.out.println("log:  "+planAndLog.getVisitLog());
         return visitLogService.addLogAndPlan(planAndLog.getVisitLog(),planAndLog.getVisitPlan(),planAndLog.getTags());
+    }
+
+    @PostMapping("/list")
+    public ServerResponse loadPlan(@RequestParam String userId,@RequestParam Integer customerId,@RequestParam Integer page,@RequestParam Integer size){
+        System.out.println("page:"+page);
+        System.out.println("size:"+size);
+        Integer start = (page - 1)*size;
+        return ServerResponse.createBySuccess(visitLogMapper.selectByUserIdAndCustomerId(userId,customerId,start,size));
+    }
+
+    @GetMapping("/details")
+    public ServerResponse logDetail(@RequestParam Integer id){
+        System.out.println("visitId:"+id);
+        return ServerResponse.createBySuccess(visitLogMapper.selectDetailByPrimaryKey(id));
     }
 
 }

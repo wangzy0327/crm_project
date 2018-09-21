@@ -76,9 +76,16 @@
         <!--<table tableName="message_tag_relation" domainObjectName="MessageTagRelation">-->
         <!--</table>-->
 
-        <table tableName="customer_tag" domainObjectName="CustomerTag">
+        <!--<table tableName="customer_tag" domainObjectName="CustomerTag">-->
+        <!--</table>-->
+        <!--<table tableName="customer_tag_relation" domainObjectName="CustomerTagRelation">-->
+        <!--</table>-->
+
+        <table tableName="comments" domainObjectName="Comments">
         </table>
-        <table tableName="customer_tag_relation" domainObjectName="CustomerTagRelation">
+        <table tableName="staff_comment_plan" domainObjectName="StaffCommentPlan">
+        </table>
+        <table tableName="staff_comment_log" domainObjectName="StaffCommentLog">
         </table>
 
 

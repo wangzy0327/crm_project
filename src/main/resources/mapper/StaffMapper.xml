@@ -74,7 +74,7 @@
   <select id="selectByUserIdNot" resultMap="BaseResultMap" parameterType="string">
     select userid,`name`,gender,avatar
     from staff
-    where userid != #{userid}
+    where userid != #{userid} OR userid = #{userid}
   </select>
   <select id="selectByKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select id, isleader, userid, `name`, `position`, mobile, gender, email, avatar, telephone,

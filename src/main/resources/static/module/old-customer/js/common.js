@@ -104,6 +104,7 @@ common.select = {
                 };
                 ids.push(id);
                 userIds.push(userId);
+                console.log("userIds:"+userIds);
                 selectedIds.push(temp);
             });
 
@@ -360,6 +361,7 @@ common.visit = {
         }
     },
 
+
     initDom_plan: function () {
 
         $('#customerName').text(module.data.customer_name);
@@ -421,6 +423,7 @@ common.visit = {
 
         return {
             customerId: customer_id,
+            customerName:module.data.customer_name,
             time: new Date(time.replace(/-/g, '/')).Format('yyyy-MM-dd hh:mm:ss') || null,
             place:($('#visitPicker').val() || ''),
             location: ($('#visitAddress').val() || ''),

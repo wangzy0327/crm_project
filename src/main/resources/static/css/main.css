@@ -21,7 +21,8 @@ input, textarea {
     font-size: 50px;
     text-align: center;
     height: 87px;
-    background-color: #2889d6;
+    background-color: #0bb20c;
+    /*background-color: #2889d6;*/
     color: #fff;
     line-height: 70px;
 }
@@ -33,7 +34,8 @@ input, textarea {
 
 .header-big {
     height: 120px;
-    background-color: #2889d6;
+    background-color: #0bb20c;
+    /*background-color: #2889d6;*/
     color: #fff;
     line-height: 100px;
     font-size: 24px;
@@ -44,7 +46,8 @@ input, textarea {
 }
 
 .header-big .weui-cell_access:active {
-    background-color: #247abe;
+    background-color: #0bb20c;
+    /*background-color: #247abe;*/
 }
 
 /*.weui-btn {
@@ -64,16 +67,19 @@ input, textarea {
 }*/
 
 .weui-panel__bd i {
-    color: #2889d6;
+    color: #0bb20c;
+    /*color: #2889d6;*/
     margin-right: 5px;
 }
 
 .weui-vcode-btn {
-    color: #2889d6;
+    color: #0bb20c;
+    /*color: #2889d6;*/
 }
 
 .weui-vcode-btn:active {
-    color: #247abe;
+    color: #0bb20c;
+    /*color: #247abe;*/
 }
 
 .weui-navbar {
@@ -93,7 +99,8 @@ input, textarea {
 }
 
 .weui-form-preview__btn_primary {
-    color: #2889d6;
+    color: #0bb20c;
+    /*color: #2889d6;*/
 }
 
 .weui-media-box__thumb {
@@ -114,15 +121,18 @@ input, textarea {
 }
 
 .person-list > div > p:last-child {
-    color: #2889d6;
+    color: #0bb20c;
+    /*color: #2889d6;*/
 }
 
 .weui-media-box__desc {
-    color: #2889d6;
+    color: #0bb20c;
+    /*color: #2889d6;*/
 }
 
 .comment-primary {
-    color: #2889d6;
+    color: #0bb20c;
+    /*color: #2889d6;*/
 }
 
 .comment-default {
@@ -130,7 +140,8 @@ input, textarea {
 }
 
 .weui-cells_checkbox .weui-check:checked + .weui-icon-checked:before {
-    color: #2889d6;
+    color: #0bb20c;
+    /*color: #2889d6;*/
 }
 
 .bbs_title {
@@ -189,24 +200,29 @@ input, textarea {
 }
 
 .ui-step-blue .step-done .ui-step-cont-number {
-    background-color: #2889d6;
+    background-color: #0bb20c;
+    /*background-color: #2889d6;*/
 }
 
 .ui-step-blue .step-done .ui-step-cont-text {
-    color: #2889d6;
+    color: #0bb20c;
+    /*color: #2889d6;*/
 }
 
 .ui-step-blue .step-done .ui-step-line {
-    background-color: #2889d6;
+    background-color: #0bb20c;
+    /*background-color: #2889d6;*/
 }
 
 /* Active */
 .ui-step-blue .step-active .ui-step-cont-number {
-    background-color: #2889d6;
+    background-color: #0bb20c;
+    /*background-color: #2889d6;*/
 }
 
 .ui-step-blue .step-active .ui-step-cont-text {
-    color: #2889d6;
+    color: #0bb20c;
+    /*color: #2889d6;*/
     font-weight: normal;
 }
 
@@ -242,20 +258,24 @@ input, textarea {
 }
 
 .weui-btn_primary {
-    background-color: #2889d6;
+    background-color: #0bb20c;
+    /*background-color: #2889d6;*/
 }
 
 .weui-btn_primary:not(.weui-btn_disabled):active {
     color: hsla(0, 0%, 100%, .6);
-    background-color: #2889d6;
+    background-color: #0bb20c;
+    /*background-color: #2889d6;*/
 }
 
 .weui-dialog__btn {
-    color: #2889d6;
+    color: #0bb20c;
+    /*color: #2889d6;*/
 }
 
 .toolbar .picker-button {
-    color: #2889d6;
+    color: #0bb20c;
+    /*color: #2889d6;*/
 }
 
 /*.weui-btn{
@@ -345,13 +365,16 @@ img {
 /* æ¶ˆæ¯ */
 .weui-btn_primary:not(.weui-btn_disabled):active {
     color: hsla(0, 0%, 100%, .6);
-    background-color: #2889d6;
+    /*color:#0bb20c;*/
+    background-color: #0bb20c;
+    /*background-color: #2889d6;*/
     text-decoration: none;
 }
 
 .weui-btn_primary:not(.weui-btn_disabled):hover {
     color: hsla(0, 0%, 100%, .6);
-    background-color: #2889d6;
+    background-color: #0bb20c;
+    /*background-color: #2889d6;*/
     text-decoration: none;
 }
 

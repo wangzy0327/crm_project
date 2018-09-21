@@ -71,7 +71,7 @@ public class VisitPlanController {
     @PostMapping("/add")
     public ServerResponse addPlan(@RequestBody VisitPlan visitPlan){
         System.out.println(visitPlan);
-        return ServerResponse.createBySuccess(visitPlanMapper.insert(visitPlan));
+        return visitPlanService.addPlan(visitPlan);
     }
 
     @PostMapping("/list")
@@ -80,6 +80,12 @@ public class VisitPlanController {
         System.out.println("size:"+size);
         Integer start = (page - 1)*size;
         return ServerResponse.createBySuccess(visitPlanMapper.selectByUserIdAndCustomerId(userId,customerId,start,size));
+    }
+
+    @GetMapping("/details")
+    public ServerResponse planDetail(@RequestParam Integer id){
+        System.out.println("visitId:"+id);
+        return ServerResponse.createBySuccess(visitPlanMapper.selectDetailByPrimaryKey(id));
     }
 
 }

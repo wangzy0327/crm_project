@@ -596,13 +596,17 @@ uploader.component={
     initImageData:function(json,previewIndex){
         this.data = this.data || {};
         this.data.imageData = this.data.imageData || {};
-        json = json.replace(/\\/g, '\\\\');
+        if(json!=null){
+            json = json.replace(/\\/g, '\\\\');
+        }
         this.data.imageData[previewIndex] = eval('('+json+')') || [];
     },
     initFileData:function(json,previewIndex){
         this.data = this.data || {};
         this.data.fileData = this.data.fileData || {};
-        json = json.replace(/\\/g, '\\\\');
+        if(json!=null){
+            json = json.replace(/\\/g, '\\\\');
+        }
         this.data.fileData[previewIndex] = eval('('+json+')') || [];
     }
 

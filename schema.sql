@@ -907,3 +907,29 @@ CREATE TABLE `customer_tag_relation` (
   `num` int(11) DEFAULT '1' COMMENT '被勾选的数量',
   KEY `customerId_tagId_num` (`customer_id`,`tag_id`,`num`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `staff_comment_plan`;
+CREATE TABLE `staff_comment_plan` (
+  `plan_id` int(11) NOT NULL COMMENT '计划id',
+  `user_id` varchar(30) NOT NULL COMMENT '销售人员id',
+  `comment_id` int(11) NOT NULL COMMENT '评论id',
+  `is_visit_add` int(11) DEFAULT NULL COMMENT '是否计划、记录添加 0是 1否',
+  `is_comment` int(11) DEFAULT NULL COMMENT '是否评论 0未评论 1已评论'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='评论与计划关系';
+
+DROP TABLE IF EXISTS `staff_comment_log`;
+CREATE TABLE `staff_comment_log` (
+  `log_id` int(11) NOT NULL COMMENT '记录id',
+  `user_id` varchar(30) NOT NULL COMMENT '销售人员id',
+  `comment_id` int(11) NOT NULL COMMENT '评论id',
+  `is_visit_add` int(11) DEFAULT NULL COMMENT '是否计划、记录添加 0是 1否',
+  `is_comment` int(11) DEFAULT NULL COMMENT '是否评论 0未评论 1已评论'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='评论与记录关系';
+
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` varchar(255) DEFAULT NULL COMMENT '评论内容',
+  `update_time` datetime DEFAULT NULL COMMENT '时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='评论';

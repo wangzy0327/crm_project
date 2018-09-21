@@ -9,6 +9,7 @@ import com.wzy.crm.pojo.CustomerTag;
 import com.wzy.crm.pojo.VisitLog;
 import com.wzy.crm.pojo.VisitPlan;
 import com.wzy.crm.service.IVisitLogService;
+import com.wzy.crm.utils.SendWxMessage;
 import org.apache.camel.spi.AsEndpointUri;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ import java.util.*;
 
 @Service
 public class VisitLogServiceImpl implements IVisitLogService{
+
+    @Autowired
+    private SendWxMessage sendWxMessage;
 
     @Autowired
     private VisitLogMapper visitLogMapper;
@@ -39,9 +43,17 @@ public class VisitLogServiceImpl implements IVisitLogService{
     public ServerResponse addLogAndPlan(VisitLog visitLog, VisitPlan visitPlan, List<CustomerTag> tags) {
         String userId = visitLog.getUserId();
         Integer customerId = visitLog.getCustomerId();
+        visitLog.setUpdateTime(new Date());
         visitLogMapper.insert(visitLog);
-        if(visitPlan!=null)
+        if(visitLog.getToStaff()!=null){
+            sendWxMessage.handleSendLogMessage(visitLog);
+        }
+        if(visitPlan!=null){
             visitPlanMapper.insert(visitPlan);
+            if(visitPlan.getToStaff()!=null){
+                sendWxMessage.handleSendPlanMessage(visitPlan);
+            }
+        }
         handleCustomerTag(tags);
         handleCustomerTagRelation(customerId,tags);
         return ServerResponse.createBySuccess();

@@ -3,7 +3,8 @@ var module = {};
 module.data = {
     user_id:getUrlParam("userid"),
     customer_id: getUrlParam("customer_id"),
-    customer_name:getUrlParam("customer_name")
+    customer_name:getUrlParam("customer_name"),
+    company:getUrlParam("company")
 };
 
 module.service = {
@@ -12,7 +13,22 @@ module.service = {
     },
 
     initDom: function () {
-        common.visit.initDom_plan();
+        $.ajax({
+            type: 'get',
+            url: "/staff/self?userId="+module.data.user_id,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if(result.code == 0){
+                    var data = result.data;
+                    console.log("staff_name: "+data.name);
+                    module.data.staff_name = data.name;
+                    common.visit.initDom_plan();
+                }
+            }
+        });
     }
 };
 
@@ -26,8 +42,10 @@ module.eventHandler = {
             var customer_id = module.data.customer_id;
             console.log("customer_id:"+customer_id);
             var info = common.visit.getPlanData(customer_id);
-            console.log("info:"+info);
             info['userId'] = module.data.user_id;
+            info['staffName'] = module.data.staff_name;
+            info['company'] = module.data.company;
+            console.log("company:"+module.data.company);
             console.log("info userId:"+info['userId']);
             console.log("info customerId:"+info['customerId']);
             $.ajax({

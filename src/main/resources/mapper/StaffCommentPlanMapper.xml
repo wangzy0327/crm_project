@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wzy.crm.dao.StaffCommentPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.StaffCommentPlan" >
+    <result column="plan_id" property="planId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="comment_id" property="commentId" jdbcType="INTEGER" />
+    <result column="is_visit_add" property="isVisitAdd" jdbcType="INTEGER" />
+    <result column="is_comment" property="isComment" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="CommentsMap" type="com.wzy.crm.vo.CommentsListVo">
+    <id column="id" property="visitId" jdbcType="INTEGER" />
+    <collection property="commentDetail" ofType="com.wzy.crm.pojo.CommentDetail">
+      <id column="comment_id" property="commentId" jdbcType="INTEGER"/>
+      <result column="content" property="content" jdbcType="VARCHAR"/>
+      <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+      <association property="staff" javaType="com.wzy.crm.pojo.Staff">
+        <id column="staff_id" property="id" jdbcType="INTEGER" />
+        <result column="isleader" property="isleader" jdbcType="INTEGER" />
+        <result column="userid" property="userid" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+      </association>
+    </collection>
+  </resultMap>
+  <insert id="insert" parameterType="com.wzy.crm.pojo.StaffCommentPlan" >
+    insert into staff_comment_plan (plan_id, user_id, comment_id, 
+      is_visit_add, is_comment)
+    values (#{planId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{commentId,jdbcType=INTEGER}, 
+      #{isVisitAdd,jdbcType=INTEGER}, #{isComment,jdbcType=INTEGER})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select plan_id, user_id, comment_id, is_visit_add, is_comment
+    from staff_comment_plan
+  </select>
+  <select id="selectByPrimaryKey" resultMap="CommentsMap">
+      select scp.plan_id id,scp.comment_id comment_id,comments.content,comments.update_time,staff.userid,staff.`name`,staff.avatar
+      from
+      (select comment_id,user_id,plan_id
+      from staff_comment_plan
+      where plan_id = #{id}) scp
+      left join comments
+      on comments.id = scp.comment_id
+      left join staff
+      on staff.userid = scp.user_id
+      order by comments.update_time desc
+  </select>
+</mapper>

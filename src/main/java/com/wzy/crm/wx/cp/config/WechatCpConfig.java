@@ -2,6 +2,7 @@ package com.wzy.crm.wx.cp.config;
 
 import me.chanjar.weixin.cp.api.WxCpService;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
+import me.chanjar.weixin.cp.bean.WxCpMessage;
 import me.chanjar.weixin.cp.config.WxCpConfigStorage;
 import me.chanjar.weixin.cp.config.WxCpInMemoryConfigStorage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,6 @@ public class WechatCpConfig {
         wxCpConfigStorage.setAgentId(accountConfig.getAppConfigs().get(0).getAgentId());
         return wxCpConfigStorage;
     }
+
 
 }

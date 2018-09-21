@@ -64,4 +64,11 @@ public class VisitPlanMapperTest {
         }
     }
 
+    @Test
+    public void selectDetailByPrimaryKey() throws Exception {
+        Integer visitId = 19;
+        VisitPlan visitPlan = visitPlanMapper.selectDetailByPrimaryKey(visitId);
+        System.out.println(visitPlan);
+    }
+
 }

@@ -18,7 +18,7 @@
     set name = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <insert id="insertTag" >
+  <insert id="insertTag" useGeneratedKeys="true" keyProperty="id">
     insert into customer_tag(`name`)
     select #{name}
       from dual where not exists(

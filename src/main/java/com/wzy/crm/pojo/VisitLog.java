@@ -18,6 +18,8 @@ public class VisitLog {
 
     private String customerName;
 
+    private String company;
+
     private String way;
 
     private String result;

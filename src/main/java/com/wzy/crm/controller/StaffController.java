@@ -128,4 +128,11 @@ public class StaffController {
         return ServerResponse.createBySuccess(staffMapper.selectByUserIdNot(userid));
     }
 
+    @GetMapping("/self")
+    public ServerResponse getStaffDetail(@RequestParam String userId){
+        System.out.println("userId:"+userId);
+        return ServerResponse.createBySuccess(staffMapper.selectByUserId(userId));
+    }
+
+
 }

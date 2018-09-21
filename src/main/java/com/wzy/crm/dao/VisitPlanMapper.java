@@ -24,4 +24,7 @@ public interface VisitPlanMapper {
     Integer findPlanCount(Integer customerId);
 
     List<VisitPlan> selectByUserIdAndCustomerId(@Param("userId") String userId, @Param("customerId") Integer customerId,@Param("start")Integer start,@Param("size")Integer size);
+
+    VisitPlan selectDetailByPrimaryKey(@Param("id") Integer id);
+
 }

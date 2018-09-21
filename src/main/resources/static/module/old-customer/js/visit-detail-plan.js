@@ -171,7 +171,7 @@ module.service = {
                     html += '</label>';
                     html += '<em class="weui-form-preview__value" style="text-align: right">' + recordTime + '</em>';
                     html += '</div>';
-                    html += '<div class="weui-form-preview__bd detail-plan" data-id="' + item.id + '" data-staffid="' + item.staff_id + '">';
+                    html += '<div class="weui-form-preview__bd detail-plan" data-id="' + item.id + '" data-staffid="' + item.userId + '">';
                     html += '<div class="weui-form-preview__item">';
                     html += '<label class="weui-form-preview__label">拜访时间</label>';
                     html += '<span class="weui-form-preview__value">' + (item.time ? new Date(item.time).Format('yyyy-MM-dd hh:mm:ss') : '') + '</span>';
@@ -284,7 +284,7 @@ module.eventHandler = {
 
     handleBtnLog: function () {
         $('.btn-log').click(function () {
-            location.href = 'visit-detail-log.html?customer_id=' + module.data.customer_id;
+            location.href = 'visit-detail-log.html?userid='+ module.data.user_id+'&customer_id=' + module.data.customer_id;
         });
     },
 
@@ -292,9 +292,10 @@ module.eventHandler = {
         $('#plan-list').on('click', '.detail-plan', function () {
             var url = '/module/discuss/visit-detail-evaluation.html';
             var url1 = $.UrlUpdateParams(url,"userid",module.data.user_id);
-            var url2 = $.UrlUpdateParams(url1,"staffid",$(this).data('staffid'));
-            var url3 = $.UrlUpdateParams(url2,"staffid",$(this).$(this).data('id'));
-            location.href = url3;
+            var url2 = $.UrlUpdateParams(url1,"customer_id",module.data.customer_id);
+            var url3 = $.UrlUpdateParams(url2,"type",1);
+            var url4 = $.UrlUpdateParams(url3,"visit_id",$(this).data('id'));
+            location.href = url4;
             // location.href = '/module/discuss/visit-detail-evaluation.html' + YT.setUrlParams({
             //         staff_id: $(this).data('staffid'),
             //         visit_id: $(this).data('id'),

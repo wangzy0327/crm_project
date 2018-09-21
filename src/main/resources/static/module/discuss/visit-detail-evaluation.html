@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="en">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1"/>
+    <meta name="keywords" content="查看详情"/>
+    <meta name="description" content="查看详情"/>
+    <title>查看详情</title>
+
+    <link rel="stylesheet" href="../../css/jquery-weui.min.css">
+    <link rel="stylesheet" href="../../css/weui.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../iconfont/iconfont.css">
+    <link rel="stylesheet" href="../old-customer/css/customer-comm.css">
+
+    <style type="text/css">
+
+        .footer {
+            /*position: absolute;*/
+            /*position: fixed;*/
+            /*display: flex;*/
+            bottom: 0;
+            width: 100%;
+            background-color: #fff;
+            border-top: 1px solid #d5d5d6;
+        }
+
+        .head_img {
+            float: left;
+        }
+
+        .head_img img {
+            margin: 8px 15px;
+            padding: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 100px
+        }
+
+    </style>
+
+</head>
+<body ontouchstart="">
+
+<div class="weui-form-preview" style="margin-top: -10px">
+    <div class="weui-form-preview__hd name-narrow">
+        <label class="weui-form-preview__label name-font customer_name"></label>
+        <em class="weui-form-preview__value" style="text-align: right">
+            &nbsp;
+        </em>
+    </div>
+
+    <div id="info">
+
+    </div>
+
+</div>
+
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <div class="weui-uploader">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title">图片(点击查看)</p>
+                </div>
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderImageFiles">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <div class="weui-uploader">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title">附件(点击下载)</p>
+                </div>
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderFiles">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="weui-form-preview" style="margin-top: 10px;">
+    <div class="weui-form-preview__hd name-narrow">
+        <label class="weui-form-preview__label name-font">评论</label>
+        <em class="weui-form-preview__value" style="text-align: right">
+            <a href="sales-grade.html" class="icon-active icon-narrow">&nbsp;</a>
+        </em>
+    </div>
+    <div class="weui-panel_access" id="list">
+
+    </div>
+</div>
+
+<!--<div style="height: 260px;" class="footer_div"></div>-->
+
+<div style="height: 15px;" class="footer_div"></div>
+
+<div class="footer">
+
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <textarea id="feedback_contents" class="weui-textarea" style="height: 90px;font-family: 微软雅黑"
+                      placeholder="请填写评论" rows="3"></textarea>
+        </div>
+    </div>
+
+    <!--<div class="weui-cell" id="btn-add" style="padding: 0 15px;">
+        <div class="weui-cell__bd avatar-box">
+            <a class="btn-a open-popup" style="margin:0 10px;" href="javascript:" data-target="#chooseStaffer">
+                <div class="btn-box">
+                    <div class="btn-icon">
+                        <i class="iconfont" style="font-size: 35px;color:#d9d9d9">&#xe639;</i>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </div>-->
+
+    <div class="weui-cells weui-cells_form" style="margin-top: 0;margin-bottom: 15px;">
+        <div class="weui-cell">
+            <div class="weui-cell__bd weui-media-box_appmsg">
+                <i class="iconfont" style="font-size: 35px;color:#d9d9d9" id="btn-discuss">&#xe639;</i>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="weui-btn-area">
+        <!--保存表单数据-->
+        <a class="weui-btn weui-btn_primary" href="javascript:void(0);" id="save_content">发布</a>
+    </div>
+</div>
+
+<!-- Popup -->
+<div id="staffsPopup"></div>
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="../../js/jquery-weui.min.js"></script>
+<script src="../../js/fastclick.js"></script>
+<script src="../../js/city-picker.min.js"></script>
+<script src="../lib/upload.js"></script>
+<script src="../lib/swiper.js"></script>
+<script src="../../lib/param.js"></script>
+<script src="../../lib/domain.js"></script>
+<script src="../../lib/formatTime.js"></script>
+<script src="../old-customer/js/common.js"></script>
+<script src="js/visit-detail-evaluation.js"></script>
+
+<!--<script type="text/javascript" src="../../js/jquery-2.1.4.js?time=20160912"></script>-->
+<!--<script type="text/javascript" src="../statistics/js/jquery-weui.min.js?time=20160912"></script>-->
+<!--<script type="text/javascript" src="/lib/yt/config.js?time=20160912"></script>-->
+<!--<script type="text/javascript" src="/module/tool/push-msg.js?time=20160912"></script>-->
+<!--<script type="text/javascript" src="../lib/upload.js?time=20180320"></script>-->
+<!--<script type="text/javascript" src="../lib/swiper.min.js?time=20180320"></script>-->
+<!--<script type="text/javascript" src="../old-customer/js/common.js?time=20180320"></script>-->
+<!--<script type="text/javascript" src="js/visit-detail-evaluation.js?time=20180320"></script>-->
+
+
+</body>
+</html>

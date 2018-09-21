@@ -25,15 +25,16 @@ public class CustomerTagMapperTest {
     public void insertTag() throws Exception {
         CustomerTag tag = new CustomerTag();
         tag.setId(1);
-        tag.setName("不错");
-        List<CustomerTag> customerTags = new ArrayList<>();
-        customerTags.add(tag);
-        customerTags.get(0).setId(3);
-        System.out.println("list tag id:"+customerTags.get(0).getId());
-        System.out.println("tag id:"+tag.getId());
-//        String tagName = "不错";
-//        Integer count = customerTagMapper.insertTag(tag);
-//        System.out.println("tagId:"+tag.getId());
+//        tag.setName("不错");
+//        List<CustomerTag> customerTags = new ArrayList<>();
+//        customerTags.add(tag);
+//        customerTags.get(0).setId(3);
+//        System.out.println("list tag id:"+customerTags.get(0).getId());
+//        System.out.println("tag id:"+tag.getId());
+        String tagName = "不错";
+        tag.setName(tagName);
+        Integer count = customerTagMapper.insertTag(tag);
+        System.out.println("tagId:"+tag.getId());
     }
 
     @Test

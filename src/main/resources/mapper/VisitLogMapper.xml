@@ -20,14 +20,14 @@
     delete from visit_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wzy.crm.pojo.VisitLog">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.wzy.crm.pojo.VisitLog">
     insert into visit_log (id, user_id, customer_id,
       way, result, requirement, 
       memo, to_staff, update_time, 
       picture, attachment)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{customerId,jdbcType=INTEGER},
       #{way,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, #{requirement,jdbcType=VARCHAR}, 
-      #{memo,jdbcType=VARCHAR}, #{toStaff,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{memo,jdbcType=VARCHAR}, #{toStaff,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
       #{picture,jdbcType=LONGVARCHAR}, #{attachment,jdbcType=LONGVARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.VisitLog">
@@ -113,5 +113,25 @@
     select count(DISTINCT (id))
     from visit_log
     where customer_id = #{customerId}
+  </select>
+  <select id="selectByUserIdAndCustomerId" resultMap="BaseResultMap">
+    select id, way,user_id,customer_id, result, requirement,
+      memo, picture, attachment, update_time
+    from visit_log
+    where user_id = #{userId} and customer_id = #{customerId}
+    order by update_time desc
+    limit #{start},#{size}
+  </select>
+  <select id="selectDetailByPrimaryKey" resultMap="BaseResultMap">
+    select v_l.id id,user_id,`name` customer_name,customer_id,way, result, requirement,memo,to_staff,v_l.update_time
+	from
+	(select id, user_id, customer_id,
+      way, result, requirement,
+      memo, to_staff, update_time,
+      picture, attachment
+	from visit_log
+	where id = #{id}) v_l
+	left join customer
+	on customer.id = v_l.customer_id
   </select>
 </mapper>
