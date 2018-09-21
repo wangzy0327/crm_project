@@ -64,42 +64,6 @@ module.eventHandler = {
                     }
                 }
             });
-
-            // YT.insert({
-            //     data: data,
-            //     successCallback: function (data) {
-            //         if (data.status == 200) {
-            //             var planVisitId = data.object['visit_plan'][0];
-            //             var planAutoIds = data.object['plan'];
-            //
-            //             common.service.getUserInfo(function (data) {
-            //                 // 推送消息
-            //                 var userIds = common.select.data['plan'].userIds;
-            //                 var ids = common.select.data['plan'].ids;
-            //
-            //                 common.visit.pushMsg({
-            //                     staff_id: data.id,
-            //                     staff_name: data.name,
-            //                     time: info.data.time,
-            //                     company: module.data.company,
-            //                     customer_name: module.data.customer_name,
-            //                     visit_id: planVisitId,
-            //                     comment_id: planAutoIds,
-            //                     userIds: userIds,
-            //                     ids: ids,
-            //                     type: 1,
-            //                     isComment: 0
-            //                 });
-            //
-            //                 $.alert('提交成功', function () {
-            //                     $(location).attr('href', '/module/customer-list/customer-list-my.html' + YT.setUrlParams());
-            //                 });
-            //             });
-            //         } else {
-            //             $.alert(data.message);
-            //         }
-            //     }
-            // });
         });
     }
 };

@@ -68,6 +68,7 @@ module.service = {
             $("#planWarp").hide();
         });
 
+        common.visit.initDom_plan();
 
     }
 };
@@ -195,60 +196,6 @@ module.eventHandler = {
                     }
                 }
             });
-
-            // YT.insert({
-            //     data: postData,
-            //     successCallback: function (data) {
-            //         if (data.status == 200) {
-            //             var logVisitId = data.object['visit_log'][0];
-            //             var logAutoIds = data.object['log'];
-            //             var planVisitId = data.object['visit_plan'] && data.object['visit_plan'][0];
-            //             var planAutoIds = data.object['plan'];
-            //
-            //             common.service.getUserInfo(function (data) {
-            //                 // 推送消息
-            //                 var logUserIds = common.select.data['log'].userIds;
-            //                 var logIds = common.select.data['log'].ids;
-            //                 var planUserIds = common.select.data['plan'].userIds;
-            //                 var planIds = common.select.data['plan'].ids;
-            //
-            //                 common.visit.pushMsg({
-            //                     staff_id: data.id,
-            //                     staff_name: data.name,
-            //                     company: module.data.company,
-            //                     customer_name: module.data.customer_name,
-            //                     isComment: 0,
-            //                     time: visitLogTime,
-            //                     visit_id: logVisitId,
-            //                     comment_id: logAutoIds,
-            //                     userIds: logUserIds,
-            //                     ids: logIds,
-            //                     type: 2
-            //                 });
-            //
-            //                 common.visit.pushMsg({
-            //                     staff_id: data.id,
-            //                     staff_name: data.name,
-            //                     company: module.data.company,
-            //                     customer_name: module.data.customer_name,
-            //                     isComment: 0,
-            //                     time: info[1] && info[1].data.time,
-            //                     visit_id: planVisitId,
-            //                     comment_id: planAutoIds,
-            //                     userIds: planUserIds,
-            //                     ids: planIds,
-            //                     type: 1
-            //                 });
-            //
-            //                 $.alert('提交成功', function () {
-            //                     $(location).attr('href', '/module/customer-list/customer-list-my.html' + YT.setUrlParams());
-            //                 });
-            //             });
-            //         } else {
-            //             $.alert(data.message);
-            //         }
-            //     }
-            // });
         });
     }
 };
