@@ -9,6 +9,7 @@ import com.wzy.crm.pojo.CustomerTag;
 import com.wzy.crm.pojo.VisitLog;
 import com.wzy.crm.pojo.VisitPlan;
 import com.wzy.crm.service.IVisitLogService;
+import com.wzy.crm.service.IVisitPlanService;
 import com.wzy.crm.utils.SendWxMessage;
 import org.apache.camel.spi.AsEndpointUri;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class VisitLogServiceImpl implements IVisitLogService{
 
     @Autowired
     private VisitPlanMapper visitPlanMapper;
+
+    @Autowired
+    private IVisitPlanService visitPlanService;
 
     @Autowired
     private CustomerTagMapper customerTagMapper;
@@ -52,6 +56,9 @@ public class VisitLogServiceImpl implements IVisitLogService{
             visitPlanMapper.insert(visitPlan);
             if(visitPlan.getToStaff()!=null){
                 sendWxMessage.handleSendPlanMessage(visitPlan);
+            }
+            if(visitPlan.getRemind()!=null){
+                visitPlanService.handleRemind(sendWxMessage,visitPlan);
             }
         }
         handleCustomerTag(tags);

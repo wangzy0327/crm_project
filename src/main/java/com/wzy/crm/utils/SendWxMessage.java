@@ -121,4 +121,32 @@ public class SendWxMessage {
         return true;
     }
 
+    public boolean handleSendRemindPlanMessage(VisitPlan visitPlan){
+        String title = "";
+        String content = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        content += "您有一个最近需要拜访的客户：\n";
+        content += "于" + sdf.format(visitPlan.getTime()) +
+                "\n拜访 " + (visitPlan.getCompany() == null ? "【未知公司】" : visitPlan.getCompany())+
+                "__" + (visitPlan.getCustomerName() == null ? "【未知姓名】":visitPlan.getCustomerName());
+        title = "拜访计划提醒";
+        Integer type = 1;
+        String description = content;
+        String url = domainConfig.getUrl()+"module/discuss/visit-detail-evaluation.html?userid=%s"+"&customer_id=%d"+"&type=%d"+"&visit_id=%d";
+        String btntxt = "计划详情";
+        url = String.format(url,visitPlan.getUserId(),visitPlan.getCustomerId(),type,visitPlan.getId());
+        System.out.println("url:  "+url);
+        WxCpMessage wxCpMessage = WxCpMessage.TEXTCARD()
+                .agentId(accountConfig.getAppConfigs()
+                        .get(0).getAgentId())
+                .toUser(visitPlan.getUserId())
+                .title(title).description(description).url(url).btnTxt(btntxt).build();
+        try {
+            wxCpService.messageSend(wxCpMessage);
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 }
