@@ -10,6 +10,7 @@ import com.wzy.crm.pojo.*;
 import com.wzy.crm.service.ICustomerService;
 import com.wzy.crm.common.ServerResponse;
 import com.wzy.crm.vo.CustomerTagVo;
+import com.wzy.crm.vo.CustomerVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -89,7 +90,7 @@ public class CustomerController {
         System.out.println("page:"+page);
         System.out.println("size:"+size);
         Integer start = (page - 1)*size;
-        return ServerResponse.createBySuccess(staffCustomerFollowRelationMapper.selectCustomersByUserId(userid,start,size));
+        return ServerResponse.createBySuccess(staffCustomerFollowRelationMapper.selectCustomersByUserId(userid,"",start,size));
     }
 
     @PutMapping("/update")
@@ -117,6 +118,19 @@ public class CustomerController {
             System.out.println(tags.get(i));
         }
         return ServerResponse.createBySuccess(customerTagRelationMapper.selectByCustomerId(customerId));
+    }
+
+    @PostMapping("/list")
+    public ServerResponse listCustomers(@RequestBody CustomerVo customerVo){
+        String userId = customerVo.getUserId();
+        Integer page = customerVo.getPage();
+        Integer size = customerVo.getSize();
+        Integer groupId = customerVo.getGroupId();
+        System.out.println("userid:"+userId);
+        System.out.println("page:"+page);
+        System.out.println("size:"+size);
+        System.out.println("groupId:"+groupId);
+        return customerService.getCustomerList(customerVo);
     }
 
 

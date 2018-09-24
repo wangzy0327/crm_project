@@ -1,5 +1,6 @@
 package com.wzy.crm.dao;
 
+import com.wzy.crm.pojo.Customer;
 import com.wzy.crm.pojo.GroupStaffRelation;
 import java.util.List;
 import java.util.Map;
@@ -26,4 +27,8 @@ public interface GroupStaffRelationMapper {
     void insertByParam(@Param("groupId") Integer groupId, @Param("userIds") List<String> needToInsert);
 
     List<Integer> selectAllStaffIdsByGroupId(Integer groupId);
+
+    Integer selectCountByGroupId(@Param("groupId") Integer groupId);
+
+    List<Customer> selectCustomersByGroupId(@Param("groupId") Integer groupId,@Param("keyword") String keyword,@Param("start") Integer start,@Param("length") Integer length);
 }

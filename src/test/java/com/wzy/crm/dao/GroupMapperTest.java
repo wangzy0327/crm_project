@@ -1,7 +1,10 @@
 package com.wzy.crm.dao;
 
 import com.google.common.collect.Maps;
+import com.wzy.crm.CrmApplication;
 import com.wzy.crm.pojo.Group;
+import com.wzy.crm.vo.GroupDetail;
+import com.wzy.crm.vo.GroupVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = CrmApplication.class)
 public class GroupMapperTest {
 
     @Autowired
@@ -56,6 +60,18 @@ public class GroupMapperTest {
         System.out.println("******************");
         System.out.println("count:"+count);
         System.out.println("******************");
+    }
+
+    @Test
+    public void selectByUserId() throws Exception {
+        String userId = "yanxg";
+        GroupVo groupVos = groupMapper.selectByUserId(userId);
+        List<GroupDetail> groupDetails = groupVos.getGroupDetails();
+        System.out.println("**********************");
+        for(int i = 0;i<groupDetails.size();i++){
+            System.out.println(groupDetails.get(i));
+        }
+        System.out.println("**********************");
     }
 
 }

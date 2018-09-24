@@ -94,5 +94,11 @@ public class GroupController {
         return groupService.updateMessageRelation(groupId,messageIds);
     }
 
+    @GetMapping("/self")
+    public ServerResponse selfGroupMessage(@RequestParam String userId){
+        System.out.println("userId:"+userId);
+        return groupService.getSelfGroupMessage(userId);
+    }
+
 
 }

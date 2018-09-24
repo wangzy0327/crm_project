@@ -22,7 +22,6 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = Application.class)
 public class GroupStaffRelationMapperTest {
 
-
     @Autowired
     private GroupStaffRelationMapper groupStaffRelationMapper;
 
@@ -59,6 +58,13 @@ public class GroupStaffRelationMapperTest {
         String[] strs = {"wzy","yanxg"};
         List<String> staffs = Arrays.asList(strs);
         groupStaffRelationMapper.deleteByParam(groupId,staffs);
+    }
+
+    @Test
+    public void selectCountByGroupId() throws Exception {
+        Integer groupId = 30;
+        Integer count = groupStaffRelationMapper.selectCountByGroupId(groupId);
+        System.out.println("count:"+count);
     }
 
 }

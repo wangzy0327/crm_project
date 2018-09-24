@@ -9,4 +9,6 @@ public interface IGroupService {
     ServerResponse updateStaffRelation(Integer groupId, List<String> userIds);
 
     ServerResponse updateMessageRelation(Integer groupId, List<Integer> messageIds);
+
+    ServerResponse getSelfGroupMessage(String userId);
 }

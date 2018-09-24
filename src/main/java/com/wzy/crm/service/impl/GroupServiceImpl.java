@@ -1,10 +1,13 @@
 package com.wzy.crm.service.impl;
 
 import com.google.common.collect.Lists;
+import com.wzy.crm.dao.GroupMapper;
 import com.wzy.crm.dao.GroupMessageRelationMapper;
 import com.wzy.crm.dao.GroupStaffRelationMapper;
 import com.wzy.crm.service.IGroupService;
 import com.wzy.crm.common.ServerResponse;
+import com.wzy.crm.vo.GroupDetail;
+import com.wzy.crm.vo.GroupVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,9 @@ public class GroupServiceImpl implements IGroupService {
 
     @Autowired
     private GroupMessageRelationMapper groupMessageRelationMapper;
+
+    @Autowired
+    private GroupMapper groupMapper;
 
     @Override
     public ServerResponse updateStaffRelation(Integer groupId, List<String> userIds) {
@@ -53,6 +59,19 @@ public class GroupServiceImpl implements IGroupService {
         }
         handleMessageRelData(groupId,needToDel,needToInsert);
         return ServerResponse.createBySuccess();
+    }
+
+    @Override
+    public ServerResponse getSelfGroupMessage(String userId) {
+        GroupVo groupVo = groupMapper.selectByUserId(userId);
+        List<GroupDetail> groupDetails = groupVo.getGroupDetails();
+        for(int i = 0;i< groupDetails.size();i++){
+            Integer staffCount = groupStaffRelationMapper.selectCountByGroupId(groupDetails.get(i).getGroupId());
+            groupDetails.get(i).setStaffCount(staffCount);
+            Integer messageCount = groupMessageRelationMapper.selectCountByGroupId(groupDetails.get(i).getGroupId());
+            groupDetails.get(i).setMessageCount(messageCount);
+        }
+        return ServerResponse.createBySuccess(groupVo);
     }
 
     private void handleMessageRelData(Integer groupId, List<Integer> needToDel, List<Integer> needToInsert){

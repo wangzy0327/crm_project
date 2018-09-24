@@ -62,4 +62,10 @@
       </if>
     </where>
   </select>
+  <select id="selectCountByGroupId"  resultType="int">
+    select count(message_id)
+    from group_message_relation
+    where group_id = #{groupId}
+    group by group_id
+  </select>
 </mapper>

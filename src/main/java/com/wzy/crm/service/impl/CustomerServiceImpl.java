@@ -2,10 +2,13 @@ package com.wzy.crm.service.impl;
 
 import com.google.common.collect.Lists;
 import com.wzy.crm.dao.CustomerMapper;
+import com.wzy.crm.dao.GroupStaffRelationMapper;
 import com.wzy.crm.dao.StaffCustomerFollowRelationMapper;
 import com.wzy.crm.pojo.CustomerDetailInfo;
 import com.wzy.crm.service.ICustomerService;
 import com.wzy.crm.common.ServerResponse;
+import com.wzy.crm.vo.CustomerVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,9 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Autowired
     private StaffCustomerFollowRelationMapper staffCustomerFollowRelationMapper;
+
+    @Autowired
+    private GroupStaffRelationMapper groupStaffRelationMapper;
 
     @Override
     public List<CustomerDetailInfo> findCustomerByParam(Map<String,String> map) {
@@ -49,6 +55,25 @@ public class CustomerServiceImpl implements ICustomerService {
             staffCustomerFollowRelationMapper.deleteByParam(customerId,needToDel);
         if(needToInsert!=null&&needToInsert.size()>0)
             staffCustomerFollowRelationMapper.insertByParam(customerId,needToInsert);
+    }
+
+    @Override
+    public ServerResponse getCustomerList(CustomerVo customerVo){
+        String userId = customerVo.getUserId();
+        Integer page = customerVo.getPage();
+        Integer size = customerVo.getSize();
+        Integer groupId = customerVo.getGroupId();
+        String keyword = customerVo.getSearchInput();
+        if(StringUtils.isNotBlank(keyword)){
+            keyword = "%"+keyword+"%";
+        }
+        Integer start = (page - 1)*size;
+        if(userId!=null){
+            return ServerResponse.createBySuccess(staffCustomerFollowRelationMapper.selectCustomersByUserId(userId,keyword,start,size));
+        }else{
+//            return ServerResponse.createBySuccess(groupStaffRelationMapper.selectCustomersByGroupId(groupId,keyword,start,size));
+            return ServerResponse.createBySuccess();
+        }
     }
 
 }

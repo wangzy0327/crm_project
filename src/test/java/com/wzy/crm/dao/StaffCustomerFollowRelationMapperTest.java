@@ -70,7 +70,7 @@ public class StaffCustomerFollowRelationMapperTest {
         Integer start = 1;
         Integer length = 8;
         String userid = "wzy";
-        List<Customer> customers = staffCustomerFollowRelationMapper.selectCustomersByUserId(userid,start,length);
+        List<Customer> customers = staffCustomerFollowRelationMapper.selectCustomersByUserId(userid,"",start,length);
         for(int i = 0;i<customers.size();i++){
             System.out.println((i+1)+": "+customers.get(i));
         }

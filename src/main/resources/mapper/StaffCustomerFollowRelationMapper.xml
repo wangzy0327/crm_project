@@ -70,10 +70,16 @@
     (select customer_id
     from staff_customer_follow_relation
     where user_id = #{userid} and is_follow = 1
-    limit #{start},#{length}
     ) scf
     left join customer
     on scf.customer_id  = customer.id
+    <where>
+      <if test="keyword != null and keyword != ''">
+        AND CONCAT(`name`,`company`) LIKE #{keyword}
+      </if>
+    </where>
+    order by customer.update_time
+    limit #{start},#{length}
   </select>
   <select id="selectCustomerCountsByUserId" resultType="int">
     select count(customer.id)

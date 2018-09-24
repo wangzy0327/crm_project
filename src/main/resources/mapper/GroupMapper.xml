@@ -8,6 +8,21 @@
     <result column="def_group" property="defGroup" jdbcType="INTEGER" />
     <result column="create_group" property="createGroup" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="GroupDetailMap" type="com.wzy.crm.vo.GroupDetail">
+    <id column="id" property="groupId" jdbcType="INTEGER"/>
+    <result column="name" property="groupName" jdbcType="VARCHAR" />
+    <result column="messageNum" property="messageCount" jdbcType="INTEGER" />
+    <result column="staffNum" property="staffCount" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="GroupVoMap" type="com.wzy.crm.vo.GroupVo">
+    <id column="user_id" property="userId" jdbcType="INTEGER"/>
+    <collection property="groupDetails" ofType="com.wzy.crm.vo.GroupDetail">
+      <id column="group_id" property="groupId" jdbcType="INTEGER"/>
+      <result column="name" property="groupName" jdbcType="VARCHAR" />
+      <result column="messageNum" property="messageCount" jdbcType="INTEGER" />
+      <result column="staffNum" property="staffCount" jdbcType="INTEGER" />
+    </collection>
+  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from `group`
     where id = #{id,jdbcType=INTEGER}
@@ -35,7 +50,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, name, corpid, def_group, create_group
+    select id, `name`, corpid, def_group, create_group
     from `group`
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -59,5 +74,14 @@
     <if test="id != null and id != ''">
       and id != #{id}
     </if>
+  </select>
+  <select id="selectByUserId" resultMap="GroupVoMap">
+    select gsr.user_id user_id,gsr.group_id group_id,`group`.`name` name
+    from
+    (select user_id,group_id
+    from 	group_staff_relation
+    where user_id = #{userId}) gsr
+    left join `group`
+    on `group`.id = gsr.group_id
   </select>
 </mapper>

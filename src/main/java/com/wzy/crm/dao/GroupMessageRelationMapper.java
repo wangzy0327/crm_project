@@ -23,4 +23,6 @@ public interface GroupMessageRelationMapper {
     List<Integer> selectAllMessageIdsByGroupId(Integer groupId);
 
     List<GroupMessageRelation> selectMessageTitleByParam(Map<String, String> param);
+
+    Integer selectCountByGroupId(@Param("groupId") Integer groupId);
 }

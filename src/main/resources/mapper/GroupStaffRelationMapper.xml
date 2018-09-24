@@ -8,6 +8,21 @@
     <result column="def_group" property="defGroup" jdbcType="INTEGER" />
     <result column="name" property="staffName" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="CustomerMap" type="com.wzy.crm.pojo.Customer">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="wechat" property="wechat" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="webSite" property="website" jdbcType="VARCHAR" />
+    <result column="fax" property="fax" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="map" >
     delete from group_staff_relation
     where group_id = #{groupId,jdbcType=INTEGER}
@@ -77,5 +92,14 @@
     select staff.id staff_id
     from group_staff_relation,staff
     where group_id = #{groupId} and staff.userid = group_staff_relation.user_id
+  </select>
+  <select id="selectCountByGroupId" resultType="int">
+    select count(user_id)
+    from group_staff_relation
+    where group_id = #{groupId}
+    group by group_id
+  </select>
+  <select id="selectCustomersByGroupId" resultMap="CustomerMap">
+
   </select>
 </mapper>

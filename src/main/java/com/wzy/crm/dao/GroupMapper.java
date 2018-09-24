@@ -1,6 +1,7 @@
 package com.wzy.crm.dao;
 
 import com.wzy.crm.pojo.Group;
+import com.wzy.crm.vo.GroupVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface GroupMapper {
     List<Group> selectGroupByParam(Map<String, String> param);
 
     Integer selectGroupByName(@Param("id") Integer id, @Param("name") String name);
+
+    GroupVo selectByUserId(@Param("userId") String userId);
 }
