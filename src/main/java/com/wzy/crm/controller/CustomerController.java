@@ -122,14 +122,6 @@ public class CustomerController {
 
     @PostMapping("/list")
     public ServerResponse listCustomers(@RequestBody CustomerVo customerVo){
-        String userId = customerVo.getUserId();
-        Integer page = customerVo.getPage();
-        Integer size = customerVo.getSize();
-        Integer groupId = customerVo.getGroupId();
-        System.out.println("userid:"+userId);
-        System.out.println("page:"+page);
-        System.out.println("size:"+size);
-        System.out.println("groupId:"+groupId);
         return customerService.getCustomerList(customerVo);
     }
 

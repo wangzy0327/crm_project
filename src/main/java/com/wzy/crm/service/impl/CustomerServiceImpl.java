@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.wzy.crm.dao.CustomerMapper;
 import com.wzy.crm.dao.GroupStaffRelationMapper;
 import com.wzy.crm.dao.StaffCustomerFollowRelationMapper;
+import com.wzy.crm.pojo.Customer;
 import com.wzy.crm.pojo.CustomerDetailInfo;
 import com.wzy.crm.service.ICustomerService;
 import com.wzy.crm.common.ServerResponse;
@@ -69,10 +70,14 @@ public class CustomerServiceImpl implements ICustomerService {
         }
         Integer start = (page - 1)*size;
         if(userId!=null){
-            return ServerResponse.createBySuccess(staffCustomerFollowRelationMapper.selectCustomersByUserId(userId,keyword,start,size));
+            List<Customer> customers = staffCustomerFollowRelationMapper.selectCustomersByUserId(userId,keyword,start,size);
+            if(customers.size()>0){
+                return ServerResponse.createBySuccess(customers);
+            }else{
+                return ServerResponse.createBySuccess();
+            }
         }else{
-//            return ServerResponse.createBySuccess(groupStaffRelationMapper.selectCustomersByGroupId(groupId,keyword,start,size));
-            return ServerResponse.createBySuccess();
+            return ServerResponse.createBySuccess(groupStaffRelationMapper.selectCustomersByGroupId(groupId,keyword,start,size));
         }
     }
 

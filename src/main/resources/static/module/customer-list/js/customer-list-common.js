@@ -252,14 +252,19 @@ listManager.service = $.extend({
                 '<div class="weui-cell__ft"></div>\n' +
                 '</div>\n' +
                 '</div>\n' +
-                '<div class="weui-form-preview__ft">' +
-                '<a class="weui-form-preview__btn weui-form-preview__btn_primary edit" data-d="'+JSON.stringify(data[i]).replace(/"/g, "&quot;")+'" href="javascript:">编辑</a>' +
+                '<div class="weui-form-preview__ft">' ;
+            if(listManager.data.myFlag){
+                html += '<a class="weui-form-preview__btn weui-form-preview__btn_primary edit" data-d="'+JSON.stringify(data[i]).replace(/"/g, "&quot;")+'" href="javascript:">编辑</a>' +
                 '<a class="weui-form-preview__btn weui-form-preview__btn_primary visit-tip" href="javascript:" >提醒</a>\n' +
-                '<a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo" href="javascript:" >备注</a>' +
-                '<a class="weui-form-preview__btn weui-form-preview__btn_default view-detail view-detail-my"\n' +
-                'data-sumcount="1" href="javascript:">浏览<span class=""></span>&nbsp;&nbsp;转发' +
-                '<span class=""></span></a></div>\n' +
-                '</div>';
+                '<a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo" href="javascript:" >备注</a>' ;
+            }else{
+                html += '<a class="weui-form-preview__btn weui-form-preview__btn_default visit-memo-list" href="javascript:" data-id="'+ data[i].id +'">查看备注</a> ';
+            }
+            html += '<a class="weui-form-preview__btn weui-form-preview__btn_default view-detail view-detail-my"\n' +
+            'data-sumcount="1" href="javascript:">浏览<span class=""></span>&nbsp;&nbsp;转发' +
+            '<span class=""></span></a></div>\n' +
+            '</div>';
+
         }
         $('#list').append(html);
 

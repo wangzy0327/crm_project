@@ -933,3 +933,13 @@ CREATE TABLE `comments` (
   `update_time` datetime DEFAULT NULL COMMENT '时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='评论';
+
+
+drop view v_group_customer;
+create view v_group_customer as
+  select group_staff_relation.group_id,group_staff_relation.user_id,customer.id customer_id,customer.`name` customer_name,customer.mobile customer_mobile,customer.wechat customer_wechat,
+    customer.company customer_company,customer.position customer_position,customer.address customer_address,customer.telephone customer_telephone,
+    customer.email customer_email,customer.webSite customer_webSite,customer.fax customer_fax,customer.remark customer_remark,customer.update_time customer_update_time
+  from group_staff_relation,staff_customer_follow_relation,customer
+  where group_staff_relation.user_id = staff_customer_follow_relation.user_id  and staff_customer_follow_relation.is_follow = 1
+        and staff_customer_follow_relation.customer_id = customer.id;
