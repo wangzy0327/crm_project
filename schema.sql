@@ -928,19 +928,22 @@ CREATE TABLE `message_share_transmit` (
 
 drop view if exists v_message_opencount_time_tag;
 create view v_message_opencount_time_tag as
-  select message.id,group_message_relation.group_id,vmt.tag_id,vmt.page,vmt.`name` tag_name,message_share.open_count,message.msgType,message.title,message.create_user_id,staff.`name` staff_name,message.titleText,message.update_time
+  select message.id,group_message_relation.group_id,vmt.tag_id,vmt.page,vmt.`name` tag_name,ms.open_count,message.msgType,message.title,message.create_user_id,staff.`name` staff_name,message.titleText,message.update_time
   from message
     left join
     group_message_relation
       on message.id = group_message_relation.message_id
     left join
     (select message_tag_relation.message_id,message_tag_relation.page,message_tag_relation.tag_id,message_tag.`name`
-     from message_tag_relation,message_tag,staff
+     from message_tag_relation,message_tag
      where message_tag.id = message_tag_relation.tag_id) vmt
       on vmt.message_id = message.id
-    left join
-    message_share
-      on vmt.message_id = message_share.message_id
+    left join(
+               select message_share.message_id,sum(open_count) open_count
+               from message_share
+               group by message_id
+             ) ms
+      on message.id = ms.message_id
     left join staff
       on staff.userid = message.create_user_id;
 

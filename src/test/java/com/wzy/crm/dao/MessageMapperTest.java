@@ -79,8 +79,8 @@ public class MessageMapperTest {
     @Test
     public void selectMobileMessage() throws Exception {
         Integer groupId = 30;
-        Integer tagId = 59;
-        String order = "update_time";
+        Integer tagId = null;
+        String order = "open_count";
         String orderType = "desc";
         Integer start = 0;
         Integer size = 10;

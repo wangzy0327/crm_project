@@ -214,7 +214,7 @@
         AND tag_id = #{tagId}
       </if>
     </where>
-    order by #{order} #{orderType}
-    limit 0,10;
+    order by ${order} ${orderType}
+    limit ${start},${size}
   </select>
 </mapper>
