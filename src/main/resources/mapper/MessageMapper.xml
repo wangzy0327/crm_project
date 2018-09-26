@@ -25,6 +25,16 @@
     <result column="coverPicAttach" property="coverpicattach" jdbcType="LONGVARCHAR" />
     <result column="contentAttach" property="contentattach" jdbcType="LONGVARCHAR" />
   </resultMap>
+  <resultMap id="MessageResponseMap" type="com.wzy.crm.vo.MessageResponseVo">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER"/>
+    <result column="tag_id" property="tagId" jdbcType="INTEGER"/>
+    <result column="open_count" property="openCount" jdbcType="INTEGER"/>
+    <result column="msgType" property="msgType" jdbcType="INTEGER"/>
+    <result column="titleText" property="titleText" jdbcType="VARCHAR"/>
+    <result column="staff_name" property="createUserName" jdbcType="VARCHAR"/>
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
   <resultMap id="MessageDetail" type="com.wzy.crm.vo.MessageDetail">
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="corp_id" property="corpId" jdbcType="VARCHAR" />
@@ -195,4 +205,16 @@
     set status = 1
     where id = #{id}
   </update>
+  <select id="selectMobileMessage" resultMap="MessageResponseMap">
+    select distinct(id),group_id,open_count,msgType,titleText,staff_name,update_time
+    from v_message_opencount_time_tag
+    <where>
+      group_id = #{groupId}
+      <if test="tagId != null">
+        AND tag_id = #{tagId}
+      </if>
+    </where>
+    order by #{order} #{orderType}
+    limit 0,10;
+  </select>
 </mapper>

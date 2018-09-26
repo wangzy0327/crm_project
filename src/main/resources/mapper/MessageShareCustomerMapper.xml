@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wzy.crm.dao.MessageShareCustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.MessageShareCustomer" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="message_id" property="messageId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="INTEGER" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="cid" property="cid" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
+    <result column="view_time" property="viewTime" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="read_info" property="readInfo" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from message_share_customer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wzy.crm.pojo.MessageShareCustomer" >
+    insert into message_share_customer (id, message_id, user_id, 
+      customer_id, open_id, ip, 
+      cid, city, open_time, 
+      view_time, update_time, read_info
+      )
+    values (#{id,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
+      #{customerId,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{cid,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{openTime,jdbcType=TIMESTAMP}, 
+      #{viewTime,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{readInfo,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.MessageShareCustomer" >
+    update message_share_customer
+    set message_id = #{messageId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=INTEGER},
+      open_id = #{openId,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      cid = #{cid,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      open_time = #{openTime,jdbcType=TIMESTAMP},
+      view_time = #{viewTime,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      read_info = #{readInfo,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, message_id, user_id, customer_id, open_id, ip, cid, city, open_time, view_time, 
+    update_time, read_info
+    from message_share_customer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, message_id, user_id, customer_id, open_id, ip, cid, city, open_time, view_time, 
+    update_time, read_info
+    from message_share_customer
+  </select>
+</mapper>

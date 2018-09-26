@@ -1,6 +1,8 @@
 package com.wzy.crm.dao;
 
 import com.wzy.crm.pojo.MessageTag;
+import com.wzy.crm.vo.MessageHotTagVo;
+
 import java.util.List;
 import java.util.Map;
 
@@ -24,4 +26,6 @@ public interface MessageTagMapper {
     Integer selectMessageTagCountByName(String name);
 
     Integer selectByTagName(String name);
+
+    List<MessageHotTagVo> selectHotTags();
 }

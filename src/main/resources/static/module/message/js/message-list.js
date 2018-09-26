@@ -1,17 +1,16 @@
 var listManager = {};
 
 listManager.data = {
-    m: 10180000,
     typeTab: [],
-    order: 'createTime desc',
-    corpid: YT.getUrlParam('corpid'),
-    groupid: YT.getUrlParam('groupid')
+    order: 'update_time desc',
+    userid:getUrlParam("userid"),
+    groupid:getUrlParam("groupid")
 };
 
 var pager = {
     loading: false,
     page: 1,
-    rows: 15
+    size: 15
 };
 
 $(function () {
@@ -46,125 +45,101 @@ listManager.service = {
             '</div> ';
 
         var postData = this.initSearch(otherFilter);
-        YT.query({
-            data: postData,
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    listManager.data.typeTab.push(1);
-                    if (pager.page == 1) {
-                        $("#noMore").remove();
+        $.ajax({
+            type: 'post',
+            url: "/message/list",
+            data:JSON.stringify(postData),
+            contentType: "application/json;charset=UTF-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    var data = result.data;
+                    console.log("data.length:"+data.length);
+                    if (data.length > 0) {
+                        listManager.service.getMessageStr(data);
                     }
-                    var items = data.object.items, str = '';
-                    pager.page = data.object.idx + 1;
-
-                    for (var i = 0; i < items.length; i++) {
-                        var id = items[i].id;
-                        var titleData = items[i].titleText;
-                        var personCreate = items[i].createUser;
-                        var dateCreate = new Date(items[i].createTime).Format("yyyy-MM-dd");
-                        var openCount = items[i].openCount;
-                        if (openCount == null || openCount == '') {
-                            openCount = 0;
-                        }
-                        str += '<a class="weui-cell weui-cell_access detail" data-id="' + id + '" data-type="' + items[i].msgType + '" href="javascript:;"> ' +
-                            '<div class="weui-cell__bd"> ' +
-                            '<p>' + listManager.service.cutStr(titleData, 8) + '(<span style="font-size: 15px;color:#666666;">' +
-                            personCreate + '</span>&nbsp;&nbsp;<span style="font-size: 13px;color:#666666;">' +
-                            dateCreate + '</span>)</p> ' +
-                            '</div> ' +
-                            '<div class="weui-cell__ft"> ' +
-                            '<span style="font-size: 13px;color:#666666;">点击热度：</span><span style="color:red;">' +
-                            openCount + '</span>' +
-                            '</div> ' +
-                            '</a>';
-                    }
-                    $("#list").append(str);
-                    if (data.object.idx >= data.object.pageCount) {
-                        //最后一页
+                    else {
+                        $("#more").html(noMore);
                         pager.loading = true;
-                        $('#infinite').remove();
-                        $("#more").append(noMore);
-                        return;
+                        console.log("pager.loading:   "+pager.loading);
                     }
-                } else {
-                    $.alert(data.message);
+                    $(".weui-loadmore").hide();
                 }
-                pager.loading = false;
             }
         });
+
+    },
+
+    getMessageStr :function(data){
+        var html = "";
+        for (var i = 0; i < data.length; i++) {
+            var id = data[i].id;
+            var titleData = data[i].titleText;
+            var personCreate = data[i].createUserName;
+            var dateCreate = new Date(data[i].updateTime).Format("yyyy-MM-dd");
+            var openCount = data[i].openCount;
+            if (openCount == null || openCount == '') {
+                openCount = 0;
+            }
+            html += '<a class="weui-cell weui-cell_access detail" data-id="' + id + '" data-type="' + data[i].msgType + '" href="javascript:;"> ' +
+                '<div class="weui-cell__bd"> ' +
+                '<p>' + listManager.service.cutStr(titleData, 8) + '(<span style="font-size: 15px;color:#666666;">' +
+                personCreate + '</span>&nbsp;&nbsp;<span style="font-size: 13px;color:#666666;">' +
+                dateCreate + '</span>)</p> ' +
+                '</div> ' +
+                '<div class="weui-cell__ft"> ' +
+                '<span style="font-size: 13px;color:#666666;">点击热度：</span><span style="color:red;">' +
+                openCount + '</span>' +
+                '</div> ' +
+                '</a>';
+        }
+        $('#list').append(html);
     },
 
     // 热门标签
     initTagData: function () {
-        var module_d = listManager.data;
-
-        var filter = [
-            {field: 'corpid', value: module_d.corpid, operator: '=', relation: 'and'},
-            {field: 'group_id', value: module_d.groupid, operator: '=', relation: 'and'}
-        ];
-
-        var data = {
-            m: module_d.m,
-            t: 'v_message_tag_hot',
-            filter: JSON.stringify(filter),
-            order: 'count desc',
-            r: 10
-        };
-
-        YT.query({
-            data: data,
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    var items = data.object,
-                        html = '<p style="font-size: 14px;color: #9e9e9e;margin-top: 15px;">暂无数据</p>';
-
-                    if (items.length) {
+        $.ajax({
+            type: 'post',
+            url: "/tag/hot",
+            contentType: "application/json;charset=UTF-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    var html = '<p style="font-size: 14px;color: #9e9e9e;margin-top: 15px;">暂无数据</p>';
+                    var data = result.data;
+                    if(data.length>0){
                         html = '';
-
                         var defaultClass = ['blue', 'green', 'orange', 'red', 'purple', 'grey'];
                         var tagClass = [].concat(defaultClass);
 
-                        for (var i in items) {
-                            var item = items[i];
+                        for (var i in data) {
+                            var item = data[i];
 
                             if (tagClass.length == 0) {
                                 tagClass = [].concat(defaultClass);
                             }
                             var index = Math.floor(Math.random() * tagClass.length);
-                            var count = item.count > 99 ? '99+' : item.count;
-                            html += '<i class="tag ' + tagClass.splice(index, 1)[0] + '" data-ids=' + item.message_ids + ' data-shareIds= ' + item.share_id + '>' + item.tag_name + ' ' + count + '</i>';
+                            var count = item.count > 99 ? '99+' : item.num;
+                            html += '<i class="tag ' + tagClass.splice(index, 1)[0] + '" data-ids=' + item.id + ' data-shareIds= ' + item.share_id + '>' + item.name + ' ' + count + '</i>';
                         }
                     }
-
                     $('.tag-box').append(html);
-
-                } else {
-                    $.alert('网络异常，请与管理员联系！');
                 }
             }
         });
     },
 
     initSearch: function (otherFilter) {
-        var module_d = listManager.data;
-
-        var filter = [
-            {field: 'corpid', value: module_d.corpid, operator: '=', relation: 'AND'},
-            {field: 'status', value: 1, operator: '=', relation: 'AND'},
-            {field: 'group_id', value: module_d.groupid, operator: '=', relation: 'AND'}
-        ];
-
-        if (otherFilter) {
-            filter.push({field: 'id', value: '', operator: 'in (' + otherFilter + ')', relation: 'AND'});
-        }
-
         return {
-            m: module_d.m,
-            t: 'v_message_test_m',
-            filter: JSON.stringify(filter),
-            order: module_d.order,
-            page: pager.page,
-            rows: pager.rows
+            groupId:listManager.data.groupid,
+            tagId:otherFilter,
+            order:listManager.data.order,
+            page:pager.page,
+            size:pager.size
         };
     }
 };
@@ -209,13 +184,37 @@ listManager.eventHandler = {
                     break;
             }
 
-            YT.getUserInfo(function (user) {
-                window.location.href = url + YT.setUrlParams({
-                    d: dataId,
-                    s: 0,
-                    u: user.id
-                });
+            listManager.eventHandler.getUserInfo(function (user) {
+                var url1 = $.UrlUpdateParams(url,"msgid",dataId);
+                var url2 = $.UrlUpdateParams(url1,"userid",user.userid);
+                location.href = url2;
+                // window.location.href = url + YT.setUrlParams({
+                //     d: dataId,
+                //     s: 0,
+                //     u: user.id
+                // });
             });
+        });
+    },
+    getUserInfo: function (callback) {
+        var self = this;
+        $.ajax({
+            type: 'get',
+            url: "/staff/self?userId="+listManager.data.userid,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if(result.code == 0){
+                    var data = result.data;
+                    console.log("id:"+data.userid);
+                    console.log("name:"+data.name);
+                    callback(data);
+                }else{
+                    $.alert(result.msg);
+                }
+            }
         });
     },
 
@@ -226,7 +225,7 @@ listManager.eventHandler = {
             pager = {
                 loading: false,
                 page: 1,
-                rows: 15
+                size: 15
             };
             var $this = $(this);
             $this.addClass('action');
@@ -244,7 +243,7 @@ listManager.eventHandler = {
             pager = {
                 loading: false,
                 page: 1,
-                rows: 15
+                size: 15
             };
             listManager.service.initGrid();
         });
@@ -252,11 +251,11 @@ listManager.eventHandler = {
 
     handleSortBtn: function () {
         $('.sort_time').click(function () {
-            btnAction(this, 'createTime');
+            btnAction(this, 'update_time');
         });
 
         $('.sort_heat').click(function () {
-            btnAction(this, 'openCount');
+            btnAction(this, 'open_count');
         });
 
         function btnAction(ele, str) {
@@ -289,7 +288,7 @@ listManager.eventHandler = {
             pager = {
                 loading: false,
                 page: 1,
-                rows: 15
+                size: 15
             };
             listManager.service.initGrid($('.tag.action').data('ids'));
         }

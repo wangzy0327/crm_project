@@ -18,6 +18,8 @@ import com.wzy.crm.utils.PropertiesUtil;
 import com.wzy.crm.common.ResponseCode;
 import com.wzy.crm.common.ServerResponse;
 import com.wzy.crm.vo.MessageDetail;
+import com.wzy.crm.vo.MessageResponseVo;
+import com.wzy.crm.vo.MessageVo;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -126,6 +128,23 @@ public class MessageServiceImpl implements IMessageService {
             }
         }
         return map;
+    }
+
+    @Override
+    public ServerResponse getMobileMessageList(MessageVo messageVo) {
+        System.out.println("groupId:"+messageVo.getGroupId());
+        System.out.println("tagId:"+messageVo.getTagId());
+        System.out.println("order:"+messageVo.getOrder());
+        System.out.println("page:"+messageVo.getPage());
+        System.out.println("size:"+messageVo.getSize());
+        Integer page = messageVo.getPage();
+        Integer size = messageVo.getSize();
+        String[] orders = new String[2];
+        orders = messageVo.getOrder().split(" ");
+        System.out.println(orders[0]);
+        System.out.println(orders[1]);
+        Integer start = (page - 1)*size;
+        return ServerResponse.createBySuccess(messageMapper.selectMobileMessage(messageVo.getGroupId(),messageVo.getTagId(),orders[0],orders[1],start,size));
     }
 
 

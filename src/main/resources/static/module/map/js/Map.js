@@ -1,9 +1,8 @@
 var module = {};
 
 module.data = {
-    m: 3000000,
-    corpid: YT.getUrlParam('corpid'),
-    groupid: YT.getUrlParam("groupid"),
+    userid:getUrlParam("userid"),
+    groupid:getUrlParam("groupid"),
     myCharts: ['#chart-panel', '#detail-popup .modal-chart'],
     messageIds: []
 };
@@ -14,15 +13,15 @@ module.service = {
     },
 
     initDom: function () {
-        var self = this, module_d = module.data, myCharts = module_d.myCharts;
+        var self = this, module_d = module.data, myCharts = module.data.myCharts;
 
         // 初始化echarts
         var $chart_panel = $(myCharts[0]), $detail_popup = $(myCharts[1]);
         this.setChartSize();
-        module_d.chart_panel = echarts.init($chart_panel[0]);
-        module_d.detail_popup = echarts.init($detail_popup[0]);
+        module.data.chart_panel = echarts.init($chart_panel[0]);
+        module.data.detail_popup = echarts.init($detail_popup[0]);
 
-        this.initChart(module_d.chart_panel);
+        this.initChart(module.data.chart_panel);
 
         // 注册地图事件
         module.eventHandler.handleMapEvent(module_d.chart_panel);

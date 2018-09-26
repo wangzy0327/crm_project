@@ -77,37 +77,6 @@ listManager.service = $.extend({
                 }
             }
         });
-        // YT.query({
-        //     loading:false,
-        //     data: postData,
-        //     successCallback: function (data) {
-        //         if (200 == data.status) {
-        //             if (pager.page == 1) {
-        //                 $("#more").empty();
-        //             }
-        //             pager.page = data.object.idx + 1;
-        //             pager.pageCount = data.object.pageCount;
-        //             pager.lastPage = data.object.idx >= data.object.pageCount;
-        //             $.closePopup();
-        //             listManager.service.getCustomerStr(data.object.items);
-        //             $.hideLoading();
-        //             if (pager.lastPage) {
-        //                 //最后一页
-        //                 pager.loading = true;
-        //                 $('#infinite').hide();
-        //                 listManager.service.initNo();
-        //                 return;
-        //             }
-        //         } else {
-        //             pager.loading = true;
-        //             pager.lastPage = true;
-        //             $('#infinite').hide();
-        //             listManager.service.initNo();
-        //             return;
-        //         }
-        //         pager.loading = false;
-        //     }
-        // });
     },
     getUserInfo: function (callback) {
         var self = this;
@@ -201,24 +170,6 @@ listManager.service = $.extend({
         var val_flag = val != '' && val != '搜索';
         var filter = [];
         var innerFilter_1 = [];
-        // if (val_flag) {
-        //     if (val == '未' || val == '填' || val == '写' || val == '未填' || val == '填写' || val == '未填写') {
-        //         innerFilter_1.push({field: "name", value: "", operator: "=\'\'", relation: "OR"});
-        //     }
-        //     innerFilter_1.push({
-        //         field: 'name',
-        //         value: '%' + val + '%',
-        //         operator: 'like',
-        //         relation: 'OR'
-        //     });
-        //     innerFilter_1.push({
-        //         field: 'mobile',
-        //         value: '%' + val + '%',
-        //         operator: 'like',
-        //         relation: 'AND'
-        //     });
-        //     filter.push(innerFilter_1);
-        // }
         if (val_flag) {
             listManager.service.clearList();
             listManager.data.extraFilter = true;
@@ -260,102 +211,13 @@ listManager.service = $.extend({
             }else{
                 html += '<a class="weui-form-preview__btn weui-form-preview__btn_default visit-memo-list" href="javascript:" data-id="'+ data[i].id +'">查看备注</a> ';
             }
-            html += '<a class="weui-form-preview__btn weui-form-preview__btn_default view-detail view-detail-my"\n' +
+            html += '<a class="weui-form-preview__btn weui-form-preview__btn_default view-detail '+(listManager.data.myFlag?"view-detail-my":"")+'"'+
             'data-sumcount="1" href="javascript:">浏览<span class=""></span>&nbsp;&nbsp;转发' +
             '<span class=""></span></a></div>\n' +
             '</div>';
 
         }
         $('#list').append(html);
-
-        // if(pager.page > 0 && (pager.page-1) <= pager.pageCount){
-        //     listManager.data.dataList.push.apply(listManager.data.dataList,items);
-        // }else{
-        //     listManager.data.dataList = items;
-        //     listManager.data.charIndexArr = [];
-        // }
-        // if(items.length <=0  && pager.lastPage){
-        //     noFlag = false;
-        // }else{
-        //     noFlag = true;
-        // }
-        // for (var i = 0; i < items.length; i++) {
-        //     var str = '';
-        //     var id = items[i].id;
-        //     var avatar = items[i].avatar || "";
-        //     if(avatar){
-        //         avatar = '<img src="'+avatar+'" class="head-img"/>';
-        //     }else{
-        //         avatar = '<i class="iconfont" style="color:#bbb;font-size: 30px;line-height: 32px;">&#xe008;</i>'
-        //     }
-        //     var name = items[i].name || "未填写";
-        //     var appendPY = listManager.service.getAppendPY('#list',name,items[i].fpy);
-        //     var mobile = items[i].mobile || "";
-        //     var department = items[i].department || "";
-        //     var position = items[i].position || "";
-        //     var remark = items[i].remark || "";
-        //     var address = items[i].address || "";
-        //     var email = items[i].email || "";
-        //     var telephone = items[i].telephone || "";
-        //     var webSite = items[i].webSite || "";
-        //     var fax = items[i].fax || "";
-        //     var openCount = items[i].openCount || 0;
-        //     var shareCount = items[i].shareCount || 0;
-        //     str += '<div class="weui-form-preview py_'+appendPY+'"> ' +
-        //         '<div class="weui-form-preview__bd visit-detail">' +
-        //         '<div class="weui-cell weui-cell_access customer customer_'+id+'" data-id="'+id+'" data-t="'+items[i].visit_plan_time+'"> ' +
-        //         '<div class="weui-cell__bd"> ' +
-        //         '<div class="flex-box-two"> ' +
-        //         '<div class="flex-item-two">'+avatar+'</div> ' +
-        //         '<div class="flex-item-two"><span class="name">'+name+'</span>&nbsp;&nbsp;<span class="phone">'+mobile+'</span></div> ' +
-        //         '</div> ' +
-        //         '<div class="flex-box-two con-box"> ';
-        //     if(department){
-        //         str += '<div class="flex-item-two"><span class="con department">'+department+'</span></div> ';
-        //     }
-        //     if(position){
-        //         str += '<div class="flex-item-two"><span class="con position">'+position+'</span></div> ';
-        //     }
-        //     str += '</div><div class="flex-box-two con-box-two"> ';
-        //
-        //     if(telephone){
-        //         str += '<div class="flex-item-two"><span class="con">座机：'+telephone+'</span></div> ';
-        //     }
-        //     if(fax){
-        //         str += '<div class="flex-item-two"><span class="con">传真：'+fax+'</span></div> ';
-        //     }
-        //     if(email){
-        //         str += '<div class="flex-item-two"><span class="con">E-mail：'+email+'</span></div> ';
-        //     }
-        //     if(address){
-        //         str += '<div class="flex-item-two"><span class="con">'+address+'</span></div> ';
-        //     }
-        //     if(webSite){
-        //         str += '<div class="flex-item-two"><span class="con">'+webSite+'</span></div> ';
-        //     }
-        //     if(remark){
-        //         str += '<div class="flex-item-two"><span class="con">('+remark+')</span></div> ';
-        //     }
-        //     str += '</div> ' +
-        //         '</div>' +
-        //         '<div class="weui-cell__ft"></div>' +
-        //         '</div> </div> ' +
-        //         '<div class="weui-form-preview__ft"> ';
-        //     if(listManager.data.myFlag){
-        //         str += '<a class="weui-form-preview__btn weui-form-preview__btn_primary edit" data-d="'+JSON.stringify(items[i]).replace(/"/g, "&quot;")+'" href="javascript:">编辑</a> ' +
-        //             '<a class="weui-form-preview__btn weui-form-preview__btn_primary visit-tip" href="javascript:" data-id="'+ id +'">提醒</a> ' +
-        //             '<a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo" href="javascript:" data-id="'+ id +'">备注</a>';
-        //     }else{
-        //         str += '<a class="weui-form-preview__btn weui-form-preview__btn_default visit-memo-list" href="javascript:" data-id="'+ id +'">查看备注</a> ';
-        //     }
-        //     var sumCount = 0 + openCount + shareCount;
-        //     var openCountClass = openCount>0?'num-not-zero':'';
-        //     var shareCountClass = shareCount>0?'num-not-zero':'';
-        //     str += '<a class="weui-form-preview__btn weui-form-preview__btn_default view-detail '+(listManager.data.myFlag?"view-detail-my":"")+'" data-sumcount="'+sumCount+'" href="javascript:">浏览<span class="'+openCountClass+'">('+openCount+')</span>&nbsp;&nbsp;转发<span class="'+shareCountClass+'">('+shareCount+')</span></a> ';
-        //     str += '</div> ';
-        //     '</div>';
-        //     $('.py_'+appendPY+':last').after(str);
-        // }
     },
     getAppendPY:function(ele,name,fpy){
         var id = '';
@@ -479,11 +341,6 @@ listManager.eventHandler = $.extend({
             // url3=encodeURI(url3);   //对URL的地址进行encodeURI编码，实际上只有中文的部分被修改编码
             console.log("url encode: "+url4);
             location.href  = url4;
-            // location.href = '/module/old-customer/new-visit-plan.html' + YT.setUrlParams({
-            //     customer_id: $ele.data('id'),
-            //     customer_name:$ele.find('.name').text(),
-            //     company:$ele.find('.department').text()
-            // });
         }).on('click','.visit-memo',function () {
             //$.alert('功能暂时未上线!');
             var self = this;
@@ -498,12 +355,6 @@ listManager.eventHandler = $.extend({
             // url3=encodeURI(url3);   //对URL的地址进行encodeURI编码，实际上只有中文的部分被修改编码
             console.log("url encode: "+url4);
             location.href = url4;
-            // location.href = '/module/old-customer/visit-log.html' + YT.setUrlParams({
-            //     customer_id: $ele.data('id'),
-            //     customer_name:$ele.find('.name').text(),
-            //     company:$ele.find('.department').text(),
-            //     visit_plan_time: $ele.data('t')
-            // });
         }).on('click','.visit-detail',function () {
             //$.alert('功能暂时未上线!');
             var self = this;

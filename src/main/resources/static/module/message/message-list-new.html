@@ -15,11 +15,7 @@
     <link rel="stylesheet" href="../../iconfont/iconfont.css?time=20160912">
     <link rel="stylesheet" href="../../css/main.css?time=20160912">
 
-    <script type="text/javascript" src="../../js/jquery-2.1.4.js?time=20160912"></script>
-    <script type="text/javascript" src="../../js/jquery-weui.min.js?time=20160912"></script>
-    <script type="text/javascript" src="/lib/yt/config.js?time=20160912"></script>
-    <script type="text/javascript" src="../message/common/js/date-format.js"></script>
-    <script type="text/javascript" src="js/message-list.js?time=201807101650"></script>
+
 
     <style type="text/css">
         html, body {
@@ -203,59 +199,67 @@
             </p>
         </div>
 
-        <div class="weui-media-box__ft">
-            <a class="btn-cell open-popup" href="javascript:" id="btn-add" data-target="#message-popup">
-                <img class="btn-cell_icon" src="/image/message-add.svg" alt="发消息">
-                <p class="btn-cell_p">发消息</p>
-            </a>
-        </div>
+        <!--<div class="weui-media-box__ft">-->
+            <!--<a class="btn-cell open-popup" href="javascript:" id="btn-add" data-target="#message-popup">-->
+                <!--<img class="btn-cell_icon" src="/image/message-add.svg" alt="发消息">-->
+                <!--<p class="btn-cell_p">发消息</p>-->
+            <!--</a>-->
+        <!--</div>-->
 
     </div>
 </div>
 
 <div class="weui-cells" id="list" style="margin-top: 0;"></div>
 <div id="more"></div>
-<div class="weui-infinite-scroll" id="infinite">
-    <div class="infinite-preloader"></div>
-    正在加载...
-</div>
+<!--<div class="weui-infinite-scroll" id="infinite">-->
+    <!--<div class="infinite-preloader"></div>-->
+    <!--正在加载...-->
+<!--</div>-->
 
 <div id="message-popup" class="weui-popup__container popup-bottom">
     <div class="weui-popup__overlay" style="opacity: 1;"></div>
     <div class="weui-popup__modal">
 
-        <div class="toolbar">
-            <div class="toolbar-inner">
-                <a href="javascript:;" class="picker-button close-popup">关闭</a>
-                <h1 class="title">发消息</h1>
-            </div>
-        </div>
+        <!--<div class="toolbar">-->
+            <!--<div class="toolbar-inner">-->
+                <!--<a href="javascript:;" class="picker-button close-popup">关闭</a>-->
+                <!--<h1 class="title">发消息</h1>-->
+            <!--</div>-->
+        <!--</div>-->
 
-        <div class="modal-content">
-            <div class="weui-grids">
-                <a href="javascript:;" class="weui-grid message-type" data-type="5">
-                    <div class="weui-grid__icon">
-                        <img src="/image/message-add-h5.svg" alt="H5">
-                    </div>
-                    <p class="weui-grid__label">H5</p>
-                </a>
-                <a href="javascript:;" class="weui-grid message-type" data-type="2">
-                    <div class="weui-grid__icon">
-                        <img src="/image/message-add-zl.svg" alt="资料">
-                    </div>
-                    <p class="weui-grid__label">资料</p>
-                </a>
-                <a href="javascript:;" class="weui-grid message-type" data-type="6">
-                    <div class="weui-grid__icon">
-                        <img src="/image/message-add-pm.svg" alt="平面">
-                    </div>
-                    <p class="weui-grid__label">平面</p>
-                </a>
-            </div>
-        </div>
+        <!--<div class="modal-content">-->
+            <!--<div class="weui-grids">-->
+                <!--<a href="javascript:;" class="weui-grid message-type" data-type="5">-->
+                    <!--<div class="weui-grid__icon">-->
+                        <!--<img src="/image/message-add-h5.svg" alt="H5">-->
+                    <!--</div>-->
+                    <!--<p class="weui-grid__label">H5</p>-->
+                <!--</a>-->
+                <!--<a href="javascript:;" class="weui-grid message-type" data-type="2">-->
+                    <!--<div class="weui-grid__icon">-->
+                        <!--<img src="/image/message-add-zl.svg" alt="资料">-->
+                    <!--</div>-->
+                    <!--<p class="weui-grid__label">资料</p>-->
+                <!--</a>-->
+                <!--<a href="javascript:;" class="weui-grid message-type" data-type="6">-->
+                    <!--<div class="weui-grid__icon">-->
+                        <!--<img src="/image/message-add-pm.svg" alt="平面">-->
+                    <!--</div>-->
+                    <!--<p class="weui-grid__label">平面</p>-->
+                <!--</a>-->
+            <!--</div>-->
+        <!--</div>-->
 
     </div>
 </div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script  src="../../js/jquery-weui.min.js"></script>
+<script src="../../lib/param.js"></script>
+<script src="../../lib/domain.js"></script>
+<script src="../../js/oauth2.js"></script>
+<script  src="../message/common/js/date-format.js"></script>
+<script  src="js/message-list.js"></script>
 
 </body>
 </html>

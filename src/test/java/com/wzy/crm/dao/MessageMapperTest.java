@@ -2,6 +2,7 @@ package com.wzy.crm.dao;
 
 import com.wzy.crm.Application;
 import com.wzy.crm.pojo.Message;
+import com.wzy.crm.vo.MessageResponseVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,20 @@ public class MessageMapperTest {
         Integer id = 100;
         int count = messageMapper.updateStatusStart(id);
         System.out.println("count:"+count);
+    }
+
+    @Test
+    public void selectMobileMessage() throws Exception {
+        Integer groupId = 30;
+        Integer tagId = 59;
+        String order = "update_time";
+        String orderType = "desc";
+        Integer start = 0;
+        Integer size = 10;
+        List<MessageResponseVo> messageResponseVos = messageMapper.selectMobileMessage(30,tagId,order,orderType,0,10);
+        for(int i = 0;i<messageResponseVos.size();i++){
+            System.out.println(messageResponseVos.get(i));
+        }
     }
 
 

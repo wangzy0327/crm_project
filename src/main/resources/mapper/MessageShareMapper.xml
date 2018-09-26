@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.MessageShare" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="message_id" property="messageId" jdbcType="INTEGER" />
-    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
     <result column="push_time" property="pushTime" jdbcType="TIMESTAMP" />
     <result column="share_flag" property="shareFlag" jdbcType="INTEGER" />
     <result column="share_time" property="shareTime" jdbcType="TIMESTAMP" />
@@ -16,17 +16,17 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wzy.crm.pojo.MessageShare" >
-    insert into message_share (id, message_id, user_id,
+    insert into message_share (id, message_id, user_id, 
       push_time, share_flag, share_time, 
       open_count, del_flag)
-    values (#{id,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+    values (#{id,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
       #{pushTime,jdbcType=TIMESTAMP}, #{shareFlag,jdbcType=INTEGER}, #{shareTime,jdbcType=TIMESTAMP}, 
       #{openCount,jdbcType=INTEGER}, #{delFlag,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.MessageShare" >
     update message_share
     set message_id = #{messageId,jdbcType=INTEGER},
-      user_id = #{userId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
       push_time = #{pushTime,jdbcType=TIMESTAMP},
       share_flag = #{shareFlag,jdbcType=INTEGER},
       share_time = #{shareTime,jdbcType=TIMESTAMP},

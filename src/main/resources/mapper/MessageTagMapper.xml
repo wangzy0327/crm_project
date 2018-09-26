@@ -7,6 +7,11 @@
     <result column="corpid" property="corpid" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="MessageTagMap" type="com.wzy.crm.vo.MessageHotTagVo">
+    <id column="tag_id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="tag_num" property="num" jdbcType="INTEGER" />
+  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from message_tag
     where id = #{id,jdbcType=INTEGER}
@@ -67,5 +72,11 @@
     select id
     from message_tag
     where `name` = #{name}
+  </select>
+  <select id="selectHotTags" resultMap="MessageTagMap">
+    select tag_id,`name`,tag_num
+    from v_message_tag_hot
+    order by tag_num desc
+    limit 0,10
   </select>
 </mapper>

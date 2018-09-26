@@ -5,6 +5,8 @@ import com.wzy.crm.common.ResponseCode;
 import com.wzy.crm.common.ServerResponse;
 import com.wzy.crm.pojo.MessageTag;
 import com.wzy.crm.vo.MessageDetail;
+import com.wzy.crm.vo.MessageResponseVo;
+import com.wzy.crm.vo.MessageVo;
 import org.apache.http.protocol.ResponseServer;
 
 import java.util.List;
@@ -50,4 +52,6 @@ public interface IMessageService {
     void addTags(Integer messageId,Map<Integer,List<MessageTag>> map);
 
     Map<Integer, List<MessageTag>> splitTag(List<String> tags);
+
+    ServerResponse getMobileMessageList(MessageVo messageVo);
 }

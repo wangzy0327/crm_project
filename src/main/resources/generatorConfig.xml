@@ -81,13 +81,22 @@
         <!--<table tableName="customer_tag_relation" domainObjectName="CustomerTagRelation">-->
         <!--</table>-->
 
-        <table tableName="comments" domainObjectName="Comments">
-        </table>
-        <table tableName="staff_comment_plan" domainObjectName="StaffCommentPlan">
-        </table>
-        <table tableName="staff_comment_log" domainObjectName="StaffCommentLog">
-        </table>
+        <!--<table tableName="comments" domainObjectName="Comments">-->
+        <!--</table>-->
+        <!--<table tableName="staff_comment_plan" domainObjectName="StaffCommentPlan">-->
+        <!--</table>-->
+        <!--<table tableName="staff_comment_log" domainObjectName="StaffCommentLog">-->
+        <!--</table>-->
 
+
+        <!--<table tableName="message_share_customer" domainObjectName="MessageShareCustomer">-->
+        <!--</table>-->
+        <!--<table tableName="message_share_customer_area" domainObjectName="MessageShareCustomerArea">-->
+        <!--</table>-->
+        <!--<table tableName="message_share_transmit" domainObjectName="MessageShareTransmit">-->
+        <!--</table>-->
+        <table tableName="message_share" domainObjectName="MessageShare">
+        </table>
 
     </context>
 </generatorConfiguration>

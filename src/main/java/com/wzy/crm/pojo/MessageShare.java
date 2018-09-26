@@ -10,7 +10,7 @@ public class MessageShare {
 
     private Integer messageId;
 
-    private Integer userId;
+    private String userId;
 
     private Date pushTime;
 
@@ -21,5 +21,4 @@ public class MessageShare {
     private Integer openCount;
 
     private Integer delFlag;
-
 }

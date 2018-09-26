@@ -10,6 +10,8 @@ import java.util.Date;
 public class Customer {
     private Integer id;
 
+    private String openId;
+
     private String name;
 
     private String mobile;

@@ -90,5 +90,10 @@ public class MessageTagController {
         return ServerResponse.createBySuccess(messageTagMapper.deleteByPrimaryKey(Integer.valueOf(id)));
     }
 
+    @PostMapping("/hot")
+    public ServerResponse getHotTag(){
+        return ServerResponse.createBySuccess(messageTagMapper.selectHotTags());
+    }
+
 
 }

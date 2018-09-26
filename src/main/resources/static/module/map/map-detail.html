@@ -10,12 +10,17 @@
     <meta name="keywords" content="消息传播分布"/>
     <meta name="description" content="消息传播分布"/>
     <title>消息传播分布</title>
-
-    <link type="text/css" rel="stylesheet" href="../../css/weui.min.css">
-    <link type="text/css" rel="stylesheet" href="../../css/jquery-weui.min.css">
-    <link type="text/css" rel="stylesheet" href="../../iconfont/iconfont.css">
-    <link type="text/css" rel="stylesheet" href="../../css/main.css">
-
+    <!-- YTUI库 -->
+    <link type="text/css" rel="stylesheet" href="/css/weui.min.css?time=20160912">
+    <link type="text/css" rel="stylesheet" href="/module/statistics/css/jquery-weui.min.css?time=20180328">
+    <link type="text/css" rel="stylesheet" href="/iconfont/iconfont.css?time=20180328">
+    <link type="text/css" rel="stylesheet" href="/css/main.css?time=20180328">
+    <script type="text/javascript" src="/module/iconfont/iconfont.js?time=20180328"></script>
+    <script type="text/javascript" src="/module/lib/jquery-2.1.4.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/statistics/js/jquery-weui.min.js?time=20180328"></script>
+    <script type="text/javascript" src="/lib/yt/config.js?time=20160912"></script>
+    <script type="text/javascript" src="js/echarts.min.js"></script>
+    <script type="text/javascript" src="js/china.js"></script>
 
     <style type="text/css">
         #chart-panel, chart-modal {
@@ -45,7 +50,6 @@
 <body>
 <div id="chart-panel"></div>
 <div id="chart-detail" style="display: none;"></div>
-<div id="message-list"></div>
 
 <div id="detail-popup" class="weui-popup__container" style="display: none;">
     <div class="weui-popup__overlay"></div>
@@ -66,18 +70,6 @@
         </div>
     </div>
 </div>
-
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-<script src="../../iconfont/iconfont.js"></script>
-<script src="../../js/jquery-weui.min.js"></script>
-<script src="js/echarts.min.js"></script>
-<script src="js/china.js"></script>
-<script src="../../js/fastclick.js"></script>
-<script src="../../lib/param.js"></script>
-<script src="../../lib/domain.js"></script>
-<script src="../../js/oauth2.js"></script>
-<script type="text/javascript" src="js/Map.js"></script>
-
+<script type="text/javascript" src="js/map-detail.js?time=201807051548"></script>
 </body>
 </html>

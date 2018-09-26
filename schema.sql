@@ -418,20 +418,6 @@ INSERT INTO `group_staff_relation` VALUES ('34', 'wzy', '0');
 INSERT INTO `group_staff_relation` VALUES ('34', 'yanxg', '0');
 INSERT INTO `group_staff_relation` VALUES ('34', 'zhangc', '0');
 
-DROP TABLE IF EXISTS `message_share`;
-CREATE TABLE `message_share` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `message_id` int(11) DEFAULT NULL,
-  `staff_id` int(11) DEFAULT NULL,
-  `push_time` datetime DEFAULT NULL,
-  `share_flag` int(2) DEFAULT NULL COMMENT '0：未分享；1：已分享',
-  `share_time` datetime DEFAULT NULL,
-  `open_count` int(11) DEFAULT NULL COMMENT '客户打开次数',
-  `del_flag` int(2) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `messageId` (`message_id`),
-  KEY `delFlag_openCount` (`del_flag`,`open_count`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS `message_tag_relation`;
@@ -442,78 +428,6 @@ CREATE TABLE `message_tag_relation` (
    KEY `messageId_tagId` (`message_id`,`tag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `message_share`;
-CREATE TABLE `message_share` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `message_id` int(11) DEFAULT NULL,
-  `staff_id` int(11) DEFAULT NULL,
-  `push_time` datetime DEFAULT NULL,
-  `share_flag` int(2) DEFAULT NULL COMMENT '0：未分享；1：已分享',
-  `share_time` datetime DEFAULT NULL,
-  `open_count` int(10) DEFAULT NULL COMMENT '客户打开次数',
-  `del_flag` int(2) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `messageId` (`message_id`),
-  KEY `delFlag_openCount` (`del_flag`,`open_count`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='员工消息分享表';
-
-DROP TABLE IF EXISTS `message_share_customer`;
-CREATE TABLE `message_share_customer` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `share_id` int(11) DEFAULT NULL,
-  `staff_id` int(11) DEFAULT NULL,
-  `customer_id` int(11) DEFAULT '-1',
-  `engine` varchar(20) DEFAULT NULL,
-  `deviceName` varchar(20) DEFAULT NULL,
-  `deviceVersion` varchar(20) DEFAULT NULL,
-  `type` varchar(20) DEFAULT NULL,
-  `browserName` varchar(20) DEFAULT NULL,
-  `browserVersion` varchar(20) DEFAULT NULL,
-  `major` varchar(10) DEFAULT NULL,
-  `orientation` int(2) DEFAULT NULL COMMENT '0：横屏；1：竖屏',
-  `ip` varchar(20) DEFAULT NULL,
-  `cid` varchar(50) DEFAULT '-1',
-  `city` varchar(100) DEFAULT NULL,
-  `open_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '打开页面时间点',
-  `view_time` int(11) DEFAULT '1' COMMENT '浏览时间',
-  `read_info` longtext COMMENT '阅读信息/浏览时长',
-  `same_id` int(11) DEFAULT '-1',
-  `times` int(11) DEFAULT '-1' COMMENT '传播链上的位置，1销售员 2客户 3客户...（依次类推）',
-  `times_flag` int(11) DEFAULT '0' COMMENT '有无转发 1转发 0无转发',
-  `pre_times_id` int(11) DEFAULT '-1' COMMENT '前一个转发的id',
-  `uid` varchar(255) DEFAULT NULL COMMENT '上一个转发的uid',
-  `cur_uid` varchar(255) DEFAULT NULL COMMENT '当前打开的uid',
-  PRIMARY KEY (`id`),
-  KEY `customerId_timesFlag_shareId` (`customer_id`,`times_flag`,`share_id`) USING BTREE,
-  KEY `shareId` (`share_id`),
-  KEY `shareId_staffId` (`share_id`,`staff_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='客户消息分享表';
-
-DROP TABLE IF EXISTS `message_share_customer_area`;
-CREATE TABLE `message_share_customer_area` (
-  `id` int(11) NOT NULL,
-  `cid` varchar(11) DEFAULT NULL,
-  `city` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `message_share_uid`;
-CREATE TABLE `message_share_uid` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `share_id` int(11) DEFAULT NULL COMMENT '分享编号',
-  `share_detail_id` int(11) DEFAULT NULL COMMENT '分享记录编号',
-  `ip` varchar(50) DEFAULT NULL,
-  `address` varchar(50) DEFAULT NULL COMMENT '地区',
-  `province_py` varchar(50) DEFAULT NULL COMMENT '省份拼音',
-  `address_code` varchar(50) DEFAULT NULL COMMENT '地区编码',
-  `point` varchar(50) DEFAULT NULL COMMENT '坐标',
-  `time` datetime DEFAULT NULL COMMENT '分享时间',
-  `uid` varchar(255) DEFAULT NULL COMMENT '分享页面的uid',
-  `customer_id` int(11) DEFAULT '-1' COMMENT '客户编号',
-  PRIMARY KEY (`id`),
-  KEY `customerId_shareId` (`customer_id`,`share_id`) USING BTREE,
-  KEY `shareId_shareDetailId` (`share_id`,`share_detail_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='转发、分享记录';
 
 DROP TABLE IF EXISTS `city`;
 CREATE TABLE `city` (
@@ -935,7 +849,7 @@ CREATE TABLE `comments` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='评论';
 
 
-drop view v_group_customer;
+DROP VIEW IF EXISTS v_group_customer;
 create view v_group_customer as
   select group_staff_relation.group_id,group_staff_relation.user_id,customer.id customer_id,customer.`name` customer_name,customer.mobile customer_mobile,customer.wechat customer_wechat,
     customer.company customer_company,customer.position customer_position,customer.address customer_address,customer.telephone customer_telephone,
@@ -943,3 +857,90 @@ create view v_group_customer as
   from group_staff_relation,staff_customer_follow_relation,customer
   where group_staff_relation.user_id = staff_customer_follow_relation.user_id  and staff_customer_follow_relation.is_follow = 1
         and staff_customer_follow_relation.customer_id = customer.id;
+
+drop view if exists v_message_tag;
+create view v_message_tag as
+  select message_tag_relation.message_id,message_tag_relation.page,message_tag_relation.tag_id,message_tag.`name`
+  from message_tag_relation,message_tag
+  where message_tag.id = message_tag_relation.tag_id;
+
+drop view if exists v_message_tag_hot;
+create view v_message_tag_hot as
+  select tag_id,`name`,count(tag_id) tag_num
+  from v_message_tag
+  group by tag_id;
+
+DROP TABLE IF EXISTS `message_share`;
+CREATE TABLE `message_share` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `message_id` int(11) DEFAULT NULL,
+  `user_id` varchar(30) DEFAULT NULL,
+  `push_time` datetime DEFAULT NULL,
+  `share_flag` int(2) DEFAULT NULL COMMENT '0：未分享；1：已分享',
+  `share_time` datetime DEFAULT NULL,
+  `open_count` int(11) DEFAULT 0 COMMENT '客户打开次数',
+  `del_flag` int(2) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `messageId` (`message_id`),
+  KEY `delFlag_openCount` (`del_flag`,`open_count`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `message_share_customer`;
+CREATE TABLE `message_share_customer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `message_id` int(11) DEFAULT NULL,
+  `user_id` varchar(30) DEFAULT NULL,
+  `customer_id` int(11) DEFAULT '-1',
+  `open_id` varchar(32) DEFAULT NULL,
+  `ip` varchar(20) DEFAULT NULL,
+  `cid` varchar(50) DEFAULT '-1',
+  `city` varchar(100) DEFAULT NULL,
+  `open_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '打开页面时间点',
+  `view_time` int(11) DEFAULT '1' COMMENT '浏览时间',
+  `read_info` longtext COMMENT '阅读信息/浏览时长',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最近更新时间',
+  PRIMARY KEY (`id`),
+  KEY `messageId` (`message_id`) USING BTREE,
+  KEY `userId` (`user_id`) USING BTREE,
+  KEY `customerId` (`customer_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='客户消息分享表';
+
+DROP TABLE IF EXISTS `message_share_customer_area`;
+CREATE TABLE `message_share_customer_area` (
+  `id` int(11) NOT NULL,
+  `cid` varchar(11) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `message_share_transmit`;
+CREATE TABLE `message_share_transmit` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(30) DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  `open_id` varchar(30) DEFAULT NULL,
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最近更新时间',
+  PRIMARY KEY (`id`),
+  KEY `openId` (`open_id`) USING BTREE,
+  KEY `userId` (`user_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='转发记录';
+
+drop view if exists v_message_opencount_time_tag;
+create view v_message_opencount_time_tag as
+  select message.id,group_message_relation.group_id,vmt.tag_id,vmt.page,vmt.`name` tag_name,message_share.open_count,message.msgType,message.title,message.create_user_id,staff.`name` staff_name,message.titleText,message.update_time
+  from message
+    left join
+    group_message_relation
+      on message.id = group_message_relation.message_id
+    left join
+    (select message_tag_relation.message_id,message_tag_relation.page,message_tag_relation.tag_id,message_tag.`name`
+     from message_tag_relation,message_tag,staff
+     where message_tag.id = message_tag_relation.tag_id) vmt
+      on vmt.message_id = message.id
+    left join
+    message_share
+      on vmt.message_id = message_share.message_id
+    left join staff
+      on staff.userid = message.create_user_id;
+
