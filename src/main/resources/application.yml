@@ -67,7 +67,7 @@ ftp:
 #nginx
 nginx:
 #  server: http://ftp.tunnel.qydev.com/
-  server: http://127.0.0.1:9000/
+  server: http://20e2b18746.iask.in:25491/
 
 
 #盐值

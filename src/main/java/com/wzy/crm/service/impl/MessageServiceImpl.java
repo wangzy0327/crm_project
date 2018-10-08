@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wzy.crm.common.MessageType;
+import com.wzy.crm.config.DomainConfig;
 import com.wzy.crm.config.NginxConfig;
 import com.wzy.crm.dao.MessageMapper;
 import com.wzy.crm.dao.MessageTagMapper;
@@ -20,6 +21,7 @@ import com.wzy.crm.common.ServerResponse;
 import com.wzy.crm.vo.MessageDetail;
 import com.wzy.crm.vo.MessageResponseVo;
 import com.wzy.crm.vo.MessageVo;
+import org.apache.camel.spi.AsEndpointUri;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +40,9 @@ import java.util.*;
 
 @Service
 public class MessageServiceImpl implements IMessageService {
+
+    @Autowired
+    private DomainConfig domainConfig;
 
     @Autowired
     private NginxConfig nginxConfig;
@@ -179,6 +184,7 @@ public class MessageServiceImpl implements IMessageService {
     public ServerResponse findH5Message(Integer id){
         Message message = messageMapper.selectByPrimaryKey(id);
         List<String> tags = getMultiPageTags(message);
+        message.setDescription(domainConfig.getUrl()+message.getDescription());
         message.setTags(tags);
         return ServerResponse.createBySuccess(message);
     }
@@ -187,7 +193,8 @@ public class MessageServiceImpl implements IMessageService {
     public ServerResponse findGraphicMessage(Integer id){
         Message message = messageMapper.selectByPrimaryKey(id);
         List<String> tags = new ArrayList<>();
-        String picUrl = PropertiesUtil.getProperty("nginx.server")+ message.getPicUrl();
+        System.out.println("nginxServer:"+nginxConfig.getServer());
+        String picUrl = nginxConfig.getServer()+ message.getPicUrl();
         message.setPicUrl(picUrl);
         List<MessageTagRelation> messageTagRelations = messageTagRelationMapper.selectTags(id);
         for(int i = 0;i<messageTagRelations.size();i++){
@@ -203,8 +210,9 @@ public class MessageServiceImpl implements IMessageService {
         String coverPicAttach = message.getCoverpicattach();
         String[] cpa = coverPicAttach.split(",");
         List<String> coverPicAttachs = new ArrayList<>();
+        System.out.println("nginxServer:"+nginxConfig.getServer());
         for(int i = 0;i<cpa.length;i++){
-            coverPicAttachs.add(PropertiesUtil.getProperty("nginx.server")+cpa[i]);
+            coverPicAttachs.add(nginxConfig.getServer()+cpa[i]);
         }
         coverPicAttach = String.join(",",coverPicAttachs);
         message.setCoverpicattach(coverPicAttach);

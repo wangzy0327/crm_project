@@ -1,7 +1,8 @@
 var module = {};
 
 module.data = {
-    m: 101010000,
+    user_id:getUrlParam("userid"),
+    message_id:getUrlParam("msgid"),
     messageData: {},
     title: '' // 页面标题
 };
@@ -22,34 +23,52 @@ module.service = {
 
                 // 显示页面
                 module_d.title = data.title;
+                console.log("title:"+data.title);
                 $('#page-view').css({'width': '100%', 'height': '100%'});
-                PageSwiperComm.init('#page-view', JSON.parse(data.third_params), 1);
-                self.initShare();
+                PageSwiperComm.init('#page-view', data, 1);
+                $.hideLoading();
+                // self.initShare();
             });
         });
     },
 
     getMessageData: function (callback) {
-        var filter = [
-            {field: 'id', value: YT.getUrlParam('d'), operator: '=', relation: 'and'}
-        ];
-
-        var data = {
-            m: module.data.m,
-            t: 'v_message',
-            filter: JSON.stringify(filter)
-        };
-
-        YT.query({
-            data: data,
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    callback(data.object[0]);
-                } else {
+        $.ajax({
+            type: 'post',
+            url: "/message/graphic?id="+module.data.message_id,
+            contentType: "application/json;charset=UTF-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    var data = result.data;
+                    callback(data);
+                }else {
                     $.alert('网络异常，请与管理员联系！');
                 }
             }
         });
+        // var filter = [
+        //     {field: 'id', value: YT.getUrlParam('d'), operator: '=', relation: 'and'}
+        // ];
+        //
+        // var data = {
+        //     m: module.data.m,
+        //     t: 'v_message',
+        //     filter: JSON.stringify(filter)
+        // };
+        //
+        // YT.query({
+        //     data: data,
+        //     successCallback: function (data) {
+        //         if (200 == data.status) {
+        //             callback(data.object[0]);
+        //         } else {
+        //             $.alert('网络异常，请与管理员联系！');
+        //         }
+        //     }
+        // });
     },
 
     initShare: function () {

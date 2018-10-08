@@ -16,32 +16,34 @@ var prevIndex = 0, // 上一页
 var PageSwiperComm = PageSwiperComm || {};
 
 PageSwiperComm = {
-    init: function (ele, third_params, isShare) {
+    init: function (ele, data, isShare) {
         this.ele = ele;
         /**
          * {d:d,type:type,url:url}
          * url:第三方链接
          *
          */
-        this.third_params = third_params;
+        this.data = data;
+        console.log("title:"+data.title);
         this.isShare = isShare || 0; // 0不是分享页面 1是分享页面
         this.setPageData();
     },
 
     setPageData: function () {
         var self = this,
-            type = this.third_params.type,
-            d = this.third_params.d,
-            url = '/message/share/getShareInfo.action?type=' + type + '&d=' + d;
-
-        if ('doc' == type) { // 只适用于doc
-            var doc_params = d.params;
+            type = this.data.msgtype,
+            // url = '/message/share/getShareInfo.action?type=' + type + '&d=' + d;
+            url = "";
+        console.log("msgType:"+type);
+        if (2 == type) { // 只适用于doc
+            // var doc_params = d.params;
             pageData = {
-                title: d.uploadSimpleName,
-                imgUrl: /*'/downloadFile.action?rnd=' + Math.random() + '&fileName='*/ YT.server + '/module/web/upload/' + doc_params.imgUrl,
-                pageCount: doc_params.pageCount,
-                width: doc_params.width,
-                height: doc_params.height,
+                title: this.data.title,
+                type:this.data.msgtype,
+                imgUrl: this.data.coverpicattach,
+                pageCount: this.data.pagecount,
+                width: 595,
+                height: 841,
                 size: '',
                 third_params: {}
             };
@@ -59,6 +61,7 @@ PageSwiperComm = {
                                 var bean_obj = item.body.bean;
                                 pageData = {
                                     title: bean_obj.title,
+                                    type:this.data.msgtype,
                                     imgUrl: bean_obj.imgUrl,
                                     pageCount: bean_obj.pageCount,
                                     width: bean_obj.width,
@@ -105,17 +108,20 @@ PageSwiperComm = {
 
         html += '<div class="swiper-container" id="swiperWrap">';
         html += '<div class="swiper-wrapper">';
-
+        console.log("imgUrl:"+pageData.imgUrl);
+        var pics = [];
+        pics = pageData.imgUrl.split(",");
         for (var i = 0; i < pageData.pageCount; i++) {
-            var url = pageData.imgUrl;
-            if ('doc' == this.third_params.type) { // 只适用于doc
-                url = url.replace('pict-1', 'pict-' + (i + 1));
-            } else {
-                url = i ? url + '_' + i : url;
-            }
+            // var url = pageData.imgUrl;
+            // if ('doc' == pageData.type) { // 只适用于doc
+            //     url = url.replace('pict-1', 'pict-' + (i + 1));
+            // } else {
+            //     url = i ? url + '_' + i : url;
+            // }
             html += '<div class="swiper-slide">';
             html += '<div class="swiper-zoom-container">';
-            html += '<img class="swiper-lazy" data-src="' + url + pageData.size + '"/>';
+            console.log("pic["+i+"]: "+pics[i]);
+            html += '<img class="swiper-lazy" data-src="' + pics[i] + '"/>';
             html += '</div>';
             html += '</div>';
         }

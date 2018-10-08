@@ -158,6 +158,8 @@ listManager.eventHandler = {
         $(document.body).infinite().on("infinite", function () {
             if (pager.loading) return;
             pager.loading = true;
+            pager.page++; //页数
+            $('#infinite').show();
             listManager.service.initGrid();
         });
     },
