@@ -49,34 +49,45 @@ PageSwiperComm = {
             };
             self.initDom();
         } else {
-            $.get(url, function (data) {
-                if (200 == data.status) {
-                    var item = JSON.parse(data.object);
-
-                    switch (type) {
-                        case 'chuangkit': // 创客贴
-                            if (item.body.error) {
-                                self.resetDom();
-                            } else {
-                                var bean_obj = item.body.bean;
-                                pageData = {
-                                    title: bean_obj.title,
-                                    type:this.data.msgtype,
-                                    imgUrl: bean_obj.imgUrl,
-                                    pageCount: bean_obj.pageCount,
-                                    width: bean_obj.width,
-                                    height: bean_obj.height,
-                                    size: '@780w',
-                                    third_params: self.third_params
-                                };
-                                self.initDom();
-                            }
-                            break;
-                    }
-                } else {
-                    self.resetDom();
-                }
-            });
+            pageData = {
+                title: this.data.title,
+                type:this.data.msgtype,
+                imgUrl: this.data.picUrl,
+                pageCount: this.data.pagecount,
+                width: 595,
+                height: 841,
+                size: '',
+                third_params: {}
+            };
+            self.initDom();
+            // $.get(url, function (data) {
+            //     if (200 == data.status) {
+            //         var item = JSON.parse(data.object);
+            //
+            //         switch (type) {
+            //             case 'chuangkit': // 创客贴
+            //                 if (item.body.error) {
+            //                     self.resetDom();
+            //                 } else {
+            //                     var bean_obj = item.body.bean;
+            //                     pageData = {
+            //                         title: bean_obj.title,
+            //                         type:this.data.msgtype,
+            //                         imgUrl: bean_obj.imgUrl,
+            //                         pageCount: bean_obj.pageCount,
+            //                         width: bean_obj.width,
+            //                         height: bean_obj.height,
+            //                         size: '@780w',
+            //                         third_params: self.third_params
+            //                     };
+            //                     self.initDom();
+            //                 }
+            //                 break;
+            //         }
+            //     } else {
+            //         self.resetDom();
+            //     }
+            // });
         }
     },
 

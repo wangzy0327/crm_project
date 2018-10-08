@@ -83,7 +83,7 @@ restart:
 
 #targetPath
 target:
-  path: D:\project\crm-project\src\main\resources\static\
+  path: D:\project\crm-project\target\crm-project\
 #  D:\project\crm-project\src\main\resources\static\web\h5\page\
 
 domain:

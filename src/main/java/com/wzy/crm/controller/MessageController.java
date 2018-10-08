@@ -3,6 +3,7 @@ package com.wzy.crm.controller;
 import com.google.common.collect.Maps;
 import com.wzy.crm.config.DomainConfig;
 import com.wzy.crm.config.NginxConfig;
+import com.wzy.crm.config.PathConfig;
 import com.wzy.crm.config.RequestPathConfig;
 import com.wzy.crm.dao.GroupMessageRelationMapper;
 import com.wzy.crm.dao.MessageMapper;
@@ -27,6 +28,9 @@ public class MessageController {
 
     @Autowired
     private DomainConfig domainConfig;
+
+    @Autowired
+    private PathConfig pathConfig;
 
     @Autowired
     private NginxConfig nginxConfig;
@@ -72,7 +76,8 @@ public class MessageController {
     @PostMapping("/parseH5Url")
     public ServerResponse parseH5Url(HttpServletRequest request,@RequestParam String url){
         System.out.println("url:"+url);
-        String realPath = nginxConfig.getServer();
+        String realPath = pathConfig.getPath();
+        System.out.println("realPath: "+realPath);
 //        String realPath = request.getSession().getServletContext().getRealPath("/");
         return messageService.saveH5Page(url,realPath);
 //        return messageService.parseH5Url(url);
