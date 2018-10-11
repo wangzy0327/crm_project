@@ -11,7 +11,7 @@ function oauth2() {
         console.log("returnUrl:"+returnUrl);
         // var url = "http://wangzy.tunnel.qydev.com/wechat/authorize?returnUrl="+returnUrl;
         console.log("domain url: "+domain.server);
-        var url = domain.server+"wechat/authorize?returnUrl="+returnUrl;
+        var url = domain.server+"wechat/oauth/authorize?returnUrl="+encodeURIComponent(returnUrl);
         location.href = url;
     }
     if(userid!=null){

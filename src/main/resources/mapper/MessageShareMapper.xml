@@ -15,7 +15,7 @@
     delete from message_share
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wzy.crm.pojo.MessageShare" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.wzy.crm.pojo.MessageShare" >
     insert into message_share (id, message_id, user_id, 
       push_time, share_flag, share_time, 
       open_count, del_flag)

@@ -207,33 +207,6 @@ MessageComm.page = {
 
     // 初始化热门标签
     initHotLabel: function () {
-        var self = this,
-            filter = [
-                {field: 'corpid', value: YT.getCorpId(), operator: '=', relation: 'and'}
-            ],
-            data = {
-                m: this.m,
-                t: 'v_message_tag_hot',
-                filter: JSON.stringify(filter),
-                order: 'count desc',
-                r: 10
-            };
-
-        YT.query({
-            data: data,
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    var items = data.object, html = '';
-                    for (var i in items) {
-                        var item = items[i];
-                        html += self.createLabelHtml_add(item.tag_id, item.tag_name);
-                    }
-                    $('#label-list .box').append(html);
-                } else {
-                    $.alert('网络异常，请与管理员联系！');
-                }
-            }
-        });
     },
 
     createLabelHtml: function (i, id, name) {
@@ -798,7 +771,6 @@ MessageComm.page = {
 
 // 分享
 MessageComm.share = {
-    m: 101000000,
     shareId: -1,
     shareDetailId: -1,
     share_link: '',
@@ -866,6 +838,11 @@ MessageComm.share = {
             imgUrl: params.share_imgurl, // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
+                console.log("onsuccess:"+params.onsuccess);
+                console.log("desc:"+params.share_desc);
+                alert("描述："+params.share_desc);
+                console.log("imgUrl:"+params.share_imgurl);
+                console.log("shareFlag:"+shareFlag);
                 if (params.onsuccess && shareFlag != null && shareFlag !== undefined)
                     params.onsuccess('朋友圈');
             },
@@ -883,6 +860,11 @@ MessageComm.share = {
             dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
             success: function () {
                 // 用户确认分享后执行的回调函数
+                console.log("onsuccess:"+params.onsuccess);
+                console.log("desc:"+params.share_desc);
+                alert("描述："+params.share_desc);
+                console.log("imgUrl:"+params.share_imgurl);
+                console.log("shareFlag:"+shareFlag);
                 if (params.onsuccess && shareFlag != null && shareFlag !== undefined)
                     params.onsuccess('朋友');
             },
@@ -935,21 +917,6 @@ MessageComm.share = {
                 // 用户取消分享后执行的回调函数
             }
         });
-
-        /*wx.onMenuShareWechat({
-         title: params.share_title, // 分享标题
-         desc: params.share_desc, // 分享描述
-         link: params.share_link, // 分享链接
-         imgUrl: params.share_imgurl, // 分享图标
-         success: function () {
-         // 用户确认分享后执行的回调函数
-         if (params.onsuccess && shareFlag != null && shareFlag !== undefined)
-         params.onsuccess('企业转发微信');
-         },
-         cancel: function () {
-         // 用户取消分享后执行的回调函数
-         }
-         });*/
 
         wx.showAllNonBaseMenuItem();
     },

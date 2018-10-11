@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.net.URLEncoder;
 
 @Controller
-@RequestMapping("/wechat")
+@RequestMapping("/wechat/oauth")
 @Slf4j
 public class WxOauthController {
 
@@ -35,7 +35,7 @@ public class WxOauthController {
         //设置回调地址
 
         System.out.println("domain url:"+domainConfig.getUrl());
-        String url = domainConfig.getUrl()+"wechat/userInfo";
+        String url = domainConfig.getUrl()+"wechat/oauth/userInfo";
 //        String url = "http://wangzy.tunnel.qydev.com/wechat/userInfo";
         String redirectUrl = wxCpService.getOauth2Service().buildAuthorizationUrl(url,URLEncoder.encode(returnUrl),WxConsts.OAuth2Scope.SNSAPI_BASE);
 //        String redirectUrl = wxCpService.getOauth2Service().oauth2buildAuthorizationUrl(url, WxConsts.OAUTH2_SCOPE_BASE, URLEncoder.encode(returnUrl));

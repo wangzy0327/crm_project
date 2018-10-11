@@ -114,158 +114,101 @@ shareManager.service = {
                 }
             }
         });
-        // var filter = [{field: 'id', value: shareManager.service.getUrlParam('d'), operator: '=', relation: 'AND'}];
-        // var postData = {
-        //     m: shareManager.data.m,
-        //     t: 'v_message',
-        //     filter: JSON.stringify(filter)
-        // };
-        // YT.query({
-        //     data: postData,
-        //     loading: 0,
-        //     successCallback: function (data) {
-        //         if (200 == data.status) {
-        //             shareManager.data.messageData = data.object[0];
-        //             shareManager.service.initData();
-        //             callback();
-        //         } else {
-        //             $.alert(data.message);
-        //         }
-        //     }
-        // });
     },
     getStaff: function (callback) {
-        var filter = [{field: 'id', value: shareManager.service.getUrlParam('u'), operator: '=', relation: 'AND'}];
-        var data = {
-            m: shareManager.data.m,
-            t: 'staffs',
-            filter: JSON.stringify(filter)
-        };
-
-        YT.query({
-            data: data,
-            loading: 0,
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    shareManager.data.staffData = data.object[0];
+        $.ajax({
+            type: 'post',
+            url: "/message/self?userId="+module.data.user_id,
+            contentType: "application/json;charset=UTF-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    var data = result.data;
+                    shareManager.data.staffData = data;
                     callback();
-                } else {
-                    /*$.alert('网络异常，请与管理员联系！');*/
+                }else {
+                    $.alert('网络异常，请与管理员联系！');
                 }
             }
         });
     },
-    initShare: function () {
-        var self = this;
-        var shareFlag = self.getUrlParam("s");
-        var userId = shareManager.data.user_id;
-        var messageId = shareManager.data.message_id;
-        var dataId = -1;
-        var shareTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
-        var share_ip = shareManager.data.share_ip;
-
+    initShare: function (shareFlag,times) {
         shareManager.service.getData(function () {
             $.showLoading('加载中...');
-            $.hideLoading();
-            // var tkt = self.getUrlParam("tkt");
-            // MessageComm.share.initWxConfig(function () {
-                // if (tkt != null) {
-                //     var params = {};
-                //     var postData = {
-                //         m: shareManager.data.m,
-                //         t: 'message_share',
-                //         v: JSON.stringify([{
-                //             t: 'message_share',
-                //             data: {
-                //                 messageId: messageId,
-                //                 staffId: userId,
-                //                 shareFlag: 1,
-                //                 shareTime: shareTime,
-                //                 openCount: 0,
-                //                 delFlag: 1
-                //             },
-                //             ai: true
-                //         }])
-                //     };
-                //     YT.insert({
-                //         data: postData,
-                //         loading: 0,
-                //         successCallback: function (data) {
-                //             if (data.status == 200) {
-                //                 dataId = data.object;
-                //
-                //                 var _share_link = shareManager.data.messageData.url + "?u=" + userId + "&d=" + dataId + "&s=1&t=1";
-                //
-                //                 params = {
-                //                     share_title: shareManager.data.messageData.titleText,
-                //                     share_desc: '',
-                //                     share_link: _share_link + '&uid=' + YT.uuid(),
-                //                     share_imgurl: '',
-                //                     onsuccess: function () {
-                //                         var filter = [
-                //                             {field: 'id', value: dataId, operator: '=', relation: 'AND'}
-                //                         ];
-                //                         var postData = {
-                //                             m: shareManager.data.m,
-                //                             t: 'message_share',
-                //                             v: JSON.stringify([{
-                //                                 t: 'message_share',
-                //                                 data: {
-                //                                     shareTime: shareTime,
-                //                                     shareFlag: 1,
-                //                                     delFlag: 0
-                //                                 },
-                //                                 filter: filter
-                //                             }]),
-                //                             params: JSON.stringify({isvisitor: false})
-                //                         };
-                //                         YT.update({
-                //                             loading: false,
-                //                             data: postData,
-                //                             successCallback: function (data) {
-                //                                 if (data.status == 200) {
-                //                                     //$.toast("分享到"+str+"成功！");
-                //                                     MessageComm.share.insertShare(params, shareFlag, dataId, -1, _share_link, share_ip, userId);
-                //                                 } else {
-                //                                     $.alert(data.message);
-                //                                 }
-                //                             }
-                //                         });
-                //                     }
-                //                 };
-                //                 if (shareManager.data.messageData.descriptionText != null
-                //                     && shareManager.data.messageData.descriptionText !== undefined
-                //                     && shareManager.data.messageData.descriptionText != '') {
-                //                     params.share_desc = shareManager.data.messageData.descriptionText;
-                //                 }
-                //                 if (shareManager.data.messageData.picurl != null
-                //                     && shareManager.data.messageData.picurl !== undefined
-                //                     && shareManager.data.messageData.picurl != '') {
-                //                     params.share_imgurl = shareManager.data.messageData.picurl;
-                //                 }
-                //
-                //                 MessageComm.share.initWxShare(params, shareFlag);
-                //
-                //             }
-                //             $.hideLoading();
-                //         },
-                //         errorCallback: function () {
-                //             $.hideLoading();
-                //         }
-                //     });
-                // }
-            // });
+            var self = this,
+                userId = shareManager.data.user_id,
+                messageId = parseInt(shareManager.data.message_id),
+                shareTime = new Date().Format('yyyy-MM-dd hh:mm:ss'),
+                messageData = shareManager.data.messageData,
+                share_ip = shareManager.data.share_ip;
+            MessageComm.share.initWxConfig(function () {
+                var params = {};
+                var messageShare = {
+                    messageId:messageId,
+                    userId:userId,
+                    shareTime:shareTime,
+                    shareFlag:1,
+                    openCount:0,
+                    delFlag:1
+                };
+                $.ajax({
+                    type: "post",
+                    url: "/message/share",
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify(messageShare),
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.code == 0) {
+                            var data = result.data;
+                            var dataId = data.id;
+                            var _share_link = messageData.url + "?userid=" + userId +"&msgid="+ messageId +"&d=" + data.id ;
+                            console.log("share_link: "+ _share_link);
+                            console.log("picUrl: "+ messageData.picUrl);
+                            params = {
+                                share_title: messageData.titleText,
+                                share_desc: '通过销售助手分享',
+                                share_link: _share_link ,
+                                share_imgurl: messageData.picUrl,
+                                onsuccess: function () {
+                                    var messageShare = {
+                                        messageId:messageId,
+                                        userId:userId,
+                                        shareTime:shareTime,
+                                        shareFlag:1,
+                                        delFlag:0
+                                    };
+                                    $.ajax({
+                                        type: "post",
+                                        url: "/message/share",
+                                        data: JSON.stringify(messageShare),
+                                        contentType: "application/json; charset=utf-8",
+                                        dataType: "json",
+                                        success: function (result) {
+                                            if(result.code == 0){
+                                                MessageComm.share.insertShare(params, shareFlag, dataId, -1, _share_link, share_ip, userId);
+                                            }
+                                        },
+                                        error:function (result) {
+                                        }
+                                    });
+                                }
+                            };
 
+                            MessageComm.share.initWxShare(params, shareFlag);
+                        } else {
+                            alert(result.msg);
+                        }
+                        $.hideLoading();
+                    },
+                    error: function () {
+                    }
+                });
+            });
         });
-
     },
 
-    getUrlParam: function (name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) return decodeURI(r[2]);
-        return null;
-    }
 };
 
 shareManager.eventHandler = {

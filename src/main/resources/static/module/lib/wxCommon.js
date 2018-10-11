@@ -22,21 +22,28 @@ wxCommon.service = {
     initWxConfig: function (jsApiList,readyCallback,errorCallback,wuCallback,error2Callnack) {
         var self = this;
         var targetUrl = location.href.split("#")[0];
+        console.log("targetUrl:"+targetUrl);
+        // alert(location.href.split("#")[0]);
         var aj = $.ajax({//jquery-2.1.4.js
             type: "post",
-            url: YT.server + "/wx/getSign.action",//config.js
-            data: {targetUrl: targetUrl},
+            url: "/wechat/jssdk/config?url="+encodeURIComponent(targetUrl),//config.js
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
             cached: !1,
-            success: function (msg) {
-                if (msg.status == 200) {
+            success: function (result) {
+                if(result.code == 0){
+                    var data = result.data;
+                    console.log("appId:"+data.appId);
+                    console.log("timestamp:"+data.timestamp);
+                    console.log("nonceStr:"+data.nonceStr);
+                    console.log("signature:"+data.signature);
                     wx.config({
                         beta: true,
                         debug: false,
-                        appId: msg.object.appId,
-                        timestamp: msg.object.timestamp,
-                        nonceStr: msg.object.nonceStr,
-                        signature: msg.object.signature,
+                        appId: data.appId,
+                        timestamp: data.timestamp,
+                        nonceStr: data.nonceStr,
+                        signature: data.signature,
                         jsApiList: jsApiList
                     });
                     wx.ready(function () {
@@ -49,7 +56,6 @@ wxCommon.service = {
                     });
                 }else{
                     wuCallback();
-                    //$.toast(msg.message, "cancel");//jquery-weui.min.js
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {

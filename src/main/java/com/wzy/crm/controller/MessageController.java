@@ -7,8 +7,10 @@ import com.wzy.crm.config.PathConfig;
 import com.wzy.crm.config.RequestPathConfig;
 import com.wzy.crm.dao.GroupMessageRelationMapper;
 import com.wzy.crm.dao.MessageMapper;
+import com.wzy.crm.dao.MessageShareMapper;
 import com.wzy.crm.pojo.GroupMessageRelation;
 import com.wzy.crm.pojo.Message;
+import com.wzy.crm.pojo.MessageShare;
 import com.wzy.crm.service.IMessageService;
 import com.wzy.crm.common.ServerResponse;
 import com.wzy.crm.vo.MessageDetail;
@@ -43,6 +45,10 @@ public class MessageController {
 
     @Autowired
     private MessageMapper messageMapper;
+
+    @Autowired
+    private MessageShareMapper messageShareMapper;
+
 
     @GetMapping("/name")
     public List<GroupMessageRelation> findAllTitle(HttpServletRequest request, HttpSession session, @RequestParam String groupId, @RequestParam String title){
@@ -103,7 +109,7 @@ public class MessageController {
 
     @PostMapping("/h5/add")
     public ServerResponse h5Add(@RequestParam String url,@RequestBody Message message){
-        String h5Url = domainConfig.getUrl()+"/module/web/h5/h5-share.html";
+        String h5Url = domainConfig.getUrl()+"/module/message/h5/h5-share.html";
         message.setUrl(h5Url);
 //        message.setUrl("http://crm.youitech.com/module/message/h5/h5-share.html");
         List<String> tags = message.getTags();
@@ -112,7 +118,7 @@ public class MessageController {
 
     @PostMapping("/h5/update")
     public ServerResponse h5Update(@RequestBody Message message){
-        String h5Url = domainConfig.getUrl()+"/module/web/h5/h5-share.html";
+        String h5Url = domainConfig.getUrl()+"/module/message/h5/h5-share.html";
         message.setUrl(h5Url);
 //        message.setUrl("http://crm.youitech.com/module/message/h5/h5-share.html");
         List<String> tags = message.getTags();
@@ -241,6 +247,12 @@ public class MessageController {
         System.out.println("tagId:"+messageVo.getTagId());
         System.out.println("order:"+messageVo.getOrder());
         return messageService.getMobileMessageList(messageVo);
+    }
+
+    @PostMapping("/share")
+    public ServerResponse shareMessage(@RequestBody MessageShare messageShare){
+        messageShareMapper.insert(messageShare);
+        return ServerResponse.createBySuccess(messageShare);
     }
 
 }
