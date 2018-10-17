@@ -889,21 +889,17 @@ CREATE TABLE `message_share` (
 DROP TABLE IF EXISTS `message_share_customer`;
 CREATE TABLE `message_share_customer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `share_id` int(11) DEFAULT NULL COMMENT '资料消息分享id',
   `message_id` int(11) DEFAULT NULL,
   `user_id` varchar(30) DEFAULT NULL,
   `customer_id` int(11) DEFAULT '-1',
   `open_id` varchar(32) DEFAULT NULL,
-  `ip` varchar(20) DEFAULT NULL,
-  `cid` varchar(50) DEFAULT '-1',
-  `city` varchar(100) DEFAULT NULL,
-  `open_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '打开页面时间点',
-  `view_time` int(11) DEFAULT '1' COMMENT '浏览时间',
-  `read_info` longtext COMMENT '阅读信息/浏览时长',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最近更新时间',
   PRIMARY KEY (`id`),
   KEY `messageId` (`message_id`) USING BTREE,
   KEY `userId` (`user_id`) USING BTREE,
-  KEY `customerId` (`customer_id`) USING BTREE
+  KEY `customerId` (`customer_id`) USING BTREE,
+  KEY `share_id` (`share_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='客户消息分享表';
 
 DROP TABLE IF EXISTS `message_share_customer_area`;
@@ -941,9 +937,29 @@ create view v_message_opencount_time_tag as
     left join(
                select message_share.message_id,sum(open_count) open_count
                from message_share
+               where share_flag = 1
                group by message_id
              ) ms
       on message.id = ms.message_id
     left join staff
       on staff.userid = message.create_user_id;
 
+DROP TABLE IF EXISTS `customer_readinfo`;
+create table `customer_readinfo`(
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `share_id` int(11) DEFAULT NULL,
+  `user_id` varchar(30) DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  `open_id` varchar(30) DEFAULT NULL,
+  `ip` varchar(20) DEFAULT NULL,
+  `cid` varchar(50) DEFAULT '-1',
+  `city` varchar(100) DEFAULT NULL,
+  `open_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '打开页面时间点',
+  `view_time` int(11) DEFAULT '1' COMMENT '浏览时间',
+  `read_info` longtext COMMENT '阅读信息/浏览时长',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最近更新时间',
+  PRIMARY KEY (`id`),
+  KEY `openId` (`open_id`) USING BTREE,
+  KEY `userId` (`user_id`) USING BTREE,
+  KEY `customerId` (`customer_id`) USING BTREE
+)ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='客户阅读详情';

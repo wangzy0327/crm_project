@@ -3,11 +3,13 @@ package com.wzy.crm.service.impl;
 import com.google.common.collect.Lists;
 import com.wzy.crm.dao.CustomerMapper;
 import com.wzy.crm.dao.GroupStaffRelationMapper;
+import com.wzy.crm.dao.StaffCustomerCreateRelationMapper;
 import com.wzy.crm.dao.StaffCustomerFollowRelationMapper;
-import com.wzy.crm.pojo.Customer;
-import com.wzy.crm.pojo.CustomerDetailInfo;
+import com.wzy.crm.pojo.*;
 import com.wzy.crm.service.ICustomerService;
 import com.wzy.crm.common.ServerResponse;
+import com.wzy.crm.service.IMessageService;
+import com.wzy.crm.vo.CustomerShareVo;
 import com.wzy.crm.vo.CustomerVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,13 @@ public class CustomerServiceImpl implements ICustomerService {
     private StaffCustomerFollowRelationMapper staffCustomerFollowRelationMapper;
 
     @Autowired
+    private StaffCustomerCreateRelationMapper staffCustomerCreateRelationMapper;
+
+    @Autowired
     private GroupStaffRelationMapper groupStaffRelationMapper;
+
+    @Autowired
+    private IMessageService messageService;
 
     @Override
     public List<CustomerDetailInfo> findCustomerByParam(Map<String,String> map) {
@@ -80,5 +88,31 @@ public class CustomerServiceImpl implements ICustomerService {
             return ServerResponse.createBySuccess(groupStaffRelationMapper.selectCustomersByGroupId(groupId,keyword,start,size));
         }
     }
+
+    @Override
+    public ServerResponse saveShareCustomer(CustomerShareVo customerShareVo) {
+        Customer customer = customerShareVo.getCustomer();
+        System.out.println("customer:"+customer);
+        customerMapper.insert(customer);
+        System.out.println("save customer:"+customer);
+        StaffCustomerFollowRelation staffCustomerFollowRelation = new StaffCustomerFollowRelation();
+        staffCustomerFollowRelation.setUserId(customerShareVo.getUserId());
+        staffCustomerFollowRelation.setCustomerId(customer.getId());
+        staffCustomerFollowRelation.setIsFollow(1);
+        staffCustomerFollowRelationMapper.insert(staffCustomerFollowRelation);
+        StaffCustomerCreateRelation staffCustomerCreateRelation = new StaffCustomerCreateRelation();
+        staffCustomerCreateRelation.setUserId(customerShareVo.getUserId());
+        staffCustomerCreateRelation.setCustomerId(customer.getId());
+        staffCustomerCreateRelation.setIsCreate(1);
+        staffCustomerCreateRelationMapper.insert(staffCustomerCreateRelation);
+        MessageShareCustomer messageShareCustomer = new MessageShareCustomer();
+        messageShareCustomer.setUserId(customerShareVo.getUserId());
+        messageShareCustomer.setMessageId(customerShareVo.getMessageId());
+        messageShareCustomer.setShareId(customerShareVo.getShareId());
+        messageShareCustomer.setCustomerId(customerShareVo.getCustomer().getId());
+        messageShareCustomer.setOpenId(customerShareVo.getCustomer().getOpenId());
+        return messageService.saveShareCustomer(messageShareCustomer);
+    }
+
 
 }

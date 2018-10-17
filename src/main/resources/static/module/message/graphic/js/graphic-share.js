@@ -3,6 +3,7 @@ var module = {};
 module.data = {
     user_id:getUrlParam("userid"),
     message_id:getUrlParam("msgid"),
+    d:getUrlParam("d"),
     messageData: {},
     title: '' // 页面标题
 };
@@ -18,6 +19,10 @@ module.service = {
         module.service.getMessageData(function (data) {
             OSTool.detectIP(function (ipData) {
                 module_d.share_ip = ipData.ip;
+
+                module_d.cid = ipData.cid;
+
+                module_d.city = ipData.city;
 
                 module_d.messageData = data;
 
@@ -49,43 +54,25 @@ module.service = {
                 }
             }
         });
-        // var filter = [
-        //     {field: 'id', value: YT.getUrlParam('d'), operator: '=', relation: 'and'}
-        // ];
-        //
-        // var data = {
-        //     m: module.data.m,
-        //     t: 'v_message',
-        //     filter: JSON.stringify(filter)
-        // };
-        //
-        // YT.query({
-        //     data: data,
-        //     successCallback: function (data) {
-        //         if (200 == data.status) {
-        //             callback(data.object[0]);
-        //         } else {
-        //             $.alert('网络异常，请与管理员联系！');
-        //         }
-        //     }
-        // });
     },
 
     initShare: function (shareFlag,times) {
         var self = this,
             userId = module.data.user_id,
             messageId = parseInt(module.data.message_id),
+            customerId = module.data.customer_id,
+            shareFlag = 1,
             shareTime = new Date().Format('yyyy-MM-dd hh:mm:ss'),
             messageData = module.data.messageData,
             share_ip = module.data.share_ip;
 
-        MessageComm.share.initWxConfig(function () {
+        MessageComm.share.initWxConfig(function() {
             var params = {};
             var messageShare = {
                 messageId:messageId,
                 userId:userId,
                 shareTime:shareTime,
-                shareFlag:1,
+                shareFlag:0,
                 openCount:0,
                 delFlag:1
             };
@@ -111,6 +98,8 @@ module.service = {
                                 var messageShare = {
                                     messageId:messageId,
                                     userId:userId,
+                                    customerId:customerId,
+                                    openCount:0,
                                     shareTime:shareTime,
                                     shareFlag:1,
                                     delFlag:0
@@ -123,7 +112,10 @@ module.service = {
                                     dataType: "json",
                                     success: function (result) {
                                         if(result.code == 0){
-                                            MessageComm.share.insertShare(params, shareFlag, dataId, -1, _share_link, share_ip, userId);
+                                            var data = result.data;
+                                            var dataId = data.id;
+                                            console.log("dataId:"+dataId);
+                                            MessageComm.share.insertShare(params, shareFlag,customerId, dataId, -1, _share_link, share_ip, userId);
                                         }
                                     },
                                     error:function (result) {

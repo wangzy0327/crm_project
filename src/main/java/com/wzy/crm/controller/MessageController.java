@@ -7,10 +7,12 @@ import com.wzy.crm.config.PathConfig;
 import com.wzy.crm.config.RequestPathConfig;
 import com.wzy.crm.dao.GroupMessageRelationMapper;
 import com.wzy.crm.dao.MessageMapper;
+import com.wzy.crm.dao.MessageShareCustomerMapper;
 import com.wzy.crm.dao.MessageShareMapper;
 import com.wzy.crm.pojo.GroupMessageRelation;
 import com.wzy.crm.pojo.Message;
 import com.wzy.crm.pojo.MessageShare;
+import com.wzy.crm.pojo.MessageShareCustomer;
 import com.wzy.crm.service.IMessageService;
 import com.wzy.crm.common.ServerResponse;
 import com.wzy.crm.vo.MessageDetail;
@@ -48,6 +50,7 @@ public class MessageController {
 
     @Autowired
     private MessageShareMapper messageShareMapper;
+
 
 
     @GetMapping("/name")
@@ -253,6 +256,11 @@ public class MessageController {
     public ServerResponse shareMessage(@RequestBody MessageShare messageShare){
         messageShareMapper.insert(messageShare);
         return ServerResponse.createBySuccess(messageShare);
+    }
+
+    @PostMapping("/share/customer")
+    public ServerResponse shareMessageCustomer(@RequestBody MessageShareCustomer messageShareCustomer){
+        return messageService.saveShareCustomer(messageShareCustomer);
     }
 
 }

@@ -5,12 +5,10 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class MessageShareCustomer {
+public class CustomerReadinfo {
     private Integer id;
 
     private Integer shareId;
-
-    private Integer messageId;
 
     private String userId;
 
@@ -18,6 +16,18 @@ public class MessageShareCustomer {
 
     private String openId;
 
+    private String ip;
+
+    private String cid;
+
+    private String city;
+
+    private Date openTime;
+
+    private Integer viewTime;
+
     private Date updateTime;
+
+    private String readInfo;
 
 }

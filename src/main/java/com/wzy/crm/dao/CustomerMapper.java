@@ -26,4 +26,7 @@ public interface CustomerMapper {
 
     Integer findCustomerCountByParam(Map<String,String> map);
 
+    Integer selectByMobile(String mobile);
+
+
 }

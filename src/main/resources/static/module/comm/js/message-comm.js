@@ -19,6 +19,11 @@ MessageComm.getSrcString = function (src, name) {
     return null;
 };
 
+var noMore =
+    '<div  class="noMore" style="margin-top: 10px;text-align: center;">' +
+    '无更多数据' +
+    '</div> ';
+
 /**
  * 消息页面预览、添加标签，适用于：H5、资料、平面
  *
@@ -840,7 +845,7 @@ MessageComm.share = {
                 // 用户确认分享后执行的回调函数
                 console.log("onsuccess:"+params.onsuccess);
                 console.log("desc:"+params.share_desc);
-                alert("描述："+params.share_desc);
+                console.log("link:"+params.share_link);
                 console.log("imgUrl:"+params.share_imgurl);
                 console.log("shareFlag:"+shareFlag);
                 if (params.onsuccess && shareFlag != null && shareFlag !== undefined)
@@ -862,7 +867,7 @@ MessageComm.share = {
                 // 用户确认分享后执行的回调函数
                 console.log("onsuccess:"+params.onsuccess);
                 console.log("desc:"+params.share_desc);
-                alert("描述："+params.share_desc);
+                console.log("link:"+params.share_link);
                 console.log("imgUrl:"+params.share_imgurl);
                 console.log("shareFlag:"+shareFlag);
                 if (params.onsuccess && shareFlag != null && shareFlag !== undefined)
@@ -921,27 +926,33 @@ MessageComm.share = {
         wx.showAllNonBaseMenuItem();
     },
 
-    insertShare: function (params, shareFlag, shareId, shareDetailId, _share_link, share_ip, staff_id) {
+    insertShare: function (params, shareFlag, customerId, shareId, shareDetailId, _share_link, share_ip, userId) {
         var self = this;
         this.shareId = shareId;
+        this.customerId = customerId;
         this.shareDetailId = shareDetailId;
         this.share_link = params.share_link;
-        this.staff_id = staff_id;
-
+        this.userId = userId;
+        console.log("customerId:"+customerId);
         // 插入分享
+        // 添加客户
+        // self.id = data;
         this.ajaxData(share_ip, function (data) {
-            // 添加客户
-            self.id = data;
-            if (0 == shareFlag) {
+            console.log("share id:"+shareId);
+            if (customerId == null || customerId == undefined) {
                 // 打开填写客户Popup
                 $(document.body).addClass('page-unScroll');
                 $('#popup_customer').popup();
                 $('#save, #toolbar-save').click(function () {
-                    MessageComm.customer.triggerSaveBtn(self.id, staff_id);
+                    console.log("share id:"+shareId);
+                    MessageComm.share.shareId = shareId;
+                    MessageComm.customer.triggerSaveBtn(shareId, userId);
                 });
             }
 
-            params.share_link = _share_link + '&uid=' + YT.uuid();
+            // console.log("before  params.share_link:"+params.share_link);
+            // params.share_link = _share_link + "&shareid="+shareId ;
+            // console.log("after   params.share_link:"+params.share_link);
 
             // 重新初始化分享
             MessageComm.share.initWxShare(params, shareFlag);
@@ -951,53 +962,54 @@ MessageComm.share = {
     // 插入分享
     ajaxData: function (share_ip, callback) {
         var self = this, v = [];
-
-        v.push({
-            t: 'message_share_uid',
-            data: {
-                shareId: self.shareId,
-                shareDetailId: self.shareDetailId,
-                uid: YT.getSrcString(self.share_link, 'uid'),
-                time: new Date().Format('yyyy-MM-dd hh:mm:ss')
-            },
-            ai: true
-        });
-
-        YT.insert({
-            loading: false,
-            data: {
-                m: self.m,
-                t: 'message_share_uid',
-                v: JSON.stringify(v),
-                params: JSON.stringify({ip: share_ip}),
-                isvisitor: MessageComm.customer.isvisitor
-            },
-            successCallback: function (data) {
-                callback(data.object);
-            }
-        });
+        callback();
+        // v.push({
+        //     t: 'message_share_uid',
+        //     data: {
+        //         shareId: self.shareId,
+        //         shareDetailId: self.shareDetailId,
+        //         uid: YT.getSrcString(self.share_link, 'uid'),
+        //         time: new Date().Format('yyyy-MM-dd hh:mm:ss')
+        //     },
+        //     ai: true
+        // });
+        //
+        // YT.insert({
+        //     loading: false,
+        //     data: {
+        //         m: self.m,
+        //         t: 'message_share_uid',
+        //         v: JSON.stringify(v),
+        //         params: JSON.stringify({ip: share_ip}),
+        //         isvisitor: MessageComm.customer.isvisitor
+        //     },
+        //     successCallback: function (data) {
+        //         callback(data.object);
+        //     }
+        // });
     }
 
 };
 
 // 添加客户
 MessageComm.customer = {
-    m: 1010000,
     customerData: {},
     customerList: [], // 老客户列表数据
+    extraFilter:false,
+    extraFilterData:'',
     pager: {
         loading: false,
         lastPage: false,
         pageCount: 0,
         page: 1,
-        rows: 15
+        size: 12
     },
     searchPager: {
         loading: false,
         lastPage: false,
         pageCount: 0,
         page: 1,
-        rows: 15
+        size: 12
     },
     callback: function () {
 
@@ -1023,12 +1035,12 @@ MessageComm.customer = {
             {id: 'mobile', name: '手机号', type: 'number', p_name: 'pattern', p_val: '[0-9]*'},
             {id: 'name', name: '姓名', type: 'text', p_name: 'maxlength', p_val: '8'},
             {id: 'wechat', name: '微信号', type: 'text', p_name: 'maxlength', p_val: '30'},
-            {id: 'department', name: '公司', type: 'text', p_name: 'maxlength', p_val: '30'},
+            {id: 'company', name: '公司', type: 'text', p_name: 'maxlength', p_val: '30'},
             {id: 'position', name: '职位', type: 'text', p_name: 'maxlength', p_val: '20'},
             {id: 'address', name: '地址', type: 'text', p_name: 'maxlength', p_val: '50'},
             {id: 'telephone', name: '座机', type: 'text', p_name: 'maxlength', p_val: '13'},
             {id: 'email', name: '邮箱', type: 'text', p_name: 'maxlength', p_val: '30'},
-            {id: 'webSite', name: '网址', type: 'text', p_name: 'maxlength', p_val: '50'},
+            {id: 'website', name: '网址', type: 'text', p_name: 'maxlength', p_val: '50'},
             {id: 'fax', name: '传真', type: 'text', p_name: 'maxlength', p_val: '30'}
         ];
 
@@ -1037,9 +1049,9 @@ MessageComm.customer = {
         $form.append(this.createFormHtml(data));
     },
 
-    triggerSaveBtn: function (id, staff_id) {
-        this.id = id; // 分享记录关系主键
-        this.staff_id = staff_id; // 分享人（销售员主键）
+    triggerSaveBtn: function (shareId, userId) {
+        this.share_id = shareId; // 分享记录关系主键
+        this.user_id = userId; // 分享人（销售员主键）
         $(this.ele).triggerHandler('click');
     },
 
@@ -1055,21 +1067,15 @@ MessageComm.customer = {
             if ($radio.is(':checked')) {
                 self.customerData = $radio.data('d');
                 self.setCustomerVal(self.customerData);
-                MessageComm.customer.triggerSaveBtn(MessageComm.share.id, MessageComm.share.staff_id);
+                console.log("MessageComm shareId:"+MessageComm.share.shareId);
+                console.log("MessageComm userId:"+MessageComm.share.userId);
+                MessageComm.customer.triggerSaveBtn(MessageComm.share.shareId, MessageComm.share.userId);
                 //$.closePopup('#popup_choose');
             } else {
                 self.customerData = {};
                 self.setCustomerVal(self.customerData);
                 $.alert('未选择客户！');
             }
-
-            /*$.closePopup();
-             $('#popup_customer').popup();
-             // css完成修改后再修改
-             var modal = $('#popup_customer').find(".weui-popup__modal");
-             modal.transitionEnd(function () {
-             $('#popup_customer').css('display', 'block');
-             });*/
         });
     },
 
@@ -1079,10 +1085,13 @@ MessageComm.customer = {
         $('#choose').click(function () {
             var $el = $('#popup_choose');
             $el.addClass('weui-popup__container--visible').css('display', 'block');
+            console.log("self.pager.lastPage:"+self.pager.lastPage);
             if (!self.pager.lastPage && self.customerList.length == 0) {
+                $list = $el.find('.customer-list');
+                $list.empty();
                 self.initCustomerData($el);
             } else {
-                self.createCustomerData($el, self.customerList);
+                // self.createCustomerData($el, self.customerList);
             }
         });
     },
@@ -1127,7 +1136,7 @@ MessageComm.customer = {
                     lastPage: false,
                     pageCount: 0,
                     page: 1,
-                    rows: 15
+                    size: 12
                 };
                 self.customerList = [];
                 self.resetChooseCustomerDom();
@@ -1141,19 +1150,22 @@ MessageComm.customer = {
     handleInfinite: function () {
         var self = this, $el = $('#popup_choose');
 
-        $el.find('.modal-content').infinite(80).on("infinite", function () {
+        $el.find('.modal-content').infinite().on("infinite", function () {
             var $search = $el.find('.searchInput');
             var searchVal = $.trim($search.val());
             // 如果不是最后一页并且搜索框内容为空，则进行原始页面的滚动加载，反之进行搜索滚动加载
+            console.log("self.pager.lastPage:"+self.pager.lastPage);
             if (!self.pager.lastPage && searchVal) {
                 if (self.searchPager.loading) return;
                 self.searchPager.loading = true;
-                $el.find('.msg-loading').show();
+                self.searchPager.page++;
+                // $el.find('.msg-loading').show();
                 self.initSearchCustomerData($el, searchVal);
             } else {
                 if (self.pager.loading) return;
                 self.pager.loading = true;
-                $el.find('.msg-loading').show();
+                self.pager.page++;
+                // $el.find('.msg-loading').show();
                 self.initCustomerData($el);
             }
         });
@@ -1181,7 +1193,7 @@ MessageComm.customer = {
                         lastPage: false,
                         pageCount: 0,
                         page: 1,
-                        rows: 15
+                        rows: 12
                     };
                     self.initSearchCustomerData($el, searchVal);
                 } else {
@@ -1220,25 +1232,19 @@ MessageComm.customer = {
                     var reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/i;
                     reg = /^1\d{10}$/i;
                     if (reg.test(mobile)) {
-                        var filter = [
-                            {field: 'mobile', value: mobile, operator: '=', relation: 'and'},
-                            {field: 'corpid', value: YT.getCorpId(), operator: '=', relation: 'and'}
-                        ];
-
-                        YT.query({
-                            data: {
-                                m: self.m,
-                                t: 'v_customers_distinct',
-                                filter: JSON.stringify(filter)
+                        $.ajax({
+                            type: 'get',
+                            url: "/customer/valid?mobile="+mobile,
+                            contentType: "application/json;charset=UTF-8",
+                            dataType: 'json',
+                            error: function (request) {
                             },
-                            successCallback: function (data) {
-                                if (200 == data.status) {
-                                    if (data.object.length == 1) {
-                                        $.alert('手机号已存在！');
-                                    } else {
-                                        // todo 座机、邮箱、网址、传真需要做验证
-                                        self.ajaxData();
-                                    }
+                            success: function (result) {
+                                if (result.code == 0) {
+                                    // todo 座机、邮箱、网址、传真需要做验证
+                                    self.ajaxData();
+                                }else{
+                                    $.alert('手机号已存在！');
                                 }
                             }
                         });
@@ -1260,18 +1266,18 @@ MessageComm.customer = {
             customer_mobile = customer_data.mobile,
             customer_name = customer_data.name || '',
             customer_position = customer_data.position || '',
-            customer_department = customer_data.department || '',
+            customer_company = customer_data.company || '',
             customer_wechat = customer_data.wechat || '',
             customer_address = customer_data.address || '',
             customer_telephone = customer_data.telephone || '',
             customer_email = customer_data.email || '',
-            customer_webSite = customer_data.webSite || '',
+            customer_website = customer_data.website || '',
             customer_fax = customer_data.fax || '',
             customer_remark = customer_data.remark || '';
 
         if (obj.mobile == customer_mobile && obj.name == customer_name && obj.position == customer_position &&
-            obj.department == customer_department && obj.wechat == customer_wechat && obj.address == customer_address &&
-            obj.telephone == customer_telephone && obj.email == customer_email && obj.webSite == customer_webSite &&
+            obj.company == customer_company && obj.wechat == customer_wechat && obj.address == customer_address &&
+            obj.telephone == customer_telephone && obj.email == customer_email && obj.website == customer_website &&
             obj.fax == customer_fax && obj.remark == customer_remark) {
             return {
                 obj: obj,
@@ -1289,12 +1295,12 @@ MessageComm.customer = {
         var mobile = $('#mobile').val();
         var name = $.trim($('#name').val());
         var position = $.trim($('#position').val());
-        var department = $.trim($('#department').val());
+        var company = $.trim($('#company').val());
         var wechat = $.trim($('#wechat').val());
         var address = $.trim($('#address').val());
         var telephone = $('#telephone').val();
         var email = $.trim($('#email').val());
-        var webSite = $.trim($('#webSite').val());
+        var website = $.trim($('#website').val());
         var fax = $.trim($('#fax').val());
         var remark = $.trim($('#remark').val());
 
@@ -1302,12 +1308,12 @@ MessageComm.customer = {
             mobile: mobile,
             name: name,
             position: position,
-            department: department,
+            company: company,
             wechat: wechat,
             address: address,
             telephone: telephone,
             email: email,
-            webSite: webSite,
+            website: website,
             fax: fax,
             remark: remark
         }
@@ -1318,24 +1324,24 @@ MessageComm.customer = {
             mobile: '',
             name: '',
             position: '',
-            department: '',
+            company: '',
             wechat: '',
             address: '',
             telephone: '',
             email: '',
-            webSite: '',
+            website: '',
             fax: '',
             remark: ''
         }, data);
         $('#mobile').val(obj.mobile);
         $('#name').val(obj.name);
         $('#position').val(obj.position);
-        $('#department').val(obj.department);
+        $('#company').val(obj.company);
         $('#wechat').val(obj.wechat);
         $('#address').val(obj.address);
         $('#telephone').val(obj.telephone);
         $('#email').val(obj.email);
-        $('#webSite').val(obj.webSite);
+        $('#website').val(obj.website);
         $('#fax').val(obj.fax);
         $('#remark').val(obj.remark);
     },
@@ -1362,111 +1368,120 @@ MessageComm.customer = {
         var self = this, v = [],
             obj = self.getCustomerVal(),
             customer_id = self.customerData.id;
-
+        console.log("shareId:"+this.share_id);
+        console.log("userId:"+this.user_id);
         if (customer_id) {
             // 添加销售人员与客户关系
-            var filter = [
-                {field: 'id', value: customer_id, operator: '=', relation: 'AND'}
-            ];
-
-            v.push({
-                t: 'customers',
-                data: obj,
-                filter: filter
-            });
-
-            YT.update({
-                loading: false,
-                data: {
-                    m: self.m,
-                    t: 'customers',
-                    v: JSON.stringify(v),
-                    params: JSON.stringify({
-                        staff_id: self.staff_id,
-                        recordId: self.recordId,
-                        id: self.id // 分享记录关系主键
-                    })
+            var objData = new Map();
+            objData['userId'] = module.data.user_id;
+            objData['messageId'] = module.data.message_id;
+            objData['customerId'] = customer_id;
+            objData['shareId'] = this.share_id;
+            $.ajax({
+                type: 'post',
+                url: "/message/share/customer",
+                data:JSON.stringify(objData),
+                contentType: "application/json;charset=UTF-8",
+                dataType: 'json',
+                error: function (request) {
                 },
-                successCallback: function (data) {
-                    $.hideLoading();
-                    if (200 == data.status) {
+                success: function (result) {
+                    if (result.code == 0) {
                         // 清空数据
                         self.resetCustomerDom();
                         self.resetCustomerData();
                         $.alert('提交成功！', function () {
                             self.callback();
                         });
-                    } else {
-                        $.alert('提交失败！');
                     }
+                    $.hideLoading();
                 }
             });
         } else {
-            // 添加客户
-            v.push({
-                t: 'customers',
-                data: obj,
-                ai: true
-            });
-
-            YT.insert({
-                loading: false,
-                data: {
-                    m: self.m,
-                    t: 'customers',
-                    v: JSON.stringify(v),
-                    params: JSON.stringify({
-                        staff_id: self.staff_id,
-                        recordId: self.recordId,
-                        id: self.id // 分享记录关系主键
-                    })
+            var objData = new Map();
+            objData['userId'] = module.data.user_id;
+            objData['messageId'] = module.data.message_id;
+            objData['customer'] = obj;
+            $.ajax({
+                type: 'post',
+                url: "/customer/save/share",
+                data:JSON.stringify(objData),
+                contentType: "application/json;charset=UTF-8",
+                dataType: 'json',
+                error: function (request) {
                 },
-                successCallback: function (data) {
-                    $.hideLoading();
-                    if (200 == data.status) {
+                success: function (result) {
+                    if (result.code == 0) {
                         // 清空数据
+                        var data = result.data;
+                        self.customerId = data.customerId;
                         self.resetCustomerDom();
                         self.resetCustomerData();
                         $.alert('提交成功！', function () {
                             self.callback();
                         });
-                    } else {
-                        $.alert('提交失败！');
                     }
+                    $.hideLoading();
                 }
             });
+
         }
+    },
+
+    initSearch: function () {
+        var searchInput = "";
+        var userId = null;
+        var groupId = null;
+        if(MessageComm.customer.extraFilter && MessageComm.customer.extraFilterData.length >0){
+            searchInput = MessageComm.customer.extraFilterData;
+        }
+        userId = module.data.user_id;
+        return {
+            userId:userId,
+            searchInput:searchInput,
+            groupId:groupId,
+            page:MessageComm.customer.pager.page,
+            size:MessageComm.customer.pager.size
+        };
     },
 
     // 初始化老客户Popup
     initCustomerData: function ($el) {
         var self = this;
-        YT.query({
-            data: this.getPagerData(),
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    var items = data.object.items,
-                        $list = $el.find('.customer-list');
-
-                    for (var i in items) {
-                        self.customerList.push(items[i]);
-                    }
-
-                    self.pager.page = data.object.idx + 1;
-                    self.pager.pageCount = data.object.pageCount;
-                    self.pager.lastPage = data.object.idx >= data.object.pageCount;
-
-                    $list.append(self.createCustomerHtml(items));
-
-                    if (self.pager.lastPage) {
-                        // 最后一页
-                        self.pager.loading = true;
+        var postData = this.initSearch();
+        $.ajax({
+            type: "post",
+            url: "/customer/list",
+            data:JSON.stringify(postData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                if(result.code == 0){
+                    $list = $el.find('.customer-list');
+                    var data = result.data;
+                    if(data!=null){
+                        console.log("data.length:"+data.length);
+                        if(data.length<self.pager.size){
+                            self.pager.lastPage = true;
+                            $el.find('.msg-loading').hide();
+                        }
+                        if (data.length > 0) {
+                            self.pager.loading = true;
+                            for (var i in data) {
+                                self.customerList.push(data[i]);
+                            }
+                            $list.append(self.createCustomerHtml(data));
+                        }
+                    }else{
+                        self.pager.lastPage = true;
                         $el.find('.msg-loading').hide();
-                        self.createMsgHtml($el, data.object.recordCount);
-                        return;
                     }
                 }
                 self.pager.loading = false;
+            },
+            error:function (result) {
+                alert(result.status);
+                alert(result.statusText);
             }
         });
     },
@@ -1474,28 +1489,39 @@ MessageComm.customer = {
     // 初始化老客户Popup 带搜索
     initSearchCustomerData: function ($el, searchVal) {
         var self = this;
-        YT.query({
-            data: this.getSearchPagerData(searchVal),
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    var items = data.object.items,
-                        $list = $el.find('.customer-list');
-
-                    self.searchPager.page = data.object.idx + 1;
-                    self.searchPager.pageCount = data.object.pageCount;
-                    self.searchPager.lastPage = data.object.idx >= data.object.pageCount;
-
-                    $list.append(self.createCustomerHtml(items));
-
-                    if (self.searchPager.lastPage) {
-                        // 最后一页
-                        self.searchPager.loading = true;
+        var postData = this.initSearch();
+        postData['searchInput'] = searchVal;
+        console.log("searchInput:"+postData['searchInput']);
+        $.ajax({
+            type: "post",
+            url: "/customer/list",
+            data:JSON.stringify(postData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                if(result.code == 0){
+                    $list = $el.find('.customer-list');
+                    var data = result.data;
+                    console.log("data.length:"+data.length);
+                    if(data!=null){
+                        if(data.length<self.searchPager.pageCount){
+                            self.searchPager.lastPage = true;
+                            $el.find('.msg-loading').hide();
+                        }
+                        if (data.length > 0) {
+                            self.pager.loading = true;
+                            $list.append(self.createCustomerHtml(data));
+                        }
+                    }else{
+                        self.searchPager.lastPage = true;
                         $el.find('.msg-loading').hide();
-                        self.createMsgHtml($el, data.object.recordCount);
-                        return;
                     }
                 }
-                self.searchPager.loading = false;
+                self.pager.loading = false;
+            },
+            error:function (result) {
+                alert(result.status);
+                alert(result.statusText);
             }
         });
     },
@@ -1598,8 +1624,8 @@ MessageComm.customer = {
 
         html += '<div class="picker-button">';
         // 选择老客户事件
-        html += '<a href="javascript:;" id="choose" style="margin-right: 20px;"><i class="iconfont" style="font-size: 20px;">&#xe640</i></a>';
-        html += '<a href="javascript:;" id="toolbar-save">保存</a>';
+        html += '<a href="javascript:;" id="choose" style="margin-right: 20px;"><i class="iconfont" style="color: #0bb20c;font-size: 20px;">&#xe640</i></a>';
+        html += '<a href="javascript:;" style="color: #0bb20c;" id="toolbar-save">保存</a>';
         html += '</div>';
 
         html += '<h1 class="title">填写客户</h1>';

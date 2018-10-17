@@ -3,6 +3,7 @@ var module = {};
 module.data = {
     user_id:getUrlParam("userid"),
     message_id:getUrlParam("msgid"),
+    d:getUrlParam("d"),
     messageData: {}
 };
 
@@ -17,6 +18,10 @@ module.service = {
         module.service.getMessageData(function (data) {
             OSTool.detectIP(function (ipData) {
                 module_d.share_ip = ipData.ip;
+
+                module_d.cid = ipData.cid;
+
+                module_d.city = ipData.city;
 
                 module_d.messageData = data;
 
@@ -54,6 +59,8 @@ module.service = {
         var self = this,
             userId = module.data.user_id,
             messageId = parseInt(module.data.message_id),
+            customerId = module.data.customer_id,
+            shareFlag = 1,
             shareTime = new Date().Format('yyyy-MM-dd hh:mm:ss'),
             messageData = module.data.messageData,
             share_ip = module.data.share_ip;
@@ -64,7 +71,7 @@ module.service = {
                 messageId:messageId,
                 userId:userId,
                 shareTime:shareTime,
-                shareFlag:1,
+                shareFlag:0,
                 openCount:0,
                 delFlag:1
             };
@@ -90,6 +97,8 @@ module.service = {
                                 var messageShare = {
                                     messageId:messageId,
                                     userId:userId,
+                                    customerId:customerId,
+                                    openCount:0,
                                     shareTime:shareTime,
                                     shareFlag:1,
                                     delFlag:0
@@ -102,7 +111,10 @@ module.service = {
                                     dataType: "json",
                                     success: function (result) {
                                         if(result.code == 0){
-                                            MessageComm.share.insertShare(params, shareFlag, dataId, -1, _share_link, share_ip, userId);
+                                            var data = result.data;
+                                            var dataId = data.id;
+                                            console.log("dataId:"+dataId);
+                                            MessageComm.share.insertShare(params, shareFlag, customerId,dataId, -1, _share_link, share_ip, userId);
                                         }
                                     },
                                     error:function (result) {
@@ -120,58 +132,6 @@ module.service = {
                 error: function () {
                 }
             });
-            // YT.insert({
-            //     data: postData,
-            //     successCallback: function (data) {
-            //         if (data.status == 200) {
-            //             dataId = data.object;
-            //
-            //             var _share_link = messageData.url + "?u=" + userId + "&d=" + dataId + "&s=1&t=1";
-            //
-            //             params = {
-            //                 share_title: messageData.titleText,
-            //                 share_desc: '通过' + messageData.corp_name + '分享',
-            //                 share_link: _share_link + '&uid=' + YT.uuid(),
-            //                 share_imgurl: domain.nginx + messageData.picurl,
-            //                 onsuccess: function () {
-            //                     var filter = [
-            //                         {field: 'id', value: dataId, operator: '=', relation: 'AND'}
-            //                     ];
-            //                     var postData = {
-            //                         m: m,
-            //                         t: 'message_share',
-            //                         v: JSON.stringify([{
-            //                             t: 'message_share',
-            //                             data: {
-            //                                 shareTime: shareTime,
-            //                                 shareFlag: 1,
-            //                                 delFlag: 0
-            //                             },
-            //                             filter: filter
-            //                         }]),
-            //                         params: JSON.stringify({isvisitor: false})
-            //                     };
-            //                     YT.update({
-            //                         loading: false,
-            //                         data: postData,
-            //                         successCallback: function (data) {
-            //                             if (data.status == 200) {
-            //                                 //$.toast("分享到"+str+"成功！");
-            //                                 MessageComm.share.insertShare(params, shareFlag, dataId, -1, _share_link, share_ip, userId);
-            //                             } else {
-            //                                 //$.alert(data.message);
-            //                             }
-            //                         }
-            //                     });
-            //                 }
-            //             };
-            //
-            //             MessageComm.share.initWxShare(params, shareFlag);
-            //
-            //         }
-            //         $.hideLoading();
-            //     }
-            // });
         });
     },
 

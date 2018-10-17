@@ -1,20 +1,26 @@
 $(function () {
-    shareManager.service.initControls();
-    shareManager.eventHandler.handleEvents();
+    module.service.initControls();
+    module.eventHandler.handleEvents();
 });
 
-var shareManager = shareManager || {};
-shareManager.data = {
+var module = module || {};
+module.data = {
     user_id:getUrlParam("userid"),
     message_id:getUrlParam("msgid"),
+    d:getUrlParam("d"),
     staffData: {},
     messageData: {}
 };
-shareManager.service = {
+module.service = {
     initControls: function () {
         var self = this;
         OSTool.detectIP(function (ipData) {
-            shareManager.data.share_ip = ipData.ip;
+            module.data.share_ip = ipData.ip;
+
+            module.data.cid = ipData.cid;
+
+            module.data.city = ipData.city;
+
             self.initShare();
         });
     },
@@ -30,29 +36,29 @@ shareManager.service = {
         return str;
     },
     initData: function () {
-        if (shareManager.data.messageData) {
-            var messageData = shareManager.data.messageData;
+        if (module.data.messageData) {
+            var messageData = module.data.messageData;
             if ('' + messageData.msgtype == '1') {
                 $("#message-page-date").html(new Date().Format("MM月dd日"));
                 console.log("titleText:"+messageData.titleText);
                 console.log("description:"+messageData.description);
-                $("#message-page-title").html(shareManager.service.replaceEMToI(messageData.titleText));
-                $("#message-page-content").html(shareManager.service.replaceEMToI(messageData.description || ""));
+                $("#message-page-title").html(module.service.replaceEMToI(messageData.titleText));
+                $("#message-page-content").html(module.service.replaceEMToI(messageData.description || ""));
             } else if ('' + messageData.msgtype == '3') {
                 $(".message-page").css({"margin": "0", "padding": "0"});
                 var src = messageData.picurl ? messageData.picurl.replace('cover_', '') : "";
                 if (src != '') {
                     var corpJson = messageData.contentAttach;
                     if (corpJson != null && corpJson !== undefined && corpJson != '' && corpJson != '{}') {
-                        shareManager.service.getStaff(function () {
-                            if (!$.isEmptyObject(shareManager.data.staffData)) {
-                                var qrCodeAttach = eval('(' + shareManager.data.staffData.qrcodeAttach + ')');
+                        module.service.getStaff(function () {
+                            if (!$.isEmptyObject(module.data.staffData)) {
+                                var qrCodeAttach = eval('(' + module.data.staffData.qrcodeAttach + ')');
                                 var imgUrl = YT.server + '/module/web/upload/' + qrCodeAttach[0].savedFileName.replace("\\", "/");
                                 var corp = JSON.parse(corpJson);
                                 var width = corp.w - 0;
                                 var height = corp.h - 0;
                                 var min = width <= height ? width : height;
-                                shareManager.service.drawImage([src, imgUrl], function (ctx, images, loaded) {
+                                module.service.drawImage([src, imgUrl], function (ctx, images, loaded) {
                                     ctx.drawImage(images[0], 0, 0);
                                     var twoWidth = images[1].width - 0;
                                     var twoHeight = images[1].height - 0;
@@ -67,13 +73,13 @@ shareManager.service = {
                                     }
                                 });
                             } else {
-                                shareManager.service.drawImage([src], function (ctx, images, loaded) {
+                                module.service.drawImage([src], function (ctx, images, loaded) {
                                     ctx.drawImage(images[0], 0, 0);
                                 });
                             }
                         });
                     } else {
-                        shareManager.service.drawImage([src], function (ctx, images, loaded) {
+                        module.service.drawImage([src], function (ctx, images, loaded) {
                             ctx.drawImage(images[0], 0, 0);
                         });
                     }
@@ -98,7 +104,7 @@ shareManager.service = {
     getData: function (callback) {
         $.ajax({
             type: 'post',
-            url: "/message/richText?id="+shareManager.data.message_id,
+            url: "/message/richText?id="+module.data.message_id,
             contentType: "application/json;charset=UTF-8",
             dataType: 'json',
             error: function (request) {
@@ -106,8 +112,8 @@ shareManager.service = {
             success: function (result) {
                 if (result.code == 0) {
                     var data = result.data;
-                    shareManager.data.messageData = data;
-                    shareManager.service.initData();
+                    module.data.messageData = data;
+                    module.service.initData();
                     callback(data);
                 }else {
                     $.alert('网络异常，请与管理员联系！');
@@ -126,7 +132,7 @@ shareManager.service = {
             success: function (result) {
                 if (result.code == 0) {
                     var data = result.data;
-                    shareManager.data.staffData = data;
+                    module.data.staffData = data;
                     callback();
                 }else {
                     $.alert('网络异常，请与管理员联系！');
@@ -135,21 +141,23 @@ shareManager.service = {
         });
     },
     initShare: function (shareFlag,times) {
-        shareManager.service.getData(function () {
+        module.service.getData(function () {
             $.showLoading('加载中...');
             var self = this,
-                userId = shareManager.data.user_id,
-                messageId = parseInt(shareManager.data.message_id),
+                userId = module.data.user_id,
+                messageId = parseInt(module.data.message_id),
+                customerId = module.data.customer_id,
+                shareFlag = 1,
                 shareTime = new Date().Format('yyyy-MM-dd hh:mm:ss'),
-                messageData = shareManager.data.messageData,
-                share_ip = shareManager.data.share_ip;
+                messageData = module.data.messageData,
+                share_ip = module.data.share_ip;
             MessageComm.share.initWxConfig(function () {
                 var params = {};
                 var messageShare = {
                     messageId:messageId,
                     userId:userId,
                     shareTime:shareTime,
-                    shareFlag:1,
+                    shareFlag:0,
                     openCount:0,
                     delFlag:1
                 };
@@ -175,6 +183,8 @@ shareManager.service = {
                                     var messageShare = {
                                         messageId:messageId,
                                         userId:userId,
+                                        customerId:customerId,
+                                        openCount:0,
                                         shareTime:shareTime,
                                         shareFlag:1,
                                         delFlag:0
@@ -187,7 +197,10 @@ shareManager.service = {
                                         dataType: "json",
                                         success: function (result) {
                                             if(result.code == 0){
-                                                MessageComm.share.insertShare(params, shareFlag, dataId, -1, _share_link, share_ip, userId);
+                                                var data = result.data;
+                                                var dataId = data.id;
+                                                console.log("dataId:"+dataId);
+                                                MessageComm.share.insertShare(params, shareFlag,customerId, dataId, -1, _share_link, share_ip, userId);
                                             }
                                         },
                                         error:function (result) {
@@ -211,8 +224,8 @@ shareManager.service = {
 
 };
 
-shareManager.eventHandler = {
+module.eventHandler = {
     handleEvents: function () {
-        // MessageComm.customer.init();
+        MessageComm.customer.init();
     }
 };

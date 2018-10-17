@@ -3,6 +3,7 @@ package com.wzy.crm.service;
 import com.wzy.crm.pojo.Message;
 import com.wzy.crm.common.ResponseCode;
 import com.wzy.crm.common.ServerResponse;
+import com.wzy.crm.pojo.MessageShareCustomer;
 import com.wzy.crm.pojo.MessageTag;
 import com.wzy.crm.vo.MessageDetail;
 import com.wzy.crm.vo.MessageResponseVo;
@@ -54,4 +55,7 @@ public interface IMessageService {
     Map<Integer, List<MessageTag>> splitTag(List<String> tags);
 
     ServerResponse getMobileMessageList(MessageVo messageVo);
+
+    ServerResponse saveShareCustomer(MessageShareCustomer messageShareCustomer);
+
 }

@@ -9,6 +9,8 @@ import com.wzy.crm.dao.StaffCustomerFollowRelationMapper;
 import com.wzy.crm.pojo.*;
 import com.wzy.crm.service.ICustomerService;
 import com.wzy.crm.common.ServerResponse;
+import com.wzy.crm.service.IMessageService;
+import com.wzy.crm.vo.CustomerShareVo;
 import com.wzy.crm.vo.CustomerTagVo;
 import com.wzy.crm.vo.CustomerVo;
 import org.apache.commons.lang3.StringUtils;
@@ -123,6 +125,21 @@ public class CustomerController {
     @PostMapping("/list")
     public ServerResponse listCustomers(@RequestBody CustomerVo customerVo){
         return customerService.getCustomerList(customerVo);
+    }
+
+    @GetMapping("/valid")
+    public ServerResponse validCustomer(@RequestParam String mobile){
+        int count = customerMapper.selectByMobile(mobile);
+        if(count>0){
+            return ServerResponse.createByError();
+        }else{
+            return ServerResponse.createBySuccess();
+        }
+    }
+
+    @PostMapping("/save/share")
+    public ServerResponse saveShareCustomer(@RequestBody CustomerShareVo customerShareVo){
+        return customerService.saveShareCustomer(customerShareVo);
     }
 
 

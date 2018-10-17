@@ -7,9 +7,11 @@ import com.wzy.crm.common.MessageType;
 import com.wzy.crm.config.DomainConfig;
 import com.wzy.crm.config.NginxConfig;
 import com.wzy.crm.dao.MessageMapper;
+import com.wzy.crm.dao.MessageShareCustomerMapper;
 import com.wzy.crm.dao.MessageTagMapper;
 import com.wzy.crm.dao.MessageTagRelationMapper;
 import com.wzy.crm.pojo.Message;
+import com.wzy.crm.pojo.MessageShareCustomer;
 import com.wzy.crm.pojo.MessageTag;
 import com.wzy.crm.pojo.MessageTagRelation;
 import com.wzy.crm.service.IMessageService;
@@ -55,6 +57,10 @@ public class MessageServiceImpl implements IMessageService {
 
     @Autowired
     private MessageTagRelationMapper messageTagRelationMapper;
+
+    @Autowired
+    private MessageShareCustomerMapper messageShareCustomerMapper;
+
 
     @Override
     public synchronized ServerResponse saveMessage(Message message,List<String> tags) {
@@ -150,6 +156,23 @@ public class MessageServiceImpl implements IMessageService {
         System.out.println(orders[1]);
         Integer start = (page - 1)*size;
         return ServerResponse.createBySuccess(messageMapper.selectMobileMessage(messageVo.getGroupId(),messageVo.getTagId(),orders[0],orders[1],start,size));
+    }
+
+    @Override
+    public ServerResponse saveShareCustomer(MessageShareCustomer messageShareCustomer) {
+        Integer shareId = messageShareCustomer.getShareId();
+        String userId = messageShareCustomer.getUserId();
+        Integer msgId = messageShareCustomer.getMessageId();
+        Integer customerId = messageShareCustomer.getCustomerId();
+        System.out.println("shareId:"+shareId);
+        System.out.println("userId:"+userId);
+        System.out.println("msgId:"+msgId);
+        System.out.println("customerId:"+customerId);
+        int count = messageShareCustomerMapper.insert(messageShareCustomer);
+        if(count > 0)
+            return ServerResponse.createBySuccess(messageShareCustomer);
+        else
+            return ServerResponse.createByError();
     }
 
 

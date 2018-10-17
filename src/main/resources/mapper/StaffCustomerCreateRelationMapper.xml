@@ -9,7 +9,7 @@
   <insert id="insert" parameterType="com.wzy.crm.pojo.StaffCustomerCreateRelation" >
     insert into staff_customer_create_relation (user_id, customer_id, is_create
       )
-    values (#{userId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, #{isCreate,jdbcType=INTEGER}
+    values (#{userId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, 1
       )
   </insert>
   <select id="selectAll" resultMap="BaseResultMap" >

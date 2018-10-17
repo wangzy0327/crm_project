@@ -37,7 +37,7 @@
     delete from customer
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wzy.crm.pojo.Customer" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.wzy.crm.pojo.Customer" >
     insert into customer (id, `name`, mobile,
       wechat, company, `position`,
       address, telephone, email, 
@@ -130,5 +130,10 @@
     ON c.id = staff_customer_follow_relation.customer_id AND staff_customer_follow_relation.is_follow = 1
     LEFT JOIN staff
     ON staff.userid = staff_customer_follow_relation.user_id
+  </select>
+  <select id="selectByMobile" resultType="int">
+    select count(*)
+    from customer
+    where mobile = #{mobile}
   </select>
 </mapper>

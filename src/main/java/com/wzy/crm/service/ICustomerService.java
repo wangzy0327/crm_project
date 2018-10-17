@@ -2,6 +2,7 @@ package com.wzy.crm.service;
 
 import com.wzy.crm.pojo.CustomerDetailInfo;
 import com.wzy.crm.common.ServerResponse;
+import com.wzy.crm.vo.CustomerShareVo;
 import com.wzy.crm.vo.CustomerVo;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public interface ICustomerService {
     ServerResponse updateFollow(Integer customerId,List<String> userIds);
 
     ServerResponse getCustomerList(CustomerVo customerVo);
+
+    ServerResponse saveShareCustomer(CustomerShareVo customerShareVo);
 
 
 }
