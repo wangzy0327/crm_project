@@ -2,6 +2,7 @@ package com.wzy.crm.service;
 
 import com.wzy.crm.pojo.CustomerDetailInfo;
 import com.wzy.crm.common.ServerResponse;
+import com.wzy.crm.pojo.CustomerReadinfo;
 import com.wzy.crm.vo.CustomerShareVo;
 import com.wzy.crm.vo.CustomerVo;
 
@@ -18,5 +19,8 @@ public interface ICustomerService {
 
     ServerResponse saveShareCustomer(CustomerShareVo customerShareVo);
 
+    ServerResponse updateCustomerReadInfo(CustomerReadinfo customerReadinfo);
+
+    ServerResponse findCustomer(Integer shareId,String openid);
 
 }

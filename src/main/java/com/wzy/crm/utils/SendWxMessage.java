@@ -2,6 +2,8 @@ package com.wzy.crm.utils;
 
 
 import com.wzy.crm.config.DomainConfig;
+import com.wzy.crm.pojo.CustomerReadinfo;
+import com.wzy.crm.pojo.MessageShareTransmit;
 import com.wzy.crm.pojo.VisitLog;
 import com.wzy.crm.pojo.VisitPlan;
 import com.wzy.crm.vo.CommentVo;
@@ -141,6 +143,51 @@ public class SendWxMessage {
                         .get(0).getAgentId())
                 .toUser(visitPlan.getUserId())
                 .title(title).description(description).url(url).btnTxt(btntxt).build();
+        try {
+            wxCpService.messageSend(wxCpMessage);
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean handleSendCustomerScan(CustomerReadinfo customerReadinfo){
+        String content = "";
+        Integer messageId = customerReadinfo.getMessageId();
+        Integer customerId = customerReadinfo.getCustomerId();
+        String messageTitle = customerReadinfo.getMessageTitle();
+        System.out.println("messageTitle:"+messageTitle);
+        String userId = customerReadinfo.getUserId();
+        content += "您的分享消息：\n";
+        content += "【<a href = \""+domainConfig.getUrl()+"myshare/my-share-detail.html?userid="+userId+"&cusid="+customerId+"&msgid="+messageId+"\">"+customerReadinfo.getMessageTitle()+"</a>】正在被" + customerReadinfo.getCustomerName()+"浏览！";
+        WxCpMessage wxCpMessage = WxCpMessage.TEXT()
+                .agentId(accountConfig.getAppConfigs()
+                        .get(0).getAgentId())
+                .content(content)
+                .toUser(customerReadinfo.getUserId())
+                .build();
+        try {
+            wxCpService.messageSend(wxCpMessage);
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+
+    public boolean handleSendCustomerTransmit(MessageShareTransmit messageShareTransmit){
+        String content = "";
+        Integer messageId = messageShareTransmit.getMessageId();
+        Integer customerId = messageShareTransmit.getCustomerId();
+        String userId = messageShareTransmit.getUserId();
+        content += "您的分享消息：\n";
+        content += "【<a href = \""+domainConfig.getUrl()+"myshare/my-share-detail.html?userid="+userId+"&cusid="+customerId+"&msgid="+messageId+"\">"+messageShareTransmit.getMessageTitle()+"</a>】被" + messageShareTransmit.getCustomerName()+"转发！";
+        WxCpMessage wxCpMessage = WxCpMessage.TEXT()
+                .agentId(accountConfig.getAppConfigs()
+                        .get(0).getAgentId())
+                .content(content)
+                .toUser(messageShareTransmit.getUserId())
+                .build();
         try {
             wxCpService.messageSend(wxCpMessage);
         } catch (WxErrorException e) {

@@ -1,0 +1,115 @@
+body{
+    margin:8px !important;
+}
+.sta-header{
+    min-height:20px;
+    margin:0 10px 4px;
+    padding-bottom: 4px;
+    /*background-color: #aaa;*/
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+.sta-content{
+    margin:0 10px;
+}
+.flex-box{
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-wrap:nowrap;
+}
+.flex-box-space-between{
+    justify-content:space-between;
+}
+.flex-box-left{
+    justify-content:flex-start;
+}
+.flex-box-right{
+    justify-content:flex-end;
+}
+.flex-item-default{
+    flex-grow:0;
+    flex-shrink:1;
+    flex-basis:auto;
+    /*flex:0 1 auto;*/
+}
+.flex-item{
+    margin:0 5px;
+    flex-grow:0;
+    flex-shrink:1;
+    flex-basis:auto;
+    /*flex:0 1 auto;*/
+}
+.flex-left{
+    word-wrap:break-word;
+    width:300px;
+    height: 30px;
+    line-height: 30px;
+}
+.box{
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-wrap: wrap;
+    /* 设置文字不能被选中 */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.box-label {
+    min-width: 20px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 13px;
+    color: #74b7ca;
+    border: none;
+    padding: 0 1px;
+    text-align: center;
+    margin: 0 5px 5px 0;
+}
+
+.detail-content{
+    justify-content:space-between;
+}
+.staff-grid{
+    width:150px;
+    min-width:155px;
+    overflow:auto;
+    /*background-color: red;*/
+    /*display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;*/
+}
+.grid-inner{
+    margin:auto;
+}
+.grid-item{
+    font-size: 16px;
+    text-align: center;
+    min-width: 130px;
+    height: 25px;
+    line-height: 25px;
+}
+.grid-person:hover{
+    cursor:pointer;
+    background-color: #ddd;
+}
+.grid-person.current{
+    background-color: #e3f9ff;
+    border-right:4px solid #aae2f2;
+}
+.grid-item.grid-time{
+    text-align: left;
+    font-size: 12px;
+}
+.sta-data{
+    flex-grow:1;
+    /*background-color: blue;*/
+    overflow:auto;
+}
+.h5-page{
+    width:320px;
+    min-width:150px;
+}

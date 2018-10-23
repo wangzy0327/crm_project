@@ -25,7 +25,7 @@ public interface MessageTagMapper {
 
     Integer selectMessageTagCountByName(String name);
 
-    Integer selectByTagName(String name);
+    List<Integer> selectByTagName(String name);
 
     List<MessageHotTagVo> selectHotTags();
 }

@@ -913,14 +913,20 @@ CREATE TABLE `message_share_customer_area` (
 DROP TABLE IF EXISTS `message_share_transmit`;
 CREATE TABLE `message_share_transmit` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `share_id` int(11) DEFAULT NULL COMMENT '资料分享id',
   `user_id` varchar(30) DEFAULT NULL,
   `customer_id` int(11) DEFAULT NULL,
+  `message_id` int(11) DEFAULT NULL COMMENT '资料消息id',
   `open_id` varchar(30) DEFAULT NULL,
+  `transmit_times` int(11) DEFAULT NULL COMMENT '转发次数',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最近更新时间',
   PRIMARY KEY (`id`),
   KEY `openId` (`open_id`) USING BTREE,
-  KEY `userId` (`user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='转发记录';
+  KEY `userId` (`user_id`) USING BTREE,
+  KEY `message_id` (`message_id`),
+  KEY `share_id` (`share_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='转发记录';
+
 
 drop view if exists v_message_opencount_time_tag;
 create view v_message_opencount_time_tag as
@@ -945,21 +951,26 @@ create view v_message_opencount_time_tag as
       on staff.userid = message.create_user_id;
 
 DROP TABLE IF EXISTS `customer_readinfo`;
-create table `customer_readinfo`(
+CREATE TABLE `customer_readinfo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `share_id` int(11) DEFAULT NULL,
   `user_id` varchar(30) DEFAULT NULL,
+  `times` int(11) DEFAULT NULL COMMENT '点击阅读次数',
+  `message_id` int(11) DEFAULT NULL COMMENT '资料消息id',
   `customer_id` int(11) DEFAULT NULL,
   `open_id` varchar(30) DEFAULT NULL,
   `ip` varchar(20) DEFAULT NULL,
   `cid` varchar(50) DEFAULT '-1',
   `city` varchar(100) DEFAULT NULL,
   `open_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '打开页面时间点',
-  `view_time` int(11) DEFAULT '1' COMMENT '浏览时间',
+  `view_time` int(11) DEFAULT '1' COMMENT '平均每页浏览时间',
+  `page_count` int(11) DEFAULT NULL COMMENT '页面长度',
+  `total_time` int(11) DEFAULT NULL COMMENT '文案阅读总时长',
   `read_info` longtext COMMENT '阅读信息/浏览时长',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最近更新时间',
   PRIMARY KEY (`id`),
   KEY `openId` (`open_id`) USING BTREE,
   KEY `userId` (`user_id`) USING BTREE,
-  KEY `customerId` (`customer_id`) USING BTREE
-)ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='客户阅读详情';
+  KEY `customerId` (`customer_id`) USING BTREE,
+  KEY `message_id` (`message_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='客户阅读详情';

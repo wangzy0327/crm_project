@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 网页title  -->
+    <title></title>
+    <!-- 禁止浏览器从本地缓存中调阅页面。 -->
+    <meta http-equiv="pragram" content="no-cache">
+    <!-- 网页不保存在缓存中，每次访问都刷新页面。 -->
+    <meta http-equiv="cache-control" content="no-cache, must-revalidate">
+    <!-- 网页在缓存中的过期时间为0，一旦网页过期，必须从服务器上重新订阅。-->
+    <meta http-equiv="expires" content="0">
+    <!-- 设置HTML页面的编码 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- 设置浏览器的默认解析,优先以chrome -->
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge">
+    <!-- 360浏览器优先使用极速核  -->
+    <meta http-equiv="renderer" content="webkit">
+    <!-- YTUI库 -->
+    <link type="text/css" rel="stylesheet" href="/lib/yt/css/ytui.min.css?time=20160912">
+    <link type="text/css" rel="stylesheet" href="/module/comm/css/swiper.min.css?time=20160912">
+    <link type="text/css" rel="stylesheet" href="/module/comm/css/message-comm.css?time=20180316">
+    <link type="text/css" rel="stylesheet" href="css/upload.css">
+    <script type="text/javascript" src="/lib/yt/js/ytui.min.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/lib/config.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/lib/appAgent.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/lib/push-msg.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/comm/js/swiper.min.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/comm/js/message-comm.min.js?time=201807041518"></script>
+    <script type="text/javascript" src="/module/comm/js/page-swiper-listen.min.js?time=20180316"></script>
+    <script type="text/javascript" src="js/common.js?time=20180607"></script>
+</head>
+<body class="yt-page yt-grid yt-form">
+<div class="wrapper" style="margin: 0 60px;">
+    <form>
+        <ul class="mod-form-rows">
+            <li class="row-item">
+                <div class="ctn-wrap">
+                    <label>文件类型</label>
+                    <span class="ui-combo-wrap" id="typeCombo">
+                        <input type="text" class="input-txt"/>
+                    </span>
+
+                    <a class="btn btn-sm" id="upload"><i class="iconfont">&#xe602;</i>&nbsp;上传资料</a>
+
+                    <div id="fileList" style="display: inline-block;margin-left: 10px;"></div>
+                </div>
+            </li>
+        </ul>
+    </form>
+</div>
+
+<script type="text/javascript" src="js/doc-edit.js?time=20180607"></script>
+
+</body>
+</html>

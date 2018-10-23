@@ -1,28 +1,18 @@
 package com.wzy.crm.service.impl;
 
-import com.google.common.collect.Lists;
 import com.wzy.crm.common.ServerResponse;
-import com.wzy.crm.config.DomainConfig;
 import com.wzy.crm.dao.CommentsMapper;
 import com.wzy.crm.dao.StaffCommentLogMapper;
 import com.wzy.crm.dao.StaffCommentPlanMapper;
 import com.wzy.crm.pojo.Comments;
 import com.wzy.crm.pojo.StaffCommentLog;
 import com.wzy.crm.pojo.StaffCommentPlan;
-import com.wzy.crm.pojo.VisitPlan;
 import com.wzy.crm.service.ICommentService;
 import com.wzy.crm.utils.SendWxMessage;
 import com.wzy.crm.vo.CommentVo;
 import com.wzy.crm.vo.CommentsListVo;
-import com.wzy.crm.wx.cp.config.WechatAccountConfig;
-import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.cp.api.WxCpService;
-import me.chanjar.weixin.cp.bean.WxCpMessage;
-import org.apache.camel.spi.AsEndpointUri;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CommentServiceImpl implements ICommentService {

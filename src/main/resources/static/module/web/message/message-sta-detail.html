@@ -1,0 +1,141 @@
+<html lang="en">
+<head>
+    <!-- 网页title  -->
+    <title></title>
+    <!-- 禁止浏览器从本地缓存中调阅页面。 -->
+    <meta http-equiv="pragram" content="no-cache">
+    <!-- 网页不保存在缓存中，每次访问都刷新页面。 -->
+    <meta http-equiv="cache-control" content="no-cache, must-revalidate">
+    <!-- 网页在缓存中的过期时间为0，一旦网页过期，必须从服务器上重新订阅。-->
+    <meta http-equiv="expires" content="0">
+    <!-- 设置HTML页面的编码 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- 设置浏览器的默认解析,优先以chrome -->
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge">
+    <!-- 360浏览器优先使用极速核  -->
+    <meta http-equiv="renderer" content="webkit">
+    <!-- YTUI库 -->
+    <link type="text/css" rel="stylesheet" href="/lib/yt/css/ytui.min.css?time=20160912">
+    <link type="text/css" rel="stylesheet" href="css/message-sta-detail.css?time=20160912">
+    <link type="text/css" rel="stylesheet" href="css/message-share-view.css?time=20160912">
+    <link type="text/css" rel="stylesheet" href="/module/comm/css/swiper.min.css?time=20160912">
+    <!--iquery插件-->
+    <script type="text/javascript" src="../../../js/jquery-2.1.4.js?time=20160912"></script>
+    <script type="text/javascript" src="/lib/yt/js/ytui.min.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/lib/config.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/comm/js/swiper.min.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/comm/js/page-swiper-listen.min.js?time=20180313"></script>
+    <script type="text/javascript" src="js/message-sta-detail.js?time=20180312"></script>
+    <style type="text/css">
+        .box-icon {
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .box-icon img {
+            width: 35px;
+            height: 35px;
+        }
+
+        #middle-scorll-flex .view-list-con .loaded {
+            transition: opacity .25s linear;
+            opacity: 1;
+        }
+
+        #middle-scorll-flex .view-list-con .loaders {
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex: 0 1 auto;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        #middle-scorll-flex .view-list-con .loaders .loader {
+            box-sizing: border-box;
+            display: flex;
+            flex: 0 1 auto;
+            flex-direction: column;
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 25%;
+            height: 50px;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="yt-page">
+<div class="sta-header">
+    <div class="flex-box flex-box-space-between" style="align-items: center;">
+        <div class="flex-item-default">
+            <div class="flex-box flex-box-left">
+                <div class="flex-item flex-left">
+                    <span style="font-size: 17px;" id="title"></span>
+                </div>
+                <div class="flex-item" style="width:100px;margin-right: 0;height: 30px;line-height: 30px;">
+                    <span style="font-size: 14px;">客户浏览次数：</span>
+                </div>
+                <div class="flex-item flex-right" style="margin-left: 0;">
+                    <div class="box" id="staffs">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-item-default">
+            <div class="box-icon">
+                <img src="../../img/icon-back.png" class="box-icon"
+                     onclick="location.href='/module/web/message/message-list.html'"
+                     onmouseover="this.src = '../../img/icon-back-hover.png'"
+                     onmouseout="this.src = '../../img/icon-back.png'"/>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sta-content">
+    <div class="flex-box detail-content">
+        <div class="flex-item staff-grid" id="left-scorll-flex">
+            <div id="grid" class="grid-inner">
+            </div>
+        </div>
+        <div class="flex-item sta-data" id="middle-scorll-flex">
+            <section class="view-list-con">
+                <!--加载效果-->
+                <!--列表内容-->
+                <ul class="view-list-ul" id="box-flow-ul">
+                </ul>
+                <!--滚动加载信息-->
+                <div data-v-footer-info="" class="infinite-loading-container" id="moreInfo"></div>
+                <!--正在加载-->
+                <div class="weui-infinite-scroll" id="infinite">
+                    <div class=infinite-preloader""></div>
+                    <!--  <div class="loaders" id="load_thuminb_scal" style="display: none">
+                          <div class="loader">
+                              <div class="loader-inner ball-spin-fade-loader">
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                              </div>
+                          </div>
+                      </div>-->
+                </div>
+            </section>
+        </div>
+        <div class="flex-item h5-page">
+            <iframe id="page" name="page-H5" style="width: 100%;height: 100%;">
+            </iframe>
+            <!--frame底部-->
+            <div id="page-view"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,6 +1,8 @@
 package com.wzy.crm.dao;
 
 import com.wzy.crm.pojo.CustomerReadinfo;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface CustomerReadinfoMapper {
@@ -13,4 +15,13 @@ public interface CustomerReadinfoMapper {
     List<CustomerReadinfo> selectAll();
 
     int updateByPrimaryKey(CustomerReadinfo record);
+
+//    int updateTimesByKey(@Param("id") Integer id,@Param("times") Integer times);
+
+    int updateInfoAndTimesByKey(CustomerReadinfo record);
+
+    int updateByKeyAndTime(@Param("id") Integer id,@Param("viewTime") Integer viewTime,@Param("totalTime") Integer totalTime,@Param("readInfo") String readInfo);
+
+    List<CustomerReadinfo> selectByShareKey(@Param("shareId") Integer shareId,@Param("messageId") Integer messageId);
+
 }

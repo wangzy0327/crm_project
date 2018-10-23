@@ -24,10 +24,25 @@
 
     <link href="../../css/animate.css" rel="stylesheet">
     <link href="../../css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../../js/toastr.min.css" rel="stylesheet">
 
 </head>
 
+
+
 <body class="gray-bg">
+<style>
+    .btn-success {
+        background-color: #1ab394;
+        border-color: #1ab394;
+        color: #FFFFFF;
+    }
+    .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open .dropdown-toggle.btn-success {
+        background-color: #1ab394;
+        border-color: #1ab394;
+        color: #FFFFFF;
+    }
+</style>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row form-inline" style="margin-left: 20px">
         <label class="i-checks" style="font-size: 14px;padding-right: 10px;">查询条件</label>
@@ -86,10 +101,11 @@
     </div>
 
 
-
     <!-- 全局js -->
     <script src="../../js/jquery.min.js?v=2.1.4"></script>
     <script src="../../js/bootstrap.min.js?v=3.3.6"></script>
+
+    <script src="../../js/toastr.min.js"></script>
 
 
     <script src="../../js/plugins/jeditable/jquery.jeditable.js"></script>

@@ -5,14 +5,8 @@ import com.wzy.crm.config.DomainConfig;
 import com.wzy.crm.config.NginxConfig;
 import com.wzy.crm.config.PathConfig;
 import com.wzy.crm.config.RequestPathConfig;
-import com.wzy.crm.dao.GroupMessageRelationMapper;
-import com.wzy.crm.dao.MessageMapper;
-import com.wzy.crm.dao.MessageShareCustomerMapper;
-import com.wzy.crm.dao.MessageShareMapper;
-import com.wzy.crm.pojo.GroupMessageRelation;
-import com.wzy.crm.pojo.Message;
-import com.wzy.crm.pojo.MessageShare;
-import com.wzy.crm.pojo.MessageShareCustomer;
+import com.wzy.crm.dao.*;
+import com.wzy.crm.pojo.*;
 import com.wzy.crm.service.IMessageService;
 import com.wzy.crm.common.ServerResponse;
 import com.wzy.crm.vo.MessageDetail;
@@ -51,6 +45,8 @@ public class MessageController {
     @Autowired
     private MessageShareMapper messageShareMapper;
 
+    @Autowired
+    private MessageTagRelationMapper messageTagRelationMapper;
 
 
     @GetMapping("/name")
@@ -112,7 +108,7 @@ public class MessageController {
 
     @PostMapping("/h5/add")
     public ServerResponse h5Add(@RequestParam String url,@RequestBody Message message){
-        String h5Url = domainConfig.getUrl()+"/module/message/h5/h5-share.html";
+        String h5Url = domainConfig.getUrl()+"/module/web/message/h5/h5-share.html";
         message.setUrl(h5Url);
 //        message.setUrl("http://crm.youitech.com/module/message/h5/h5-share.html");
         List<String> tags = message.getTags();
@@ -121,7 +117,9 @@ public class MessageController {
 
     @PostMapping("/h5/update")
     public ServerResponse h5Update(@RequestBody Message message){
-        String h5Url = domainConfig.getUrl()+"/module/message/h5/h5-share.html";
+        String h5Url = domainConfig.getUrl()+"module/web/message/h5/h5-share.html";
+        String description = message.getDescription().substring(message.getDescription().indexOf(domainConfig.getUrl())+domainConfig.getUrl().length());
+        message.setDescription(description);
         message.setUrl(h5Url);
 //        message.setUrl("http://crm.youitech.com/module/message/h5/h5-share.html");
         List<String> tags = message.getTags();
@@ -131,7 +129,7 @@ public class MessageController {
 
     @PostMapping("/graphic/update")
     public ServerResponse graphicUpdate(@RequestBody Message message,@RequestParam List<String> tags){
-        String graphicUrl = domainConfig.getUrl()+"/module/message/graphic/graphic-share.html";
+        String graphicUrl = domainConfig.getUrl()+"/module/web/message/graphic/graphic-share.html";
         message.setUrl(graphicUrl);
 //        message.setUrl("http://crm.youitech.com/module/message/graphic/graphic-share.html");
         return messageService.updateGraphic(message,tags);
@@ -139,7 +137,7 @@ public class MessageController {
 
     @PostMapping("/doc/update")
     public ServerResponse docUpdate(@RequestBody Message message){
-        String docUrl = domainConfig.getUrl()+"/module/message/doc/doc-share.html";
+        String docUrl = domainConfig.getUrl()+"/module/web/message/doc/doc-share.html";
         message.setUrl(docUrl);
 //        message.setUrl("http://crm.youitech.com/module/message/doc/doc-share.html");
         return messageService.updateDocMessage(message);
@@ -147,7 +145,7 @@ public class MessageController {
 
     @PostMapping("/richText/update")
     public ServerResponse richTextUpdate(@RequestBody Message message){
-        String richTextUrl = domainConfig.getUrl()+"/module/message/message-share.html";
+        String richTextUrl = domainConfig.getUrl()+"/module/web/message/message-share.html";
         message.setUrl(richTextUrl);
 //        message.setUrl("http://crm.youitech.com/module/message/message-share.html");
         return messageService.updateDocMessage(message);
@@ -164,7 +162,7 @@ public class MessageController {
         String realPath = request.getSession().getServletContext().getRealPath("/");
 //        String realPath = "D:\\project\\wechat-tools\\target\\crm-project\\";
         System.out.println("realPath:"+realPath);
-        String graphicUrl = domainConfig.getUrl()+"/module/message/graphic/graphic-share.html";
+        String graphicUrl = domainConfig.getUrl()+"/module/web/message/graphic/graphic-share.html";
         message.setUrl(graphicUrl);
 //        message.setUrl("http://crm.youitech.com/module/message/graphic/graphic-share.html");
         return messageService.saveGraphicMessage(imgUrl,message,realPath,tags);
@@ -176,7 +174,7 @@ public class MessageController {
 //        String realPath = request.getSession().getServletContext().getRealPath("/");
 //        String realPath = "D:\\project\\wechat-tools\\tlarget\\crm-project\\";
         System.out.println("realPath:"+realPath);
-        String docUrl = domainConfig.getUrl()+"/module/message/doc/doc-share.html";
+        String docUrl = domainConfig.getUrl()+"/module/web/message/doc/doc-share.html";
         message.setUrl(docUrl);
 //        message.setUrl("http://crm.youitech.com/module/message/doc/doc-share.html");
         System.out.println(message);
@@ -244,6 +242,17 @@ public class MessageController {
             return ServerResponse.createByError();
     }
 
+    @DeleteMapping("/delete")
+    public ServerResponse deleteMessage(@RequestParam Integer id){
+        System.out.println("id:"+id);
+        int count = messageMapper.deleteByPrimaryKey(id);
+        messageTagRelationMapper.deleteByMessageId(id);
+        if(count > 0)
+            return ServerResponse.createBySuccess();
+        else
+            return ServerResponse.createByError();
+    }
+
     @PostMapping("/list")
     public ServerResponse getMessageList(@RequestBody MessageVo messageVo){
         System.out.println("groupId:"+messageVo.getGroupId());
@@ -254,7 +263,11 @@ public class MessageController {
 
     @PostMapping("/share")
     public ServerResponse shareMessage(@RequestBody MessageShare messageShare){
-        messageShareMapper.insert(messageShare);
+        if(messageShare.getId()!=null){
+            messageShareMapper.updateByPrimaryKey(messageShare);
+        }else{
+            messageShareMapper.insert(messageShare);
+        }
         return ServerResponse.createBySuccess(messageShare);
     }
 
@@ -263,4 +276,8 @@ public class MessageController {
         return messageService.saveShareCustomer(messageShareCustomer);
     }
 
+    @PostMapping("/customer/transmit")
+    public ServerResponse recordCustomerTransmit(@RequestBody MessageShareTransmit messageShareTransmit){
+        return messageService.saveCustomerTransmit(messageShareTransmit);
+    }
 }

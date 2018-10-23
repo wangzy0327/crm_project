@@ -13,4 +13,6 @@ public interface MessageShareMapper {
     List<MessageShare> selectAll();
 
     int updateByPrimaryKey(MessageShare record);
+
+    int updateOpenCount(MessageShare record);
 }

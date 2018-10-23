@@ -33,7 +33,6 @@ var noMore =
  *
  */
 MessageComm.page = {
-    m: 101000000,
 
     init: function (ele, msgType, shareUrl, hasFrame, isShowFooter) {
         // module为全局参数
@@ -803,7 +802,7 @@ MessageComm.share = {
     },
 
     // module/web/message 处调用初始化JS-SDK
-    _initWxConfig: function (shareFlag, times, callback) {
+    _initWxConfig: function (shareFlag,callback) {
         wxCommon.service.initWxConfig(
             [
                 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo',
@@ -939,7 +938,7 @@ MessageComm.share = {
         // self.id = data;
         this.ajaxData(share_ip, function (data) {
             console.log("share id:"+shareId);
-            if (customerId == null || customerId == undefined) {
+            if (shareFlag == 0) {
                 // 打开填写客户Popup
                 $(document.body).addClass('page-unScroll');
                 $('#popup_customer').popup();
@@ -955,38 +954,17 @@ MessageComm.share = {
             // console.log("after   params.share_link:"+params.share_link);
 
             // 重新初始化分享
+
             MessageComm.share.initWxShare(params, shareFlag);
         });
+        module.service.initShare();
     },
 
     // 插入分享
     ajaxData: function (share_ip, callback) {
         var self = this, v = [];
         callback();
-        // v.push({
-        //     t: 'message_share_uid',
-        //     data: {
-        //         shareId: self.shareId,
-        //         shareDetailId: self.shareDetailId,
-        //         uid: YT.getSrcString(self.share_link, 'uid'),
-        //         time: new Date().Format('yyyy-MM-dd hh:mm:ss')
-        //     },
-        //     ai: true
-        // });
-        //
-        // YT.insert({
-        //     loading: false,
-        //     data: {
-        //         m: self.m,
-        //         t: 'message_share_uid',
-        //         v: JSON.stringify(v),
-        //         params: JSON.stringify({ip: share_ip}),
-        //         isvisitor: MessageComm.customer.isvisitor
-        //     },
-        //     successCallback: function (data) {
-        //         callback(data.object);
-        //     }
-        // });
+
     }
 
 };
@@ -1002,14 +980,14 @@ MessageComm.customer = {
         lastPage: false,
         pageCount: 0,
         page: 1,
-        size: 12
+        size: 15
     },
     searchPager: {
         loading: false,
         lastPage: false,
         pageCount: 0,
         page: 1,
-        size: 12
+        size: 15
     },
     callback: function () {
 
@@ -1136,7 +1114,7 @@ MessageComm.customer = {
                     lastPage: false,
                     pageCount: 0,
                     page: 1,
-                    size: 12
+                    size: 15
                 };
                 self.customerList = [];
                 self.resetChooseCustomerDom();
@@ -1193,7 +1171,7 @@ MessageComm.customer = {
                         lastPage: false,
                         pageCount: 0,
                         page: 1,
-                        rows: 12
+                        rows: 15
                     };
                     self.initSearchCustomerData($el, searchVal);
                 } else {

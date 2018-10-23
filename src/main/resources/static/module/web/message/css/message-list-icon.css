@@ -1,0 +1,53 @@
+
+.yt-page {
+    min-width: 300px;
+}
+em, i{
+    font-style: italic;
+}
+/**图标样式**/
+#grid table>tbody tr td .href_derection .iconfont{
+    font-family: iconfont !important;
+    font-size: 18px;
+}
+#grid table>tbody tr td .href_derection{
+    text-decoration: none;
+}
+#grid table>tbody tr td a .iconfont{
+    text-decoration: none;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+}
+/*查看*/
+#grid table>tbody tr td .detail .iconfont:hover,.iconfont:visited{
+    border:1px solid #d2cfcf;
+    border-radius: 2px;
+    width: 20px;
+    height: 20px;
+    box-shadow: 0 1px 1px 0  rgba(0, 0, 0, 0.25);
+}
+/*推送*/
+#grid table>tbody tr td .push .iconfont:hover,.iconfont:visited{
+    border:1px solid #d2cfcf;
+    border-radius: 2px;
+    width: 20px;
+    height: 20px;
+    box-shadow: 0 1px 1px 0  rgba(0, 0, 0, 0.25);
+}
+/*编辑*/
+#grid table>tbody tr td .edit .iconfont:hover,.iconfont:visited{
+    border:1px solid #d2cfcf;
+    border-radius: 2px;
+    width: 20px;
+    height: 20px;
+    box-shadow: 0 1px 1px 0  rgba(0, 0, 0, 0.25);
+}
+/* 删除*/
+#grid table>tbody tr td .delete .iconfont:hover,.iconfont:visited{
+    border:1px solid #d2cfcf;
+    border-radius: 2px;
+    width: 20px;
+    height: 20px;
+    box-shadow: 0 1px 1px 0  rgba(0, 0, 0, 0.25);
+}

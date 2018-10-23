@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.Customer" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="openid" property="openId" jdbcType="VARCHAR" />
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="wechat" property="wechat" jdbcType="VARCHAR" />
     <result column="company" property="company" jdbcType="VARCHAR" />
@@ -38,41 +39,68 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.wzy.crm.pojo.Customer" >
-    insert into customer (id, `name`, mobile,
+    insert into customer (id,open_id, `name`, mobile,
       wechat, company, `position`,
       address, telephone, email, 
       webSite, fax, remark, 
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
       #{wechat,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{website,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      now())
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.Customer" >
     update customer
-    set `name` = #{name,jdbcType=VARCHAR},
-      mobile = #{mobile,jdbcType=VARCHAR},
-      wechat = #{wechat,jdbcType=VARCHAR},
-      company = #{company,jdbcType=VARCHAR},
-      `position` = #{position,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      telephone = #{telephone,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      webSite = #{website,jdbcType=VARCHAR},
-      fax = #{fax,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    <set>
+      <if test="name != null and name != ''">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null and openId != ''">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null and mobile != ''">
+        mobile = #{mobile},
+      </if>
+      <if test="wechat != null and wechat != ''">
+        wechat = #{wechat},
+      </if>
+      <if test="company != null and company != ''">
+        company = #{company},
+      </if>
+      <if test="position != null and position != ''">
+        `position` = #{position},
+      </if>
+      <if test="address != null and address != ''">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null and telephone != ''">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null and email != ''">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null and website != ''">
+        webSite = #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null and fax != ''">
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null and remark != ''">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      update_time = now()
+    </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, `name`, mobile, wechat, company, `position`, address, telephone, email, webSite,
+    select id,open_id, `name`, mobile, wechat, company, `position`, address, telephone, email, webSite,
     fax, remark, update_time
     from customer
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, `name`, mobile, wechat, company, `position`, address, telephone, email, webSite,
+    select id,open_id, `name`, mobile, wechat, company, `position`, address, telephone, email, webSite,
     fax, remark, update_time
     from customer
   </select>

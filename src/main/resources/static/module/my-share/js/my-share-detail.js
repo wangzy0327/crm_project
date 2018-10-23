@@ -57,7 +57,7 @@ listManager.service = {
     getHtmlListStr: function (data) {
         var html = '';
         if (data.status == 200 && data.object.length > 0) {
-			$('head title').html(listManager.service.cutStr(data.object[0].titleText,16));
+            $('head title').html(listManager.service.cutStr(data.object[0].titleText,16));
             for (var i = 0; i < data.object.length; i++) {
                 var sameId = data.object[i].sameId;
                 var dataCustonerId = data.object[i].messageShareCustomerId;
@@ -107,7 +107,7 @@ listManager.service = {
                     pageShowNum = currentArray.length;
                 }
                 html+='<div class="weui-media-box weui-media-box_text"> ' +
-                        /*'<h4 class="weui-media-box__title">'+person+'('+address+')</h4> ' +*/
+                    /*'<h4 class="weui-media-box__title">'+person+'('+address+')</h4> ' +*/
                     '<p class="weui-media-box__desc">' +
                     '<i class="iconfont" style="color:#bbb">&#xe008;</i>  ';
                 if(!personFlag){
@@ -172,16 +172,16 @@ listManager.eventHandler = {
     handleNewCustomer:function(){
         $('#full-pop-content').on('click', '.new-c', function () {
             listManager.data.recordId = $(this).data('id');
-			MessageComm.customer.recordId = listManager.data.recordId;
-			MessageComm.customer.callback = function () {
-              location.reload();  
+            MessageComm.customer.recordId = listManager.data.recordId;
+            MessageComm.customer.callback = function () {
+                location.reload();
             };
             $('#popup_customer').popup();
         });
     },
     handleSave:function(){
         $('#save, #toolbar-save').click(function () {
-           
+
             MessageComm.customer.triggerSaveBtn();
         });
     }

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 网页title  -->
+    <title></title>
+    <!-- 禁止浏览器从本地缓存中调阅页面。 -->
+    <meta http-equiv="pragram" content="no-cache">
+    <!-- 网页不保存在缓存中，每次访问都刷新页面。 -->
+    <meta http-equiv="cache-control" content="no-cache, must-revalidate">
+    <!-- 网页在缓存中的过期时间为0，一旦网页过期，必须从服务器上重新订阅。-->
+    <meta http-equiv="expires" content="0">
+    <!-- 设置HTML页面的编码 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- 设置浏览器的默认解析,优先以chrome -->
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge">
+    <!-- 360浏览器优先使用极速核  -->
+    <meta http-equiv="renderer" content="webkit">
+    <!-- YTUI库 -->
+    <link type="text/css" rel="stylesheet" href="/lib/yt/css/ytui.min.css?time=20160912">
+    <link type="text/css" rel="stylesheet" href="css/message-share-view.css?time=20160912">
+    <script type="text/javascript" src="/lib/yt/js/ytui.min.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/lib/config.js?time=20160912"></script>
+    <script type="text/javascript" src="js/message-share-view.js?time=20160912"></script>
+</head>
+<body class="yt-page">
+<!--头部BannerDOM-->
+<div class="yt-page-first-boxContener">
+    <div class="search-wrap-boxcontaner">
+        <!--left-->
+        <div class="search-wrap-left-text">
+            <ul class="ul-inline">
+                <li><a href="javascript:void(0);" class="yt-message-detail-text">消息浏览详情</a></li>
+            </ul>
+        </div>
+        <!--right-->
+        <div class="search-wrap-right-text">
+            <ul class="view-list-ul ul-inline">
+                <!--搜索-->
+                <li>
+                    <label>搜索</label>
+                    <input type="text" class="input placeholder" id='keyword' value="标题"/>
+                </li>
+                <!--图标显示-->
+                <li>
+                    <span  data-index="3" class="menu-icon-right-span" onclick="" onmouseover="listManager.eventHandler.thumbnailMouseOver($(this))" onmouseout="listManager.eventHandler.thumbnailMouseOut($(this))">
+                         <img  src="../../img/sort-icon.png" title="热度排序"></span><img src="../../img/hot.png" style="position: absolute;right: 152px;top:5px">
+                    <span data-index="1" class="menu-icon-right-span" onclick="listManager.eventHandler.handlerClickList($(this))" onmouseover="listManager.eventHandler.thumbnailMouseOver($(this))" onmouseout="listManager.eventHandler.thumbnailMouseOut($(this))">
+                        <img src="../../img/list-icon-color.png" title="列表显示"></span>
+                    <span  data-index="2" class="menu-icon-right-span" onclick="listManager.eventHandler.handlerClickList($(this))"  onmouseover="listManager.eventHandler.thumbnailMouseOver($(this))" onmouseout="listManager.eventHandler.thumbnailMouseOut($(this))">
+                        <img src="../../img/menu-icon.png" title="缩略图显示">
+                    </span>
+                    <span  data-index="0" class="menu-icon-right-span" onclick="window.history.go(-1)" onmouseover="listManager.eventHandler.thumbnailMouseOver($(this))" onmouseout="listManager.eventHandler.thumbnailMouseOut($(this))">
+                        <img src="../../img/back-icon.png" title="返回上一级">
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--内容区结构DOM-->
+<section class="view-list-con">
+    <ul class="view-list-ul" id="box-flow-ul">
+    </ul>
+    <!--没有更多数据--footer-->
+    <div data-v-footer-info="" class="infinite-loading-container" data-v-314fdb7b="">
+        <div data-v-footer-info="" style="display: none;"><i data-v-footer-info="" class="loading-default"></i></div>
+        <div data-v-footer-info="" class="infinite-status-prompt" style="display: none;">
+            <div data-v-314fdb7b="" data-v-footer-info="" class="loadFontColor">
+                暂无数据
+            </div>
+        </div>
+        <div data-v-footer-info="" class="infinite-status-prompt">
+            <div data-v-314fdb7b="" data-v-footer-info="" class="loadFontColor">
+                没有更多数据
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

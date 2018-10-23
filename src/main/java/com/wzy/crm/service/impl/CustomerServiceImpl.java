@@ -1,14 +1,12 @@
 package com.wzy.crm.service.impl;
 
 import com.google.common.collect.Lists;
-import com.wzy.crm.dao.CustomerMapper;
-import com.wzy.crm.dao.GroupStaffRelationMapper;
-import com.wzy.crm.dao.StaffCustomerCreateRelationMapper;
-import com.wzy.crm.dao.StaffCustomerFollowRelationMapper;
+import com.wzy.crm.dao.*;
 import com.wzy.crm.pojo.*;
 import com.wzy.crm.service.ICustomerService;
 import com.wzy.crm.common.ServerResponse;
 import com.wzy.crm.service.IMessageService;
+import com.wzy.crm.utils.SendWxMessage;
 import com.wzy.crm.vo.CustomerShareVo;
 import com.wzy.crm.vo.CustomerVo;
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +32,19 @@ public class CustomerServiceImpl implements ICustomerService {
     private GroupStaffRelationMapper groupStaffRelationMapper;
 
     @Autowired
+    private MessageShareCustomerMapper messageShareCustomerMapper;
+
+    @Autowired
     private IMessageService messageService;
+
+    @Autowired
+    private CustomerReadinfoMapper customerReadinfoMapper;
+
+    @Autowired
+    private MessageShareMapper messageShareMapper;
+
+    @Autowired
+    private SendWxMessage sendWxMessage;
 
     @Override
     public List<CustomerDetailInfo> findCustomerByParam(Map<String,String> map) {
@@ -112,6 +122,70 @@ public class CustomerServiceImpl implements ICustomerService {
         messageShareCustomer.setCustomerId(customerShareVo.getCustomer().getId());
         messageShareCustomer.setOpenId(customerShareVo.getCustomer().getOpenId());
         return messageService.saveShareCustomer(messageShareCustomer);
+    }
+
+    @Override
+    public ServerResponse updateCustomerReadInfo(CustomerReadinfo customerReadinfo) {
+        Integer shareId = customerReadinfo.getShareId();
+        Integer messageId = customerReadinfo.getMessageId();
+        String openId = customerReadinfo.getOpenId();
+        System.out.println("readInfo openId:"+openId);
+        Customer customer = customerMapper.selectByPrimaryKey(customerReadinfo.getCustomerId());
+        if(customer == null){
+            return ServerResponse.createByErrorMessage("客户id问题!");
+        }
+        if(openId!=null && customer.getOpenId()!=null && !openId.equals(customer.getOpenId())){
+            return ServerResponse.createByErrorMessage("客户身份信息不匹配");
+        }else if(customer.getOpenId() == null){
+            String cusOpenid = customer.getOpenId();
+            if(openId!=null&&!openId.equals("-1")&& cusOpenid == null){
+                customer.setOpenId(openId);
+                customerMapper.updateByPrimaryKey(customer);
+            }
+        }
+        List<CustomerReadinfo> customerReadinfos = customerReadinfoMapper.selectByShareKey(shareId,messageId);
+        CustomerReadinfo customerReadinfoModify = null;
+        if(customerReadinfos == null || customerReadinfos.size() == 0){
+            customerReadinfo.setTimes(1);
+            customerReadinfoMapper.insert(customerReadinfo);
+            sendWxMessage.handleSendCustomerScan(customerReadinfo);
+        }else if(customerReadinfos!=null && customerReadinfo.getId()!=null){
+            customerReadinfoModify = customerReadinfos.get(0);
+            customerReadinfoMapper.updateByKeyAndTime(customerReadinfoModify.getId(),customerReadinfo.getViewTime(),customerReadinfo.getTotalTime(),customerReadinfo.getReadInfo());
+        }else{
+            customerReadinfoModify = customerReadinfos.get(0);
+            customerReadinfo.setId(customerReadinfoModify.getId());
+            customerReadinfo.setTimes(customerReadinfoModify.getTimes()+1);
+            MessageShare messageShare = new MessageShare();
+            messageShare.setId(customerReadinfo.getShareId());
+            messageShareMapper.updateOpenCount(messageShare);
+            customerReadinfoMapper.updateInfoAndTimesByKey(customerReadinfo);
+            sendWxMessage.handleSendCustomerScan(customerReadinfo);
+        }
+        return ServerResponse.createBySuccess(customerReadinfo);
+    }
+
+    @Override
+    public ServerResponse findCustomer(Integer shareId, String openid) {
+        MessageShareCustomer messageShareCustomer = messageShareCustomerMapper.selectCustomerIdByShareId(shareId);
+        System.out.println("messageShareCustomer:"+messageShareCustomer);
+        Integer customerId = messageShareCustomer.getCustomerId();
+        System.out.println("customerId:"+customerId);
+        Customer customer = customerMapper.selectByPrimaryKey(customerId);
+        if(openid!= null && openid.equals("-1")){
+            return ServerResponse.createBySuccess(customer);
+        }else if(customer.getOpenId()!= null && !customer.getOpenId().equals(openid)){
+            customerMapper.updateByPrimaryKey(customer);
+            return ServerResponse.createBySuccess(customer);
+        }else if(customer.getOpenId() == null && !openid.equals("-1")){
+            customer.setOpenId(openid);
+            customerMapper.updateByPrimaryKey(customer);
+            return ServerResponse.createBySuccess(customer);
+        }else if(customer.getOpenId()!=null && customer.getOpenId().equals(openid)){
+            return ServerResponse.createBySuccess(customer);
+        }else{
+            return ServerResponse.createBySuccess(customer);
+        }
     }
 
 

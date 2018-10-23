@@ -8,12 +8,67 @@ $(function () {
         $('#startTime').val('');
         $('#endTime').val('');
     });
+    loadDeleteConfirm();
     toggle();
 
 });
 
-function toggleOn() {
-    
+function loadDeleteConfirm() {
+    $(document).delegate(".delLink", "click", function () {
+        var id = $(this).attr("data-id");
+        console.log(id);
+        deleteData(id);
+    });
+}
+
+function deleteData(id) {
+    console.log("id"+id);
+    Ewin.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
+        if (!e) {
+            return;
+        }
+        $.ajax({
+            type: "DELETE",
+            url: "/message/delete?id="+id,
+            dataType:'json',
+            success: function (result) {
+                if(result.code == 0){
+                    var data = result.data;
+                    console.log(result.msg);
+                    // toastr.success('删除成功');
+                }
+                $('#editable').DataTable().ajax.reload(null,false);
+            },
+            error: function () {
+                // toastr.error('Error');
+            },
+            complete: function () {
+
+            }
+
+        });
+    });
+    // $("#del").unbind().click(function () {
+    //     $.ajax({
+    //         url:"/message/delete?id="+id,
+    //         type:"DELETE",
+    //         dataType:'json',
+    //         success:function (result) {
+    //             if(result.code == 0){
+    //                 var data = result.data;
+    //                 console.log(result.msg);
+    //             }
+    //             $('#deleteConfirm').modal('hide');
+    //             $('#editable').DataTable().ajax.reload(null,false);
+    //         },
+    //         error:function (result) {
+    //             console.log(result);
+    //             Ewin.confirm({ message: result.status });
+    //             $('#deleteConfirm').modal('hide');
+    //             $('#editable').DataTable().ajax.reload(null,false);
+    //         }
+    //     });
+    // });
 }
 
 function toggle() {

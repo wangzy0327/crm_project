@@ -73,16 +73,16 @@ module.service = {
     },
 
     initVisit: function () {
-        var filter = [
-            {field: 'id', value: module.data.visit_id, operator: '=', relation: 'and'},
-            {field: 'type', value: module.data.type, operator: '=', relation: 'and'}
-        ];
-
-        var data = {
-            m: module.data.m,
-            t: 'v_visit',
-            filter: JSON.stringify(filter)
-        };
+        // var filter = [
+        //     {field: 'id', value: module.data.visit_id, operator: '=', relation: 'and'},
+        //     {field: 'type', value: module.data.type, operator: '=', relation: 'and'}
+        // ];
+        //
+        // var data = {
+        //     m: module.data.m,
+        //     t: 'v_visit',
+        //     filter: JSON.stringify(filter)
+        // };
 
         if(module.data.type == 1){
             $.ajax({
@@ -131,35 +131,6 @@ module.service = {
             });
         }
 
-        // YT.query({
-        //     data: data,
-        //     successCallback: function (data) {
-        //         if (200 == data.status) {
-        //             var item = data.object[0],
-        //                 html = '',
-        //                 type = item.type,
-        //                 values = [item.timeOrWay || '', item.locationOrRequirement || '', item.contentOrResult || ''];
-        //
-        //             module.data.customer_name = item.customer_name;
-        //
-        //             $('.customer_name').text('客户：' + item.customer_name);
-        //
-        //             if (type == 1) {
-        //                 html += module.service.createHtml(['拜访时间', '拜访地点', '拜访内容'], values);
-        //             } else if (type == 2) {
-        //                 values.push(item.memo || '');
-        //                 html += module.service.createHtml(['拜访方式', '客户需求', '拜访结果', '备注'], values);
-        //             }
-        //
-        //             $("#info").append(html);
-        //
-        //             uploader.component.initViewImage(item.picture);
-        //             uploader.component.initViewFile(item.attachment);
-        //         } else {
-        //             $.alert(data.message);
-        //         }
-        //     }
-        // });
     },
 
     initList: function (data) {
@@ -263,78 +234,6 @@ module.service = {
         return html;
     },
 
-    // push_comment: function (urlParams, comment_id) {
-    //     // 推送消息
-    //     var userIds = common.select.data['discuss'].userIds;
-    //     var ids = common.select.data['discuss'].ids;
-    //     var staff_id = urlParams.staff_id;
-    //     var visit_id = urlParams.visit_id;
-    //     var type = urlParams.type;
-    //     var iscomment = urlParams.iscomment;
-    //     var staff_name = module.data.staff_name;
-    //     var customer_name = module.data.customer_name || '【未填姓名】';
-    //
-    //     for (var i in userIds) {
-    //         var corpid = YT.getUrlParam('corpid'), url = '', content = '';
-    //
-    //         url += 'https://open.weixin.qq.com/connect/oauth2/authorize?';
-    //         url += 'appid=' + corpid;
-    //         url += '&redirect_uri=http%3a%2f%2fcrm.youitech.com%2fwx%2fredirect.action';
-    //         url += '&response_type=code';
-    //         url += '&scope=snsapi_base';
-    //         url += '&state=ImoduleIdiscussIvisitSdetailSevaluationDhtmlP' + corpid + 'P' + YT.apps.sales_ass_id + 'P';
-    //         url += 'AAstaff_idEE' + ids[i] + 'AAvisit_idEE' + visit_id;
-    //         url += 'AAtypeEE' + type + 'AAiscommentEE' + iscomment;
-    //         url += 'AAcommentidEE' + comment_id[i];
-    //         url += '#wechat_redirect';
-    //
-    //         content += '您收到一条评论：\n';
-    //         content += '关于' + staff_name + '对' + customer_name + '（客户）的' + (type == 1 ? '拜访计划' : '拜访记录');
-    //
-    //         var title = type == 1 ? '拜访计划评论' : '拜访记录评论';
-    //         var description = content;
-    //         var url = url;
-    //         var btntxt = '评论详情';
-    //
-    //         var article = {
-    //             title: title,
-    //             description: description,
-    //             url: url,
-    //             btntxt: btntxt
-    //         };
-    //
-    //         pushMsgTool.sendMessage(
-    //             {
-    //                 config: {
-    //                     toType: {
-    //                         type: [1],
-    //                         touser: userIds[i]
-    //                     },
-    //                     msgtype: 'news',
-    //                     safe: 0
-    //                 },
-    //                 content: {
-    //                     articles: [article]
-    //                 },
-    //                 userId: staff_id,
-    //                 appId: YT.apps.sales_ass_id
-    //             },
-    //             function (data) {
-    //             },
-    //             function (data) {
-    //             }
-    //         );
-    //     }
-    //
-    //     $.alert('提交成功', function () {
-    //         // 清空
-    //         $('#list div').remove();
-    //         $('#feedback_contents').val('');
-    //         common.select.resetDate('#staffsPopup', '#btn-discuss', 'discuss');
-    //         module.service.initList();
-    //         //location.href = 'visit-detail-evaluation.html' + YT.setUrlParams(urlParams);
-    //     });
-    // }
 
 };
 

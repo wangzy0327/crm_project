@@ -16,6 +16,7 @@ import java.util.List;
 @SpringBootTest(classes = Application.class)
 public class MessageTagRelationMapperTest {
 
+
     @Autowired
     private MessageTagRelationMapper messageTagRelationMapper;
 
@@ -33,6 +34,13 @@ public class MessageTagRelationMapperTest {
         for(int i = 0;i<messageTagRelations.size();i++){
             System.out.println(messageTagRelations.get(i));
         }
+    }
+
+    @Test
+    public void deleteByMessageId() throws Exception {
+        Integer messageId = 129;
+        int countNum = messageTagRelationMapper.deleteByMessageId(messageId);
+        System.out.println("countNum:"+countNum);
     }
 
 }

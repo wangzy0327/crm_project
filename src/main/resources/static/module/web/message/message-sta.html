@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 网页title  -->
+    <title></title>
+    <!-- 禁止浏览器从本地缓存中调阅页面。 -->
+    <meta http-equiv="pragram" content="no-cache">
+    <!-- 网页不保存在缓存中，每次访问都刷新页面。 -->
+    <meta http-equiv="cache-control" content="no-cache, must-revalidate">
+    <!-- 网页在缓存中的过期时间为0，一旦网页过期，必须从服务器上重新订阅。-->
+    <meta http-equiv="expires" content="0">
+    <!-- 设置HTML页面的编码 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- 设置浏览器的默认解析,优先以chrome -->
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge">
+    <!-- 360浏览器优先使用极速核  -->
+    <meta http-equiv="renderer" content="webkit">
+    <link type="text/css" rel="stylesheet" href="/lib/yt/css/ytui.min.css?time=20160912">
+    <!--<link type="text/css" rel="stylesheet" href="css/message-share-view.css?time=20160912">-->
+    <script type="text/javascript" src="/lib/yt/js/ytui.min.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/lib/config.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/lib/appAgent.js?time=20160912"></script>
+    <script type="text/javascript" src="js/message-sta.js?time=20160912"></script>
+    <style>
+        .yt-page {
+            min-width: 300px;
+        }
+
+        em, i {
+            font-style: italic;
+        }
+
+        .table td span,
+        .table td span,
+        .table td span {
+            display: block;
+            color: red;
+        }
+
+        /*  ul, menu, dir {
+              display: block;
+              list-style-type: disc;
+              -webkit-margin-before: 1em;
+              -webkit-margin-after: 1em;
+              -webkit-margin-start: 0px;
+              -webkit-margin-end: 0px;
+              -webkit-padding-start: 0px;
+          }
+          .link-view-detail-con .view-list-con[data-v-section] {
+              width: 100%;
+              height: 100%;
+              position: relative;
+              overflow-x: hidden;
+              overflow-y: auto;
+          }
+          ul {
+              list-style: none;
+          }
+          .link-view-detail-con .view-list-ul[data-v-section] {
+              width: 50%;
+              padding-left: 7px;
+          }
+          .link-view-detail-con .view-list-ul>li[data-v-section] {
+              margin-top: 20px;
+          }
+          li, ol, ul {
+              list-style: none;
+          }
+          li{
+              margin: 0;
+              padding: 0;
+              color: #707070;
+          }
+          .link-view-list-default-ul[data-v-ul-li-box] {
+              width: 100%;
+          }
+          .link-view-list-default-ul>li[data-v-ul-li-box] {
+              font-size: 14px;
+              position: relative;
+              display: flex;
+          }
+          .link-view-list-default-ul .textLeft[data-v-ul-li-box] {
+              text-align: left;
+          }
+          .link-view-list-default-ul .key[data-v-ul-li-box] {
+              width: 130px;
+              height: 30px;
+              line-height: 30px;
+              text-align: right;
+              padding-right: 10px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+          }
+          .link-view-list-default-ul .val[data-v-ul-li-box] {
+              height: 30px;
+              line-height: 30px;
+              position: relative;
+              flex: 1;
+              width: 1px;
+          }
+          .link-view-list-default-ul .add-member[data-v-ul-li-box] {
+              color: #1bb1a1;
+              !*color: #428bca;*!
+              cursor: pointer;
+          }
+          .link-view-list-default-ul .key[data-v-ul-li-box] {
+              width: 130px;
+              height: 30px;
+              line-height: 30px;
+              text-align: right;
+              padding-right: 10px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+          }
+          .link-view-list-default-ul .padding-top[data-v-ul-li-box] {
+              padding-top: 10px;
+          }
+
+          .link-view-list-default-ul .val[data-v-ul-li-box] {
+              height: 30px;
+              line-height: 30px;
+              position: relative;
+              flex: 1;
+              width: 1px;
+          }
+          .customer_behaviour_hover_img_con[data-v-div-content] {
+              width: 100%;
+              height: 6px;
+              position: relative;
+          }
+          .customer_behaviour_hover_img_con .customer_behaviour_hover_img_ul[data-v-div-content] {
+              width: 100%;
+              height: 100%;
+              overflow: hidden;
+          }
+          .customer_behaviour_hover_img_con .customer_behaviour_hover_img_ul>li[data-v-div-content] {
+              width: 20%;
+              height: 100%;
+              float: left;
+              background-color: #bfd1d5;
+              cursor: pointer;
+          }
+          .customer_behaviour_hover_img_con .customer_behaviour_hover_img_ul>li[data-v-div-content]:nth-child(2n) {
+              background-color: #1cb0a0;
+          }
+          .customer_behaviour_hover_img_con .customer_behaviour_hover_img_ul>li[data-v-div-content] {
+              width: 20%;
+              height: 100%;
+              float: left;
+              background-color: #bfd1d5;
+              cursor: pointer;
+          }
+          .customer_behaviour_hover_img_con .customer_behaviour_hover_img_ul>li[data-v-div-content]:nth-child(2n) {
+              background-color: #1cb0a0;
+          }
+          .customer_behaviour_hover_img_con .customer_behaviour_hover_img_ul>li[data-v-div-content] {
+              width: 20%;
+              height: 100%;
+              float: left;
+              background-color: #bfd1d5;
+              cursor: pointer;
+          }
+          .customer_behaviour_hover_img_con .hover_img_con[data-v-div-content] {
+              width: 180px;
+              padding: 10px;
+              position: absolute;
+              left: 0;
+              top: 0;
+              box-shadow: 0 0 10px rgba(0,0,0,.5);
+              z-index: 99;
+              background-color: #fff;
+              border-radius: 4px;
+              opacity: 0;
+              transition: opacity .3s;
+          }
+          .customer_behaviour_hover_img_con .hover_img_con .this_title_name[data-v-div-content] {
+              padding-bottom: 5px;
+              text-align: center;
+              font-size: 12px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+          }
+          .customer_behaviour_hover_img_con .hover_img_con .hover_img[data-v-div-content] {
+              width: 100%;
+          }
+          img {
+              font-size: 0;
+              line-height: 0;
+          }
+          .customer_behaviour_hover_img_con .hover_img_con .this_footer_name[data-v-div-content] {
+              padding-top: 5px;
+              text-align: center;
+              font-size: 12px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+          }*/
+    </style>
+</head>
+<body class="yt-page yt-grid yt-form">
+<div class="wrapper">
+    <div class="search-wrap" style="padding-bottom:13px">
+        <div class="fl">
+            <ul class="ul-inline">
+                <li>
+                    <label>条件</label>
+                    <input type="text" class="input placeholder" id='keyword' value="编号/标题/创建人"/>
+                </li>
+                <li>
+                <li>
+                    <a type="button" class="btn btn-gray" id="search">查询</a>
+                </li>
+                <li>
+                    <a type="button" class="btn btn-gray" id="clear">清空</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="grid-wrap">
+        <div id="grid">
+            <ul data-v-section="" class="view-list-ul" id="box-flow-ul"></ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

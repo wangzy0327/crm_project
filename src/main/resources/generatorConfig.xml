@@ -95,7 +95,7 @@
         <!--</table>-->
         <!--<table tableName="message_share_transmit" domainObjectName="MessageShareTransmit">-->
         <!--</table>-->
-        <table tableName="message_share_customer" domainObjectName="MessageShareCustomer">
+        <table tableName="message_share_transmit" domainObjectName="MessageShareTransmit">
         </table>
 
         <table tableName="customer_readinfo" domainObjectName="CustomerReadinfo">

@@ -1,6 +1,8 @@
 package com.wzy.crm.dao;
 
 import com.wzy.crm.pojo.MessageShareTransmit;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface MessageShareTransmitMapper {
@@ -13,4 +15,6 @@ public interface MessageShareTransmitMapper {
     List<MessageShareTransmit> selectAll();
 
     int updateByPrimaryKey(MessageShareTransmit record);
+
+    MessageShareTransmit selectByKey(@Param("shareId") Integer shareId);
 }

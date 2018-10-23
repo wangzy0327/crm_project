@@ -5,6 +5,8 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="share_id" property="shareId" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="times" property="times" jdbcType="INTEGER" />
+    <result column="message_id" property="messageId" jdbcType="INTEGER" />
     <result column="customer_id" property="customerId" jdbcType="INTEGER" />
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
     <result column="ip" property="ip" jdbcType="VARCHAR" />
@@ -12,6 +14,8 @@
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
     <result column="view_time" property="viewTime" jdbcType="INTEGER" />
+    <result column="page_count" property="pageCount" jdbcType="INTEGER" />
+    <result column="total_time" property="totalTime" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="read_info" property="readInfo" jdbcType="LONGVARCHAR" />
   </resultMap>
@@ -19,42 +23,112 @@
     delete from customer_readinfo
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wzy.crm.pojo.CustomerReadinfo" >
-    insert into customer_readinfo (id, share_id, user_id, 
-      customer_id, open_id, ip, 
-      cid, city, open_time, 
-      view_time, update_time, read_info
-      )
-    values (#{id,jdbcType=INTEGER}, #{shareId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
-      #{customerId,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
-      #{cid,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{openTime,jdbcType=TIMESTAMP}, 
-      #{viewTime,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{readInfo,jdbcType=LONGVARCHAR}
-      )
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.wzy.crm.pojo.CustomerReadinfo" >
+    insert into customer_readinfo (id,share_id, user_id,
+      times, message_id, customer_id, 
+      open_id, ip, cid, city, 
+      open_time, view_time,page_count,total_time,update_time,
+      read_info)
+    values (#{id,jdbcType=INTEGER},#{shareId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR},
+      #{times,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, 
+      #{openId,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{cid,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      now(), 0,#{pageCount,jdbcType=INTEGER},0, now(),
+      #{readInfo,jdbcType=LONGVARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.CustomerReadinfo" >
+  <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.CustomerReadinfo">
     update customer_readinfo
-    set share_id = #{shareId,jdbcType=INTEGER},
-      user_id = #{userId,jdbcType=VARCHAR},
-      customer_id = #{customerId,jdbcType=INTEGER},
-      open_id = #{openId,jdbcType=VARCHAR},
-      ip = #{ip,jdbcType=VARCHAR},
-      cid = #{cid,jdbcType=VARCHAR},
-      city = #{city,jdbcType=VARCHAR},
-      open_time = #{openTime,jdbcType=TIMESTAMP},
-      view_time = #{viewTime,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      read_info = #{readInfo,jdbcType=LONGVARCHAR}
+    <set>
+      <if test="shareId != null">
+        share_id = #{shareId},
+      </if>
+      <if test="userId != null and userId != ''">
+        user_id = #{userId},
+      </if>
+      <if test="messageId != null">
+        message_id = #{messageId},
+      </if>
+      <if test="customerId != null and customerId != ''">
+        customer_id = #{customerId},
+      </if>
+      <if test="openId != null and openId != ''">
+        open_id = #{openId},
+      </if>
+      <if test="ip != null and ip != ''">
+        ip = #{ip},
+      </if>
+      <if test="cid != null and cid != ''">
+        cid = #{cid},
+      </if>
+      <if test="city != null and city != ''">
+        city = #{city},
+      </if>
+      <if test="openTime != null ">
+        open_time = #{openTime},
+      </if>
+      <if test="viewTime != null and viewTime != ''">
+        view_time = #{viewTime},
+      </if>
+      <if test="totalTime != null and totalTime != ''">
+        total_time = #{totalTime},
+      </if>
+      <if test="readInfo != null and readInfo != ''">
+        read_info = #{readInfo},
+      </if>
+      update_time = now()
+    </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateInfoAndTimesByKey">
+    update customer_readinfo
+    <set>
+      <if test="customerId != null and customerId != ''">
+        customer_id = #{customerId},
+      </if>
+      <if test="ip != null and ip != ''">
+        ip = #{ip},
+      </if>
+      <if test="cid != null and cid != ''">
+        cid = #{cid},
+      </if>
+      <if test="city != null and city != ''">
+        city = #{city},
+      </if>
+      <if test="times != null and times != ''">
+        times = #{times},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByKeyAndTime" >
+    update customer_readinfo
+    <set>
+      <if test="viewTime != null and viewTime != ''">
+        view_time = #{viewTime},
+      </if>
+      <if test="totalTime != null and totalTime != ''">
+        total_time = #{totalTime},
+      </if>
+      <if test="readInfo != null and readInfo != ''">
+        read_info = #{readInfo},
+      </if>
+        update_time = now()
+    </set>
+    where id = #{id,jdbcType=INTEGER} and #{viewTime} >= view_time and #{totalTime} >= total_time
+  </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, share_id, user_id, customer_id, open_id, ip, cid, city, open_time, view_time, 
-    update_time, read_info
+    select id, share_id, user_id, times, message_id, customer_id, open_id, ip, cid, city, 
+    open_time, view_time, update_time, read_info
     from customer_readinfo
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, share_id, user_id, customer_id, open_id, ip, cid, city, open_time, view_time, 
-    update_time, read_info
+    select id, share_id, user_id, times, message_id, customer_id, open_id, ip, cid, city, 
+    open_time, view_time, update_time, read_info
     from customer_readinfo
+  </select>
+  <select id="selectByShareKey" resultMap="BaseResultMap">
+    select id,share_id,user_id,customer_id,message_id,open_id,times,view_time
+    from customer_readinfo
+    where share_id = #{shareId} and message_id = #{messageId}
   </select>
 </mapper>

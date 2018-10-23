@@ -136,7 +136,7 @@ module.service = {
                     html += '<div class="weui-form-preview__bd detail-plan" data-id="' + item.id + '" data-staffid="' + item.userId + '">';
                     html += '<div class="weui-form-preview__item">';
                     html += '<label class="weui-form-preview__label">拜访时间</label>';
-                    html += '<span class="weui-form-preview__value">' + (item.time ? new Date(item.time).Format('yyyy-MM-dd hh:mm:ss') : '') + '</span>';
+                    html += '<span class="weui-form-preview__value">' + (item.time ? new Date(GetDateDiff(item.time)).Format('yyyy-MM-dd hh:mm:ss') : '') + '</span>';
                     html += '</div>';
                     html += '<div class="weui-form-preview__item">';
                     html += '<label class="weui-form-preview__label">拜访地点</label>';

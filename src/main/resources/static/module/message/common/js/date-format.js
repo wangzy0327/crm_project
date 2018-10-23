@@ -13,3 +13,9 @@ Date.prototype.Format = function (fmt) { //author: meizz
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }
+
+function GetDateDiff(DiffTime) {
+    //将xxxx-xx-xx的时间格式，转换为 xxxx/xx/xx的格式
+    Time = DiffTime.replace(/\-/g, "/");
+    return Time;
+};

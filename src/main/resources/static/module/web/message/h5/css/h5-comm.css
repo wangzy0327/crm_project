@@ -1,0 +1,194 @@
+/* 设置容器的宽 */
+.row-item {
+    margin: 2px auto 6px;
+}
+
+.mod-form-rows label {
+    vertical-align: middle;
+}
+
+a:link {
+    color: #428bca;
+}
+
+a:visited {
+    color: #428bca;
+}
+
+a:hover {
+    color: #428bca;
+}
+
+a:active {
+    color: #428bca;
+}
+
+em, i {
+    font-style: italic;
+}
+
+.span-t {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.btn-d {
+    height: 28px;
+    line-height: 28px;
+    color: #fff;
+    margin-left: 15px;
+}
+
+.box {
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-wrap: wrap;
+    /* 设置文字不能被选中 */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.box .h5-left {
+    min-width: 360px;
+}
+
+.box .h5-center {
+    margin: auto 15px;
+
+}
+
+.h5-center .up, .down {
+    cursor: pointer;
+}
+
+.box .h5-right {
+    flex: 1;
+}
+
+.content-header {
+    height: 50px;
+    line-height: 50px;
+}
+
+.content-header label, label, a, input {
+    vertical-align: middle;
+}
+
+.box-label {
+    position: relative;
+    min-width: 40px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    color: #0d99ee;
+    border: 1px solid #0d99ee;
+    border-radius: 15px;
+    padding: 0 5px;
+    cursor: pointer;
+    text-align: center;
+    margin: 0 10px 10px 0;
+}
+
+/* 图标背景 */
+.label-hover {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    border-radius: 15px;
+}
+
+.label-hover-bg {
+    background: #0d0a31e6;
+    opacity: 0.6;
+}
+
+/* 删除图标 */
+.label-hover > .icon-close {
+    color: #f8f8f8;
+    font-size: 16px;
+}
+
+.label-close:hover .label-hover {
+    display: block;
+}
+
+.label-close:hover .label-hover-bg {
+    display: block;
+}
+
+/* 添加图标 */
+.label-hover > .icon-add {
+    color: #58db8f;
+    font-weight: bold;
+}
+
+.label-add:hover .label-hover {
+    display: block;
+}
+
+.label-add:hover .label-hover-bg {
+    display: block;
+}
+
+.label-hot {
+    width: 50px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.clear {
+    clear: both;
+}
+
+/* 热门标签 */
+#label-list {
+    position: absolute;
+    display: none;
+    width: 280px;
+    right: 30px;
+    border: 1px solid #000;
+    padding: 15px;
+    background-color: #f4f4f4;
+    z-index: 999;
+}
+
+/* 页面标签 */
+#label-view {
+    height: 250px;
+    max-height: 250px;
+    padding: 15px 0 15px 0;
+    /*background-color: #eee;*/
+    overflow: auto;
+}
+
+.content-footer {
+    position: relative;
+    top: 30px;
+    text-align: center;
+}
+
+.br-primary {
+    border-color: #337ab7;
+}
+
+.br-success {
+    border-color: #dff0d8;
+}
+
+.br-info {
+    border-color: #d9edf7;
+}
+
+.br-warning {
+    border-color: #fcf8e3;
+}
+
+.br-danger {
+    border-color: #f2dede;
+}

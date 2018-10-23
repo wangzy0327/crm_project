@@ -6,20 +6,15 @@ import com.google.common.collect.Maps;
 import com.wzy.crm.common.MessageType;
 import com.wzy.crm.config.DomainConfig;
 import com.wzy.crm.config.NginxConfig;
-import com.wzy.crm.dao.MessageMapper;
-import com.wzy.crm.dao.MessageShareCustomerMapper;
-import com.wzy.crm.dao.MessageTagMapper;
-import com.wzy.crm.dao.MessageTagRelationMapper;
-import com.wzy.crm.pojo.Message;
-import com.wzy.crm.pojo.MessageShareCustomer;
-import com.wzy.crm.pojo.MessageTag;
-import com.wzy.crm.pojo.MessageTagRelation;
+import com.wzy.crm.dao.*;
+import com.wzy.crm.pojo.*;
 import com.wzy.crm.service.IMessageService;
 import com.wzy.crm.utils.FtpUtil;
 import com.wzy.crm.utils.HttpApi;
 import com.wzy.crm.utils.PropertiesUtil;
 import com.wzy.crm.common.ResponseCode;
 import com.wzy.crm.common.ServerResponse;
+import com.wzy.crm.utils.SendWxMessage;
 import com.wzy.crm.vo.MessageDetail;
 import com.wzy.crm.vo.MessageResponseVo;
 import com.wzy.crm.vo.MessageVo;
@@ -61,6 +56,12 @@ public class MessageServiceImpl implements IMessageService {
     @Autowired
     private MessageShareCustomerMapper messageShareCustomerMapper;
 
+    @Autowired
+    private MessageShareTransmitMapper messageShareTransmitMapper;
+
+    @Autowired
+    private SendWxMessage sendWxMessage;
+
 
     @Override
     public synchronized ServerResponse saveMessage(Message message,List<String> tags) {
@@ -77,12 +78,15 @@ public class MessageServiceImpl implements IMessageService {
     public List<Integer> findTags(List<String> tags){
         List<Integer> tagIds = Lists.newArrayList();
         for(int i = 0;i<tags.size();i++){
-            Integer tagId = messageTagMapper.selectByTagName(tags.get(i));
-            if(tagId == null){
+            Integer tagId = null;
+            List<Integer> tagList = messageTagMapper.selectByTagName(tags.get(i));
+            if(tagList == null || tagList.size() == 0){
                 MessageTag messageTag = new MessageTag();
                 messageTag.setName(tags.get(i));
                 messageTagMapper.insert(messageTag);
                 tagId = messageTag.getId();
+            }else{
+                tagId = tagList.get(0);
             }
             tagIds.add(tagId);
         }
@@ -102,10 +106,11 @@ public class MessageServiceImpl implements IMessageService {
             Integer key = entry.getKey();
             List<MessageTag> messageTags = entry.getValue();
             for(int j = 0;j<messageTags.size();j++){
-                Integer tagId = messageTagMapper.selectByTagName(messageTags.get(j).getName());
-                if(tagId == null){
+                List<Integer> tagList  = messageTagMapper.selectByTagName(messageTags.get(j).getName());
+                if(tagList == null || tagList.size() == 0){
                     messageTagMapper.insert(messageTags.get(j));
                 }else{
+                    Integer tagId = tagList.get(0);
                     messageTags.get(j).setId(tagId);
                 }
                 MessageTagRelation messageTagRelation = new MessageTagRelation();
@@ -173,6 +178,24 @@ public class MessageServiceImpl implements IMessageService {
             return ServerResponse.createBySuccess(messageShareCustomer);
         else
             return ServerResponse.createByError();
+    }
+
+    @Override
+    public ServerResponse saveCustomerTransmit(MessageShareTransmit messageShareTransmit) {
+        Integer customerId = messageShareTransmit.getCustomerId();
+        Integer messageId = messageShareTransmit.getMessageId();
+        Integer shareId = messageShareTransmit.getShareId();
+        sendWxMessage.handleSendCustomerTransmit(messageShareTransmit);
+        System.out.println("..........转发........");
+        MessageShareTransmit messageShareTransmit1 = messageShareTransmitMapper.selectByKey(shareId);
+        if(messageShareTransmit1!=null){
+            messageShareTransmit.setId(messageShareTransmit1.getId());
+            messageShareTransmitMapper.updateByPrimaryKey(messageShareTransmit);
+        }else{
+            messageShareTransmit.setTransmitTimes(1);
+            messageShareTransmitMapper.insert(messageShareTransmit);
+        }
+        return ServerResponse.createBySuccess(messageShareTransmit);
     }
 
 
@@ -361,7 +384,10 @@ public class MessageServiceImpl implements IMessageService {
             input.close();
 
             StringBuffer sb = new StringBuffer(text);
+
             int index = text.indexOf("</body>");
+            // 指定位置插入js
+            sb.insert(index, "<script src=\"/module/web/message/h5/js/h5-page-listen.js\"></script>");
             // 指定位置插入js
 //            sb.insert(index, "<script src=\"../../js/share.js\"></script>");
 //            sb.insert(index,"<script src=\"../../js/initWxConfig.js\"></script>");

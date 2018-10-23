@@ -4,12 +4,14 @@ module.data = {
     user_id:getUrlParam("userid"),
     message_id:getUrlParam("msgid"),
     d:getUrlParam("d"),
+    s:getUrlParam("s"),
     messageData: {},
     title: '' // 页面标题
 };
 
 module.service = {
     initControls: function () {
+        // module.data.open_id = oauth2openid();
         this.initData();
     },
 
@@ -64,7 +66,7 @@ module.service = {
             userId = module.data.user_id,
             messageId = parseInt(module.data.message_id),
             customerId = module.data.customer_id,
-            shareFlag = 1,
+            shareFlag = module.data.s,
             shareTime = new Date().Format('yyyy-MM-dd hh:mm:ss'),
             messageData = module.data.messageData,
             share_ip = module.data.share_ip;
@@ -74,7 +76,6 @@ module.service = {
             // module_d = module.data,
             // m = module_d.m,
             // messageData = module_d.messageData,
-
         MessageComm.share.initWxConfig(function () {
             var params = {};
             var messageShare = {
@@ -95,7 +96,7 @@ module.service = {
                     if (result.code == 0) {
                         var data = result.data;
                         var dataId = data.id;
-                        var _share_link = messageData.url + "?userid=" + userId +"&msgid="+ messageId +"&d=" + data.id ;
+                        var _share_link = messageData.url + "?userid=" + userId +"&msgid="+ messageId +"&s=1&d=" + data.id ;
                         console.log("share_link: "+ _share_link);
                         params = {
                             share_title: messageData.titleText,
@@ -105,6 +106,7 @@ module.service = {
                             share_imgurl: domain.server + '/images/cover-h5.png',
                             onsuccess: function () {
                                 var messageShare = {
+                                    id:dataId,
                                     messageId:messageId,
                                     userId:userId,
                                     customerId:customerId,

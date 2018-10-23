@@ -4,6 +4,7 @@ module.data = {
     user_id:getUrlParam("userid"),
     message_id:getUrlParam("msgid"),
     d:getUrlParam("d"),
+    s:getUrlParam("s"),
     messageData: {}
 };
 
@@ -60,7 +61,7 @@ module.service = {
             userId = module.data.user_id,
             messageId = parseInt(module.data.message_id),
             customerId = module.data.customer_id,
-            shareFlag = 1,
+            shareFlag = module.data.s,
             shareTime = new Date().Format('yyyy-MM-dd hh:mm:ss'),
             messageData = module.data.messageData,
             share_ip = module.data.share_ip;
@@ -85,7 +86,7 @@ module.service = {
                     if (result.code == 0) {
                         var data = result.data;
                         var dataId = data.id;
-                        var _share_link = messageData.url + "?userid=" + userId +"&msgid="+ messageId +"&d=" + data.id ;
+                        var _share_link = messageData.url + "?userid=" + userId +"&msgid="+ messageId +"&s=1&d=" + data.id ;
                         console.log("share_link: "+ _share_link);
                         console.log("picUrl: "+ messageData.picUrl);
                         params = {
@@ -95,6 +96,7 @@ module.service = {
                             share_imgurl: domain.server + '/images/cover-pdf.png',
                             onsuccess: function () {
                                 var messageShare = {
+                                    id:dataId,
                                     messageId:messageId,
                                     userId:userId,
                                     customerId:customerId,

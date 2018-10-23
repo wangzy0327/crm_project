@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 网页title  -->
+    <title></title>
+    <!-- 禁止浏览器从本地缓存中调阅页面。 -->
+    <meta http-equiv="pragram" content="no-cache">
+    <!-- 网页不保存在缓存中，每次访问都刷新页面。 -->
+    <meta http-equiv="cache-control" content="no-cache, must-revalidate">
+    <!-- 网页在缓存中的过期时间为0，一旦网页过期，必须从服务器上重新订阅。-->
+    <meta http-equiv="expires" content="0">
+    <!-- 设置HTML页面的编码 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- 设置浏览器的默认解析,优先以chrome -->
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge">
+    <!-- 360浏览器优先使用极速核  -->
+    <meta http-equiv="renderer" content="webkit">
+    <!-- YTUI库 -->
+    <!-- YTUI库 -->
+    <link type="text/css" rel="stylesheet" href="/lib/yt/css/ytui.min.css?time=20180201">
+    <script type="text/javascript" src="/lib/yt/js/ytui.min.js?time=20160912"></script>
+    <script type="text/javascript" src="/lib/yt/js/ytui.editor.min.js?time=20160912"></script>
+    <script type="text/javascript" charset="utf-8" src="../ueditor/ueditor.config.js?time=20160912"></script>
+    <script type="text/javascript" charset="utf-8" src="../ueditor/ueditor.all.min.js?time=20160912"></script>
+    <script type="text/javascript" charset="utf-8" src="../ueditor/lang/zh-cn/zh-cn.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/lib/config.js?time=20160913"></script>
+    <script type="text/javascript" src="/module/lib/appAgent.js?time=20160912"></script>
+    <script type="text/javascript" src="/module/lib/push-msg.js?time=20160912"></script>
+    <script type="text/javascript" src="js/web-upload.js?time=20160914"></script>
+    <script type="text/javascript" src="js/message-add.js?time=201807041518"></script>
+    <style type="text/css">
+        /* 设置容器的宽 */
+        .row-item {
+            margin: 2px auto 6px;
+            padding: 6px auto 2px;
+            width: 1000px;
+        }
+
+        #title, #editor {
+            line-height: normal;
+        }
+
+        .edui-popup {
+            display: inline;
+            background: none;
+            padding: 0;
+        }
+
+        a:link {
+            color: #428bca;
+        }
+
+        a:visited {
+            color: #428bca;
+        }
+
+        a:hover {
+            color: #428bca;
+        }
+
+        a:active {
+            color: #428bca;
+        }
+
+        em, i {
+            font-style: italic;
+        }
+
+        .dialog {
+            z-index: 1400;
+        }
+    </style>
+</head>
+<body class="yt-page yt-grid yt-form">
+<div class="wrapper" style="padding-top: 0;">
+    <div class="search-wrap"
+         style="position: fixed;right:0;top:0;z-index: 1300;padding-top:10px;width:98%;margin:0 1%;background-color: white;">
+        <div class="fl">
+            <ul class="ul-inline">
+
+            </ul>
+        </div>
+        <div class="fr">
+            <ul class="ul-inline">
+                <li>
+                    <a type="button" class="btn" id="view">预览</a>
+                </li>
+                <li>
+                    <a type="button" class="btn" id="save">保存</a>
+                </li>
+                <li>
+                    <a type="button" class="btn" id="push">推送</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div style="margin-top: 60px;">
+        <form>
+            <ul class="mod-form-rows">
+                <li class="row-item">
+                    <div style="border-bottom:1px solid #ddd;padding: 8px 0;">
+                        <a href="javascript:void(0);" style="font-size: 15px;" id="select">选择发送范围</a>
+                        <span id="staffs" style="width:100%;font-size: 14px;line-height:125%;"></span>
+                    </div>
+                </li>
+                <li class="row-item" style="margin-top: -10px;">
+                    <div style="border-bottom:1px solid #ddd;padding: 8px 0;">
+                        <a href="javascript:void(0);" style="font-size: 15px;" id="tagSelect">选择标签</a>
+                        <span id="tags" style="width:100%;font-size: 14px;line-height:125%;"></span>
+                    </div>
+                </li>
+                <li class="row-item">
+                    <div>
+                        <a class="btn btn-sm" id="upload_cover"><i class="iconfont">&#xe602;</i>&nbsp;上传封面图片</a>&nbsp;&nbsp;(1张，支持JPG、PNG格式，较好的效果为大图640x320，小图80x80)
+                    </div>
+                    <div style="clear: both;display: block;"></div>
+                    <div class="ctn-wrap" id="fileList_cover" style="margin-left:110px;">
+
+                    </div>
+                </li>
+                <li class="row-item">
+                    <div class="ctn-wrap">
+                        <span style="font-size: 14px;">标题（必填）</span>
+
+                        <div id="title" style="width:1000px;height:30px;"></div>
+                    </div>
+                </li>
+                <li class="row-item">
+                    <div class="ctn-wrap">
+                        <span style="font-size: 14px;">内容（可在其他编辑器编辑好，再复制进来，例如：<a href="http://bj.96weixin.com/" target="_blank">96编辑器</a>、<a href="http://www.135editor.com/" target="_blank">135编辑器</a>、<a href="http://www.365editor.com/" target="_blank">365编辑器</a>）</span>
+                        <script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
+                    </div>
+                </li>
+            </ul>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

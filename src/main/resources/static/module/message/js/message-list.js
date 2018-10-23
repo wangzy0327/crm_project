@@ -78,7 +78,7 @@ listManager.service = {
             var id = data[i].id;
             var titleData = data[i].titleText;
             var personCreate = data[i].createUserName;
-            var dateCreate = new Date(data[i].updateTime).Format("yyyy-MM-dd");
+            var dateCreate = new Date(GetDateDiff(data[i].updateTime)).Format("yyyy-MM-dd");
             var openCount = data[i].openCount;
             if (openCount == null || openCount == '') {
                 openCount = 0;
@@ -189,7 +189,9 @@ listManager.eventHandler = {
             listManager.eventHandler.getUserInfo(function (user) {
                 var url1 = $.UrlUpdateParams(url,"msgid",dataId);
                 var url2 = $.UrlUpdateParams(url1,"userid",user.userid);
-                location.href = url2;
+                var url3 = $.UrlUpdateParams(url2,"s",0);
+                console.log("url3: "+url3);
+                location.href = url3;
                 // window.location.href = url + YT.setUrlParams({
                 //     d: dataId,
                 //     s: 0,

@@ -38,4 +38,9 @@
     select id, share_id, message_id, user_id, customer_id, open_id
     from message_share_customer
   </select>
+  <select id="selectCustomerIdByShareId" resultMap="BaseResultMap">
+    select id,share_id,message_id,user_id,customer_id
+    from message_share_customer
+    where share_id = #{shareId}
+  </select>
 </mapper>

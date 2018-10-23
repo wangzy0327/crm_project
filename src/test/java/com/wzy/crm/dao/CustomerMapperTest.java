@@ -70,7 +70,7 @@ public class CustomerMapperTest {
     public void updateByPrimaryKey() throws Exception {
         Integer id = 100;
         Customer customer = customerMapper.selectByPrimaryKey(id);
-        customer.setWechat("zs");
+        customer.setOpenId("openid");
         int count = customerMapper.updateByPrimaryKey(customer);
         System.out.println("count:"+count);
     }
