@@ -48,27 +48,7 @@ function deleteData(id) {
 
         });
     });
-    // $("#del").unbind().click(function () {
-    //     $.ajax({
-    //         url:"/message/delete?id="+id,
-    //         type:"DELETE",
-    //         dataType:'json',
-    //         success:function (result) {
-    //             if(result.code == 0){
-    //                 var data = result.data;
-    //                 console.log(result.msg);
-    //             }
-    //             $('#deleteConfirm').modal('hide');
-    //             $('#editable').DataTable().ajax.reload(null,false);
-    //         },
-    //         error:function (result) {
-    //             console.log(result);
-    //             Ewin.confirm({ message: result.status });
-    //             $('#deleteConfirm').modal('hide');
-    //             $('#editable').DataTable().ajax.reload(null,false);
-    //         }
-    //     });
-    // });
+
 }
 
 function toggle() {
@@ -158,10 +138,10 @@ function loadMessageData() {
 //                {"data":"itemId","name":"item_id"},
             {
                 "data": function (row) {
-                    if (row.title.length > 15) {
-                        return row.title.substring(0, 15) + "...";
+                    if (row.titleText.length > 15) {
+                        return row.titleText.substring(0, 15) + "...";
                     } else {
-                        return row.title;
+                        return row.titleText;
                     }
                 }, "name": "title"
             },

@@ -116,12 +116,6 @@ module.service = {
             customerId = module.data.customer_id;
             openId = module.data.openid;
             console.log("initShare openid:"+openId);
-        // if (times != null) {
-        //     times = parseInt(times);
-        // } else {
-        //     times = 0;
-        // }
-        // ++times;
 
         if (shareFlag != null && shareFlag !== undefined
             &&('' + module.data.s == '1') && (''+openId != '-1')
@@ -200,18 +194,6 @@ module.service = {
 
     customerUpdate: function (shareFlag) {
         var messageData = module.data.messageData;
-        //     openCount = ++messageData.openCount,
-        //     filter = [
-        //         {field: 'id', value: messageData.id, operator: '=', relation: 'AND'}
-        //     ];
-        //
-        // var v = {
-        //     t: 'message_share',
-        //     data: {
-        //         openCount: openCount
-        //     },
-        //     filter: filter
-        // };
 
         // 初始化阅读时间
         var pageInfo = [];
@@ -234,6 +216,7 @@ module.service = {
             pageCount:messageData.pagecount,
             messageId:module.data.message_id,
             messageTitle:module.data.title,
+            totalTime:1,
             readInfo:JSON.stringify(pageInfo)
         };
 
@@ -296,14 +279,6 @@ module.service = {
                 frames["page-view"].startTime = new Date().getTime();
                 var text = "页面 " + (activeIndex+1) + " 的浏览时间为：" + frames["page-view"].pageInfo[activeIndex] + "秒<br>";
                 console.log(text);
-                // var v = {
-                //     t: 'message_share_customer',
-                //     data: {
-                //         viewTime: module.data.viewTime,
-                //         readInfo: JSON.stringify(frames["page-view"].pageInfo)
-                //     },
-                //     filter: filter
-                // };
 
                 var data = {
                     id:module.data.readinfo_id,
@@ -348,21 +323,6 @@ module.service = {
                         // alert(textStatus);
                     }
                 });
-
-                // var data = {
-                //     m: module.data.m,
-                //     t: 'message_share_customer',
-                //     v: JSON.stringify([v]),
-                //     isvisitor: 1
-                // };
-                //
-                // YT.update({
-                //     loading: false,
-                //     data: data,
-                //     successCallback: function (data) {
-                //
-                //     }
-                // });
             }, 3000);
         // }
     },

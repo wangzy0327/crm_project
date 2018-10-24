@@ -1,12 +1,14 @@
 $(function () {
-    shareManager.service.initControls();
-    shareManager.eventHandler.handleEvents();
+    module.service.initControls();
+    module.eventHandler.handleEvents();
 });
 
-var shareManager = shareManager || {};
-shareManager.data = {
-    m: 101000000,
-    staffData: {},
+var module = module || {};
+module.data = {
+    user_id:getUrlParam("userid"),
+    message_id:getUrlParam("msgid"),
+    d:getUrlParam("d"),
+    s:getUrlParam("s"),
     messageData: {},
     os: {
         engine: '',
@@ -23,13 +25,31 @@ shareManager.data = {
         cid: '',
         city: ''
     },
-    openid: -1,
-    viewTime: 1
+    readinfo_id:-1,
+    customer_id:-1,
+    customer_name:'',
+    openid: "-1",
+    viewTime: 1,
 };
-shareManager.service = {
+module.service = {
     initControls: function () {
-        $.showLoading('加载中...');
-        shareManager.service.initShare();
+        oauth2openid();
+        if(getUrlParam("openid")!=null){
+            module.data.openid = getUrlParam("openid");
+        }
+        console.log("module.data.openid:"+module.data.openid);
+        var self = this;
+        OSTool.detectIP(function (ipData) {
+            self.initCustomer();
+
+            module.data.share_ip = ipData.ip;
+
+            module.data.cid = ipData.cid;
+
+            module.data.city = ipData.city;
+
+            self.initShare();
+        });
     },
     replaceEMToI: function (str) {
         var reg1 = new RegExp("<em>", "g");
@@ -42,28 +62,55 @@ shareManager.service = {
         str = str.replace(reg4, "</b>");
         return str;
     },
+
+    initCustomer:function () {
+        $.ajax({
+            type: 'post',
+            async: false,
+            url: "/customer/shareCustomer?shareId="+module.data.d+"&openid="+module.data.openid,
+            contentType: "application/json;charset=UTF-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    var data = result.data;
+                    if(data!=null){
+                        module.data.customer_id = data.id;
+                        module.data.customer_name = data.name;
+                        console.log("data.customer_name:"+module.data.customer_name);
+                    }
+                }else {
+                    $.alert('网络异常，请与管理员联系！');
+                }
+            }
+        });
+    },
+
     initData: function () {
-        if (shareManager.data.messageData) {
-            var messageData = shareManager.data.messageData;
-            if ('' + messageData.msgType == '1') {
+        if (module.data.messageData) {
+            var messageData = module.data.messageData;
+            // 显示页面
+            module.data.title = messageData.titleText;
+            if ('' + messageData.msgtype == '1') {
                 $("#message-page-date").html(new Date().Format("MM月dd日"));
-                $("#message-page-title").html(shareManager.service.replaceEMToI(messageData.title));
-                $("#message-page-content").html(shareManager.service.replaceEMToI(messageData.description || ""));
-            } else if ('' + messageData.msgType == '3') {
+                $("#message-page-title").html(module.service.replaceEMToI(messageData.title));
+                $("#message-page-content").html(module.service.replaceEMToI(messageData.description || ""));
+            } else if ('' + messageData.msgtype == '3') {
                 $(".message-page").css({"margin": "0", "padding": "0"});
                 var src = messageData.picurl ? messageData.picurl.replace('cover_', '') : "";
                 if (src != '') {
                     var corpJson = messageData.contentAttach;
                     if (corpJson != null && corpJson !== undefined && corpJson != '' && corpJson != '{}') {
-                        shareManager.service.getStaff(function () {
-                            if (!$.isEmptyObject(shareManager.data.staffData)) {
-                                var qrCodeAttach = eval('(' + shareManager.data.staffData.qrcodeAttach + ')');
+                        module.service.getStaff(function () {
+                            if (!$.isEmptyObject(module.data.staffData)) {
+                                var qrCodeAttach = eval('(' + module.data.staffData.qrcodeAttach + ')');
                                 var imgUrl = YT.server + '/module/web/upload/' + qrCodeAttach[0].savedFileName.replace("\\", "/");
                                 var corp = JSON.parse(corpJson);
                                 var width = corp.w - 0;
                                 var height = corp.h - 0;
                                 var min = width <= height ? width : height;
-                                shareManager.service.drawImage([src, imgUrl], function (ctx, images, loaded) {
+                                module.service.drawImage([src, imgUrl], function (ctx, images, loaded) {
                                     ctx.drawImage(images[0], 0, 0);
                                     var twoWidth = images[1].width - 0;
                                     var twoHeight = images[1].height - 0;
@@ -78,13 +125,13 @@ shareManager.service = {
                                     }
                                 });
                             } else {
-                                shareManager.service.drawImage([src], function (ctx, images, loaded) {
+                                module.service.drawImage([src], function (ctx, images, loaded) {
                                     ctx.drawImage(images[0], 0, 0);
                                 });
                             }
                         });
                     } else {
-                        shareManager.service.drawImage([src], function (ctx, images, loaded) {
+                        module.service.drawImage([src], function (ctx, images, loaded) {
                             ctx.drawImage(images[0], 0, 0);
                         });
                     }
@@ -107,158 +154,130 @@ shareManager.service = {
         });
     },
     getStaff: function (callback) {
-        var filter = [{field: 'id', value: shareManager.service.getUrlParam('u'), operator: '=', relation: 'AND'}];
-        var data = {
-            m: shareManager.data.m,
-            t: 'staffs',
-            filter: JSON.stringify(filter)
-        };
-
-        YT.query({
-            data: data,
-            loading: 0,
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    shareManager.data.staffData = data.object[0];
+        $.ajax({
+            type: 'post',
+            url: "/message/self?userId="+module.data.user_id,
+            contentType: "application/json;charset=UTF-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    var data = result.data;
+                    module.data.staffData = data;
                     callback();
-                } else {
-                    /*$.alert('网络异常，请与管理员联系！');*/
+                }else {
+                    $.alert('网络异常，请与管理员联系！');
                 }
             }
         });
     },
     getData: function (callback) {
-        var filter = [{field: 'id', value: shareManager.service.getUrlParam('d'), operator: '=', relation: 'AND'}];
-        var postData = {
-            isvisitor: 1,
-            m: shareManager.data.m,
-            t: 'v_message_share',
-            filter: JSON.stringify(filter)
-        };
-        YT.query({
-            data: postData,
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    shareManager.data.messageData = data.object[0];
-                    shareManager.service.initData();
-                    callback();
-                } else if (501 == data.status) {
-                    // 页面链接跳转历史URL不记录
-                    history.replaceState(null, document.title, data.object + '#');
-                    window.location.replace('');
-                } else {
-                    $.alert(data.message);
+        $.ajax({
+            type: 'post',
+            url: "/message/richText?id="+module.data.message_id,
+            contentType: "application/json;charset=UTF-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    var data = result.data;
+                    module.data.messageData = data;
+                    module.service.initData();
+                    callback(data);
+                }else {
+                    $.alert('网络异常，请与管理员联系！');
                 }
             }
         });
     },
     initShare: function () {
-        var self = this;
-        var shareFlag = self.getUrlParam("s");
-        var times = self.getUrlParam("t");
-        /*var view = self.getUrlParam("v");*/
-        if (times != null) {
-            times = parseInt(times);
-        } else {
-            times = 0;
-        }
-        ++times;
-        shareManager.service.getData(function () {
-            /*if(view != null && ''+view == '1'){
-             return;
-             }*/
 
-            $.extend(shareManager.data.os, OSTool.detectOS(navigator.userAgent.toLowerCase()));
-            OSTool.detectIP(function (ipData) {
-                $.extend(shareManager.data.ip, ipData);
+        var self = this,
+            shareFlag = getUrlParam("s"),
+            customerId = module.data.customer_id;
+        openId = module.data.openid;
+        console.log("initShare openid:"+openId);
 
-                shareManager.data.share_ip = ipData.ip;
-
-                if (shareFlag != null && shareFlag !== undefined &&
-                    (('' + shareFlag == '1') || ('' + shareFlag == '0' && times > 1))) {
-                    // 客户点击插入浏览记录
-                    shareManager.service.customerUpdate(shareFlag, times);
-                } else {
-                    // 销售人员点击初始化监听接口
-                    shareManager.service.initWxConfig(shareFlag, times);
-                }
-                $.hideLoading();
-            });
+        module.service.getData(function () {
+            if (shareFlag != null && shareFlag !== undefined
+                && ('' + module.data.s == '1') && ('' + openId != '-1')
+            // && (('' + shareFlag == '1') && customerId!=-1)
+            ) {
+                // 客户点击插入浏览记录
+                self.customerUpdate(shareFlag);
+            } else {
+                // 销售人员点击初始化监听接口
+                self.initWxConfig(shareFlag);
+            }
         });
 
     },
 
-    initWxConfig: function (shareFlag, times) {
-        var self = this;
-        var userId = self.getUrlParam("u");
-        var dataId = self.getUrlParam("d");
-        var tkt = self.getUrlParam('tkt');
-        var share_ip = shareManager.data.share_ip;
+    initWxConfig: function (shareFlag) {
+        var self = this,
+            userId = module.data.user_id,
+            messageId = parseInt(module.data.message_id),
+            messageTitle = module.data.title,
+            shareFlag = module.data.s,
+            shareTime = new Date().Format('yyyy-MM-dd hh:mm:ss'),
+            messageData = module.data.messageData,
+            customerId = module.data.customer_id,
+            customerName = module.data.customer_name,
+            openid = module.data.openid,
+            shareId = module.data.d,
+            share_ip = module.data.share_ip;
 
-        MessageComm.share._initWxConfig(shareFlag, times, function () {
-            var _share_link = shareManager.data.messageData.url + "?u=" + userId + "&d=" + dataId + "&s=1&t=" + times + '&o=' + shareManager.data.openid;
-
+        MessageComm.share._initWxConfig(shareFlag,function () {
+            var _share_link = messageData.url + "?userid=" + userId +"&msgid="+ messageId +"&s=2" ;
+            console.log("share_link: "+ _share_link);
             var params = {
-                share_title: shareManager.data.messageData.titleText,
-                share_desc: '',
-                share_link: _share_link + '&uid=' + YT.uuid(),
-                share_imgurl: '',
+                share_title: module.data.messageData.titleText,
+                share_desc: '通过销售助手分享',
+                share_link:  _share_link ,
+                share_imgurl: messageData.picUrl,
                 onsuccess: function () {
-                    if (tkt != null && times == 1 && shareFlag == 0) {
-                        shareManager.service.shareUpdate(params, shareFlag, dataId, _share_link, share_ip, userId);
-                    } else if (times > 1 && shareFlag == 1 && shareManager.data.openid != -1) {
-                        var filter = [
-                            {field: 'id', value: shareManager.data.openid, operator: '=', relation: 'AND'}
-                        ];
-
-                        var postData = {
-                            m: '101020000',
-                            t: 'message_share_customer',
-                            v: JSON.stringify([{
-                                t: 'message_share_customer',
-                                data: {
-                                    timesFlag: 1
-                                },
-                                filter: filter
-                            }]),
-                            isvisitor: 1,
-                            params: JSON.stringify({'openid': shareManager.data.messageData.id})
-                        };
-
-                        YT.update({
-                            loading: false,
-                            data: postData,
-                            successCallback: function (data) {
-                                MessageComm.share.insertShare(params, shareFlag, dataId, shareManager.data.openid, _share_link, share_ip, userId);
+                    var messageShareTransmit = {
+                        shareId:shareId,
+                        userId:userId,
+                        customerId:customerId,
+                        customerName:customerName,
+                        messageId:messageId,
+                        messageTitle:messageTitle
+                    };
+                    $.ajax({
+                        type: "post",
+                        url: "/message/customer/transmit",
+                        data: JSON.stringify(messageShareTransmit),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+                            if(result.code == 0){
+                                var data = result.data;
+                                if(data!=null){
+                                    var dataId = data.id;
+                                    console.log("dataId:"+dataId);
+                                }
                             }
-                        });
-                    }
+                        },
+                        error:function (XMLHttpRequest, textStatus, errorThrown) {
+
+                        }
+                    });
                 }
             };
-            if (shareManager.data.messageData.descriptionText != null
-                && shareManager.data.messageData.descriptionText !== undefined
-                && shareManager.data.messageData.descriptionText != '') {
-                params.share_desc = shareManager.data.messageData.descriptionText;
-            }
-            if (shareManager.data.messageData.picurl != null
-                && shareManager.data.messageData.picurl !== undefined
-                && shareManager.data.messageData.picurl != '') {
-                params.share_imgurl = shareManager.data.messageData.picurl;
-            }
-
             MessageComm.share.initWxShare(params, shareFlag);
-
-            $.hideLoading();
         });
     },
 
     shareUpdate: function (params, shareFlag, dataId, _share_link, share_ip, userId) {
         var filter = [
-            {field: 'id', value: shareManager.data.messageData.id, operator: '=', relation: 'AND'}
+            {field: 'id', value: module.data.messageData.id, operator: '=', relation: 'AND'}
         ];
         var shareTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
         var postData = {
-            m: shareManager.data.m,
+            m: module.data.m,
             t: 'message_share',
             v: JSON.stringify([{
                 t: 'message_share',
@@ -285,81 +304,124 @@ shareManager.service = {
             }
         });
     },
-    customerUpdate: function (shareFlag, times) {
-        var openCount = ++shareManager.data.messageData.openCount;
-        var filter = [
-            {field: 'id', value: shareManager.data.messageData.id, operator: '=', relation: 'AND'}
-        ];
-        var postData = {
-            isvisitor: 1,
-            m: shareManager.data.m,
-            t: 'message_share',
-            v: JSON.stringify([{
-                t: 'message_share',
-                data: {
-                    openCount: openCount
-                },
-                filter: filter
-            }]),
-            params: JSON.stringify({
-                isvisitor: true,
-                os: shareManager.data.os,
-                ip: shareManager.data.ip,
-                times: times,
-                timesId: this.getUrlParam("o"),
-                uid: this.getUrlParam("uid")
-            })
+    customerUpdate: function (shareFlag) {
+
+        var messageData = module.data.messageData;
+
+        // 初始化阅读时间
+        var pageInfo = [];
+        for (var i = 0; i < messageData.pagecount; i++) {
+            if (i == 0) {
+                pageInfo.push(1);
+            } else {
+                pageInfo.push(0);
+            }
+        }
+
+        var readInfo = {
+            shareId:module.data.d,
+            userId:module.data.user_id,
+            customerId:module.data.customer_id,
+            customerName:module.data.customer_name,
+            openId:module.data.openid,
+            ip:module.data.share_ip,
+            cid:module.data.cid,
+            city:module.data.city,
+            pageCount:messageData.pagecount,
+            messageId:module.data.message_id,
+            messageTitle:module.data.title,
+            totalTime:1,
+            readInfo:JSON.stringify(pageInfo)
         };
-        YT.update({
-            loading: false,
-            data: postData,
-            successCallback: function (data) {
-                shareManager.data.openid = data.object.openid[0];
-                shareManager.service.setShareInterval();
-                shareManager.service.initWxConfig(shareFlag, times);
+
+        console.log("module.data.customer_name:"+module.data.customer_name);
+        $.ajax({
+            type: "post",
+            url: "/customer/readinfo",
+            data: JSON.stringify(readInfo),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                if(result.code == 0){
+                    var data = result.data;
+                    if(data!=null){
+                        var dataId = data.id;
+                        console.log("dataId:"+dataId);
+                        module.data.readinfo_id = dataId;
+                        module.service.setShareInterval();
+                    }
+                }else{
+                    var msg = result.msg;
+                    console.log(msg);
+                }
+                module.service.initWxConfig(shareFlag);
             },
-            errorCallback: function () {
-                $.hideLoading();
+            error:function (XMLHttpRequest, textStatus, errorThrown) {
+                // 状态码
+                console.log(XMLHttpRequest.status);
+                // 状态
+                console.log(XMLHttpRequest.readyState);
+                // 错误信息
+                console.log(textStatus);
+                // alert(textStatus);
             }
         });
     },
-    getUrlParam: function (name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) return decodeURI(r[2]);
-        return null;
-    },
     setShareInterval: function () {
-        if (shareManager.data.openid != -1) {
-            var timer = window.setInterval(function () {
-                shareManager.data.viewTime += 5;
-                var filter = [
-                    {field: 'id', value: shareManager.data.openid, operator: '=', relation: 'AND'}
-                ];
-                var postData = {
-                    isvisitor: 1,
-                    m: shareManager.data.m,
-                    t: 'message_share_customer',
-                    v: JSON.stringify([{
-                        t: 'message_share_customer',
-                        data: {
-                            viewTime: shareManager.data.viewTime
-                        },
-                        filter: filter
-                    }])
-                };
-                YT.update({
-                    loading: false,
-                    data: postData,
-                    successCallback: function (data) {
+        console.log("module.data.openid:"+module.data.openid);
+        var messageData = module.data.messageData;
+        var pageInfo = [];
+        var timer = window.setInterval(function () {
+            module.data.viewTime += 5;
+            pageInfo[0] = module.data.viewTime;
+            var data = {
+                id:module.data.readinfo_id,
+                shareId:module.data.d,
+                userId:module.data.user_id,
+                customerId:module.data.customer_id,
+                customerName:module.data.customer_name,
+                openId:module.data.openid,
+                messageId:module.data.message_id,
+                messageTitle:module.data.title,
+                viewTime:parseInt(module.data.viewTime/(messageData.pagecount)),
+                totalTime:module.data.viewTime,
+                readInfo:JSON.stringify(pageInfo)
+            };
+            console.log("shareId:"+module.data.d);
+            console.log("messageId:"+module.data.message_id);
+            console.log("messageTitle:"+module.data.title);
+            console.log("customerName:"+module.data.customer_name);
+            console.log("viewTime:"+parseInt(module.data.viewTime/(messageData.pagecount)));
+            console.log("totalTime:"+module.data.viewTime);
+            console.log("readInfo:"+window.pageInfo);
+
+            $.ajax({
+                type: "post",
+                url: "/customer/readinfo",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if(result.code == 0){
+                        var data = result.data;
+                        var dataId = data.id;
                     }
-                });
-            }, 5000);
-        }
+                },
+                error:function (XMLHttpRequest, textStatus, errorThrown) {
+                    // 状态码
+                    console.log(XMLHttpRequest.status);
+                    // 状态
+                    console.log(XMLHttpRequest.readyState);
+                    // 错误信息
+                    console.log(textStatus);
+                    // alert(textStatus);
+                }
+            });
+        }, 5000);
     }
 };
 
-shareManager.eventHandler = {
+module.eventHandler = {
     handleEvents: function () {
         MessageComm.customer.init('', 1);
     }

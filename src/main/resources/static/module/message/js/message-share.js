@@ -141,7 +141,7 @@ module.service = {
             }
         });
     },
-    initShare: function (shareFlag,times) {
+    initShare: function () {
         module.service.getData(function () {
             $.showLoading('加载中...');
             var self = this,

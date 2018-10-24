@@ -72,7 +72,7 @@ public class MessageController {
             System.out.println("tag"+(i+1)+":"+tags.get(i));
         }
         System.out.println("message:"+message);
-        String url = domainConfig.getUrl()+"/module/message/message-share.html";
+        String url = domainConfig.getUrl()+"/module/web/message/message-share.html";
         message.setUrl(url);
 //        message.setUrl("http://crm.youitech.com/module/message/message-share.html");
         return messageService.saveMessage(message,tags);

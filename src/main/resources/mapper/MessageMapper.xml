@@ -176,14 +176,14 @@
     </where>
   </select>
   <select id="selectMessageByParam" resultMap="MessageDetail" >
-    SELECT message.id,corp_id,suite_id,corpid,title,msgType,create_user_id,`name`,message.update_time,status
+    SELECT message.id,corp_id,suite_id,corpid,titleText,msgType,create_user_id,`name`,message.update_time,status
     FROM message
     LEFT JOIN staff
     ON message.create_user_id = staff.userid
     <where>
       message.delFlag = 0
       <if test="keyword != null and keyword != ''">
-        AND CONCAT(message.`title`,staff.`name`) LIKE #{keyword}
+        AND CONCAT(message.`titleText`,staff.`name`) LIKE #{keyword}
       </if>
       <if test="startTime != null and startTime != ''">
         AND message.`update_time` <![CDATA[>=]]> #{startTime}

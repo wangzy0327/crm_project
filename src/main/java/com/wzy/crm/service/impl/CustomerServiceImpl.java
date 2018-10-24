@@ -148,6 +148,9 @@ public class CustomerServiceImpl implements ICustomerService {
         if(customerReadinfos == null || customerReadinfos.size() == 0){
             customerReadinfo.setTimes(1);
             customerReadinfoMapper.insert(customerReadinfo);
+            MessageShare messageShare = new MessageShare();
+            messageShare.setId(customerReadinfo.getShareId());
+            messageShareMapper.updateOpenCount(messageShare);
             sendWxMessage.handleSendCustomerScan(customerReadinfo);
         }else if(customerReadinfos!=null && customerReadinfo.getId()!=null){
             customerReadinfoModify = customerReadinfos.get(0);

@@ -127,20 +127,22 @@ public class MessageServiceImpl implements IMessageService {
     @Override
     public Map<Integer, List<MessageTag>> splitTag(List<String> tags){
         Map<Integer,List<MessageTag>> map = Maps.newHashMap();
-        for(int i = 0;i<tags.size();i++){
-            String [] strs = tags.get(i).split(",");
-            List<MessageTag> messageTags = Lists.newArrayList();
-            if(strs!=null && strs.length>0){
-                for(int j = 0;j<strs.length;j++){
-                    if(StringUtils.isNotBlank(strs[j])){
-                        MessageTag messageTag = new MessageTag();
-                        messageTag.setName(strs[j]);
-                        messageTags.add(messageTag);
+        if(tags!=null&&tags.size()>0){
+            for(int i = 0;i<tags.size();i++){
+                String [] strs = tags.get(i).split(",");
+                List<MessageTag> messageTags = Lists.newArrayList();
+                if(strs!=null && strs.length>0){
+                    for(int j = 0;j<strs.length;j++){
+                        if(StringUtils.isNotBlank(strs[j])){
+                            MessageTag messageTag = new MessageTag();
+                            messageTag.setName(strs[j]);
+                            messageTags.add(messageTag);
+                        }
                     }
                 }
-            }
-            if(messageTags.size()>0){
-                map.put(i,messageTags);
+                if(messageTags.size()>0){
+                    map.put(i,messageTags);
+                }
             }
         }
         return map;
