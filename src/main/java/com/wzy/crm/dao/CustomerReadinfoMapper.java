@@ -1,6 +1,7 @@
 package com.wzy.crm.dao;
 
 import com.wzy.crm.pojo.CustomerReadinfo;
+import com.wzy.crm.pojo.MessageReadInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -24,4 +25,5 @@ public interface CustomerReadinfoMapper {
 
     List<CustomerReadinfo> selectByShareKey(@Param("shareId") Integer shareId,@Param("messageId") Integer messageId);
 
+    List<MessageReadInfo> selectMessageShareDetail(@Param("userId") String userId,@Param("messageId") Integer messageId);
 }

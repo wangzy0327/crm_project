@@ -160,7 +160,7 @@ module.service = {
                     shareTime:shareTime,
                     shareFlag:0,
                     openCount:0,
-                    delFlag:1
+                    delFlag:0
                 };
                 $.ajax({
                     type: "post",

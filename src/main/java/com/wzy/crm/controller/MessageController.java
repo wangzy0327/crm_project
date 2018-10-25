@@ -11,6 +11,7 @@ import com.wzy.crm.service.IMessageService;
 import com.wzy.crm.common.ServerResponse;
 import com.wzy.crm.vo.MessageDetail;
 import com.wzy.crm.vo.MessageVo;
+import com.wzy.crm.vo.MyShareVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -280,4 +281,15 @@ public class MessageController {
     public ServerResponse recordCustomerTransmit(@RequestBody MessageShareTransmit messageShareTransmit){
         return messageService.saveCustomerTransmit(messageShareTransmit);
     }
+
+    @PostMapping("/share/self")
+    public ServerResponse selfShare(@RequestBody MyShareVo myShareVo){
+        return messageService.findSelfShare(myShareVo);
+    }
+
+    @PostMapping("/shareDetail")
+    public ServerResponse getMessageShareDetail(@RequestParam String userId,@RequestParam Integer messageId){
+        return messageService.getMessageShareDetail(userId,messageId);
+    }
+
 }

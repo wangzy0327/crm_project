@@ -9,6 +9,7 @@ import com.wzy.crm.pojo.MessageTag;
 import com.wzy.crm.vo.MessageDetail;
 import com.wzy.crm.vo.MessageResponseVo;
 import com.wzy.crm.vo.MessageVo;
+import com.wzy.crm.vo.MyShareVo;
 import org.apache.http.protocol.ResponseServer;
 
 import java.util.List;
@@ -60,5 +61,9 @@ public interface IMessageService {
     ServerResponse saveShareCustomer(MessageShareCustomer messageShareCustomer);
 
     ServerResponse saveCustomerTransmit(MessageShareTransmit messageShareTransmit);
+
+    ServerResponse findSelfShare(MyShareVo myShareVo);
+
+    ServerResponse getMessageShareDetail(String userId,Integer messageId);
 
 }

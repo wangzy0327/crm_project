@@ -974,3 +974,25 @@ CREATE TABLE `customer_readinfo` (
   KEY `customerId` (`customer_id`) USING BTREE,
   KEY `message_id` (`message_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='客户阅读详情';
+
+drop view if exists v_share_message;
+create view v_share_message
+  as (
+    select ms.message_id,message.titleText,ms.user_id,ms.oc open_count,ms.share_flag,mst.tt transmit_times,ms.share_time
+    from (
+           select message_id,user_id,SUM(open_count) oc,share_flag,share_time
+           from message_share
+           where share_flag = 1 and del_flag = 0
+           group by message_id
+         ) ms
+      LEFT JOIN
+      (
+        select message_id,user_id,SUM(transmit_times) tt
+        from message_share_transmit
+        group by message_id
+      ) mst
+        ON ms.message_id = mst.message_id and ms.user_id = mst.user_id
+      LEFT JOIN
+      message
+        ON ms.message_id = message.id and message.titleText is not NULL
+  );

@@ -11,6 +11,16 @@
     <result column="open_count" property="openCount" jdbcType="INTEGER" />
     <result column="del_flag" property="delFlag" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="MyShareMap" type="com.wzy.crm.pojo.ShareDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="message_id" property="messageId" jdbcType="INTEGER" />
+    <result column="titleText" property="titleText" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="open_count" property="openCount" jdbcType="INTEGER" />
+    <result column="share_flag" property="shareFlag" jdbcType="INTEGER" />
+    <result column="transmit_times" property="transmitTimes" jdbcType="INTEGER" />
+    <result column="share_time" property="shareTime" jdbcType="TIMESTAMP" />
+  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from message_share
     where id = #{id,jdbcType=INTEGER}
@@ -33,6 +43,13 @@
       del_flag = #{delFlag,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectSelfShare" resultMap="MyShareMap">
+    select id,message_id,titleText,user_id,open_count,transmit_times,share_time
+    from v_share_message
+    where user_id = #{userId}
+    order by share_time desc
+    limit #{start},#{size};
+  </select>
   <update id="updateOpenCount">
     update message_share
     set open_count = open_count+1

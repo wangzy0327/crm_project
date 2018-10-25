@@ -2,7 +2,6 @@ var listManager = {};
 var messageCommmon = {};
 
 listManager.data = {
-    m: 10180000,
     mid:-1,
     currentPopId:-1,
     recordId:0
@@ -19,53 +18,80 @@ $(function () {
 
 listManager.service = {
     initControls: function () {
-        listManager.data.mid = YT.getUrlParam('mid');
-        YT.getUserInfo(function (user) {
+        listManager.data.user_id = getUrlParam("userid");
+        listManager.data.mid = getUrlParam('msgid');
+        var self = this;
+        self.getUserInfo(function (user) {
             listManager.data.user = user;
             listManager.service.initGrid();
         });
     },
     // 初始化列表
     initGrid: function () {
-        var dataFilter = listManager.service.getSearchData();
         $.showLoading('加载中，请稍后...');
-        YT.query({
-            data: dataFilter,
-            successCallback: function (data) {
-                listManager.service.getHtmlListStr(data);//列表的方式显示
-                $.hideLoading();
+        $.ajax({
+            type: 'post',
+            url: "/message/shareDetail?userId="+listManager.data.user_id+"&messageId="+listManager.data.mid,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if(result.code == 0){
+                    var data = result.data;
+                    listManager.service.getHtmlListStr(data);//列表的方式显示
+                    $.hideLoading();
+                }else{
+                    $.alert(result.msg);
+                }
             }
         });
     },
-    getDefaultFilter: function () {
-        return [
-            {field: 'corpid', value: '' + YT.getCorpId(), operator: '=', relation: 'AND'},
-            {field: 'staffId', value: listManager.data.user.id, operator: '=', relation: 'AND'},
-            {field: 'messageId', value: listManager.data.mid, operator: '=', relation: 'AND'}
-        ];
+    getUserInfo: function (callback) {
+        var self = this;
+        $.ajax({
+            type: 'get',
+            url: "/staff/self?userId="+listManager.data.user_id,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if(result.code == 0){
+                    var data = result.data;
+                    callback(data);
+                }else{
+                    $.alert(result.msg);
+                }
+            }
+        });
     },
-    getSearchData: function () {
-        var filter = listManager.service.getDefaultFilter();
-        return {
-            m: 10220000,
-            t: 'v_message_share_details',
-            filter: JSON.stringify(filter),
-            order: " openTime desc"
-        };
-    },
+    // getDefaultFilter: function () {
+    //     return [
+    //         {field: 'corpid', value: '' + YT.getCorpId(), operator: '=', relation: 'AND'},
+    //         {field: 'staffId', value: listManager.data.user.id, operator: '=', relation: 'AND'},
+    //         {field: 'messageId', value: listManager.data.mid, operator: '=', relation: 'AND'}
+    //     ];
+    // },
+    // getSearchData: function () {
+    //     return {
+    //         userid: listManager.data.user_id,
+    //         messageid: listManager.data.mid
+    //     };
+    // },
     //列表展示
     getHtmlListStr: function (data) {
         var html = '';
-        if (data.status == 200 && data.object.length > 0) {
-            $('head title').html(listManager.service.cutStr(data.object[0].titleText,16));
-            for (var i = 0; i < data.object.length; i++) {
-                var sameId = data.object[i].sameId;
-                var dataCustonerId = data.object[i].messageShareCustomerId;
-                var dispOrder = data.object[i].dispOrder;
+        if (data.length > 0) {
+            $('head title').html(listManager.service.cutStr(data[0].titleText,16));
+            for (var i = 0; i < data.length; i++) {
+                var sameId = data[i].sameId;
+                var dataCustonerId = data[i].shareId+data[i].messageId;
+                var dispOrder = data[i].dispOrder;
                 var person = '';
-                var address = data.object[i].city || '';
+                var address = data[i].city || '';
                 var personFlag = false;
-                if (parseInt(data.object[i].customerId) == -1) {  //匿名用户
+                if (parseInt(data[i].customerId) == -1) {  //匿名用户
                     person = '匿名用户'+dataCustonerId;
                     /*if (dispOrder == data.object[i].customerId) {
                      person = '匿名用户'+dataCustonerId;
@@ -73,14 +99,10 @@ listManager.service = {
                         person = '匿名用户'+dispOrder;
                     }*/
                 } else {
-                    if (data.object[i].personShare == null) {
-                        person = '没有数据';
-                    } else {
-                        person = data.object[i].personShare;
-                        personFlag = true;
-                    }
+                    person = data[i].customerName;
+                    personFlag = true;
                 }
-                var readInfo = data.object[i].readInfo;
+                var readInfo = data[i].readInfo;
                 var currentArray = [];
                 var viewTime = 0;
                 var pageShowNum = 1;
@@ -93,11 +115,11 @@ listManager.service = {
                         '</div>'+
                         '</div>';
                 }
-                if (data.object[i].messageType == 1) {
+                if (data[i].msgType == 1) {
                     currentArray.push(viewTime);
-                    viewTime = data.object[i].viewTime - 0;
+                    viewTime = data[i].viewTime - 0;
                     showTime += getFlexItem(viewTime,1);
-                } else if (data.object[i].messageType == 5 || data.object[i].messageType == 2) {
+                } else if (data[i].msgType == 5 || data[i].msgType == 2) {
                     currentArray = JSON.parse(readInfo || '[0]');//阅读信息
                     for (var m = 0; m < currentArray.length; m++) {
                         var time = parseInt(currentArray[m]);
@@ -117,9 +139,12 @@ listManager.service = {
                     html+='<span style="font-size:14px;color: #666;font-weight: 600;">'+
                         person+'</span>';
                 }
-                html+= '于'+new Date(data.object[i].openTime).Format("yyyy年MM月dd日") +
+                html+= '于'+new Date(data[i].openTime).Format("yyyy年MM月dd日") +
                     '在<span style="font-size:14px;color: #666;font-weight: 600;">' +address +'</span>浏览了'+
                     '<span style="font-size:14px;color: #666;font-weight: 600;">' + listManager.service.formatSeconds(viewTime)+'</span>' +
+                    '并浏览过'+
+                    '<span style="font-size:14px;color: #666;font-weight: 600;">'+data[i].times+'</span>'+
+                    '次'+
                     '<div class="flex-box">'+showTime+'</div>'+
                     '</p> ' +
                     '</div>';

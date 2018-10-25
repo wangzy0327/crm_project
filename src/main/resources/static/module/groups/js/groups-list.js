@@ -3,7 +3,8 @@ var module = {};
 module.data = {};
 module.service = {
     initControls: function () {
-        module.data.user_id = oauth2();
+        oauth2();
+        module.data.user_id = getUrlParam("userid");
         this.initDom();
     },
 

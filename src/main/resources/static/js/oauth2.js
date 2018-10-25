@@ -1,8 +1,6 @@
 function oauth2() {
     userid = getUrlParam("userid");
     console.log("userid:"+userid);
-    var openid = getUrlParam("openid");
-    console.log("openid:"+openid);
     if(userid == null || userid == undefined){
         userid  = $.cookie('userId');
     }
@@ -14,8 +12,9 @@ function oauth2() {
         var url = domain.server+"wechat/oauth/authorize?returnUrl="+encodeURIComponent(returnUrl);
         location.href = url;
     }
-    if(userid!=null){
-        $.cookie('userId',userid,{expires:1/48});
-        return userid;
+    if(userid!=null && getUrlParam("userid") == null){
+        var curUrl = window.location.href;
+        var url = curUrl+"?userid="+openid;
+        location.href = url;
     }
 }

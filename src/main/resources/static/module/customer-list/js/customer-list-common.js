@@ -37,7 +37,8 @@ $(function () {
 });
 listManager.service = $.extend({
     initControls: function () {
-        listManager.data.user_id = oauth2();
+        oauth2();
+        listManager.data.user_id = getUrlParam("userid");
         if(listManager.data.myFlag){
             this.getUserInfo(function (user) {
                 listManager.data.user = user;

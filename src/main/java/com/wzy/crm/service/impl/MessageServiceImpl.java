@@ -18,6 +18,7 @@ import com.wzy.crm.utils.SendWxMessage;
 import com.wzy.crm.vo.MessageDetail;
 import com.wzy.crm.vo.MessageResponseVo;
 import com.wzy.crm.vo.MessageVo;
+import com.wzy.crm.vo.MyShareVo;
 import org.apache.camel.spi.AsEndpointUri;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -57,7 +58,13 @@ public class MessageServiceImpl implements IMessageService {
     private MessageShareCustomerMapper messageShareCustomerMapper;
 
     @Autowired
+    private MessageShareMapper messageShareMapper;
+
+    @Autowired
     private MessageShareTransmitMapper messageShareTransmitMapper;
+
+    @Autowired
+    private CustomerReadinfoMapper customerReadinfoMapper;
 
     @Autowired
     private SendWxMessage sendWxMessage;
@@ -198,6 +205,24 @@ public class MessageServiceImpl implements IMessageService {
             messageShareTransmitMapper.insert(messageShareTransmit);
         }
         return ServerResponse.createBySuccess(messageShareTransmit);
+    }
+
+    @Override
+    public ServerResponse findSelfShare(MyShareVo myShareVo) {
+        System.out.println("page:"+myShareVo.getPage());
+        System.out.println("size:"+myShareVo.getSize());
+        String userId = myShareVo.getUserId();
+        Integer page = myShareVo.getPage();
+        Integer size = myShareVo.getSize();
+        Integer start = (page - 1)*size;
+        return ServerResponse.createBySuccess(messageShareMapper.selectSelfShare(userId,start,size));
+    }
+
+    @Override
+    public ServerResponse getMessageShareDetail(String userId, Integer messageId) {
+        List<MessageReadInfo> messageReadInfos = customerReadinfoMapper.selectMessageShareDetail(userId,messageId);
+        System.out.println("count:"+messageReadInfos.size());
+        return ServerResponse.createBySuccess(messageReadInfos);
     }
 
 

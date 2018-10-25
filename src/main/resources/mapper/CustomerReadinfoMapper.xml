@@ -19,6 +19,23 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="read_info" property="readInfo" jdbcType="LONGVARCHAR" />
   </resultMap>
+  <resultMap id="MessageReadInfoMap" type="com.wzy.crm.pojo.MessageReadInfo">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="share_id" property="shareId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="message_id" property="messageId" jdbcType="INTEGER" />
+    <result column="msgType" property="msgType" jdbcType="INTEGER" />
+    <result column="customer_id" property="customerId" jdbcType="INTEGER" />
+    <result column="name" property="customerName" jdbcType="VARCHAR" />
+    <result column="times" property="times" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
+    <result column="view_time" property="viewTime" jdbcType="INTEGER" />
+    <result column="page_count" property="pageCount" jdbcType="INTEGER" />
+    <result column="total_time" property="totalTime" jdbcType="INTEGER" />
+    <result column="read_info" property="readInfo" jdbcType="LONGVARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from customer_readinfo
     where id = #{id,jdbcType=INTEGER}
@@ -130,5 +147,17 @@
     select id,share_id,user_id,customer_id,message_id,open_id,times,view_time
     from customer_readinfo
     where share_id = #{shareId} and message_id = #{messageId}
+  </select>
+  <select id="selectMessageShareDetail" resultMap="MessageReadInfoMap">
+    SELECT cr.id,cr.share_id,cr.message_id,message.msgType,cr.user_id,cr.customer_id,customer.`name`,cr.times,cr.city,cr.open_time,cr.view_time,cr.page_count,cr.total_time,cr.read_info,cr.update_time
+    from (
+    select id,share_id,message_id,user_id,customer_id,times,city,open_time,view_time,page_count,total_time,read_info,update_time
+    from customer_readinfo
+    where message_id = #{messageId} and user_id = #{userId}
+    ) cr
+    left join message
+    on cr.message_id = message.id
+    left join customer
+    on cr.customer_id = customer.id;
   </select>
 </mapper>

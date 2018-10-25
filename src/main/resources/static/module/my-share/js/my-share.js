@@ -2,7 +2,6 @@ var listManager = {};
 var messageCommmon = {};
 
 listManager.data = {
-    m: 10180000,
     mid:-1,
     currentPopId:-1,
     recordId:0
@@ -10,7 +9,7 @@ listManager.data = {
 var pager2 = {
     loading: false,
     page: 1,
-    rows: 15
+    size: 15
 };
 $(function () {
     listManager.service.initControls();
@@ -20,7 +19,10 @@ $(function () {
 
 listManager.service = {
     initControls: function () {
-        YT.getUserInfo(function (user) {
+        oauth2();
+        listManager.data.user_id = getUrlParam("userid");
+        var self = this;
+        self.getUserInfo(function (user) {
             listManager.data.user = user;
             listManager.service.initGrid2();
         });
@@ -47,6 +49,25 @@ listManager.service = {
         }
 
     },
+    getUserInfo: function (callback) {
+        var self = this;
+        $.ajax({
+            type: 'get',
+            url: "/staff/self?userId="+listManager.data.user_id,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if(result.code == 0){
+                    var data = result.data;
+                    callback(data);
+                }else{
+                    $.alert(result.msg);
+                }
+            }
+        });
+    },
     cutStr: function (str, length) {
         if (str != null && str !== undefined) {
             if (str.length <= length) {
@@ -65,56 +86,47 @@ listManager.service = {
             '</div> ';
         $.showLoading('加载中，请稍后...');
         var postData = this.initSearch();
-        YT.query({
-            loading:false,
-            data: postData,
-            successCallback: function (data) {
-                if (200 == data.status) {
-                    if (pager2.page == 1) {
-                        $("#more2 .noMore").remove();
+        $.ajax({
+            type: 'post',
+            url: "/message/share/self",
+            data:JSON.stringify(postData),
+            contentType: "application/json;charset=UTF-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    var data = result.data;
+                    console.log("data.length:"+data.length);
+                    if (data.length > 0) {
+                        // $.closePopup();
+                        $("#list2").append(listManager.service.getMessageStr2(data));
+                        $.hideLoading();
                     }
-                    pager2.page = data.object.idx + 1;
-                    $.closePopup();
-                    $("#list2").append(listManager.service.getMessageStr2(data.object.items));
-                    $.hideLoading();
-                    if (data.object.idx >= data.object.pageCount) {
-                        //最后一页
+                    else {
+                        $("#more2").html(noMore);
                         pager2.loading = true;
-                        $('#infinite2').hide();
-                        $("#more2").append(noMore);
-                        return;
+                        console.log("pager.loading:   "+pager2.loading);
                     }
-                } else {
-                    pager2.loading = true;
                     $('#infinite2').hide();
-                    $("#more2").append(noMore);
-                    return;
                 }
-                pager2.loading = false;
             }
         });
     },
     initSearch: function () {
-        var filter = [
-            {field: 'staffId', value: '' + listManager.data.user.id, operator: '=', relation: 'AND'},
-            {field: 'corpid', value: '' + YT.getUrlParam('corpid'), operator: '=', relation: 'AND'},
-            {field: 'status', value: 1, operator: '=', relation: 'AND'},
-            {field: 'app_id', value: '' + YT.apps.sales_ass_id, operator: '=', relation: 'AND'}
-        ];
-
+        var searchInput = "";
+        userId = listManager.data.user_id;
         return {
-            m: listManager.data.m,
-            t: 'v_message_test_my',
-            filter: JSON.stringify(filter),
-            order: ' id desc',
-            page: pager2.page,
-            rows: pager2.rows
+            userId:userId,
+            page:pager2.page,
+            size:pager2.size
         };
     },
     getMessageStr2 :function(items){
         var str = '';
         for (var i = 0; i < items.length; i++) {
             var id = items[i].id;
+            var messageId = items[i].messageId;
             var titleData = items[i].titleText;
             var openCount = items[i].openCount;
             var shareCount = items[i].shareCount;
@@ -128,7 +140,7 @@ listManager.service = {
             if(openCount == 0 && shareCount == 0){
                 toFlag = 0;
             }
-            str += '<a class="weui-cell weui-cell_access detail" data-to="'+toFlag+'" data-id="' + id + '" data-type="' + items[i].msgType + '" href="javascript:;"> ' +
+            str += '<a class="weui-cell weui-cell_access detail" data-to="'+toFlag+'" data-id="' + messageId + '" href="javascript:;"> ' +
                 '<div class="weui-cell__bd"> ' +
                 '<p>' + listManager.service.cutStr(titleData, 26) + '</p> ' +
                 '</div> ' +
@@ -147,13 +159,14 @@ listManager.eventHandler = {
         this.handlePopUp();
         this.handleInfinite();
         this.handleRefresh();
-        MessageComm.customer.init();
+        // MessageComm.customer.init();
         this.handleSave();
     },
     handleInfinite: function () {
         $(document.body).infinite().on("infinite", function () {
             if (pager2.loading) return;
             pager2.loading = true;
+            pager2.page++; //页数
             $('#infinite2').show();
             listManager.service.initGrid2();
         });
@@ -164,7 +177,7 @@ listManager.eventHandler = {
                 pager2 = {
                     loading: false,
                     page: 1,
-                    rows: 20
+                    size: 20
                 };
                 $("#list2").empty();
                 $("#more2").empty();
@@ -182,9 +195,10 @@ listManager.eventHandler = {
             if(''+toFlag == '0'){
                 $.alert('无记录');
             }else{
-                location.href= 'my-share-detail.html'+YT.setUrlParams({
-                        mid:$(self).data('id')
-                    });
+                var url = 'my-share-detail.html';
+                var url1 = $.UrlUpdateParams(url,"userid",listManager.data.user_id);
+                var url2 = $.UrlUpdateParams(url1,"msgid",$(self).data('id'));
+                location.href= url2;
             }
         });
     },
