@@ -104,15 +104,16 @@
       <if test="ip != null and ip != ''">
         ip = #{ip},
       </if>
-      <if test="cid != null and cid != ''">
+      <if test="cid != null and cid != '' and cid != 'CN'">
         cid = #{cid},
       </if>
-      <if test="city != null and city != ''">
+      <if test="city != null and city != '' and city != 'CHINA'">
         city = #{city},
       </if>
       <if test="times != null and times != ''">
         times = #{times},
       </if>
+      update_time = now()
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>

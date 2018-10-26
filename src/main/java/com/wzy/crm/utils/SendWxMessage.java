@@ -157,9 +157,10 @@ public class SendWxMessage {
         Integer customerId = customerReadinfo.getCustomerId();
         String messageTitle = customerReadinfo.getMessageTitle();
         System.out.println("messageTitle:"+messageTitle);
+        String str = "客户";
         String userId = customerReadinfo.getUserId();
         content += "您的分享消息：\n";
-        content += "【<a href = \""+domainConfig.getUrl()+"myshare/my-share-detail.html?userid="+userId+"&cusid="+customerId+"&msgid="+messageId+"\">"+customerReadinfo.getMessageTitle()+"</a>】正在被" + customerReadinfo.getCustomerName()+"浏览！";
+        content += "【<a href = \""+domainConfig.getUrl()+"module/my-share/my-share-detail.html?userid="+userId+"&msgid="+messageId+"\">"+customerReadinfo.getMessageTitle()+"</a>】正在被" + ((customerReadinfo.getCustomerName() == null)?str:customerReadinfo.getCustomerName())+"浏览！";
         WxCpMessage wxCpMessage = WxCpMessage.TEXT()
                 .agentId(accountConfig.getAppConfigs()
                         .get(0).getAgentId())
@@ -179,9 +180,10 @@ public class SendWxMessage {
         String content = "";
         Integer messageId = messageShareTransmit.getMessageId();
         Integer customerId = messageShareTransmit.getCustomerId();
+        String str = "客户";
         String userId = messageShareTransmit.getUserId();
         content += "您的分享消息：\n";
-        content += "【<a href = \""+domainConfig.getUrl()+"myshare/my-share-detail.html?userid="+userId+"&cusid="+customerId+"&msgid="+messageId+"\">"+messageShareTransmit.getMessageTitle()+"</a>】被" + messageShareTransmit.getCustomerName()+"转发！";
+        content += "【<a href = \""+domainConfig.getUrl()+"module/my-share/my-share-detail.html?userid="+userId+"&msgid="+messageId+"\">"+messageShareTransmit.getMessageTitle()+"</a>】被" + ((messageShareTransmit.getCustomerName() == null)?str:messageShareTransmit.getCustomerName())+"转发！";
         WxCpMessage wxCpMessage = WxCpMessage.TEXT()
                 .agentId(accountConfig.getAppConfigs()
                         .get(0).getAgentId())

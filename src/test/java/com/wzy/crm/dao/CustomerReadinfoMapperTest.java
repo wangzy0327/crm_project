@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
 public class CustomerReadinfoMapperTest {
 
 
+
     @Autowired
     private CustomerReadinfoMapper customerReadinfoMapper;
 
@@ -60,6 +61,16 @@ public class CustomerReadinfoMapperTest {
         for(int i = 0;i<customerReadinfos.size();i++){
             System.out.println(customerReadinfos.get(0));
         }
+    }
+
+    @Test
+    public void updateInfoAndTimesByKey() throws Exception {
+        CustomerReadinfo customerReadinfo = new CustomerReadinfo();
+        customerReadinfo.setId(1);
+        customerReadinfo.setCid("CN");
+        customerReadinfo.setCity("CHINA");
+        int count = customerReadinfoMapper.updateInfoAndTimesByKey(customerReadinfo);
+        System.out.println("count:"+count);
     }
 
 }

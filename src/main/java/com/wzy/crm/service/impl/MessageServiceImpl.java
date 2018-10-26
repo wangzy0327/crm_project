@@ -67,6 +67,9 @@ public class MessageServiceImpl implements IMessageService {
     private CustomerReadinfoMapper customerReadinfoMapper;
 
     @Autowired
+    private CustomerMapper customerMapper;
+
+    @Autowired
     private SendWxMessage sendWxMessage;
 
 
@@ -194,6 +197,17 @@ public class MessageServiceImpl implements IMessageService {
         Integer customerId = messageShareTransmit.getCustomerId();
         Integer messageId = messageShareTransmit.getMessageId();
         Integer shareId = messageShareTransmit.getShareId();
+        String openId = messageShareTransmit.getOpenId();
+        Customer customer = customerMapper.selectByPrimaryKey(messageShareTransmit.getCustomerId());
+        List<Customer> customers;
+        if(customer == null){
+            customers = customerMapper.selectByOpenid(openId);
+            if(customers.size()>0){
+                customer = customers.get(0);
+                messageShareTransmit.setCustomerId(customer.getId());
+                messageShareTransmit.setCustomerName(customer.getName());
+            }
+        }
         sendWxMessage.handleSendCustomerTransmit(messageShareTransmit);
         System.out.println("..........转发........");
         MessageShareTransmit messageShareTransmit1 = messageShareTransmitMapper.selectByKey(shareId);

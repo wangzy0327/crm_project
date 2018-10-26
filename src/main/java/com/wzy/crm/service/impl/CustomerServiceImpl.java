@@ -131,6 +131,15 @@ public class CustomerServiceImpl implements ICustomerService {
         String openId = customerReadinfo.getOpenId();
         System.out.println("readInfo openId:"+openId);
         Customer customer = customerMapper.selectByPrimaryKey(customerReadinfo.getCustomerId());
+        List<Customer> customers;
+        if(customer == null){
+            customers = customerMapper.selectByOpenid(openId);
+            if(customers.size()>0){
+                customer = customers.get(0);
+                customerReadinfo.setCustomerId(customer.getId());
+                customerReadinfo.setCustomerName(customer.getName());
+            }
+        }
         if(customer == null){
             return ServerResponse.createByErrorMessage("客户id问题!");
         }

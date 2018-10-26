@@ -99,6 +99,12 @@
     from customer
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByOpenid" resultMap="BaseResultMap" parameterType="string">
+    select id,open_id, `name`, mobile, wechat, company, `position`, address, telephone, email, webSite,
+    fax, remark, update_time
+    from customer
+    where open_id = #{openid}
+  </select>
   <select id="selectAll" resultMap="BaseResultMap" >
     select id,open_id, `name`, mobile, wechat, company, `position`, address, telephone, email, webSite,
     fax, remark, update_time

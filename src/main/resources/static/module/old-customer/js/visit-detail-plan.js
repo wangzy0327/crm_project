@@ -120,7 +120,7 @@ module.service = {
 
                 for (var i in items) {
                     var item = items[i],
-                        recordTime = new Date(item.time).Format('yyyy-MM-dd hh:mm:ss');
+                        recordTime = new Date(GetDateDiff(item.updateTime)).Format('yyyy-MM-dd hh:mm:ss');
 
                     if (+i) {
                         html += '<div class="weui-form-preview__hd information-topic" style="border-top:1vw solid;border-color:#ddd;">';

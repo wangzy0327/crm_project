@@ -996,3 +996,59 @@ create view v_share_message
       message
         ON ms.message_id = message.id and message.titleText is not NULL
   );
+
+DROP VIEW IF EXISTS v_avg_view_time;
+CREATE VIEW v_avg_view_time
+  AS (
+    SELECT
+      cr.customer_id,
+      customer.`name`,
+      cr.avg_view_time
+    FROM
+      (SELECT
+         customer_id,
+         AVG(view_time) avg_view_time
+       FROM customer_readinfo
+       GROUP BY customer_id) cr
+      LEFT JOIN customer
+        ON customer.id = cr.customer_id);
+
+DROP VIEW IF EXISTS v_customer_read_times;
+CREATE VIEW v_customer_read_times
+  AS (
+    SELECT
+      cr.message_id,
+      message.titleText,
+      cr.customer_id,
+      customer.`name`,
+      cr.times
+    FROM (
+           SELECT
+             message_id,
+             customer_id,
+             sum(times) times
+           FROM customer_readinfo
+           GROUP BY message_id, customer_id
+         ) cr
+      LEFT JOIN customer
+        ON customer.id = cr.customer_id
+      LEFT JOIN message
+        ON message.id = cr.message_id);
+
+
+drop view if exists v_customer_transmit;
+create view v_customer_transmit
+  as (
+    select nmst.customer_id,customer.`name`,nmst.message_id,message.titleText,nmst.transmit_times,nmst.update_time
+    from
+      (select mst.customer_id,mst.message_id,sum(transmit_times) transmit_times,mst.update_time
+       from
+         (SELECT customer_id,message_id,transmit_times,update_time
+          FROM message_share_transmit
+          ORDER BY update_time desc
+          limit 999999) mst
+       group by customer_id,message_id) nmst
+      left join message
+        on message.id = nmst.message_id
+      left join customer
+        on customer.id = nmst.customer_id);

@@ -14,6 +14,8 @@ public interface CustomerMapper {
 
     Customer selectByPrimaryKey(Integer id);
 
+    List<Customer> selectByOpenid(String openid);
+
     List<Customer> selectAll();
 
     int updateByPrimaryKey(Customer record);
