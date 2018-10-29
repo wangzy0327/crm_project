@@ -154,4 +154,9 @@ public class CustomerController {
         return customerService.findCustomer(shareId,openid);
     }
 
+    @PostMapping("/readMessage")
+    public ServerResponse findReadMessage(@RequestBody CustomerVo customerVo){
+        return customerService.findReadMessage(customerVo);
+    }
+
 }

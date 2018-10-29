@@ -34,6 +34,10 @@ public class Customer {
 
     private String remark;
 
+    private Integer times;
+
+    private Integer transmitTimes;
+
     /**
      * 最近更新时间
      */

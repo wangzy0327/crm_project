@@ -849,14 +849,28 @@ CREATE TABLE `comments` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='评论';
 
 
-DROP VIEW IF EXISTS v_group_customer;
-create view v_group_customer as
-  select group_staff_relation.group_id,group_staff_relation.user_id,customer.id customer_id,customer.`name` customer_name,customer.mobile customer_mobile,customer.wechat customer_wechat,
-    customer.company customer_company,customer.position customer_position,customer.address customer_address,customer.telephone customer_telephone,
-    customer.email customer_email,customer.webSite customer_webSite,customer.fax customer_fax,customer.remark customer_remark,customer.update_time customer_update_time
-  from group_staff_relation,staff_customer_follow_relation,customer
-  where group_staff_relation.user_id = staff_customer_follow_relation.user_id  and staff_customer_follow_relation.is_follow = 1
-        and staff_customer_follow_relation.customer_id = customer.id;
+drop view if exists v_group_customer;
+create view v_group_customer
+  as(
+    select gc.group_id,gc.user_id,gc.customer_id,gc.customer_name,gc.customer_mobile,gc.customer_wechat,gc.customer_company,gc.customer_position,gc.customer_address,gc.customer_telephone,
+      gc.customer_email,gc.customer_webSite,gc.customer_fax,gc.customer_remark,gc.customer_update_time,cr.ts times,mst.tts transmit_times
+    from(
+          select group_staff_relation.group_id,group_staff_relation.user_id,customer.id customer_id,customer.`name` customer_name,customer.mobile customer_mobile,customer.wechat customer_wechat,
+                                                                            customer.company customer_company,customer.position customer_position,customer.address customer_address,customer.telephone customer_telephone,
+                                                                            customer.email customer_email,customer.webSite customer_webSite,customer.fax customer_fax,customer.remark customer_remark,customer.update_time customer_update_time
+          from group_staff_relation,staff_customer_follow_relation,customer
+          where group_staff_relation.user_id = staff_customer_follow_relation.user_id  and staff_customer_follow_relation.is_follow = 1
+                and staff_customer_follow_relation.customer_id = customer.id) gc
+      left join
+      (select customer_id,sum(times) ts
+       from customer_readinfo
+       group by customer_id) cr
+        on cr.customer_id = gc.customer_id
+      left join
+      (select customer_id,sum(transmit_times) tts
+       from message_share_transmit
+       group by customer_id) mst
+        on mst.customer_id = gc.customer_id);
 
 drop view if exists v_message_tag;
 create view v_message_tag as
@@ -1052,3 +1066,36 @@ create view v_customer_transmit
         on message.id = nmst.message_id
       left join customer
         on customer.id = nmst.customer_id);
+
+
+drop view if exists v_myself_customer;
+create view v_myself_customer
+  as (
+    select id,`name`,staff_customer_follow_relation.user_id,mobile,wechat,company,position,address,telephone,email,webSite,fax,remark,update_time,cr.ts times,mst.tts transmit_times
+    from customer
+      left join staff_customer_follow_relation
+        on staff_customer_follow_relation.customer_id = customer.id
+      left join
+      (select customer_id,sum(times) ts
+       from customer_readinfo
+       group by customer_id,user_id) cr
+        on cr.customer_id = customer.id
+      left join
+      (select customer_id,sum(transmit_times) tts
+       from message_share_transmit
+       group by customer_id,user_id) mst
+        on mst.customer_id = customer.id);
+
+drop view if exists v_times_transmit_times;
+create view v_times_transmit_times
+  as (
+    select crmsc.user_id,crmsc.customer_id,crmsc.message_id,crmsc.titleText,sum(crmsc.times) times,sum(crmsc.transmit_times) transmit_times,crmsc.update_time
+    from
+      (select customer_readinfo.share_id,customer_readinfo.user_id,customer_readinfo.customer_id,customer_readinfo.message_id,titleText,ip,cid,city,times,transmit_times,read_info,view_time,open_time,customer_readinfo.update_time
+       from customer_readinfo
+         left join message_share_transmit
+           on customer_readinfo.share_id = message_share_transmit.share_id
+         left join message
+           on message.id = customer_readinfo.message_id
+      ) crmsc
+    group by user_id,customer_id,message_id);

@@ -29,9 +29,14 @@ listManager.service = {
     // 初始化列表
     initGrid: function () {
         $.showLoading('加载中，请稍后...');
+        var postData = {
+            userId:listManager.data.user_id,
+            messageId:listManager.data.mid
+        };
         $.ajax({
             type: 'post',
-            url: "/message/shareDetail?userId="+listManager.data.user_id+"&messageId="+listManager.data.mid,
+            url: "/message/shareDetail",
+            data:JSON.stringify(postData),
             contentType: "application/json; charset=utf-8",
             dataType: 'json',
             error: function (request) {
@@ -87,7 +92,6 @@ listManager.service = {
             for (var i = 0; i < data.length; i++) {
                 var sameId = data[i].sameId;
                 var dataCustonerId = data[i].shareId+data[i].messageId;
-                var dispOrder = data[i].dispOrder;
                 var person = '';
                 var address = data[i].city || '';
                 var personFlag = false;
@@ -143,7 +147,7 @@ listManager.service = {
                     '在<span style="font-size:14px;color: #666;font-weight: 600;">' +address +'</span>浏览了'+
                     '<span style="font-size:14px;color: #666;font-weight: 600;">' + listManager.service.formatSeconds(viewTime)+'</span>' +
                     '并浏览过'+
-                    '<span style="font-size:14px;color: #666;font-weight: 600;">'+data[i].times+'</span>'+
+                    '<span style="font-size:14px;color: #666;font-weight: 600;">'+data[i].openCount+'</span>'+
                     '次'+
                     '<div class="flex-box">'+showTime+'</div>'+
                     '</p> ' +

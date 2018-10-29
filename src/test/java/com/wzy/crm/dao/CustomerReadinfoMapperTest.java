@@ -2,8 +2,10 @@ package com.wzy.crm.dao;
 
 import com.wzy.crm.CrmApplication;
 import com.wzy.crm.pojo.CustomerReadinfo;
+import com.wzy.crm.pojo.MessageReadInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.omg.CORBA.INTERNAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -16,7 +18,6 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = CrmApplication.class)
 public class CustomerReadinfoMapperTest {
-
 
 
     @Autowired
@@ -71,6 +72,17 @@ public class CustomerReadinfoMapperTest {
         customerReadinfo.setCity("CHINA");
         int count = customerReadinfoMapper.updateInfoAndTimesByKey(customerReadinfo);
         System.out.println("count:"+count);
+    }
+
+    @Test
+    public void selectMyReadInfoDetail() throws Exception {
+        Integer customerId =122;
+        Integer messageId = 190;
+        String userId = "wzy";
+        List<MessageReadInfo> messageReadInfos = customerReadinfoMapper.selectMyReadInfoDetail(userId,customerId,messageId);
+        for(int i = 0;i<messageReadInfos.size();i++){
+            System.out.println(messageReadInfos.get(i));
+        }
     }
 
 }

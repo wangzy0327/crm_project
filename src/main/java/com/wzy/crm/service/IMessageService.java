@@ -6,10 +6,7 @@ import com.wzy.crm.common.ServerResponse;
 import com.wzy.crm.pojo.MessageShareCustomer;
 import com.wzy.crm.pojo.MessageShareTransmit;
 import com.wzy.crm.pojo.MessageTag;
-import com.wzy.crm.vo.MessageDetail;
-import com.wzy.crm.vo.MessageResponseVo;
-import com.wzy.crm.vo.MessageVo;
-import com.wzy.crm.vo.MyShareVo;
+import com.wzy.crm.vo.*;
 import org.apache.http.protocol.ResponseServer;
 
 import java.util.List;
@@ -64,6 +61,6 @@ public interface IMessageService {
 
     ServerResponse findSelfShare(MyShareVo myShareVo);
 
-    ServerResponse getMessageShareDetail(String userId,Integer messageId);
+    ServerResponse getMessageShareDetail(MessageShareVo messageShareVo);
 
 }

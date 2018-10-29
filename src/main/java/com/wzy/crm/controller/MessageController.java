@@ -10,6 +10,7 @@ import com.wzy.crm.pojo.*;
 import com.wzy.crm.service.IMessageService;
 import com.wzy.crm.common.ServerResponse;
 import com.wzy.crm.vo.MessageDetail;
+import com.wzy.crm.vo.MessageShareVo;
 import com.wzy.crm.vo.MessageVo;
 import com.wzy.crm.vo.MyShareVo;
 import org.apache.commons.lang3.StringUtils;
@@ -288,8 +289,8 @@ public class MessageController {
     }
 
     @PostMapping("/shareDetail")
-    public ServerResponse getMessageShareDetail(@RequestParam String userId,@RequestParam Integer messageId){
-        return messageService.getMessageShareDetail(userId,messageId);
+    public ServerResponse getMessageShareDetail(@RequestBody MessageShareVo messsageShareVo){
+        return messageService.getMessageShareDetail(messsageShareVo);
     }
 
 }

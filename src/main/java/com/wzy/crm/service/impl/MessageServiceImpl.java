@@ -15,10 +15,7 @@ import com.wzy.crm.utils.PropertiesUtil;
 import com.wzy.crm.common.ResponseCode;
 import com.wzy.crm.common.ServerResponse;
 import com.wzy.crm.utils.SendWxMessage;
-import com.wzy.crm.vo.MessageDetail;
-import com.wzy.crm.vo.MessageResponseVo;
-import com.wzy.crm.vo.MessageVo;
-import com.wzy.crm.vo.MyShareVo;
+import com.wzy.crm.vo.*;
 import org.apache.camel.spi.AsEndpointUri;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -229,12 +226,24 @@ public class MessageServiceImpl implements IMessageService {
         Integer page = myShareVo.getPage();
         Integer size = myShareVo.getSize();
         Integer start = (page - 1)*size;
-        return ServerResponse.createBySuccess(messageShareMapper.selectSelfShare(userId,start,size));
+        List<ShareDetail> shareDetails  = new ArrayList<ShareDetail>();
+        shareDetails = messageShareMapper.selectSelfShare(userId,start,size);
+        return ServerResponse.createBySuccess(shareDetails);
     }
 
     @Override
-    public ServerResponse getMessageShareDetail(String userId, Integer messageId) {
-        List<MessageReadInfo> messageReadInfos = customerReadinfoMapper.selectMessageShareDetail(userId,messageId);
+    public ServerResponse getMessageShareDetail(MessageShareVo messageShareVo) {
+        String userId = messageShareVo.getUserId();
+        Integer messageId = messageShareVo.getMessageId();
+        Integer customerId = messageShareVo.getCustomerId();
+        List<MessageReadInfo> messageReadInfos = null;
+        if(userId != null && messageId != null && customerId == null){
+            messageReadInfos = customerReadinfoMapper.selectMessageShareDetail(userId,messageId);
+        }else if(userId != null && messageId != null && customerId != null){
+            messageReadInfos = customerReadinfoMapper.selectMyReadInfoDetail(userId,customerId,messageId);
+        }else if(userId == null && messageId != null && customerId != null){
+            messageReadInfos = customerReadinfoMapper.selectReadInfoDetail(customerId,messageId);
+        }
         System.out.println("count:"+messageReadInfos.size());
         return ServerResponse.createBySuccess(messageReadInfos);
     }

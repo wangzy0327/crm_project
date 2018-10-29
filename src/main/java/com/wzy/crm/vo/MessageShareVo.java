@@ -3,15 +3,13 @@ package com.wzy.crm.vo;
 import lombok.Data;
 
 @Data
-public class CustomerVo {
+public class MessageShareVo {
 
     private String userId;
 
+    private Integer messageId;
+
     private Integer customerId;
-
-    private Integer groupId;
-
-    private String searchInput;
 
     private Integer page;
 

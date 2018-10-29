@@ -253,7 +253,7 @@ module.service = {
         var messageData = module.data.messageData;
 
         var timer = window.setInterval(function () {
-            module.data.viewTime += 5;
+            module.data.viewTime += 3;
 
             // 停留当前页阅读时间计算
             var endTime = new Date().getTime();

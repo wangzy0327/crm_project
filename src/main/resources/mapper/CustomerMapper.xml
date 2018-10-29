@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.Customer" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="openid" property="openId" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="wechat" property="wechat" jdbcType="VARCHAR" />
     <result column="company" property="company" jdbcType="VARCHAR" />

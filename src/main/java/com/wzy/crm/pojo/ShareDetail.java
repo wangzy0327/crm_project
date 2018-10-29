@@ -17,6 +17,8 @@ public class ShareDetail {
 
     String userId;
 
+    Integer customerId;
+
     Integer openCount;
 
     Integer shareFlag;

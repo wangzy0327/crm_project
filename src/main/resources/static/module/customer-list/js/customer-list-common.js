@@ -212,9 +212,14 @@ listManager.service = $.extend({
             }else{
                 html += '<a class="weui-form-preview__btn weui-form-preview__btn_default visit-memo-list" href="javascript:" data-id="'+ data[i].id +'">查看备注</a> ';
             }
+            var openCount = data[i].times || 0;
+            var shareCount = data[i].transmitTimes || 0;
+            var sumCount = 0 + openCount + shareCount;
+            var openCountClass = openCount>0?'num-not-zero':'';
+            var shareCountClass = shareCount>0?'num-not-zero':'';
             html += '<a class="weui-form-preview__btn weui-form-preview__btn_default view-detail '+(listManager.data.myFlag?"view-detail-my":"")+'"'+
-            'data-sumcount="1" href="javascript:">浏览<span class=""></span>&nbsp;&nbsp;转发' +
-            '<span class=""></span></a></div>\n' +
+            'data-sumcount="'+sumCount+'" href="javascript:">浏览<span class="'+openCountClass+'">('+openCount+')</span>&nbsp;&nbsp;转发' +
+            '<span class="'+shareCountClass+'">('+shareCount+')</span></a></div>\n' +
             '</div>';
 
         }
@@ -312,7 +317,9 @@ listManager.eventHandler = $.extend({
                 if(listManager.data.myFlag){
                     html ='customer-list-my-detail.html';
                 }
-                location.href = $.UrlUpdateParams(html,"dataId",$(customer).data('id'));
+                var url1 = $.UrlUpdateParams(html,"userid",userid);
+                var url2 = $.UrlUpdateParams(url1,"customerid",$(customer).data('id'));
+                location.href = url2;
                 // location.href = html+ YT.setUrlParams({
                 //     dataId:$(customer).data('id')
                 // });

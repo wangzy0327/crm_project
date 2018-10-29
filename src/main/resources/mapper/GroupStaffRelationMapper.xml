@@ -21,6 +21,8 @@
     <result column="webSite" property="website" jdbcType="VARCHAR" />
     <result column="fax" property="fax" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="times" property="times" jdbcType="INTEGER" />
+    <result column="transmit_times" property="transmitTimes" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="map" >
@@ -102,7 +104,7 @@
   <select id="selectCustomersByGroupId" resultMap="CustomerMap">
     select DISTINCT (customer_id) id,customer_name `name`,customer_mobile mobile,
     customer_company company,customer_position `position`,customer_address address,
-    customer_email email,customer_telephone telephone,customer_fax fax,customer_remark remark
+    customer_email email,times,transmit_times
     from v_group_customer
     <where>
       group_id = #{groupId}

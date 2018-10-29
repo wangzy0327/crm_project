@@ -16,6 +16,8 @@ public class CustomerReadinfo {
 
     private Integer times;
 
+    private Integer transmitTimes;
+
     private Integer messageId;
 
     private String messageTitle;

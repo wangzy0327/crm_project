@@ -6,6 +6,7 @@
     <result column="share_id" property="shareId" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
     <result column="times" property="times" jdbcType="INTEGER" />
+    <result column="transmit_times" property="transmitTimes" jdbcType="INTEGER" />
     <result column="message_id" property="messageId" jdbcType="INTEGER" />
     <result column="customer_id" property="customerId" jdbcType="INTEGER" />
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
@@ -27,7 +28,8 @@
     <result column="msgType" property="msgType" jdbcType="INTEGER" />
     <result column="customer_id" property="customerId" jdbcType="INTEGER" />
     <result column="name" property="customerName" jdbcType="VARCHAR" />
-    <result column="times" property="times" jdbcType="INTEGER" />
+    <result column="times" property="openCount" jdbcType="INTEGER" />
+    <result column="transmit_times" property="transmitTimes" jdbcType="INTEGER" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
     <result column="view_time" property="viewTime" jdbcType="INTEGER" />
@@ -35,6 +37,17 @@
     <result column="total_time" property="totalTime" jdbcType="INTEGER" />
     <result column="read_info" property="readInfo" jdbcType="LONGVARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="MyShareMap" type="com.wzy.crm.pojo.ShareDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="message_id" property="messageId" jdbcType="INTEGER" />
+    <result column="customer_id" property="customerId" jdbcType="INTEGER" />
+    <result column="titleText" property="titleText" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="times" property="openCount" jdbcType="INTEGER" />
+    <result column="share_flag" property="shareFlag" jdbcType="INTEGER" />
+    <result column="transmit_times" property="transmitTimes" jdbcType="INTEGER" />
+    <result column="share_time" property="shareTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from customer_readinfo
@@ -160,5 +173,29 @@
     on cr.message_id = message.id
     left join customer
     on cr.customer_id = customer.id;
+  </select>
+  <select id="selectReadMessageByUserId" resultMap="MyShareMap">
+    select user_id,customer_id,message_id,titleText,times,transmit_times,update_time
+    from v_times_transmit_times
+    where user_id = #{userId} and customer_id = #{customerId}
+    order by update_time
+    limit #{start},#{size}
+  </select>
+  <select id="selectReadMessage" resultMap="MyShareMap">
+    select user_id,customer_id,message_id,titleText,times,transmit_times,update_time
+    from v_times_transmit_times
+    where customer_id = #{customerId}
+    order by update_time
+    limit #{start},#{size}
+  </select>
+  <select id="selectMyReadInfoDetail" resultMap="MessageReadInfoMap">
+    select user_id,message_id,msgType,customer_id,`name`,times,transmit_times,city,open_time,view_time,page_count,total_time,read_info,update_time
+    from v_readinfo_detail
+    where user_id = #{userId} and customer_id = #{customerId} and message_id = #{messageId}
+  </select>
+  <select id="selectReadInfoDetail" resultMap="MessageReadInfoMap">
+    select user_id,message_id,msgType,customer_id,`name`,times,transmit_times,city,open_time,view_time,page_count,total_time,read_info,update_time
+    from v_readinfo_detail
+    where customer_id = #{customerId} and message_id = #{messageId}
   </select>
 </mapper>

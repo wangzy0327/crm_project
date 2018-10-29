@@ -129,7 +129,7 @@ listManager.service = {
             var messageId = items[i].messageId;
             var titleData = items[i].titleText;
             var openCount = items[i].openCount;
-            var shareCount = items[i].shareCount;
+            var shareCount = items[i].transmitTimes;
             if (openCount == null || openCount == '') {
                 openCount = 0;
             }
@@ -145,8 +145,8 @@ listManager.service = {
                 '<p>' + listManager.service.cutStr(titleData, 26) + '</p> ' +
                 '</div> ' +
                 '<div class="weui-cell__ft"> ' +
-                '<div style="height:20px;"><span style="font-size: 13px;color:#666666;">转发：</span><span style="color:red;">' +shareCount + '</span></div>' +
                 '<div style="height:20px;"><span style="font-size: 13px;color:#666666;">点击：</span><span style="color:red;">' +openCount + '</span></div>' +
+                '<div style="height:20px;"><span style="font-size: 13px;color:#666666;">转发：</span><span style="color:red;">' +shareCount + '</span></div>' +
                 '</div> ' +
                 '</a>';
         }

@@ -1,7 +1,8 @@
 var listManager = listManager || {};
 
 listManager.data = $.extend({
-    m: 1010000,
+    user_id:getUrlParam("userid"),
+    customer_id:getUrlParam("customerid"),
     dataId:-1,
     dataIdList:[],
     currentPopId:-1,
@@ -10,7 +11,7 @@ listManager.data = $.extend({
 var pager = {
     loading: false,
     page: 1,
-    rows: 20
+    size: 20
 };
 $(function () {
     listManager.service.initControls();
@@ -18,15 +19,33 @@ $(function () {
 });
 listManager.service = $.extend({
     initControls: function () {
-        listManager.data.dataId = YT.getUrlParam('dataId');
         if(listManager.data.myFlag){
-            YT.getUserInfo(function (user) {
+            this.getUserInfo(function (user) {
                 listManager.data.user = user;
                 listManager.service.initGrid();
             });
         }else{
             listManager.service.initGrid();
         }
+    },
+    getUserInfo: function (callback) {
+        var self = this;
+        $.ajax({
+            type: 'get',
+            url: "/staff/self?userId="+listManager.data.user_id,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if(result.code == 0){
+                    var data = result.data;
+                    callback(data);
+                }else{
+                    $.alert(result.msg);
+                }
+            }
+        });
     },
     cutStr: function (str, length) {
         if(str){
@@ -61,62 +80,70 @@ listManager.service = $.extend({
         }
 
     },
-
-
     // 初始化列表
     initGrid: function () {
+        var noMore =
+            '<div  class="noMore" style="margin-top: 10px;text-align: center;">' +
+            '无更多记录' +
+            '</div> ';
         var dataFilter = listManager.service.getSearchData();
         $.showLoading('加载中，请稍后...');
-        YT.query({
-            loading:false,
-            data: dataFilter,
-            successCallback: function (data) {
-                listManager.service.getHtmlListStr(data);//列表的方式显示
-                $.hideLoading();
+        $.ajax({
+            type: 'post',
+            url: "/customer/readMessage",
+            data:JSON.stringify(dataFilter),
+            contentType: "application/json;charset=UTF-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    var data = result.data;
+                    console.log("data.length:"+data.length);
+                    if (data.length > 0) {
+                        listManager.service.getHtmlListStr(data);
+                    }
+                    else {
+                        $("#more").html(noMore);
+                        pager.loading = true;
+                        console.log("pager.loading:   "+pager.loading);
+                    }
+                    $.hideLoading();
+                }
             }
         });
     },
-    getDefaultFilter: function () {
-        var filter = [
-            {field: 'customerId', value: listManager.data.dataId, operator: '=', relation: 'AND'},
-            {field: 'status', value: 1, operator: '=', relation: 'AND'}
-        ];
-        if(listManager.data.myFlag){
-            filter.push({field: 'staffId', value: listManager.data.user.id, operator: '=', relation: 'AND'});
-        }
-        return filter;
-    },
     getSearchData: function () {
-        var filter = listManager.service.getDefaultFilter();
-        var t = 'v_customers_all_msg';
+        var user_id = null;
+        var customer_id = listManager.data.customer_id;
         if(listManager.data.myFlag){
-            t = 'v_customers_my_msg';
+            user_id = listManager.data.user_id;
         }
         return {
-            m: listManager.data.m,
-            t: t,
-            filter: JSON.stringify(filter),
-            order: " messageId desc "
+            userId:user_id,
+            customerId:customer_id,
+            page:pager.page,
+            size:pager.size
         };
     },
     //列表展示
     getHtmlListStr: function (data) {
         var str = '';
-        if (data.status == 200 && data.object.length > 0) {
-            for (var i = 0; i < data.object.length; i++) {
-                var item = data.object[i];
+        if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
                 var id = item.messageId;
                 var msgType = item.msgType;
                 var titleData = item.titleText;
                 var openCount = item.openCount;
-                var shareCount = item.shareCount;
+                var shareCount = item.transmitTimes;
                 if (openCount == null || openCount == '') {
                     openCount = 0;
                 }
                 if (shareCount == null || shareCount == '') {
                     shareCount = 0;
                 }
-                str += '<a class="weui-cell weui-cell_access detail detail_'+id+'" data-user="'+listManager.data.dataId+'" data-id="' + id + '" data-type="' + msgType + '" href="javascript:;"> ' +
+                str += '<a class="weui-cell weui-cell_access detail detail_'+id+'" data-user="'+listManager.data.user_id+'" data-id="' + id + '" href="javascript:;"> ' +
                     '<div class="weui-cell__bd"> ' +
                     '<p>' + listManager.service.cutStr(titleData, 26) + '</p> ' +
                     '</div> ' +
@@ -125,7 +152,7 @@ listManager.service = $.extend({
                     '<div style="height:20px;"><span style="font-size: 13px;color:#666666;">转发：</span><span style="color:red;">' +shareCount + '</span></div>' +
                     '</div> ' +
                     '</a>';
-                str += '<div class="weui-cell weui-cell_access detail_content detail_content_'+id+'_'+listManager.data.dataId+'" style="display: none"> ' +
+                str += '<div class="weui-cell weui-cell_access detail_content detail_content_'+id+'_'+listManager.data.user_id+'" style="display: none"> ' +
                     '<div class="weui-cell__bd"> ' +
                     '</div> ' +
                     '</div>';
@@ -136,38 +163,63 @@ listManager.service = $.extend({
     },
 
     initDetailContent:function(){
-        var filter = [
-            {field: 'messageId', value: listManager.data.lastSlide, operator: '=', relation: 'AND'},
-            {field: 'customerId', value: listManager.data.dataId, operator: '=', relation: 'AND'}
-        ];
+        var userId;
         if(listManager.data.myFlag){
-            filter.push({field: 'staffId', value: listManager.data.user.id, operator: '=', relation: 'AND'});
+            userId = listManager.data.user_id;
         }
         var postData = {
-            m: listManager.data.m,
-            t: 'v_customers_all_msg_record',
-            filter: JSON.stringify(filter),
-            order: " id "
+            userId:userId,
+            messageId:listManager.data.lastSlide,
+            customerId:listManager.data.customer_id
         };
+        var noMore =
+            '<div  class="noMore" style="margin-top: 10px;text-align: center;">' +
+            '无更多记录' +
+            '</div> ';
         $.showLoading('加载中，请稍后...');
-        YT.query({
-            loading:false,
-            data: postData,
-            successCallback: function (data) {
-                listManager.service.getDetailContentListStr(data);//列表的方式显示
-                $.hideLoading();
+        $.ajax({
+            type: 'post',
+            url: "/message/shareDetail",
+            data:JSON.stringify(postData),
+            contentType: "application/json;charset=UTF-8",
+            dataType: 'json',
+            error: function (request) {
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    var data = result.data;
+                    console.log("data.length:"+data.length);
+                    if (data.length > 0) {
+                        listManager.service.getDetailContentListStr(data);//列表的方式显示
+                    }
+                    else {
+                        $("#more").html(noMore);
+                        pager.loading = true;
+                        console.log("pager.loading:   "+pager.loading);
+                    }
+                    $.hideLoading();
+                }
             }
         });
+        // YT.query({
+        //     loading:false,
+        //     data: postData,
+        //     successCallback: function (data) {
+        //         listManager.service.getDetailContentListStr(data);//列表的方式显示
+        //         $.hideLoading();
+        //     }
+        // });
     },
     //列表展示
     getDetailContentListStr: function (data) {
         var html = '';
-        if (data.status == 200 && data.object.length > 0) {
-            for (var i = 0; i < data.object.length; i++) {
-                var address = data.object[i].city || '';
-                var readInfo = data.object[i].readInfo;
-                var messageType = data.object[i].msgType;
-                var shareCount = data.object[i].shareCount;
+        if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                var address = data[i].city || '';
+                var readInfo = data[i].readInfo;
+                var messageType = data[i].msgType;
+                var openCount = data[i].openCount;
+                var shareCount = data[i].transmitTimes;
                 var currentArray = [];
                 var viewTime = 0;
                 var pageShowNum = 1;
@@ -182,7 +234,7 @@ listManager.service = $.extend({
                 }
                 if (messageType == 1) {
                     currentArray.push(viewTime);
-                    viewTime = data.object[i].viewTime - 0;
+                    viewTime = data[i].viewTime - 0;
                     showTime += getFlexItem(viewTime,1);
                 } else if (messageType == 5 || messageType == 2) {
                     currentArray = JSON.parse(readInfo || '[0]');//阅读信息
@@ -195,9 +247,12 @@ listManager.service = $.extend({
                 }
                 html+='<div class="weui-media-box weui-media-box_text" style="padding-top:5px;margin-bottom: 5px"> ' +
                     '<p class="weui-media-box__desc">' +
-                    '于<span style="font-size:14px;color: #666;font-weight: 600;">'+new Date(data.object[i].openTime).Format("yyyy年MM月dd日") +'</span>'+
+                    '于<span style="font-size:14px;color: #666;font-weight: 600;">'+new Date(data[i].openTime).Format("yyyy年MM月dd日") +'</span>'+
                     '在<span style="font-size:14px;color: #666;font-weight: 600;">' +address +'</span>浏览了'+
                     '<span style="font-size:14px;color: #666;font-weight: 600;">' + listManager.service.formatSeconds(viewTime)+'</span>';
+                if(openCount>1){
+                    html+='浏览过'+'<span style="font-size:14px;color: #666;font-weight: 600;">' + openCount+'次</span>'
+                }
                 if(shareCount){
                     html+='并转发了'+'<span style="font-size:14px;color: #666;font-weight: 600;">' + shareCount+'次</span>'
                 }
@@ -206,7 +261,7 @@ listManager.service = $.extend({
                     '</div>';
             }
         }
-        $('.detail_content_'+listManager.data.lastSlide+'_'+listManager.data.dataId+' .weui-cell__bd').empty().html(html);
+        $('.detail_content_'+listManager.data.lastSlide+'_'+listManager.data.user_id+' .weui-cell__bd').empty().html(html);
     }
 },listManager.service || {});
 listManager.eventHandler = $.extend({
@@ -224,7 +279,7 @@ listManager.eventHandler = $.extend({
     showDetail:function(id){
         $('.detail_'+id).addClass('active');
         listManager.service.initDetailContent();
-        $('.detail_content_'+id+'_'+listManager.data.dataId).fadeIn(300);
+        $('.detail_content_'+id+'_'+listManager.data.user_id).fadeIn(300);
     },
     handleClickDetail:function(){
         $('#full-pop-content').on('click','.detail',function(){

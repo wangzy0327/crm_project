@@ -23,7 +23,9 @@ public class MessageReadInfo {
 
     private String customerName;
 
-    private Integer times;
+    private Integer openCount;
+
+    private Integer transmitTimes;
 
     private String city;
 

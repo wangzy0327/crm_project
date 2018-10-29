@@ -23,4 +23,6 @@ public interface ICustomerService {
 
     ServerResponse findCustomer(Integer shareId,String openid);
 
+    ServerResponse findReadMessage(CustomerVo customerVo);
+
 }

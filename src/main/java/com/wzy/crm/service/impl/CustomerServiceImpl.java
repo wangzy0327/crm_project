@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -138,6 +139,12 @@ public class CustomerServiceImpl implements ICustomerService {
                 customer = customers.get(0);
                 customerReadinfo.setCustomerId(customer.getId());
                 customerReadinfo.setCustomerName(customer.getName());
+                MessageShareCustomer messageShareCustomer = new MessageShareCustomer();
+                messageShareCustomer.setShareId(customerReadinfo.getShareId());
+                messageShareCustomer.setMessageId(customerReadinfo.getMessageId());
+                messageShareCustomer.setUserId(customerReadinfo.getUserId());
+                messageShareCustomer.setCustomerId(customerReadinfo.getCustomerId());
+                messageShareCustomerMapper.insert(messageShareCustomer);
             }
         }
         if(customer == null){
@@ -198,6 +205,22 @@ public class CustomerServiceImpl implements ICustomerService {
         }else{
             return ServerResponse.createBySuccess(customer);
         }
+    }
+
+    @Override
+    public ServerResponse findReadMessage(CustomerVo customerVo) {
+        String userId = customerVo.getUserId();
+        Integer customerId = customerVo.getCustomerId();
+        Integer page = customerVo.getPage();
+        Integer size = customerVo.getSize();
+        Integer start = (page - 1)*size;
+        List<ShareDetail> shareDetails = new ArrayList<>();
+        if(userId!=null){
+            shareDetails = customerReadinfoMapper.selectReadMessageByUserId(userId,customerId,start,size);
+        }else{
+            shareDetails = customerReadinfoMapper.selectReadMessage(customerId,start,size);
+        }
+        return ServerResponse.createBySuccess(shareDetails);
     }
 
 

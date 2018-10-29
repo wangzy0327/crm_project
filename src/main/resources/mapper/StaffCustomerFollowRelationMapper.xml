@@ -24,6 +24,8 @@
     <result column="webSite" property="website" jdbcType="VARCHAR" />
     <result column="fax" property="fax" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="times" property="times" jdbcType="INTEGER" />
+    <result column="transmit_times" property="transmitTimes" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <insert id="insert" parameterType="com.wzy.crm.pojo.StaffCustomerFollowRelation" >
@@ -64,21 +66,15 @@
     </foreach>
   </delete>
   <select id="selectCustomersByUserId" resultMap="CustomerMap">
-    select customer.id,customer.`name`,customer.mobile,customer.wechat,customer.company,customer.position,customer.address,customer.telephone,customer.email,
-    customer.webSite,customer.fax,customer.remark
-    from
-    (select customer_id
-    from staff_customer_follow_relation
-    where user_id = #{userid} and is_follow = 1
-    ) scf
-    left join customer
-    on scf.customer_id  = customer.id
+    select id,user_id,`name`,mobile,wechat,company,`position`,address,telephone,email,times,transmit_times
+    from v_myself_customer
     <where>
+      user_id = #{userid}
       <if test="keyword != null and keyword != ''">
         AND CONCAT(`name`,`company`) LIKE #{keyword}
       </if>
     </where>
-    order by customer.update_time
+    order by update_time desc
     limit #{start},#{length}
   </select>
   <select id="selectCustomerCountsByUserId" resultType="int">
