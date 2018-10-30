@@ -17,6 +17,8 @@ public interface ICustomerService {
 
     ServerResponse getCustomerList(CustomerVo customerVo);
 
+    ServerResponse getCustomerListDetail(CustomerVo customerVo);
+
     ServerResponse saveShareCustomer(CustomerShareVo customerShareVo);
 
     ServerResponse updateCustomerReadInfo(CustomerReadinfo customerReadinfo);

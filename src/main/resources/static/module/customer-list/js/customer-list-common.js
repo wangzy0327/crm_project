@@ -55,7 +55,7 @@ listManager.service = $.extend({
         var postData = this.initSearch();
         $.ajax({
             type: 'post',
-            url: "/customer/list",
+            url: "/customer/list/detail",
             data:JSON.stringify(postData),
             contentType: "application/json;charset=UTF-8",
             dataType: 'json',

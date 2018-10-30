@@ -66,6 +66,17 @@
     </foreach>
   </delete>
   <select id="selectCustomersByUserId" resultMap="CustomerMap">
+    select customer.id,customer.`name`,customer.mobile,customer.wechat,customer.company,customer.position,customer.email
+    from
+    (select customer_id
+    from staff_customer_follow_relation
+    where user_id = #{userid} and is_follow = 1) scf
+    left join customer
+    on scf.customer_id = customer.id
+    order by customer.update_time desc
+    limit #{start},#{length};
+  </select>
+  <select id="selectCustomersDetailByUserId" resultMap="CustomerMap">
     select id,user_id,`name`,mobile,wechat,company,`position`,address,telephone,email,times,transmit_times
     from v_myself_customer
     <where>

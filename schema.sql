@@ -1099,3 +1099,37 @@ create view v_times_transmit_times
            on message.id = customer_readinfo.message_id
       ) crmsc
     group by user_id,customer_id,message_id);
+
+drop view if exists v_times_transmit_times;
+create view v_times_transmit_times
+  as (
+    select crmsc.user_id,crmsc.customer_id,crmsc.message_id,crmsc.titleText,sum(crmsc.times) times,sum(crmsc.transmit_times) transmit_times,crmsc.update_time
+    from
+      (select customer_readinfo.share_id,customer_readinfo.user_id,customer_readinfo.customer_id,customer_readinfo.message_id,titleText,ip,cid,city,times,transmit_times,read_info,view_time,open_time,customer_readinfo.update_time
+       from customer_readinfo
+         left join message_share_transmit
+           on customer_readinfo.share_id = message_share_transmit.share_id
+         left join message
+           on message.id = customer_readinfo.message_id
+      ) crmsc
+    group by user_id,customer_id,message_id);
+
+drop view if exists v_readinfo_detail;
+create view v_readinfo_detail
+  as(
+    select customer_readinfo.id,customer_readinfo.share_id,customer_readinfo.user_id,customer_readinfo.message_id,message.msgType,customer_readinfo.customer_id,customer.`name`,times,message_share_transmit.transmit_times,ip,cid,city,open_time,view_time,page_count,total_time,read_info,customer_readinfo.update_time
+    from customer_readinfo
+      left join message_share_transmit
+        on customer_readinfo.share_id = message_share_transmit.share_id
+      left join customer
+        on customer_readinfo.customer_id = customer.id
+      left join message
+        on message.id = customer_readinfo.message_id);
+
+drop view if exists v_customer_city;
+create view v_customer_city
+  as (
+    select customer_id,city,count(city)
+    from customer_readinfo
+    where city!='CHINA'
+    group by customer_id,city);

@@ -22,5 +22,7 @@ public interface StaffCustomerFollowRelationMapper {
 
     List<Customer> selectCustomersByUserId(@Param("userid") String userid,@Param("keyword") String keyword,@Param("start") Integer start,@Param("length") Integer length);
 
+    List<Customer> selectCustomersDetailByUserId(@Param("userid") String userid,@Param("keyword") String keyword,@Param("start") Integer start,@Param("length") Integer length);
+
     Integer selectCustomerCountsByUserId(@Param("userid") String userid);
 }

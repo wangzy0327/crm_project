@@ -127,6 +127,11 @@ public class CustomerController {
         return customerService.getCustomerList(customerVo);
     }
 
+    @PostMapping("/list/detail")
+    public ServerResponse listCustomersDetail(@RequestBody CustomerVo customerVo){
+        return customerService.getCustomerListDetail(customerVo);
+    }
+
     @GetMapping("/valid")
     public ServerResponse validCustomer(@RequestParam String mobile){
         int count = customerMapper.selectByMobile(mobile);

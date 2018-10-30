@@ -101,6 +101,29 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
+    public ServerResponse getCustomerListDetail(CustomerVo customerVo) {
+        String userId = customerVo.getUserId();
+        Integer page = customerVo.getPage();
+        Integer size = customerVo.getSize();
+        Integer groupId = customerVo.getGroupId();
+        String keyword = customerVo.getSearchInput();
+        if(StringUtils.isNotBlank(keyword)){
+            keyword = "%"+keyword+"%";
+        }
+        Integer start = (page - 1)*size;
+        if(userId!=null){
+            List<Customer> customers = staffCustomerFollowRelationMapper.selectCustomersDetailByUserId(userId,keyword,start,size);
+            if(customers.size()>0){
+                return ServerResponse.createBySuccess(customers);
+            }else{
+                return ServerResponse.createBySuccess();
+            }
+        }else{
+            return ServerResponse.createBySuccess(groupStaffRelationMapper.selectCustomersByGroupId(groupId,keyword,start,size));
+        }
+    }
+
+    @Override
     public ServerResponse saveShareCustomer(CustomerShareVo customerShareVo) {
         Customer customer = customerShareVo.getCustomer();
         System.out.println("customer:"+customer);
