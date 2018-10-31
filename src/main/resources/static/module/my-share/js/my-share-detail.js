@@ -119,11 +119,15 @@ listManager.service = {
                         '</div>'+
                         '</div>';
                 }
-                if (data[i].msgType == 1) {
+                console.log("msgType:"+data[i].msgType);
+                if (data[i].msgType == 1 ) {
                     currentArray.push(viewTime);
                     viewTime = data[i].viewTime - 0;
                     showTime += getFlexItem(viewTime,1);
-                } else if (data[i].msgType == 5 || data[i].msgType == 2) {
+                }else if(data[i].msgType == 6) {
+                    viewTime = data[i].viewTime - 0;
+                }
+                else if (data[i].msgType == 5 || data[i].msgType == 2) {
                     currentArray = JSON.parse(readInfo || '[0]');//阅读信息
                     for (var m = 0; m < currentArray.length; m++) {
                         var time = parseInt(currentArray[m]);
@@ -145,11 +149,11 @@ listManager.service = {
                 }
                 html+= '于'+new Date(data[i].openTime).Format("yyyy年MM月dd日") +
                     '在<span style="font-size:14px;color: #666;font-weight: 600;">' +address +'</span>浏览了'+
-                    '<span style="font-size:14px;color: #666;font-weight: 600;">' + listManager.service.formatSeconds(viewTime)+'</span>' +
-                    '并浏览过'+
-                    '<span style="font-size:14px;color: #666;font-weight: 600;">'+data[i].openCount+'</span>'+
-                    '次'+
-                    '<div class="flex-box">'+showTime+'</div>'+
+                    '<span style="font-size:14px;color: #666;font-weight: 600;">' + listManager.service.formatSeconds(viewTime)+'</span>';
+                if(data[i].openCount>1){
+                    html+='浏览过'+'<span style="font-size:14px;color: #666;font-weight: 600;">' + data[i].openCount+'次</span>';
+                }
+                    html+='<div class="flex-box">'+showTime+'</div>'+
                     '</p> ' +
                     '</div>';
             }

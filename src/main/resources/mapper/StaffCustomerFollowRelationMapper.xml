@@ -73,6 +73,11 @@
     where user_id = #{userid} and is_follow = 1) scf
     left join customer
     on scf.customer_id = customer.id
+    <where>
+      <if test="keyword != null and keyword != ''">
+        AND customer.`name` LIKE #{keyword}
+      </if>
+    </where>
     order by customer.update_time desc
     limit #{start},#{length};
   </select>

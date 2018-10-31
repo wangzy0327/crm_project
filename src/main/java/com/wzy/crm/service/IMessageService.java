@@ -33,7 +33,9 @@ public interface IMessageService {
 
     ServerResponse updateGraphic(Message message,List<String> tags);
 
-    ServerResponse updateDocMessage(Message message);
+    ServerResponse updateDocMessage(Message message,List<String> tags);
+
+    ServerResponse updateRichTextMessage(Message message,List<String> tags);
 
     void needToDelTags(Integer messageId);
 

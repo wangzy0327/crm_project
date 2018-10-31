@@ -401,8 +401,7 @@ public class MessageServiceImpl implements IMessageService {
     }
 
     @Override
-    public ServerResponse updateDocMessage(Message message){
-        List<String> tags = message.getTags();
+    public ServerResponse updateDocMessage(Message message, List<String> tags){
         int count = messageMapper.updateByPrimaryKey(message);
         if (count <= 0) {
             return ServerResponse.createByError();
@@ -410,6 +409,16 @@ public class MessageServiceImpl implements IMessageService {
         Map<Integer,List<MessageTag>> map = splitTag(tags);
         needToDelTags(message.getId());
         addTags(message.getId(),map);
+        return ServerResponse.createBySuccess(message);
+    }
+
+    @Override
+    public ServerResponse updateRichTextMessage(Message message, List<String> tags) {
+        Integer messageId = message.getId();
+        needToDelTags(messageId);
+        List<Integer> needToInsert = findTags(tags);
+        handleInsertData(messageId,needToInsert);
+        messageMapper.updateByPrimaryKey(message);
         return ServerResponse.createBySuccess(message);
     }
 

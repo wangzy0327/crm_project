@@ -142,15 +142,16 @@ public class MessageController {
         String docUrl = domainConfig.getUrl()+"/module/web/message/doc/doc-share.html";
         message.setUrl(docUrl);
 //        message.setUrl("http://crm.youitech.com/module/message/doc/doc-share.html");
-        return messageService.updateDocMessage(message);
+        List<String> tags = message.getTags();
+        return messageService.updateDocMessage(message,tags);
     }
 
     @PostMapping("/richText/update")
-    public ServerResponse richTextUpdate(@RequestBody Message message){
+    public ServerResponse richTextUpdate(@RequestBody Message message,@RequestParam List<String> tags){
         String richTextUrl = domainConfig.getUrl()+"/module/web/message/message-share.html";
         message.setUrl(richTextUrl);
 //        message.setUrl("http://crm.youitech.com/module/message/message-share.html");
-        return messageService.updateDocMessage(message);
+        return messageService.updateRichTextMessage(message,tags);
     }
 
     @PostMapping("/parseGraphicUrl")

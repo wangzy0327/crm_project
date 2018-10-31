@@ -1076,15 +1076,15 @@ create view v_myself_customer
       left join staff_customer_follow_relation
         on staff_customer_follow_relation.customer_id = customer.id
       left join
-      (select customer_id,sum(times) ts
+      (select customer_id,user_id,sum(times) ts
        from customer_readinfo
        group by customer_id,user_id) cr
-        on cr.customer_id = customer.id
+        on cr.customer_id = customer.id and staff_customer_follow_relation.user_id = cr.user_id
       left join
-      (select customer_id,sum(transmit_times) tts
+      (select customer_id,user_id,sum(transmit_times) tts
        from message_share_transmit
        group by customer_id,user_id) mst
-        on mst.customer_id = customer.id);
+        on mst.customer_id = customer.id and staff_customer_follow_relation.user_id = mst.user_id);
 
 drop view if exists v_times_transmit_times;
 create view v_times_transmit_times

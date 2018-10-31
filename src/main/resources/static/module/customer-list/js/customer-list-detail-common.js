@@ -236,7 +236,10 @@ listManager.service = $.extend({
                     currentArray.push(viewTime);
                     viewTime = data[i].viewTime - 0;
                     showTime += getFlexItem(viewTime,1);
-                } else if (messageType == 5 || messageType == 2) {
+                }else if(messageType == 6) {
+                    viewTime = data[i].viewTime - 0;
+                }
+                else if (messageType == 5 || messageType == 2) {
                     currentArray = JSON.parse(readInfo || '[0]');//阅读信息
                     for (var m = 0; m < currentArray.length; m++) {
                         var time = parseInt(currentArray[m]);
