@@ -208,7 +208,8 @@ listManager.service = $.extend({
             if(listManager.data.myFlag){
                 html += '<a class="weui-form-preview__btn weui-form-preview__btn_primary edit" data-d="'+JSON.stringify(data[i]).replace(/"/g, "&quot;")+'" href="javascript:">编辑</a>' +
                 '<a class="weui-form-preview__btn weui-form-preview__btn_primary visit-tip" href="javascript:" >提醒</a>\n' +
-                '<a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo" href="javascript:" >备注</a>' ;
+                '<a class="weui-form-preview__btn weui-form-preview__btn_primary visit-memo" href="javascript:" >备注</a>'+
+                '<a class="weui-form-preview__btn weui-form-preview__btn_primary preference" href="javascript:" >偏好</a>';
             }else{
                 html += '<a class="weui-form-preview__btn weui-form-preview__btn_default visit-memo-list" href="javascript:" data-id="'+ data[i].id +'">查看备注</a> ';
             }
@@ -380,6 +381,17 @@ listManager.eventHandler = $.extend({
             var customer = $(self).parents('.weui-form-preview').find('.customer');
             console.log("customerId:"+$(customer).data('id'));
             var url = '/module/old-customer/memo-list.html';
+            var url1 = $.UrlUpdateParams(url,"userid",userid);
+            location.href = $.UrlUpdateParams(url,"customer_id",$(customer).data('id'));
+            // location.href = '/module/old-customer/memo-list.html' + YT.setUrlParams({
+            //     customer_id: $ele.data('id')
+            // });
+        }).on('click','.preference',function () {
+            //$.alert('功能暂时未上线!');
+            var self = this;
+            var customer = $(self).parents('.weui-form-preview').find('.customer');
+            console.log("customerId:"+$(customer).data('id'));
+            var url = '/module/user-profile/preference.html';
             var url1 = $.UrlUpdateParams(url,"userid",userid);
             location.href = $.UrlUpdateParams(url,"customer_id",$(customer).data('id'));
             // location.href = '/module/old-customer/memo-list.html' + YT.setUrlParams({

@@ -1133,3 +1133,28 @@ create view v_customer_city
     from customer_readinfo
     where city!='CHINA'
     group by customer_id,city);
+
+
+drop view if exists v_customer_message_tag;
+create view v_customer_message_tag
+  as (
+    select crav.id,crav.customer_id,crav.message_id,crav.view_time,crav.avg_view_time,message_tag_relation.tag_id,message_tag.`name`,crav.update_time
+    from (
+           select id,customer_readinfo.customer_id,message_id,view_time,avg_view_time,update_time
+           from customer_readinfo,v_avg_view_time
+           where customer_readinfo.customer_id = v_avg_view_time.customer_id and view_time >= v_avg_view_time.avg_view_time
+         )crav
+      left join message_tag_relation
+        on crav.message_id = message_tag_relation.message_id
+      left join message_tag
+        on message_tag.id = message_tag_relation.tag_id);
+
+drop view if exists v_customer_tag;
+create view v_customer_tag
+  as (
+    select customer_id,tag_id,count(*) num,`name`,update_time
+    from v_customer_message_tag
+    where tag_id != ''
+    group by customer_id,tag_id);
+
+
