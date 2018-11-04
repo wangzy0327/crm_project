@@ -27,4 +27,6 @@ public interface ICustomerService {
 
     ServerResponse findReadMessage(CustomerVo customerVo);
 
+    ServerResponse findUserProfile(Integer customerId);
+
 }

@@ -34,6 +34,18 @@
       <result property="name" column="follow_name"/>
     </collection>
   </resultMap>
+  <resultMap id="CustomerTag" type="com.wzy.crm.vo.UserProfileVo" >
+    <result property="customerId" column="customer_id" jdbcType="INTEGER" />
+    <result property="tagId" column="tag_id" jdbcType="INTEGER" />
+    <result property="tagName" column="name" jdbcType="VARCHAR" />
+    <result property="num" column="num" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="CustomerPositionTag" type="com.wzy.crm.vo.UserProfileVo" >
+    <result property="customerId" column="customer_id" jdbcType="INTEGER" />
+    <result property="tagId" column="tag_id" jdbcType="INTEGER" />
+    <result property="tagName" column="city" jdbcType="VARCHAR" />
+    <result property="num" column="num" jdbcType="INTEGER" />
+  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from customer
     where id = #{id,jdbcType=INTEGER}
@@ -169,5 +181,19 @@
     select count(*)
     from customer
     where mobile = #{mobile}
+  </select>
+  <select id="findCustomerProfile" resultMap="CustomerTag">
+    select customer_id,tag_id,`name`,num
+    from v_customer_tag
+    where customer_id = #{customerId}
+    order by num desc,update_time desc
+    limit 0,10;
+  </select>
+  <select id="findCustomerCity" resultMap="CustomerPositionTag">
+    select customer_id,city,num
+    from v_customer_city
+    where customer_id = #{customerId}
+    order by num desc
+    limit 0,1;
   </select>
 </mapper>

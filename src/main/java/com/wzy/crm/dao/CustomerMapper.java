@@ -3,6 +3,7 @@ package com.wzy.crm.dao;
 import com.wzy.crm.controller.CustomerController;
 import com.wzy.crm.pojo.Customer;
 import com.wzy.crm.pojo.CustomerDetailInfo;
+import com.wzy.crm.vo.UserProfileVo;
 
 import java.util.List;
 import java.util.Map;
@@ -30,5 +31,8 @@ public interface CustomerMapper {
 
     Integer selectByMobile(String mobile);
 
+    List<UserProfileVo> findCustomerProfile(Integer customerId);
+
+    List<UserProfileVo> findCustomerCity(Integer customerId);
 
 }

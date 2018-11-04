@@ -9,6 +9,7 @@ import com.wzy.crm.service.IMessageService;
 import com.wzy.crm.utils.SendWxMessage;
 import com.wzy.crm.vo.CustomerShareVo;
 import com.wzy.crm.vo.CustomerVo;
+import com.wzy.crm.vo.UserProfileVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -244,6 +245,16 @@ public class CustomerServiceImpl implements ICustomerService {
             shareDetails = customerReadinfoMapper.selectReadMessage(customerId,start,size);
         }
         return ServerResponse.createBySuccess(shareDetails);
+    }
+
+    @Override
+    public ServerResponse findUserProfile(Integer customerId) {
+        System.out.println("customerId:"+customerId);
+        List<UserProfileVo> userProfileVos = customerMapper.findCustomerProfile(customerId);
+        List<UserProfileVo> userCitys = customerMapper.findCustomerCity(customerId);
+        if(userCitys!=null && userCitys.size()>0)
+            userProfileVos.addAll(userCitys);
+        return ServerResponse.createBySuccess(userProfileVos);
     }
 
 

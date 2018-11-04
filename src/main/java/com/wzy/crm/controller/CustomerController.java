@@ -164,4 +164,9 @@ public class CustomerController {
         return customerService.findReadMessage(customerVo);
     }
 
+    @PostMapping("/userProfile")
+    public ServerResponse findUserProfile(@RequestParam Integer customerId){
+        return customerService.findUserProfile(customerId);
+    }
+
 }
