@@ -18,7 +18,15 @@
 
 
 </head>
-
+<style>
+    p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+    }
+</style>
 
 <body ontouchstart="">
 
@@ -57,30 +65,7 @@
 </div>
 <div class="weui-cells__title">可能喜欢</div>
 <div class="weui-cells" id="list" style="margin-top: 0;"></div>
-
-<!--<div id="tagCloud">-->
-    <!--<a href="" data-weight = "3">示例一</a>-->
-    <!--<a href="" data-weight = "1" class="red">示例二</a>-->
-    <!--<a href="" data-weight = "2" class="green">示例三</a>-->
-    <!--<a href="" data-weight = "2" class="gray">示例</a>-->
-    <!--<a href="" data-weight = "1" class="blue">示例</a>-->
-    <!--<a href="" data-weight = "2" class="green">示例</a>-->
-    <!--<a href="" data-weight = "3" class="DarkOrchid">示例</a>-->
-    <!--<a href="" data-weight = "3" class="peru">示例</a>-->
-    <!--<a href="" data-weight = "3" >示例</a>-->
-    <!--<a href="" data-weight = "5" class="red">示例</a>-->
-    <!--<a href="" data-weight = "10">示例</a>-->
-    <!--<a href="" data-weight = "3" class="blue">示例</a>-->
-    <!--<a href="" data-weight = "2" class="Bisque">示例</a>-->
-    <!--<a href="" data-weight = "0" class="purple">示例</a>-->
-    <!--<a href="" data-weight = "0" class="blue">示例</a>-->
-    <!--<a href="" data-weight = "0" class="Bisque">示例</a>-->
-    <!--<a href="" data-weight = "0" class="Bisque">示例</a>-->
-    <!--<a href="" data-weight = "0" class="green">示例</a>-->
-    <!--<a href="" data-weight = "0" class="DarkOrchid">示例</a>-->
-    <!--<a href="" data-weight = "0" class="peru">示例</a>-->
-    <!--<a href="" data-weight = "0">示例</a>-->
-<!--</div>-->
+<div id="more"></div>
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
@@ -89,10 +74,10 @@
 <script src="../../lib/param.js"></script>
 <script src="../../lib/domain.js"></script>
 <script src="../../js/oauth2.js"></script>
-
-<script type="text/javascript" src="../../iconfont/iconfont.js"></script>
-<script type="text/javascript" src="js/tagCloud.js"></script>
-<script type="text/javascript" src="js/preference.js"></script>
+<script src="../../lib/date-format.js"></script>
+<script src="../../iconfont/iconfont.js"></script>
+<script src="js/tagCloud.js"></script>
+<script src="js/preference.js"></script>
 <!--<script type="text/javascript">-->
     <!--window.onload = function(){-->
         <!--var tagCloud = new TagCould("tagCloud",{});-->

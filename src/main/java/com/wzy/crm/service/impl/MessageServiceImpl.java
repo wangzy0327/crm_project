@@ -70,6 +70,10 @@ public class MessageServiceImpl implements IMessageService {
     private SendWxMessage sendWxMessage;
 
 
+    @Autowired
+    private ReadTimesRecommendMapper readTimesRecommendMapper;
+
+
     @Override
     public synchronized ServerResponse saveMessage(Message message,List<String> tags) {
         messageMapper.insert(message);
@@ -246,6 +250,12 @@ public class MessageServiceImpl implements IMessageService {
         }
         System.out.println("count:"+messageReadInfos.size());
         return ServerResponse.createBySuccess(messageReadInfos);
+    }
+
+    @Override
+    public ServerResponse getRecommendMessageList(String customerId) {
+        System.out.println("customerId:"+customerId);
+        return ServerResponse.createBySuccess(readTimesRecommendMapper.selectRecommendMessage(customerId));
     }
 
 

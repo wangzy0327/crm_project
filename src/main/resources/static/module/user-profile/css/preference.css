@@ -51,15 +51,15 @@ body {
 }
 
 
-p {
-	font: 16px Microsoft YaHei;
-	text-align: center;
-	color: #ba0c0c;
-}
-p a {
-	font-size: 14px;
-	color: #ba0c0c;
-}
-p a:hover {
-	color: red;
-}
+/*p {*/
+	/*font: 16px Microsoft YaHei;*/
+	/*text-align: center;*/
+	/*color: #ba0c0c;*/
+/*}*/
+/*p a {*/
+	/*font-size: 14px;*/
+	/*color: #ba0c0c;*/
+/*}*/
+/*p a:hover {*/
+	/*color: red;*/
+/*}*/

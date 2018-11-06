@@ -65,4 +65,6 @@ public interface IMessageService {
 
     ServerResponse getMessageShareDetail(MessageShareVo messageShareVo);
 
+    ServerResponse getRecommendMessageList(String customerId);
+
 }

@@ -393,7 +393,7 @@ listManager.eventHandler = $.extend({
             console.log("customerId:"+$(customer).data('id'));
             var url = '/module/user-profile/preference.html';
             var url1 = $.UrlUpdateParams(url,"userid",userid);
-            location.href = $.UrlUpdateParams(url,"customer_id",$(customer).data('id'));
+            location.href = $.UrlUpdateParams(url1,"customer_id",$(customer).data('id'));
             // location.href = '/module/old-customer/memo-list.html' + YT.setUrlParams({
             //     customer_id: $ele.data('id')
             // });

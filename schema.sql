@@ -939,7 +939,7 @@ CREATE TABLE `message_share_transmit` (
   KEY `userId` (`user_id`) USING BTREE,
   KEY `message_id` (`message_id`),
   KEY `share_id` (`share_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='转发记录';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='转发记录';
 
 
 drop view if exists v_message_opencount_time_tag;
@@ -987,7 +987,7 @@ CREATE TABLE `customer_readinfo` (
   KEY `userId` (`user_id`) USING BTREE,
   KEY `customerId` (`customer_id`) USING BTREE,
   KEY `message_id` (`message_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='客户阅读详情';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='客户阅读详情';
 
 drop view if exists v_share_message;
 create view v_share_message
@@ -1156,5 +1156,16 @@ create view v_customer_tag
     from v_customer_message_tag
     where tag_id != ''
     group by customer_id,tag_id);
+
+
+drop table if exists `read_times_recommend`;
+create table `read_times_recommend`(
+  `customer_id` int(11) COMMENT '客户id',
+  `message_id` int(11) COMMENT '资料消息id',
+  `value` float COMMENT '预测值',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最近更新时间',
+  KEY `customerId` (`customer_id`) USING BTREE,
+  KEY `messageId` (`message_id`) USING BTREE
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='阅读次数推荐';
 
 

@@ -294,4 +294,10 @@ public class MessageController {
         return messageService.getMessageShareDetail(messsageShareVo);
     }
 
+    @PostMapping("/recommend/list")
+    public ServerResponse getRecommendMessageList(@RequestParam String customerId){
+        System.out.println("customerId:"+customerId);
+        return messageService.getRecommendMessageList(customerId);
+    }
+
 }

@@ -9,6 +9,6 @@ public class IndexController {
 
     @RequestMapping("/")
     public String index(){
-        return "/web/web_login";
+        return "forward:web/web_login.html";
     }
 }

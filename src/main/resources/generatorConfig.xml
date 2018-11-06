@@ -95,10 +95,13 @@
         <!--</table>-->
         <!--<table tableName="message_share_transmit" domainObjectName="MessageShareTransmit">-->
         <!--</table>-->
-        <table tableName="message_share_transmit" domainObjectName="MessageShareTransmit">
-        </table>
+        <!--<table tableName="message_share_transmit" domainObjectName="MessageShareTransmit">-->
+        <!--</table>-->
 
-        <table tableName="customer_readinfo" domainObjectName="CustomerReadinfo">
+        <!--<table tableName="customer_readinfo" domainObjectName="CustomerReadinfo">-->
+        <!--</table>-->
+
+        <table tableName="read_times_recommend" domainObjectName="ReadTimesRecommend">
         </table>
 
     </context>
