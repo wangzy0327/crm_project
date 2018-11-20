@@ -1,6 +1,6 @@
 package com.wzy.crm.dao;
 
-import com.wzy.crm.CrmApplication;
+import com.wzy.crm.Application;
 import com.wzy.crm.pojo.CustomerTag;
 import com.wzy.crm.vo.CustomerTagVo;
 import org.junit.Test;
@@ -11,10 +11,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = CrmApplication.class)
+@SpringBootTest(classes = Application.class)
 public class CustomerTagRelationMapperTest {
 
     @Autowired

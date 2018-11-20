@@ -582,7 +582,7 @@ public class MessageServiceImpl implements IMessageService {
 //            byte[] data = RequestUtil.getImageBytes(imgUrl);
             //new一个文件对象用来保存图片，默认保存当前工程根目录
             String uuid = UUID.randomUUID().toString();
-            File imageFile = new File(path,uuid+".jpg");
+            File imageFile = new File(path,uuid+".png");
             //创建输出流
             FileOutputStream outStream = new FileOutputStream(imageFile);
             //写入数据

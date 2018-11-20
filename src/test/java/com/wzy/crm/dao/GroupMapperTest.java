@@ -1,7 +1,7 @@
 package com.wzy.crm.dao;
 
 import com.google.common.collect.Maps;
-import com.wzy.crm.CrmApplication;
+import com.wzy.crm.Application;
 import com.wzy.crm.pojo.Group;
 import com.wzy.crm.vo.GroupDetail;
 import com.wzy.crm.vo.GroupVo;
@@ -9,17 +9,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = CrmApplication.class)
+@SpringBootTest(classes = Application.class)
 public class GroupMapperTest {
 
     @Autowired

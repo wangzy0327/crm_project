@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.ReadTimesRecommend" >
     <result column="customer_id" property="customerId" jdbcType="INTEGER" />
     <result column="message_id" property="messageId" jdbcType="INTEGER" />
-    <result column="value" property="value" jdbcType="REAL" />
+    <result column="value" property="value" jdbcType="DOUBLE" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <resultMap id="MessageResponseMap" type="com.wzy.crm.vo.MessageResponseVo">
@@ -15,13 +15,13 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <insert id="insert" parameterType="com.wzy.crm.pojo.ReadTimesRecommend" >
-    insert into read_times_recommend (customer_id, message_id, value, 
+    insert into read_times_recommend (customer_id, message_id, `value`,
       update_time)
-    values (#{customerId,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, #{value,jdbcType=REAL}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+    values (#{customerId,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, #{value,jdbcType=DOUBLE},
+      now())
   </insert>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select customer_id, message_id, value, update_time
+    select customer_id, message_id, `value`, update_time
     from read_times_recommend
   </select>
   <select id="selectRecommendMessage" resultMap="MessageResponseMap">

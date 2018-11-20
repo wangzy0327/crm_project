@@ -25,6 +25,11 @@ spring:
       test-on-borrow: true
       stat-view-servlet.allow: true
 
+org:
+  quartz:
+    jobStore:
+      acquireTriggersWithinLock: true
+
 
 # mybatis 配置
 mybatis:

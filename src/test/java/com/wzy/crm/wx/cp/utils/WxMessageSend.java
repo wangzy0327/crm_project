@@ -1,7 +1,6 @@
 package com.wzy.crm.wx.cp.utils;
 
 import com.wzy.crm.Application;
-import com.wzy.crm.CrmApplication;
 import com.wzy.crm.config.DomainConfig;
 import com.wzy.crm.wx.cp.config.WechatAccountConfig;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -15,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = CrmApplication.class)
+@SpringBootTest(classes = Application.class)
 public class WxMessageSend {
 
     @Autowired

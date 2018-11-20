@@ -1,7 +1,8 @@
 package com.wzy.crm.config;
 
-import com.wzy.crm.task.TestTask1;
-import com.wzy.crm.task.TestTask2;
+import com.wzy.crm.task.BooleanPref;
+import com.wzy.crm.task.ScorePref;
+import com.wzy.crm.task.Task3;
 import org.quartz.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,24 +12,28 @@ public class QuartzConfig {
 
     @Bean
     public JobDetail testQuartz1() {
-        return JobBuilder.newJob(TestTask1.class).withIdentity("testTask1").storeDurably().build();
+        return JobBuilder.newJob(BooleanPref.class).withIdentity("booleanPref").storeDurably().build();
     }
 
     @Bean
     public Trigger testQuartzTrigger1() {
         //5秒执行一次
-        SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
-                .withIntervalInSeconds(2)
-                .repeatForever();
+//        SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
+//                .withIntervalInSeconds(2)
+//                .repeatForever();
+//        return TriggerBuilder.newTrigger().forJob(testQuartz1())
+//                .withIdentity("testTask1")
+//                .withSchedule(scheduleBuilder)
+//                .build();
         return TriggerBuilder.newTrigger().forJob(testQuartz1())
                 .withIdentity("testTask1")
-                .withSchedule(scheduleBuilder)
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 52 21 * * ? "))
                 .build();
     }
 
     @Bean
     public JobDetail testQuartz2() {
-        return JobBuilder.newJob(TestTask2.class).withIdentity("testTask2").storeDurably().build();
+        return JobBuilder.newJob(ScorePref.class).withIdentity("scorePref").storeDurably().build();
     }
 
     @Bean
@@ -36,7 +41,22 @@ public class QuartzConfig {
         //cron方式，每隔5秒执行一次
         return TriggerBuilder.newTrigger().forJob(testQuartz2())
                 .withIdentity("testTask2")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0 0/3 * * * ? "))
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 55 21 * * ? "))
+                .build();
+    }
+
+
+    @Bean
+    public JobDetail testQuartz3() {
+        return JobBuilder.newJob(Task3.class).withIdentity("task3").storeDurably().build();
+    }
+
+    @Bean
+    public Trigger testQuartzTrigger3() {
+        //cron方式，每隔5秒执行一次
+        return TriggerBuilder.newTrigger().forJob(testQuartz3())
+                .withIdentity("testTask3")
+                .withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ? "))
                 .build();
     }
 

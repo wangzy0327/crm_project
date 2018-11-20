@@ -1,6 +1,6 @@
 package com.wzy.crm.schedule;
 
-import com.wzy.crm.CrmApplication;
+import com.wzy.crm.Application;
 import com.wzy.crm.timer.RemindTimerTask;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Timer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = CrmApplication.class)
+@SpringBootTest(classes = Application.class)
 public class scheduleTest {
 
     @Test

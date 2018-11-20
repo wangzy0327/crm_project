@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wzy.crm.dao.ReadTransmitRecommendMapper" >
+  <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.ReadTransmitRecommend" >
+    <result column="customer_id" property="customerId" jdbcType="INTEGER" />
+    <result column="message_id" property="messageId" jdbcType="INTEGER" />
+    <result column="value" property="value" jdbcType="DOUBLE" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insert" parameterType="com.wzy.crm.pojo.ReadTransmitRecommend" >
+    insert into read_transmit_recommend (customer_id, message_id, value, 
+      update_time)
+    values (#{customerId,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, #{value,jdbcType=DOUBLE},
+      now())
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select customer_id, message_id, value, update_time
+    from read_transmit_recommend
+  </select>
+</mapper>

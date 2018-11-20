@@ -1159,13 +1159,23 @@ create view v_customer_tag
 
 
 drop table if exists `read_times_recommend`;
-create table `read_times_recommend`(
-  `customer_id` int(11) COMMENT '客户id',
-  `message_id` int(11) COMMENT '资料消息id',
-  `value` float COMMENT '预测值',
+CREATE TABLE `read_times_recommend` (
+  `customer_id` int(11) DEFAULT NULL COMMENT '客户id',
+  `message_id` int(11) DEFAULT NULL COMMENT '资料消息id',
+  `value` double DEFAULT NULL COMMENT '预测值',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最近更新时间',
   KEY `customerId` (`customer_id`) USING BTREE,
   KEY `messageId` (`message_id`) USING BTREE
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='阅读次数推荐';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='阅读次数推荐';
+
+drop table if exists `read_transmit_recommend`;
+CREATE TABLE `read_transmit_recommend` (
+  `customer_id` int(11) DEFAULT NULL COMMENT '客户id',
+  `message_id` int(11) DEFAULT NULL COMMENT '资料消息id',
+  `value` double DEFAULT NULL COMMENT '预测值',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最近更新时间',
+  KEY `customerId` (`customer_id`) USING BTREE,
+  KEY `messageId` (`message_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='阅读转发推荐';
 
 

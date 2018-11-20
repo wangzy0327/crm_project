@@ -1,7 +1,7 @@
 package com.wzy.crm.dao;
 
 import com.google.common.collect.Maps;
-import com.wzy.crm.CrmApplication;
+import com.wzy.crm.Application;
 import com.wzy.crm.pojo.GroupMessageRelation;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -13,10 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = CrmApplication.class)
+@SpringBootTest(classes = Application.class)
 public class GroupMessageRelationMapperTest {
 
     @Autowired

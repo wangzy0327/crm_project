@@ -1,6 +1,6 @@
 package com.wzy.crm.dao;
 
-import com.wzy.crm.CrmApplication;
+import com.wzy.crm.Application;
 import com.wzy.crm.pojo.VisitLog;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = CrmApplication.class)
+@SpringBootTest(classes = Application.class)
 public class VisitLogMapperTest {
 
 

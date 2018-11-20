@@ -1,6 +1,6 @@
 package com.wzy.crm.service.impl;
 
-import com.wzy.crm.CrmApplication;
+import com.wzy.crm.Application;
 import com.wzy.crm.pojo.VisitPlan;
 import com.wzy.crm.service.IVisitPlanService;
 import com.wzy.crm.utils.SendWxMessage;
@@ -13,9 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = CrmApplication.class)
+@SpringBootTest(classes = Application.class)
 public class VisitPlanServiceImplTest {
 
     @Autowired

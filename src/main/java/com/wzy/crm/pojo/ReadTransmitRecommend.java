@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class ReadTimesRecommend {
+public class ReadTransmitRecommend {
     private Integer customerId;
 
     private Integer messageId;
