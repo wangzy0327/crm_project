@@ -2,9 +2,13 @@ package com.wzy.crm.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.wzy.crm.Application;
+import com.wzy.crm.dao.ReadTimesRecommendMapper;
+import com.wzy.crm.dao.ReadTransmitRecommendMapper;
 import com.wzy.crm.pojo.MessageTag;
 import com.wzy.crm.service.IMessageService;
+import com.wzy.crm.vo.MessageResponseVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +17,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
 public class MessageServiceImplTest {
 
+
+    @Autowired
+    private ReadTimesRecommendMapper readTimesRecommendMapper;
+
+    @Autowired
+    private ReadTransmitRecommendMapper readTransmitRecommendMapper;
 
     @Autowired
     private IMessageService messageService;
@@ -72,6 +83,20 @@ public class MessageServiceImplTest {
     public void needToDelTags() throws Exception {
         Integer id = 165;
         messageService.needToDelTags(id);
+    }
+
+    @Test
+    public void getRecommendMessageList() throws Exception {
+        Integer customerId = 102;
+        System.out.println("customerId:"+customerId);
+        List<MessageResponseVo> scorePrefs = readTimesRecommendMapper.selectRecommendMessage(customerId);
+        List<MessageResponseVo> booleanPrefs = readTransmitRecommendMapper.selectRecommendMessage(customerId);
+        Set<MessageResponseVo> prefSets = Sets.newHashSet();
+        prefSets.addAll(scorePrefs);
+        prefSets.addAll(booleanPrefs);
+        List<MessageResponseVo> prefs = Lists.newArrayList();
+        prefs.addAll(prefSets);
+        prefs.forEach(item -> System.out.println(item));
     }
 
 

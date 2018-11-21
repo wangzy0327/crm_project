@@ -7,6 +7,13 @@
     <result column="value" property="value" jdbcType="DOUBLE" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="MessageResponseMap" type="com.wzy.crm.vo.MessageResponseVo">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="msgType" property="msgType" jdbcType="INTEGER"/>
+    <result column="titleText" property="titleText" jdbcType="VARCHAR"/>
+    <result column="name" property="createUserName" jdbcType="VARCHAR"/>
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
   <insert id="insert" parameterType="com.wzy.crm.pojo.ReadTransmitRecommend" >
     insert into read_transmit_recommend (customer_id, message_id, value, 
       update_time)
@@ -16,5 +23,24 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select customer_id, message_id, value, update_time
     from read_transmit_recommend
+  </select>
+  <select id="selectRecommendMessage" resultMap="MessageResponseMap">
+    select message.id,message.titleText,message.msgType,staff.`name`,message.update_time
+    from(
+    select message_id,`value`
+    from read_transmit_recommend
+    where customer_id = #{customerId}
+    and Date(update_time) =
+		(
+		select Date(max(update_time)) curdate
+		 from read_transmit_recommend
+		)
+    order by `value` desc
+    limit 0,5
+    ) rtr
+    left join message
+    on message.id = rtr.message_id
+    left join staff
+    on staff.userid = message.create_user_id
   </select>
 </mapper>

@@ -30,6 +30,11 @@
     select message_id,`value`
     from read_times_recommend
     where customer_id = #{customerId}
+    and Date(update_time) =
+		(
+		select Date(max(update_time)) curdate
+		 from read_times_recommend
+		)
     order by `value` desc
     limit 0,5
     ) rtr

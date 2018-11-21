@@ -3,6 +3,7 @@ package com.wzy.crm.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.wzy.crm.common.MessageType;
 import com.wzy.crm.config.DomainConfig;
 import com.wzy.crm.config.NginxConfig;
@@ -72,6 +73,9 @@ public class MessageServiceImpl implements IMessageService {
 
     @Autowired
     private ReadTimesRecommendMapper readTimesRecommendMapper;
+
+    @Autowired
+    private ReadTransmitRecommendMapper readTransmitRecommendMapper;
 
 
     @Override
@@ -253,9 +257,16 @@ public class MessageServiceImpl implements IMessageService {
     }
 
     @Override
-    public ServerResponse getRecommendMessageList(String customerId) {
+    public ServerResponse getRecommendMessageList(Integer customerId) {
         System.out.println("customerId:"+customerId);
-        return ServerResponse.createBySuccess(readTimesRecommendMapper.selectRecommendMessage(customerId));
+        List<MessageResponseVo> scorePrefs = readTimesRecommendMapper.selectRecommendMessage(customerId);
+        List<MessageResponseVo> booleanPrefs = readTransmitRecommendMapper.selectRecommendMessage(customerId);
+        Set<MessageResponseVo> prefSets = Sets.newHashSet();
+        prefSets.addAll(scorePrefs);
+        prefSets.addAll(booleanPrefs);
+        List<MessageResponseVo> prefs = Lists.newArrayList();
+        prefs.addAll(prefSets);
+        return ServerResponse.createBySuccess(prefs);
     }
 
 

@@ -12,5 +12,5 @@ public interface ReadTimesRecommendMapper {
 
     List<ReadTimesRecommend> selectAll();
 
-    List<MessageResponseVo> selectRecommendMessage(@Param("customerId") String customerId);
+    List<MessageResponseVo> selectRecommendMessage(@Param("customerId") Integer customerId);
 }

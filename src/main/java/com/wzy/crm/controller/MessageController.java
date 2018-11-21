@@ -295,7 +295,7 @@ public class MessageController {
     }
 
     @PostMapping("/recommend/list")
-    public ServerResponse getRecommendMessageList(@RequestParam String customerId){
+    public ServerResponse getRecommendMessageList(@RequestParam Integer customerId){
         System.out.println("customerId:"+customerId);
         return messageService.getRecommendMessageList(customerId);
     }
