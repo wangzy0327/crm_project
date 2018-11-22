@@ -1,4 +1,5 @@
 var OSTool = OSTool || {};
+var city;
 OSTool.Exp_USERAGENT = {
     //browser
     MSIE : /(msie) ([\w.]+)/,
@@ -195,6 +196,11 @@ OSTool.detectOS = function(ua){
 
     return os;
 };
+OSTool.baiduCallback = function(data){
+    pointX = data.content.point.x;
+    pointY = data.content.point.y;
+    city = data.content.address;
+};
 OSTool.detectIP = function(callback){
     if(callback){
         var allTime = 0;
@@ -232,15 +238,19 @@ OSTool.detectIP = function(callback){
             }
         );*/
         getLoaction = defaultLoation;
-
         var script1 = document.createElement("script");
         script1.src = "http://pv.sohu.com/cityjson?ie=utf-8";
         document.head.insertBefore(script1, document.head.firstChild);
+        var _script = document.createElement('script');
+        _script.type = "text/javascript";
+        _key = "55UbnVOR7XovezZC4jFvTqNDPAamsuoo";//百度地图可以申请到
+        _script.src = "http://api.map.baidu.com/location/ip?ak="+_key+"&coor=bd09ll&ip&callback=OSTool.baiduCallback";//拼接URL
+        document.head.appendChild(_script);
         function returnCBK(){
             callback({
                 ip:returnCitySN.cip || '',
                 cid:returnCitySN.cid || '',
-                city:returnCitySN.cname || '',
+                city:city || '',
                 location:JSON.stringify(getLoaction || {})
             });
         }
@@ -248,7 +258,7 @@ OSTool.detectIP = function(callback){
             allTime += 100;
             if(allTime >= 3000){
                 window.clearInterval(timer_ip);
-                if(typeof(returnCitySN) != "undefined" || getLoaction != 0){
+                if((typeof(returnCitySN) != "undefined" && typeof(city) != "undefined")|| getLoaction != 0){
                     returnCBK();
                 }else{
                     callback('none');
