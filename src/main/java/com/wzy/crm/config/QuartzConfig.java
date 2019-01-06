@@ -1,6 +1,7 @@
 package com.wzy.crm.config;
 
 import com.wzy.crm.task.BooleanPref;
+import com.wzy.crm.task.KeywordPref;
 import com.wzy.crm.task.ScorePref;
 import com.wzy.crm.task.Task3;
 import org.quartz.*;
@@ -27,7 +28,7 @@ public class QuartzConfig {
 //                .build();
         return TriggerBuilder.newTrigger().forJob(testQuartz1())
                 .withIdentity("testTask1")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0 52 21 * * ? "))
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 52 14 * * ? "))
                 .build();
     }
 
@@ -41,7 +42,7 @@ public class QuartzConfig {
         //cron方式，每隔5秒执行一次
         return TriggerBuilder.newTrigger().forJob(testQuartz2())
                 .withIdentity("testTask2")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0 55 21 * * ? "))
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 0 15 * * ? "))
                 .build();
     }
 
@@ -56,7 +57,22 @@ public class QuartzConfig {
         //cron方式，每隔5秒执行一次
         return TriggerBuilder.newTrigger().forJob(testQuartz3())
                 .withIdentity("testTask3")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ? "))
+                .withSchedule(CronScheduleBuilder.cronSchedule("* 0/30 * * * ? "))
+                .build();
+    }
+
+
+    @Bean
+    public JobDetail testQuartz4() {
+        return JobBuilder.newJob(KeywordPref.class).withIdentity("keywordPref").storeDurably().build();
+    }
+
+    @Bean
+    public Trigger testQuartzTrigger4() {
+        //5秒执行一次
+        return TriggerBuilder.newTrigger().forJob(testQuartz4())
+                .withIdentity("testTask4")
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 17 22 * * ? "))
                 .build();
     }
 

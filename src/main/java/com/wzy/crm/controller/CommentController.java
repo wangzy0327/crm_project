@@ -20,7 +20,7 @@ public class CommentController {
     }
 
     @PostMapping("/list")
-    public ServerResponse getCommentList(@RequestParam Integer visitId,@RequestParam Integer type){
+    public ServerResponse loadCommentList(@RequestParam Integer visitId,@RequestParam Integer type){
         System.out.println("visitId:"+visitId);
         return commentService.getCommentList(visitId,type);
     }

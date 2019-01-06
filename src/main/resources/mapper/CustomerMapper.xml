@@ -196,4 +196,15 @@
     order by num desc
     limit 0,1;
   </select>
+  <select id="selectAllKeywords" resultType="string">
+    select `name`
+    from v_customer_tag
+  </select>
+  <select id="findCustomerKeywords" resultType="string">
+    select `name`
+    from v_customer_tag
+    where customer_id = #{customerId}
+    order by num desc,update_time desc
+    limit 0,3;
+  </select>
 </mapper>

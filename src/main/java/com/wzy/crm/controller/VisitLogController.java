@@ -66,7 +66,7 @@ public class VisitLogController {
     }
 
     @GetMapping("/detail")
-    public ServerResponse<VisitLog> findPlanDetail(@RequestParam String id){
+    public ServerResponse<VisitLog> findLogDetail(@RequestParam String id){
         return ServerResponse.createBySuccess(visitLogMapper.selectByPrimaryKey(Integer.valueOf(id)));
     }
 
@@ -80,7 +80,7 @@ public class VisitLogController {
     }
 
     @PostMapping("/list")
-    public ServerResponse loadPlan(@RequestParam String userId,@RequestParam Integer customerId,@RequestParam Integer page,@RequestParam Integer size){
+    public ServerResponse loadLog(@RequestParam String userId,@RequestParam Integer customerId,@RequestParam Integer page,@RequestParam Integer size){
         System.out.println("page:"+page);
         System.out.println("size:"+size);
         Integer start = (page - 1)*size;

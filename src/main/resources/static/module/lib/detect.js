@@ -241,11 +241,11 @@ OSTool.detectIP = function(callback){
         var script1 = document.createElement("script");
         script1.src = "http://pv.sohu.com/cityjson?ie=utf-8";
         document.head.insertBefore(script1, document.head.firstChild);
-        var _script = document.createElement('script');
-        _script.type = "text/javascript";
-        _key = "55UbnVOR7XovezZC4jFvTqNDPAamsuoo";//百度地图可以申请到
-        _script.src = "http://api.map.baidu.com/location/ip?ak="+_key+"&coor=bd09ll&ip&callback=OSTool.baiduCallback";//拼接URL
-        document.head.appendChild(_script);
+        var script2 = document.createElement('script');
+        script2.type = "text/javascript";
+        key = "unl7umbeQU9GFKs5XoXSQZCuQY1um1iB";//百度地图可以申请到
+        script2.src = "http://api.map.baidu.com/location/ip?ak="+key+"&coor=bd09ll&ip&callback=OSTool.baiduCallback";//拼接URL
+        document.head.appendChild(script2);
         function returnCBK(){
             callback({
                 ip:returnCitySN.cip || '',

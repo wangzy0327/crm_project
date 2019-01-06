@@ -27,6 +27,8 @@ public interface IMessageService {
 
     ServerResponse findRichTextMessage(Integer id);
 
+    ServerResponse findNewsMessage(Integer id);
+
     ServerResponse saveH5Message(String url, Message message, List<String> tags);
 
     ServerResponse updateH5Message(Message message,List<String> tags);

@@ -1178,4 +1178,19 @@ CREATE TABLE `read_transmit_recommend` (
   KEY `messageId` (`message_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='阅读转发推荐';
 
+drop table if exists `keywords_article`;
+CREATE TABLE `keywords_article` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `msg_type` int(2) NOT NULL DEFAULT '7' COMMENT '1-文章 2-资料 3-图片 4-没有二维码图片 5-H5 6平面 7-爬虫新闻',
+  `author` varchar(50) COMMENT '作者-来源',
+  `title` varchar(50) NOT NULL COMMENT '标题',
+  `description` varchar(300) NOT NULL COMMENT '描述',
+  `link` varchar(200) NOT NULL COMMENT '链接',
+  `pub_time` datetime DEFAULT NULL COMMENT '发布时间',
+  `keyword` varchar(50) DEFAULT NULL COMMENT '关键词',
+  PRIMARY KEY (`id`),
+  KEY `title_key` (`title`) USING BTREE,
+  KEY `keyword_key` (`keyword`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=896 DEFAULT CHARSET=utf8 COMMENT='关键字文章';
+
 

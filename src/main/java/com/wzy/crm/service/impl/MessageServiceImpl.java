@@ -26,6 +26,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -65,6 +66,7 @@ public class MessageServiceImpl implements IMessageService {
     private CustomerReadinfoMapper customerReadinfoMapper;
 
     @Autowired
+    @Lazy
     private CustomerMapper customerMapper;
 
     @Autowired
@@ -76,6 +78,9 @@ public class MessageServiceImpl implements IMessageService {
 
     @Autowired
     private ReadTransmitRecommendMapper readTransmitRecommendMapper;
+
+    @Autowired
+    private KeywordsArticleMapper keywordsArticleMapper;
 
 
     @Override
@@ -265,6 +270,12 @@ public class MessageServiceImpl implements IMessageService {
         prefSets.addAll(scorePrefs);
         prefSets.addAll(booleanPrefs);
         List<MessageResponseVo> prefs = Lists.newArrayList();
+        List<String> keywords = customerMapper.findCustomerKeywords(customerId);
+        List<MessageResponseVo> keywordsPrefs = new ArrayList<>();
+        for(int i = 0;i<keywords.size();i++){
+            keywordsPrefs.addAll(keywordsArticleMapper.findArticleByKeywords(keywords.get(i)));
+        }
+        prefs.addAll(keywordsPrefs);
         prefs.addAll(prefSets);
         return ServerResponse.createBySuccess(prefs);
     }
@@ -350,6 +361,12 @@ public class MessageServiceImpl implements IMessageService {
         }
         message.setTags(tags);
         return ServerResponse.createBySuccess(message);
+    }
+
+    @Override
+    public ServerResponse findNewsMessage(Integer id) {
+        KeywordsArticle keywordsArticle = keywordsArticleMapper.selectByPrimaryKey(id);
+        return ServerResponse.createBySuccess(keywordsArticle);
     }
 
 

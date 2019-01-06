@@ -104,7 +104,10 @@
         <!--<table tableName="read_times_recommend" domainObjectName="ReadTimesRecommend">-->
         <!--</table>-->
 
-        <table tableName="read_transmit_recommend" domainObjectName="ReadTransmitRecommend">
+        <!--<table tableName="read_transmit_recommend" domainObjectName="ReadTransmitRecommend">-->
+        <!--</table>-->
+
+        <table tableName="keywords_article" domainObjectName="KeywordsArticle">
         </table>
 
     </context>

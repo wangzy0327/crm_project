@@ -35,4 +35,8 @@ public interface CustomerMapper {
 
     List<UserProfileVo> findCustomerCity(Integer customerId);
 
+    List<String> selectAllKeywords();
+
+    List<String> findCustomerKeywords(Integer customerId);
+
 }

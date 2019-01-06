@@ -128,7 +128,7 @@ module.eventHandler = {
         $('#list').on('click', '.detail', function () {
             var dataId = $(this).data('id'), msgType = +$(this).data('type'), url = '';
 
-            // 1文章 2资料 3图片 4没有二维码图片 5H5 6平面
+            // 1文章 2资料 3图片 4没有二维码图片 5H5 6平面 7爬虫数据
             switch (msgType) {
                 case 1:
                 case 3:

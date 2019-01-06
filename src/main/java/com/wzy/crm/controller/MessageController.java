@@ -9,12 +9,10 @@ import com.wzy.crm.dao.*;
 import com.wzy.crm.pojo.*;
 import com.wzy.crm.service.IMessageService;
 import com.wzy.crm.common.ServerResponse;
-import com.wzy.crm.vo.MessageDetail;
-import com.wzy.crm.vo.MessageShareVo;
-import com.wzy.crm.vo.MessageVo;
-import com.wzy.crm.vo.MyShareVo;
+import com.wzy.crm.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -107,6 +105,9 @@ public class MessageController {
 
     @PostMapping("/richText")
     public ServerResponse loadRichTextMessage(@RequestParam Integer id){ return messageService.findRichTextMessage(id); }
+
+    @PostMapping("/news")
+    public ServerResponse loadNewsMessage(@RequestParam Integer id){ return messageService.findNewsMessage(id); }
 
     @PostMapping("/h5/add")
     public ServerResponse h5Add(@RequestParam String url,@RequestBody Message message){
