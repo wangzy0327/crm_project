@@ -46,6 +46,9 @@ public class MessageController {
     private MessageShareMapper messageShareMapper;
 
     @Autowired
+    private ArticleShareMapper articleShareMapper;
+
+    @Autowired
     private MessageTagRelationMapper messageTagRelationMapper;
 
 
@@ -273,6 +276,16 @@ public class MessageController {
             messageShareMapper.insert(messageShare);
         }
         return ServerResponse.createBySuccess(messageShare);
+    }
+
+    @PostMapping("/share/article")
+    public ServerResponse shareArticle(@RequestBody ArticleShare articleShare){
+        if(articleShare.getId()!=null){
+            articleShareMapper.updateByPrimaryKey(articleShare);
+        }else{
+            articleShareMapper.insert(articleShare);
+        }
+        return ServerResponse.createBySuccess(articleShare);
     }
 
     @PostMapping("/share/customer")

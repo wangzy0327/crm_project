@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="en">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1"/>
+    <meta name="keywords" content="消息"/>
+    <meta name="description" content="消息"/>
+    <title>消息</title>
+
+    <link type="text/css" rel="stylesheet" href="../../../../css/weui.min.css">
+    <link type="text/css" rel="stylesheet" href="../../../../css/jquery-weui.min.css">
+    <link type="text/css" rel="stylesheet" href="../../../../iconfont/iconfont.css">
+    <link type="text/css" rel="stylesheet" href="../../../../css/main.css">
+    <link type="text/css" rel="stylesheet" href="../css/message-share.css">
+
+    <!--<link type="text/css" rel="stylesheet" href="/lib/yt/css/ytui.min.css?time=20160912">-->
+    <!--<link rel="stylesheet" href="/css/weui.min.css?time=20160912">-->
+    <!--<link rel="stylesheet" href="/css/jquery-weui.min.css?time=20160912">-->
+    <!--<link type="text/css" rel="stylesheet" href="/css/main.css?time=201802091453">-->
+    <!--<link type="text/css" rel="stylesheet" href="css/message-share.css?time=20160912">-->
+
+    <style type="text/css">
+        em, i {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+<div class="phone">
+    <div class="message-page">
+        <div class="message-page-title message-page-div">
+            <p id="message-page-title"></p>
+        </div>
+        <div class="message-page-date message-page-div">
+            <p id="message-page-date"></p>
+        </div>
+        <!--<div class="message-page-pic message-page-div">
+            <img src=""  id="message-page-pic"/>
+        </div>-->
+        <div class="message-page-content message-page-div">
+            <div id="message-page-content"></div>
+        </div>
+        <!--<div class="message-page-images message-page-div" id="message-page-images">
+
+        </div>-->
+    </div>
+</div>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-weui.min.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=qXPNHsiueQABIY2mVzkH71F4udqUvyZU"></script>
+<script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+<script type="text/javascript" src="../../../../module/lib/wxCommon.js"></script>
+<script type="text/javascript" src="../../../../module/message/common/js/imagePreloader.js"></script>
+<script type="text/javascript" src="../../../../module/lib/detect.js"></script>
+<script src="../../../../lib/formatTime.js"></script>
+<script src="../../../../lib/param.js"></script>
+<script src="../../../../lib/domain.js"></script>
+<script src="../../../../js/oauth2.js"></script>
+<script src="../../../../js/oauth2openid.js"></script>
+<script src="../../../../module/comm/js/message-comm.js"></script>
+<script src="js/news-share.js"></script>
+
+<!--<script type="text/javascript" src="/module/lib/jquery-2.1.4.js?time=20160912"></script>-->
+<!--<script type="text/javascript" src="/module/lib/jquery-weui.min.js?time=20160912"></script>-->
+<!--<script type="text/javascript" src="/lib/yt/config.js?time=20160912"></script>-->
+<!--<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js?time=20160912"></script>-->
+<!--<script type="text/javascript" src="/module/lib/wxCommon.js?time=20160912"></script>-->
+<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=qXPNHsiueQABIY2mVzkH71F4udqUvyZU"></script>-->
+<!--<script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>-->
+<!--<script type="text/javascript" src="/module/lib/detect.js?time=20160912"></script>-->
+<!--<script type="text/javascript" src="/module/message/common/js/imagePreloader.js?time=20160912"></script>-->
+<!--<script type="text/javascript" src="/module/comm/js/message-comm.min.js?time=201806261510"></script>-->
+<!--<script type="text/javascript" src="js/message-share.js?time=201806261510"></script>-->
+
+</body>
+</html>

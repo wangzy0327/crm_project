@@ -1194,3 +1194,38 @@ CREATE TABLE `keywords_article` (
 ) ENGINE=InnoDB AUTO_INCREMENT=896 DEFAULT CHARSET=utf8 COMMENT='关键字文章';
 
 
+drop table  if exists `article_share` ;
+CREATE TABLE `article_share` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `article_id` int(11) DEFAULT NULL,
+  `user_id` varchar(30) DEFAULT NULL,
+  `push_time` datetime DEFAULT NULL,
+  `share_flag` int(2) DEFAULT NULL COMMENT '0：未分享；1：已分享',
+  `share_time` datetime DEFAULT NULL,
+  `open_count` int(11) DEFAULT '0' COMMENT '客户打开次数',
+  `del_flag` int(2) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `articleId` (`article_id`),
+  KEY `delFlag_openCount` (`del_flag`,`open_count`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+drop table  if exists `message_share_customer` ;
+CREATE TABLE `message_share_customer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `share_id` int(11) DEFAULT NULL COMMENT '资料消息分享id',
+  `article_id` int(11) DEFAULT NULL,
+  `user_id` varchar(30) DEFAULT NULL,
+  `customer_id` int(11) DEFAULT '-1',
+  `open_id` varchar(32) DEFAULT NULL,
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最近更新时间',
+  PRIMARY KEY (`id`),
+  KEY `articleId` (`article_id`) USING BTREE,
+  KEY `userId` (`user_id`) USING BTREE,
+  KEY `customerId` (`customer_id`) USING BTREE,
+  KEY `share_id` (`share_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='客户消息分享表';
+
+
+
+
+

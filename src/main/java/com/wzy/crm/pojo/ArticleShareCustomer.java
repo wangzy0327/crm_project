@@ -7,23 +7,20 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 @Data
-public class KeywordsArticle {
+public class ArticleShareCustomer {
     private Integer id;
 
-    private Integer msgType;
+    private Integer shareId;
 
-    private String author;
+    private Integer articleId;
 
-    private String title;
+    private String userId;
 
-    private String description;
+    private Integer customerId;
 
-    private String link;
+    private String openId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date pubTime;
-
-    private String keyword;
-
+    private Date updateTime;
 }

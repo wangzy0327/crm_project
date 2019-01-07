@@ -39,14 +39,14 @@ module.service = {
     initData: function () {
         if (module.data.messageData) {
             var messageData = module.data.messageData;
-            if ('' + messageData.msgtype == '7') {
+            if ('' + messageData.msgType == '7') {
                 $("#message-page-date").html(messageData.author+" "+messageData.pubTime);
                 console.log("titleText:"+messageData.title);
                 console.log("description:"+messageData.description);
                 $("#message-page-title").html(module.service.replaceEMToI(messageData.title));
                 $("#message-page-content").html(module.service.replaceEMToI(messageData.description || ""));
-                $("#message-page-link").html('<a src = "阅读原文" href = "'+messageData.link+'">');
-            } else if ('' + messageData.msgtype == '3') {
+                $("#message-page-link").html('<a href = "'+messageData.link+'">阅读原文</a>');
+            } else if ('' + messageData.msgType == '3') {
                 $(".message-page").css({"margin": "0", "padding": "0"});
                 var src = messageData.picurl ? messageData.picurl.replace('cover_', '') : "";
                 if (src != '') {
@@ -155,8 +155,8 @@ module.service = {
                 share_ip = module.data.share_ip;
             MessageComm.share.initWxConfig(function () {
                 var params = {};
-                var messageShare = {
-                    messageId:messageId,
+                var articleShare = {
+                    articleId:messageId,
                     userId:userId,
                     shareTime:shareTime,
                     shareFlag:0,
@@ -165,9 +165,9 @@ module.service = {
                 };
                 $.ajax({
                     type: "post",
-                    url: "/message/share",
+                    url: "/message/share/article",
                     contentType: "application/json;charset=UTF-8",
-                    data: JSON.stringify(messageShare),
+                    data: JSON.stringify(articleShare),
                     dataType: "json",
                     success: function (result) {
                         if (result.code == 0) {
@@ -177,14 +177,14 @@ module.service = {
                             console.log("share_link: "+ _share_link);
                             console.log("picUrl: "+ messageData.picUrl);
                             params = {
-                                share_title: messageData.titleText,
+                                share_title: messageData.title,
                                 share_desc: '通过销售助手分享',
                                 share_link: _share_link ,
-                                share_imgurl: messageData.picUrl,
+                                share_imgurl: domain.server + '/images/cover-info.png',
                                 onsuccess: function () {
                                     var messageShare = {
                                         id:dataId,
-                                        messageId:messageId,
+                                        articleId:messageId,
                                         userId:userId,
                                         customerId:customerId,
                                         openCount:0,
@@ -194,8 +194,8 @@ module.service = {
                                     };
                                     $.ajax({
                                         type: "post",
-                                        url: "/message/share",
-                                        data: JSON.stringify(messageShare),
+                                        url: "/message/share/article",
+                                        data: JSON.stringify(articleShare),
                                         contentType: "application/json; charset=utf-8",
                                         dataType: "json",
                                         success: function (result) {

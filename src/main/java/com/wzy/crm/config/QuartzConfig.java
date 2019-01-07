@@ -46,20 +46,20 @@ public class QuartzConfig {
                 .build();
     }
 
-
-    @Bean
-    public JobDetail testQuartz3() {
-        return JobBuilder.newJob(Task3.class).withIdentity("task3").storeDurably().build();
-    }
-
-    @Bean
-    public Trigger testQuartzTrigger3() {
-        //cron方式，每隔5秒执行一次
-        return TriggerBuilder.newTrigger().forJob(testQuartz3())
-                .withIdentity("testTask3")
-                .withSchedule(CronScheduleBuilder.cronSchedule("* 0/30 * * * ? "))
-                .build();
-    }
+//
+//    @Bean
+//    public JobDetail testQuartz3() {
+//        return JobBuilder.newJob(Task3.class).withIdentity("task3").storeDurably().build();
+//    }
+//
+//    @Bean
+//    public Trigger testQuartzTrigger3() {
+//        //cron方式，每隔5秒执行一次
+//        return TriggerBuilder.newTrigger().forJob(testQuartz3())
+//                .withIdentity("testTask3")
+//                .withSchedule(CronScheduleBuilder.cronSchedule("* 0/30 * * * ? "))
+//                .build();
+//    }
 
 
     @Bean

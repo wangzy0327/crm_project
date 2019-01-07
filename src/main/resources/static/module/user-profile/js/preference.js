@@ -144,6 +144,9 @@ module.eventHandler = {
                 case 6:
                     url = '../message/graphic/graphic-share.html';
                     break;
+                case 7:
+                    url = '../message/news/news-share.html';
+                    break;
             }
 
             module.eventHandler.getUserInfo(function (user) {

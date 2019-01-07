@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wzy.crm.dao.ArticleShareMapper" >
+  <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.ArticleShare" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="article_id" property="articleId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="push_time" property="pushTime" jdbcType="TIMESTAMP" />
+    <result column="share_flag" property="shareFlag" jdbcType="INTEGER" />
+    <result column="share_time" property="shareTime" jdbcType="TIMESTAMP" />
+    <result column="open_count" property="openCount" jdbcType="INTEGER" />
+    <result column="del_flag" property="delFlag" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from article_share
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wzy.crm.pojo.ArticleShare" >
+    insert into article_share (id, article_id, user_id, 
+      push_time, share_flag, share_time, 
+      open_count, del_flag)
+    values (#{id,jdbcType=INTEGER}, #{articleId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
+      #{pushTime,jdbcType=TIMESTAMP}, #{shareFlag,jdbcType=INTEGER}, #{shareTime,jdbcType=TIMESTAMP}, 
+      #{openCount,jdbcType=INTEGER}, #{delFlag,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.ArticleShare" >
+    update article_share
+    set article_id = #{articleId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
+      push_time = #{pushTime,jdbcType=TIMESTAMP},
+      share_flag = #{shareFlag,jdbcType=INTEGER},
+      share_time = #{shareTime,jdbcType=TIMESTAMP},
+      open_count = #{openCount,jdbcType=INTEGER},
+      del_flag = #{delFlag,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, article_id, user_id, push_time, share_flag, share_time, open_count, del_flag
+    from article_share
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, article_id, user_id, push_time, share_flag, share_time, open_count, del_flag
+    from article_share
+  </select>
+</mapper>
