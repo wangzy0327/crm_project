@@ -32,7 +32,7 @@ listManager.service = {
     initGrid: function () {
         $.showLoading('加载中，请稍后...');
         var postData ;
-        if(listManager.data.mid != -1){
+        if(listManager.data.mid != null){
              postData = {
                 userId:listManager.data.user_id,
                 messageId:listManager.data.mid
@@ -153,7 +153,7 @@ listManager.service = {
                 if (data[i].msgType == 1 || data[i].msgType == 7) {
                     currentArray.push(viewTime);
                     viewTime = data[i].viewTime - 0;
-                    showTime += getFlexItem(viewTime,1);
+                    // showTime += getFlexItem(viewTime,1);
                 }else if(data[i].msgType == 6) {
                     viewTime = data[i].viewTime - 0;
                 }

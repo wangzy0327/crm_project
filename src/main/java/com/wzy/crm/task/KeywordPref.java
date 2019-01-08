@@ -3,7 +3,9 @@ package com.wzy.crm.task;
 import com.wzy.crm.config.DomainConfig;
 import com.wzy.crm.dao.CustomerMapper;
 import com.wzy.crm.dao.KeywordsArticleMapper;
+import com.wzy.crm.dao.MessageTagMapper;
 import com.wzy.crm.pojo.KeywordsArticle;
+import com.wzy.crm.pojo.MessageTag;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -13,6 +15,7 @@ import org.jsoup.select.Elements;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.io.IOException;
@@ -30,6 +33,9 @@ public class KeywordPref extends QuartzJobBean {
     private CustomerMapper customerMapper;
 
     @Autowired
+    private MessageTagMapper messageTagMapper;
+
+    @Autowired
     private KeywordsArticleMapper keywordsArticleMapper;
 
     @Autowired
@@ -37,7 +43,8 @@ public class KeywordPref extends QuartzJobBean {
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        List<String> keywords = customerMapper.selectAllKeywords();
+//        List<String> keywords = customerMapper.selectAllKeywords();
+        List<String> keywords = messageTagMapper.selectAllTag();
         SimpleDateFormat formatter = new SimpleDateFormat( "yyyy年MM月dd日 HH:mm");
         for(int i = 0;i<keywords.size();i++){
             String url = String.format(URL,keywords.get(i));
@@ -63,7 +70,7 @@ public class KeywordPref extends QuartzJobBean {
                         Integer hour = Integer.valueOf(pubTime.substring(0,pubTime.indexOf("小时前")));
                         pubTime = getTimeByHour(hour);
                     }else if(pubTime.indexOf("分钟前")>0){
-                        Integer minute = Integer.valueOf(pubTime.substring(0,pubTime.indexOf("小时前")));
+                        Integer minute = Integer.valueOf(pubTime.substring(0,pubTime.indexOf("分钟前")));
                         pubTime = getTimeByMinute(minute);
                     }
                     Date pubDate = formatter.parse(pubTime);

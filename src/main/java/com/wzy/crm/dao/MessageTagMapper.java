@@ -15,6 +15,8 @@ public interface MessageTagMapper {
 
     List<MessageTag> selectAll();
 
+    List<String> selectAllTag();
+
     int updateByPrimaryKey(MessageTag record);
 
     Integer findMessageTagCount();

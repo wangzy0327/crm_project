@@ -99,7 +99,7 @@ module.service = {
                 console.log("description:"+messageData.description);
                 $("#message-page-title").html(module.service.replaceEMToI(messageData.title));
                 $("#message-page-content").html(module.service.replaceEMToI(messageData.description || ""));
-                $("#message-page-link").html('<a href = "'+messageData.link+'">阅读原文</a>');
+                $("#message-page-link").html('<a style="color:#3cc51f;" href = "'+messageData.link+'">阅读原文</a>');
             } else if ('' + messageData.msgtype == '3') {
                 $(".message-page").css({"margin": "0", "padding": "0"});
                 var src = messageData.picurl ? messageData.picurl.replace('cover_', '') : "";

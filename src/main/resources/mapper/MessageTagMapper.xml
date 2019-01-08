@@ -40,6 +40,10 @@
     select id, `name`, corpid
     from message_tag
   </select>
+  <select id="selectAllTag" resultType="string">
+    select `name`
+    from message_tag
+  </select>
   <select id="findMessageTagCount" resultType="int">
     select count(*)
     from message_tag;

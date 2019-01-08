@@ -258,7 +258,7 @@ public class CustomerServiceImpl implements ICustomerService {
             MessageShare messageShare = new MessageShare();
             messageShare.setId(customerReadinfo.getShareId());
             articleShareMapper.updateOpenCount(messageShare);
-            sendWxMessage.handleSendCustomerScan(customerReadinfo);
+            sendWxMessage.handleSendArticleCustomerScan(customerReadinfo);
         }else if(customerReadinfos!=null && customerReadinfo.getId()!=null){
             customerReadinfoModify = customerReadinfos.get(0);
             articleCustomerReadinfoMapper.updateByKeyAndTime(customerReadinfoModify.getId(),customerReadinfo.getViewTime(),customerReadinfo.getTotalTime(),customerReadinfo.getReadInfo());
@@ -270,7 +270,7 @@ public class CustomerServiceImpl implements ICustomerService {
             messageShare.setId(customerReadinfo.getShareId());
             articleShareMapper.updateOpenCount(messageShare);
             articleCustomerReadinfoMapper.updateInfoAndTimesByKey(customerReadinfo);
-            sendWxMessage.handleSendCustomerScan(customerReadinfo);
+            sendWxMessage.handleSendArticleCustomerScan(customerReadinfo);
         }
         return ServerResponse.createBySuccess(customerReadinfo);
     }
