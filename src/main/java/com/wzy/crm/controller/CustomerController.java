@@ -152,6 +152,11 @@ public class CustomerController {
         return customerService.updateCustomerReadInfo(customerReadinfo);
     }
 
+    @PostMapping("/article/readinfo")
+    public ServerResponse updateArticleCustomerReadInfo(@RequestBody CustomerReadinfo customerReadinfo){
+        return customerService.updateArticleCustomerReadInfo(customerReadinfo);
+    }
+
     @PostMapping("/shareCustomer")
     public ServerResponse findCustomer(@RequestParam Integer shareId,@RequestParam String openid){
         System.out.println("shareId:"+shareId);

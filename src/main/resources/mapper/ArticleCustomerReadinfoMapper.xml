@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wzy.crm.dao.CustomerReadinfoMapper" >
+<mapper namespace="com.wzy.crm.dao.ArticleCustomerReadinfoMapper" >
   <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.CustomerReadinfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="share_id" property="shareId" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
     <result column="times" property="times" jdbcType="INTEGER" />
-    <result column="transmit_times" property="transmitTimes" jdbcType="INTEGER" />
-    <result column="message_id" property="messageId" jdbcType="INTEGER" />
+    <result column="article_id" property="messageId" jdbcType="INTEGER" />
     <result column="customer_id" property="customerId" jdbcType="INTEGER" />
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
     <result column="ip" property="ip" jdbcType="VARCHAR" />
@@ -24,8 +23,8 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="share_id" property="shareId" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
-    <result column="message_id" property="messageId" jdbcType="INTEGER" />
-    <result column="msgType" property="msgType" jdbcType="INTEGER" />
+    <result column="article_id" property="messageId" jdbcType="INTEGER" />
+    <result column="msg_type" property="msgType" jdbcType="INTEGER" />
     <result column="customer_id" property="customerId" jdbcType="INTEGER" />
     <result column="name" property="customerName" jdbcType="VARCHAR" />
     <result column="times" property="openCount" jdbcType="INTEGER" />
@@ -50,23 +49,24 @@
     <result column="share_time" property="shareTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from customer_readinfo
+    delete from article_customer_readinfo
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.wzy.crm.pojo.CustomerReadinfo" >
-    insert into customer_readinfo (id,share_id, user_id,
-      times, message_id, customer_id, 
+  <insert id="insert" parameterType="com.wzy.crm.pojo.CustomerReadinfo" >
+    insert into article_customer_readinfo (id, share_id, user_id, 
+      times, article_id, customer_id, 
       open_id, ip, cid, city, 
-      open_time, view_time,page_count,total_time,update_time,
-      read_info)
-    values (#{id,jdbcType=INTEGER},#{shareId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR},
-      #{times,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, 
+      open_time, view_time, page_count, 
+      total_time, update_time, read_info
+      )
+    values (#{id,jdbcType=INTEGER}, #{shareId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
+      #{times,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER},
       #{openId,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{cid,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      now(), 0,#{pageCount,jdbcType=INTEGER},0, now(),
-      #{readInfo,jdbcType=LONGVARCHAR})
+      now(), #{viewTime,jdbcType=INTEGER}, #{pageCount,jdbcType=INTEGER},
+      #{totalTime,jdbcType=INTEGER}, now(), #{readInfo,jdbcType=LONGVARCHAR}
+      )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.CustomerReadinfo">
-    update customer_readinfo
+  <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.ArticleCustomerReadinfo" >
     <set>
       <if test="shareId != null">
         share_id = #{shareId},
@@ -108,8 +108,51 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectArticleShareDetail" resultMap="MessageReadInfoMap">
+    SELECT cr.id,cr.share_id,cr.article_id,keywords_article.msg_type,cr.user_id,cr.customer_id,customer.`name`,cr.times,cr.city,cr.open_time,cr.view_time,cr.page_count,cr.total_time,cr.read_info,cr.update_time
+    from (
+    select id,share_id,article_id,user_id,customer_id,times,city,open_time,view_time,page_count,total_time,read_info,update_time
+    from article_customer_readinfo
+    where article_id = #{messageId} and user_id = #{userId}
+    ) cr
+    left join keywords_article
+    on cr.article_id = keywords_article.id
+    left join customer
+    on cr.customer_id = customer.id;
+  </select>
+  <select id="selectMyReadInfoDetail" resultMap="MessageReadInfoMap">
+    select user_id,article_id,msg_type,customer_id,`name`,times,transmit_times,city,open_time,view_time,page_count,total_time,read_info,update_time
+    from v_article_readinfo_detail
+    where user_id = #{userId} and customer_id = #{customerId} and article_id = #{messageId}
+  </select>
+  <select id="selectReadInfoDetail" resultMap="MessageReadInfoMap">
+    select user_id,article_id,msg_type,customer_id,`name`,times,transmit_times,city,open_time,view_time,page_count,total_time,read_info,update_time
+    from v_article_readinfo_detail
+    where customer_id = #{customerId} and article_id = #{messageId}
+  </select>
+  <select id="selectByShareKey" resultMap="BaseResultMap">
+    select id,share_id,user_id,customer_id,article_id,open_id,times,view_time
+    from article_customer_readinfo
+    where share_id = #{shareId} and article_id = #{messageId}
+  </select>
+  <update id="updateByKeyAndTime" >
+    update article_customer_readinfo
+    <set>
+      <if test="viewTime != null and viewTime != ''">
+        view_time = #{viewTime},
+      </if>
+      <if test="totalTime != null and totalTime != ''">
+        total_time = #{totalTime},
+      </if>
+      <if test="readInfo != null and readInfo != ''">
+        read_info = #{readInfo},
+      </if>
+      update_time = now()
+    </set>
+    where id = #{id,jdbcType=INTEGER} and #{viewTime} >= view_time and #{totalTime} >= total_time
+  </update>
   <update id="updateInfoAndTimesByKey">
-    update customer_readinfo
+    update article_customer_readinfo
     <set>
       <if test="customerId != null and customerId != ''">
         customer_id = #{customerId},
@@ -130,72 +173,15 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByKeyAndTime" >
-    update customer_readinfo
-    <set>
-      <if test="viewTime != null and viewTime != ''">
-        view_time = #{viewTime},
-      </if>
-      <if test="totalTime != null and totalTime != ''">
-        total_time = #{totalTime},
-      </if>
-      <if test="readInfo != null and readInfo != ''">
-        read_info = #{readInfo},
-      </if>
-        update_time = now()
-    </set>
-    where id = #{id,jdbcType=INTEGER} and #{viewTime} >= view_time and #{totalTime} >= total_time
-  </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, share_id, user_id, times, message_id, customer_id, open_id, ip, cid, city, 
-    open_time, view_time, update_time, read_info
-    from customer_readinfo
+    select id, share_id, user_id, times, article_id, customer_id, open_id, ip, cid, city, 
+    open_time, view_time, page_count, total_time, update_time, read_info
+    from article_customer_readinfo
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, share_id, user_id, times, message_id, customer_id, open_id, ip, cid, city, 
-    open_time, view_time, update_time, read_info
-    from customer_readinfo
-  </select>
-  <select id="selectByShareKey" resultMap="BaseResultMap">
-    select id,share_id,user_id,customer_id,message_id,open_id,times,view_time
-    from customer_readinfo
-    where share_id = #{shareId} and message_id = #{messageId}
-  </select>
-  <select id="selectMessageShareDetail" resultMap="MessageReadInfoMap">
-    SELECT cr.id,cr.share_id,cr.message_id,message.msgType,cr.user_id,cr.customer_id,customer.`name`,cr.times,cr.city,cr.open_time,cr.view_time,cr.page_count,cr.total_time,cr.read_info,cr.update_time
-    from (
-    select id,share_id,message_id,user_id,customer_id,times,city,open_time,view_time,page_count,total_time,read_info,update_time
-    from customer_readinfo
-    where message_id = #{messageId} and user_id = #{userId}
-    ) cr
-    left join message
-    on cr.message_id = message.id
-    left join customer
-    on cr.customer_id = customer.id;
-  </select>
-  <select id="selectReadMessageByUserId" resultMap="MyShareMap">
-    select user_id,customer_id,message_id,titleText,times,transmit_times,update_time
-    from v_times_transmit_times
-    where user_id = #{userId} and customer_id = #{customerId}
-    order by update_time
-    limit #{start},#{size}
-  </select>
-  <select id="selectReadMessage" resultMap="MyShareMap">
-    select user_id,customer_id,message_id,titleText,times,transmit_times,update_time
-    from v_times_transmit_times
-    where customer_id = #{customerId}
-    order by update_time
-    limit #{start},#{size}
-  </select>
-  <select id="selectMyReadInfoDetail" resultMap="MessageReadInfoMap">
-    select user_id,message_id,msgType,customer_id,`name`,times,transmit_times,city,open_time,view_time,page_count,total_time,read_info,update_time
-    from v_readinfo_detail
-    where user_id = #{userId} and customer_id = #{customerId} and message_id = #{messageId}
-</select>
-  <select id="selectReadInfoDetail" resultMap="MessageReadInfoMap">
-    select user_id,article_id,msg_type,customer_id,`name`,times,transmit_times,city,open_time,view_time,page_count,total_time,read_info,update_time
-    from v_article_readinfo_detail
-    where customer_id = #{customerId} and article_id = #{messageId}
+    select id, share_id, user_id, times, article_id, customer_id, open_id, ip, cid, city, 
+    open_time, view_time, page_count, total_time, update_time, read_info
+    from article_customer_readinfo
   </select>
 </mapper>

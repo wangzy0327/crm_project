@@ -3,6 +3,7 @@ var messageCommmon = {};
 
 listManager.data = {
     mid:-1,
+    aid:-1,
     currentPopId:-1,
     recordId:0
 };
@@ -20,6 +21,7 @@ listManager.service = {
     initControls: function () {
         listManager.data.user_id = getUrlParam("userid");
         listManager.data.mid = getUrlParam('msgid');
+        listManager.data.aid = getUrlParam('artid');
         var self = this;
         self.getUserInfo(function (user) {
             listManager.data.user = user;
@@ -29,28 +31,56 @@ listManager.service = {
     // 初始化列表
     initGrid: function () {
         $.showLoading('加载中，请稍后...');
-        var postData = {
-            userId:listManager.data.user_id,
-            messageId:listManager.data.mid
-        };
-        $.ajax({
-            type: 'post',
-            url: "/message/shareDetail",
-            data:JSON.stringify(postData),
-            contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            error: function (request) {
-            },
-            success: function (result) {
-                if(result.code == 0){
-                    var data = result.data;
-                    listManager.service.getHtmlListStr(data);//列表的方式显示
-                    $.hideLoading();
-                }else{
-                    $.alert(result.msg);
+        var postData ;
+        if(listManager.data.mid != -1){
+             postData = {
+                userId:listManager.data.user_id,
+                messageId:listManager.data.mid
+            };
+            $.ajax({
+                type: 'post',
+                url: "/message/shareDetail",
+                data:JSON.stringify(postData),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                error: function (request) {
+                },
+                success: function (result) {
+                    if(result.code == 0){
+                        var data = result.data;
+                        listManager.service.getHtmlListStr(data);//列表的方式显示
+                        $.hideLoading();
+                    }else{
+                        $.alert(result.msg);
+                    }
                 }
-            }
-        });
+            });
+        }else{
+            postData = {
+                userId:listManager.data.user_id,
+                articleId:listManager.data.aid
+            };
+            $.ajax({
+                type: 'post',
+                url: "/message/article/shareDetail",
+                data:JSON.stringify(postData),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                error: function (request) {
+                },
+                success: function (result) {
+                    if(result.code == 0){
+                        var data = result.data;
+                        listManager.service.getHtmlListStr(data);//列表的方式显示
+                        $.hideLoading();
+                    }else{
+                        $.alert(result.msg);
+                    }
+                }
+            });
+        }
+
+
     },
     getUserInfo: function (callback) {
         var self = this;
@@ -120,7 +150,7 @@ listManager.service = {
                         '</div>';
                 }
                 console.log("msgType:"+data[i].msgType);
-                if (data[i].msgType == 1 ) {
+                if (data[i].msgType == 1 || data[i].msgType == 7) {
                     currentArray.push(viewTime);
                     viewTime = data[i].viewTime - 0;
                     showTime += getFlexItem(viewTime,1);

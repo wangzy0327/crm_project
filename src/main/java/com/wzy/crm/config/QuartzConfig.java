@@ -72,7 +72,7 @@ public class QuartzConfig {
         //5秒执行一次
         return TriggerBuilder.newTrigger().forJob(testQuartz4())
                 .withIdentity("testTask4")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0 17 22 * * ? "))
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 31 13 * * ? "))
                 .build();
     }
 

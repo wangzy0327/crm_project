@@ -7,6 +7,7 @@ var module = module || {};
 module.data = {
     user_id:getUrlParam("userid"),
     message_id:getUrlParam("msgid"),
+    article_id:getUrlParam("artid"),
     d:getUrlParam("d"),
     s:getUrlParam("s"),
     messageData: {},
@@ -91,7 +92,7 @@ module.service = {
         if (module.data.messageData) {
             var messageData = module.data.messageData;
             // 显示页面
-            module.data.title = messageData.titleText;
+            module.data.title = messageData.title;
             if ('' + messageData.msgType == '7') {
                 $("#message-page-date").html(messageData.author+" "+messageData.pubTime);
                 console.log("titleText:"+messageData.title);
@@ -178,7 +179,7 @@ module.service = {
     getData: function (callback) {
         $.ajax({
             type: 'post',
-            url: "/message/news?id="+module.data.message_id,
+            url: "/message/news?id="+module.data.article_id,
             contentType: "application/json;charset=UTF-8",
             dataType: 'json',
             error: function (request) {
@@ -221,8 +222,8 @@ module.service = {
     initWxConfig: function (shareFlag) {
         var self = this,
             userId = module.data.user_id,
-            messageId = parseInt(module.data.message_id),
-            messageTitle = module.data.title,
+            articleId = parseInt(module.data.article_id),
+            title = module.data.title,
             shareFlag = module.data.s,
             shareTime = new Date().Format('yyyy-MM-dd hh:mm:ss'),
             messageData = module.data.messageData,
@@ -233,7 +234,7 @@ module.service = {
             share_ip = module.data.share_ip;
 
         MessageComm.share._initWxConfig(shareFlag,function () {
-            var _share_link = messageData.url + "?userid=" + userId +"&msgid="+ messageId +"&s=2" ;
+            var _share_link = messageData.url + "?userid=" + userId +"&artid="+ articleId +"&s=2" ;
             console.log("share_link: "+ _share_link);
             var params = {
                 share_title: module.data.messageData.title,
@@ -246,28 +247,28 @@ module.service = {
                         userId:userId,
                         customerId:customerId,
                         customerName:customerName,
-                        messageId:messageId,
-                        messageTitle:messageTitle
+                        articleId:articleId,
+                        title:title
                     };
-                    // $.ajax({
-                    //     type: "post",
-                    //     url: "/message/customer/transmit",
-                    //     data: JSON.stringify(messageShareTransmit),
-                    //     contentType: "application/json; charset=utf-8",
-                    //     dataType: "json",
-                    //     success: function (result) {
-                    //         if(result.code == 0){
-                    //             var data = result.data;
-                    //             if(data!=null){
-                    //                 var dataId = data.id;
-                    //                 console.log("dataId:"+dataId);
-                    //             }
-                    //         }
-                    //     },
-                    //     error:function (XMLHttpRequest, textStatus, errorThrown) {
-                    //
-                    //     }
-                    // });
+                    $.ajax({
+                        type: "post",
+                        url: "/message/article/customer/transmit",
+                        data: JSON.stringify(messageShareTransmit),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+                            if(result.code == 0){
+                                var data = result.data;
+                                if(data!=null){
+                                    var dataId = data.id;
+                                    console.log("dataId:"+dataId);
+                                }
+                            }
+                        },
+                        error:function (XMLHttpRequest, textStatus, errorThrown) {
+
+                        }
+                    });
                 }
             };
             MessageComm.share.initWxShare(params, shareFlag);
@@ -330,45 +331,46 @@ module.service = {
             ip:module.data.share_ip,
             cid:module.data.cid,
             city:module.data.city,
-            pageCount:messageData.pagecount,
-            messageId:module.data.message_id,
+            pageCount:1,
+            messageId:module.data.article_id,
             messageTitle:module.data.title,
             totalTime:1,
+            viewTime:1,
             readInfo:JSON.stringify(pageInfo)
         };
 
         console.log("module.data.customer_name:"+module.data.customer_name);
-        // $.ajax({
-        //     type: "post",
-        //     url: "/customer/readinfo",
-        //     data: JSON.stringify(readInfo),
-        //     contentType: "application/json; charset=utf-8",
-        //     dataType: "json",
-        //     success: function (result) {
-        //         if(result.code == 0){
-        //             var data = result.data;
-        //             if(data!=null){
-        //                 var dataId = data.id;
-        //                 console.log("dataId:"+dataId);
-        //                 module.data.readinfo_id = dataId;
-        //                 module.service.setShareInterval();
-        //             }
-        //         }else{
-        //             var msg = result.msg;
-        //             console.log(msg);
-        //         }
-        //         module.service.initWxConfig(shareFlag);
-        //     },
-        //     error:function (XMLHttpRequest, textStatus, errorThrown) {
-        //         // 状态码
-        //         console.log(XMLHttpRequest.status);
-        //         // 状态
-        //         console.log(XMLHttpRequest.readyState);
-        //         // 错误信息
-        //         console.log(textStatus);
-        //         // alert(textStatus);
-        //     }
-        // });
+        $.ajax({
+            type: "post",
+            url: "/customer/article/readinfo",
+            data: JSON.stringify(readInfo),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                if(result.code == 0){
+                    var data = result.data;
+                    if(data!=null){
+                        var dataId = data.id;
+                        console.log("dataId:"+dataId);
+                        module.data.readinfo_id = dataId;
+                        module.service.setShareInterval();
+                    }
+                }else{
+                    var msg = result.msg;
+                    console.log(msg);
+                }
+                module.service.initWxConfig(shareFlag);
+            },
+            error:function (XMLHttpRequest, textStatus, errorThrown) {
+                // 状态码
+                console.log(XMLHttpRequest.status);
+                // 状态
+                console.log(XMLHttpRequest.readyState);
+                // 错误信息
+                console.log(textStatus);
+                // alert(textStatus);
+            }
+        });
     },
     setShareInterval: function () {
         console.log("module.data.openid:"+module.data.openid);
@@ -384,42 +386,42 @@ module.service = {
                 customerId:module.data.customer_id,
                 customerName:module.data.customer_name,
                 openId:module.data.openid,
-                messageId:module.data.message_id,
+                messageId:module.data.article_id,
                 messageTitle:module.data.title,
-                viewTime:parseInt(module.data.viewTime/(messageData.pagecount)),
+                viewTime:module.data.viewTime,
                 totalTime:module.data.viewTime,
                 readInfo:JSON.stringify(pageInfo)
             };
             console.log("shareId:"+module.data.d);
-            console.log("messageId:"+module.data.message_id);
+            console.log("messageId:"+module.data.article_id);
             console.log("messageTitle:"+module.data.title);
             console.log("customerName:"+module.data.customer_name);
             console.log("viewTime:"+parseInt(module.data.viewTime/(messageData.pagecount)));
             console.log("totalTime:"+module.data.viewTime);
             console.log("readInfo:"+window.pageInfo);
 
-            // $.ajax({
-            //     type: "post",
-            //     url: "/customer/readinfo",
-            //     data: JSON.stringify(data),
-            //     contentType: "application/json; charset=utf-8",
-            //     dataType: "json",
-            //     success: function (result) {
-            //         if(result.code == 0){
-            //             var data = result.data;
-            //             var dataId = data.id;
-            //         }
-            //     },
-            //     error:function (XMLHttpRequest, textStatus, errorThrown) {
-            //         // 状态码
-            //         console.log(XMLHttpRequest.status);
-            //         // 状态
-            //         console.log(XMLHttpRequest.readyState);
-            //         // 错误信息
-            //         console.log(textStatus);
-            //         // alert(textStatus);
-            //     }
-            // });
+            $.ajax({
+                type: "post",
+                url: "/customer/article/readinfo",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if(result.code == 0){
+                        var data = result.data;
+                        var dataId = data.id;
+                    }
+                },
+                error:function (XMLHttpRequest, textStatus, errorThrown) {
+                    // 状态码
+                    console.log(XMLHttpRequest.status);
+                    // 状态
+                    console.log(XMLHttpRequest.readyState);
+                    // 错误信息
+                    console.log(textStatus);
+                    // alert(textStatus);
+                }
+            });
         }, 5000);
     }
 };

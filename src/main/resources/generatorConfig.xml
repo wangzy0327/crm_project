@@ -107,13 +107,18 @@
         <!--<table tableName="read_transmit_recommend" domainObjectName="ReadTransmitRecommend">-->
         <!--</table>-->
 
-        <!--<table tableName="keywords_article" domainObjectName="KeywordsArticle">-->
+        <table tableName="keywords_article" domainObjectName="KeywordsArticle">
+        </table>
+
+        <!--<table tableName="article_share" domainObjectName="ArticleShare">-->
+        <!--</table>-->
+        <!--<table tableName="article_share_customer" domainObjectName="ArticleShareCustomer">-->
         <!--</table>-->
 
-        <table tableName="article_share" domainObjectName="ArticleShare">
-        </table>
-        <table tableName="article_share_customer" domainObjectName="ArticleShareCustomer">
-        </table>
+        <!--<table tableName="article_customer_readinfo" domainObjectName="ArticleCustomerReadinfo">-->
+        <!--</table>-->
+        <!--<table tableName="article_share_transmit" domainObjectName="ArticleShareTransmit">-->
+        <!--</table>-->
 
     </context>
 </generatorConfiguration>

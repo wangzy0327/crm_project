@@ -1,5 +1,6 @@
 package com.wzy.crm.task;
 
+import com.wzy.crm.config.DomainConfig;
 import com.wzy.crm.dao.CustomerMapper;
 import com.wzy.crm.dao.KeywordsArticleMapper;
 import com.wzy.crm.pojo.KeywordsArticle;
@@ -31,6 +32,9 @@ public class KeywordPref extends QuartzJobBean {
     @Autowired
     private KeywordsArticleMapper keywordsArticleMapper;
 
+    @Autowired
+    private DomainConfig domainConfig;
+
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         List<String> keywords = customerMapper.selectAllKeywords();
@@ -58,7 +62,7 @@ public class KeywordPref extends QuartzJobBean {
                     if(pubTime.indexOf("小时前")>0){
                         Integer hour = Integer.valueOf(pubTime.substring(0,pubTime.indexOf("小时前")));
                         pubTime = getTimeByHour(hour);
-                    }else if(pubTime.indexOf("分前")>0){
+                    }else if(pubTime.indexOf("分钟前")>0){
                         Integer minute = Integer.valueOf(pubTime.substring(0,pubTime.indexOf("小时前")));
                         pubTime = getTimeByMinute(minute);
                     }
@@ -80,6 +84,8 @@ public class KeywordPref extends QuartzJobBean {
                         keywordsArticle.setTitle(title);
                     }
                     keywordsArticle.setDescription(description);
+                    String articleUrl = domainConfig.getUrl()+"/module/web/message/news/news-share.html";
+                    keywordsArticle.setUrl(articleUrl);
                     keywordsArticle.setLink(link);
                     keywordsArticle.setAuthor(author);
                     keywordsArticle.setKeyword(keywords.get(i));

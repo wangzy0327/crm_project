@@ -19,5 +19,4 @@ public interface KeywordsArticleMapper {
     int selectByTitle(String title);
 
     List<MessageResponseVo> findArticleByKeywords(String keywords);
-
 }

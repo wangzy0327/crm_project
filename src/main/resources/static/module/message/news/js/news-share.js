@@ -173,7 +173,7 @@ module.service = {
                         if (result.code == 0) {
                             var data = result.data;
                             var dataId = data.id;
-                            var _share_link = messageData.url + "?userid=" + userId +"&msgid="+ messageId +"&s=1&d=" + data.id ;
+                            var _share_link = messageData.url + "?userid=" + userId +"&artid="+ messageId +"&s=1&d=" + data.id ;
                             console.log("share_link: "+ _share_link);
                             console.log("picUrl: "+ messageData.picUrl);
                             params = {
@@ -182,7 +182,7 @@ module.service = {
                                 share_link: _share_link ,
                                 share_imgurl: domain.server + '/images/cover-info.png',
                                 onsuccess: function () {
-                                    var messageShare = {
+                                    var articleShare = {
                                         id:dataId,
                                         articleId:messageId,
                                         userId:userId,

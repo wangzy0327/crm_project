@@ -18,6 +18,8 @@ public class KeywordsArticle {
 
     private String description;
 
+    private String url;
+
     private String link;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wzy.crm.dao.ArticleShareTransmitMapper" >
+  <resultMap id="BaseResultMap" type="com.wzy.crm.pojo.ArticleShareTransmit" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="share_id" property="shareId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="INTEGER" />
+    <result column="article_id" property="articleId" jdbcType="INTEGER" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="transmit_times" property="transmitTimes" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from article_share_transmit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wzy.crm.pojo.ArticleShareTransmit" >
+    insert into article_share_transmit (id, share_id, user_id, 
+      customer_id, article_id, open_id, 
+      transmit_times, update_time)
+    values (#{id,jdbcType=INTEGER}, #{shareId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
+      #{customerId,jdbcType=INTEGER}, #{articleId,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, 
+      #{transmitTimes,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.ArticleShareTransmit" >
+    update article_share_transmit
+    set share_id = #{shareId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=INTEGER},
+      article_id = #{articleId,jdbcType=INTEGER},
+      open_id = #{openId,jdbcType=VARCHAR},
+      transmit_times = #{transmitTimes,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByKey" resultMap="BaseResultMap">
+    select id,share_id,user_id,customer_id, article_id,transmit_times,update_time
+    from article_share_transmit
+    where share_id = #{shareId}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, share_id, user_id, customer_id, article_id, open_id, transmit_times, update_time
+    from article_share_transmit
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, share_id, user_id, customer_id, article_id, open_id, transmit_times, update_time
+    from article_share_transmit
+  </select>
+</mapper>

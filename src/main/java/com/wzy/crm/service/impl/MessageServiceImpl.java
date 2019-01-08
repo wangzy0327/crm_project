@@ -66,6 +66,9 @@ public class MessageServiceImpl implements IMessageService {
     private CustomerReadinfoMapper customerReadinfoMapper;
 
     @Autowired
+    private ArticleCustomerReadinfoMapper articleCustomerReadinfoMapper;
+
+    @Autowired
     @Lazy
     private CustomerMapper customerMapper;
 
@@ -81,6 +84,9 @@ public class MessageServiceImpl implements IMessageService {
 
     @Autowired
     private KeywordsArticleMapper keywordsArticleMapper;
+
+    @Autowired
+    private ArticleShareTransmitMapper articleShareTransmitMapper;
 
 
     @Override
@@ -203,9 +209,34 @@ public class MessageServiceImpl implements IMessageService {
     }
 
     @Override
+    public ServerResponse saveArticleCustomerTransmit(ArticleShareTransmit articleShareTransmit) {
+        Integer shareId = articleShareTransmit.getShareId();
+        String openId = articleShareTransmit.getOpenId();
+        Customer customer = customerMapper.selectByPrimaryKey(articleShareTransmit.getCustomerId());
+        List<Customer> customers;
+        if(customer == null){
+            customers = customerMapper.selectByOpenid(openId);
+            if(customers.size()>0){
+                customer = customers.get(0);
+                articleShareTransmit.setCustomerId(customer.getId());
+                articleShareTransmit.setCustomerName(customer.getName());
+            }
+        }
+        sendWxMessage.handleSendArticleCustomerTransmit(articleShareTransmit);
+        System.out.println("..........转发........");
+        ArticleShareTransmit articleShareTransmit1 = articleShareTransmitMapper.selectByKey(shareId);
+        if(articleShareTransmit1!=null){
+            articleShareTransmit.setId(articleShareTransmit1.getId());
+            articleShareTransmitMapper.updateByPrimaryKey(articleShareTransmit);
+        }else{
+            articleShareTransmit.setTransmitTimes(1);
+            articleShareTransmitMapper.insert(articleShareTransmit);
+        }
+        return ServerResponse.createBySuccess(articleShareTransmit);
+    }
+
+    @Override
     public ServerResponse saveCustomerTransmit(MessageShareTransmit messageShareTransmit) {
-        Integer customerId = messageShareTransmit.getCustomerId();
-        Integer messageId = messageShareTransmit.getMessageId();
         Integer shareId = messageShareTransmit.getShareId();
         String openId = messageShareTransmit.getOpenId();
         Customer customer = customerMapper.selectByPrimaryKey(messageShareTransmit.getCustomerId());
@@ -256,6 +287,23 @@ public class MessageServiceImpl implements IMessageService {
             messageReadInfos = customerReadinfoMapper.selectMyReadInfoDetail(userId,customerId,messageId);
         }else if(userId == null && messageId != null && customerId != null){
             messageReadInfos = customerReadinfoMapper.selectReadInfoDetail(customerId,messageId);
+        }
+        System.out.println("count:"+messageReadInfos.size());
+        return ServerResponse.createBySuccess(messageReadInfos);
+    }
+
+    @Override
+    public ServerResponse getArticleShareDetail(ArticleShareVo articleShareVo){
+        String userId = articleShareVo.getUserId();
+        Integer messageId = articleShareVo.getArticleId();
+        Integer customerId = articleShareVo.getCustomerId();
+        List<MessageReadInfo> messageReadInfos = null;
+        if(userId != null && messageId != null && customerId == null){
+            messageReadInfos = articleCustomerReadinfoMapper.selectArticleShareDetail(userId,messageId);
+        }else if(userId != null && messageId != null && customerId != null){
+            messageReadInfos = articleCustomerReadinfoMapper.selectMyReadInfoDetail(userId,customerId,messageId);
+        }else if(userId == null && messageId != null && customerId != null){
+            messageReadInfos = articleCustomerReadinfoMapper.selectReadInfoDetail(customerId,messageId);
         }
         System.out.println("count:"+messageReadInfos.size());
         return ServerResponse.createBySuccess(messageReadInfos);

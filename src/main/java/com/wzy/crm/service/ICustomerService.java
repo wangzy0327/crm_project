@@ -23,6 +23,8 @@ public interface ICustomerService {
 
     ServerResponse updateCustomerReadInfo(CustomerReadinfo customerReadinfo);
 
+    ServerResponse updateArticleCustomerReadInfo(CustomerReadinfo customerReadinfo);
+
     ServerResponse findCustomer(Integer shareId,String openid);
 
     ServerResponse findReadMessage(CustomerVo customerVo);

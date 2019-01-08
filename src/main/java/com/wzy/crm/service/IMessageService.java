@@ -1,11 +1,8 @@
 package com.wzy.crm.service;
 
-import com.wzy.crm.pojo.Message;
+import com.wzy.crm.pojo.*;
 import com.wzy.crm.common.ResponseCode;
 import com.wzy.crm.common.ServerResponse;
-import com.wzy.crm.pojo.MessageShareCustomer;
-import com.wzy.crm.pojo.MessageShareTransmit;
-import com.wzy.crm.pojo.MessageTag;
 import com.wzy.crm.vo.*;
 import org.apache.http.protocol.ResponseServer;
 
@@ -61,11 +58,15 @@ public interface IMessageService {
 
     ServerResponse saveShareCustomer(MessageShareCustomer messageShareCustomer);
 
+    ServerResponse saveArticleCustomerTransmit(ArticleShareTransmit articleShareTransmit);
+
     ServerResponse saveCustomerTransmit(MessageShareTransmit messageShareTransmit);
 
     ServerResponse findSelfShare(MyShareVo myShareVo);
 
     ServerResponse getMessageShareDetail(MessageShareVo messageShareVo);
+
+    ServerResponse getArticleShareDetail(ArticleShareVo articleShareVo);
 
     ServerResponse getRecommendMessageList(Integer customerId);
 

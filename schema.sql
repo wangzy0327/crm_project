@@ -1185,6 +1185,7 @@ CREATE TABLE `keywords_article` (
   `author` varchar(50) COMMENT '作者-来源',
   `title` varchar(50) NOT NULL COMMENT '标题',
   `description` varchar(300) NOT NULL COMMENT '描述',
+  `url` varchar(255) NOT NULL COMMENT '点击后跳转的链接',
   `link` varchar(200) NOT NULL COMMENT '链接',
   `pub_time` datetime DEFAULT NULL COMMENT '发布时间',
   `keyword` varchar(50) DEFAULT NULL COMMENT '关键词',
@@ -1205,7 +1206,7 @@ CREATE TABLE `article_share` (
   `open_count` int(11) DEFAULT '0' COMMENT '客户打开次数',
   `del_flag` int(2) DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `articleId` (`article_id`),
+  KEY `articleId` (`article_id`) USING BTREE,
   KEY `delFlag_openCount` (`del_flag`,`open_count`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
@@ -1222,10 +1223,86 @@ CREATE TABLE `message_share_customer` (
   KEY `articleId` (`article_id`) USING BTREE,
   KEY `userId` (`user_id`) USING BTREE,
   KEY `customerId` (`customer_id`) USING BTREE,
-  KEY `share_id` (`share_id`)
+  KEY `share_id` (`share_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='客户消息分享表';
 
+drop table  if exists `article_customer_readinfo` ;
+CREATE TABLE `article_customer_readinfo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `share_id` int(11) DEFAULT NULL,
+  `user_id` varchar(30) DEFAULT NULL,
+  `times` int(11) DEFAULT NULL COMMENT '点击阅读次数',
+  `article_id` int(11) DEFAULT NULL COMMENT '资料消息id',
+  `customer_id` int(11) DEFAULT NULL,
+  `open_id` varchar(30) DEFAULT NULL,
+  `ip` varchar(20) DEFAULT NULL,
+  `cid` varchar(50) DEFAULT '-1',
+  `city` varchar(100) DEFAULT NULL,
+  `open_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '打开页面时间点',
+  `view_time` int(11) DEFAULT '1' COMMENT '浏览时间',
+  `page_count` int(11) DEFAULT NULL COMMENT '页面长度',
+  `total_time` int(11) DEFAULT NULL COMMENT '文案阅读总时长',
+  `read_info` longtext COMMENT '阅读信息/浏览时长',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最近更新时间',
+  PRIMARY KEY (`id`),
+  KEY `openId` (`open_id`) USING BTREE,
+  KEY `userId` (`user_id`) USING BTREE,
+  KEY `customerId` (`customer_id`) USING BTREE,
+  KEY `idx_article_id` (`article_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='抓取文章客户阅读详情';
 
+drop table  if exists `article_share_transmit` ;
+CREATE TABLE `article_share_transmit` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `share_id` int(11) DEFAULT NULL COMMENT '资料分享id',
+  `user_id` varchar(30) DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  `article_id` int(11) DEFAULT NULL COMMENT '资料消息id',
+  `open_id` varchar(30) DEFAULT NULL,
+  `transmit_times` int(11) DEFAULT NULL COMMENT '转发次数',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '最近更新时间',
+  PRIMARY KEY (`id`),
+  KEY `openId` (`open_id`) USING BTREE,
+  KEY `userId` (`user_id`) USING BTREE,
+  KEY `idx_article_id` (`article_id`),
+  KEY `share_id` (`share_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='抓取文章转发记录';
+
+
+drop view if exists v_share_article;
+create view v_share_article
+  as (
+    select ms.article_id,keywords_article.title,ms.user_id,ms.oc open_count,ms.share_flag,mst.tt transmit_times,ms.share_time
+    from (
+           select article_id,user_id,SUM(open_count) oc,share_flag,share_time
+           from article_share
+           where share_flag = 1 and del_flag = 0
+           group by article_id
+         ) ms
+      LEFT JOIN
+      (
+        select article_id,user_id,SUM(transmit_times) tt
+        from article_share_transmit
+        group by article_id
+      ) mst
+        ON ms.article_id = mst.article_id and ms.user_id = mst.user_id
+      LEFT JOIN
+      keywords_article
+        ON ms.article_id = keywords_article.id and keywords_article.title is not NULL
+  );
+
+
+drop view if exists v_article_readinfo_detail;
+create view v_article_readinfo_detail
+  as(
+    select article_customer_readinfo.id,article_customer_readinfo.share_id,article_customer_readinfo.user_id,article_customer_readinfo.article_id,keywords_article.msg_type,article_customer_readinfo.customer_id,customer.`name`,times,article_share_transmit.transmit_times,ip,cid,city,open_time,view_time,page_count,total_time,read_info,article_customer_readinfo.update_time
+    from article_customer_readinfo
+      left join article_share_transmit
+        on article_customer_readinfo.share_id = article_share_transmit.share_id
+      left join customer
+        on article_customer_readinfo.customer_id = customer.id
+      left join keywords_article
+        on keywords_article.id = article_customer_readinfo.article_id);
 
 
 

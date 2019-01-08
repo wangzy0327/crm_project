@@ -288,6 +288,11 @@ public class MessageController {
         return ServerResponse.createBySuccess(articleShare);
     }
 
+    @PostMapping("/article/customer/transmit")
+    public ServerResponse ArticleTransmit(@RequestBody ArticleShareTransmit articleShareTransmit){
+        return messageService.saveArticleCustomerTransmit(articleShareTransmit);
+    }
+
     @PostMapping("/share/customer")
     public ServerResponse shareMessageCustomer(@RequestBody MessageShareCustomer messageShareCustomer){
         return messageService.saveShareCustomer(messageShareCustomer);
@@ -306,6 +311,11 @@ public class MessageController {
     @PostMapping("/shareDetail")
     public ServerResponse getMessageShareDetail(@RequestBody MessageShareVo messsageShareVo){
         return messageService.getMessageShareDetail(messsageShareVo);
+    }
+
+    @PostMapping("/article/shareDetail")
+    public ServerResponse getArticleShareDetail(@RequestBody ArticleShareVo articleShareVo){
+        return messageService.getArticleShareDetail(articleShareVo);
     }
 
     @PostMapping("/recommend/list")

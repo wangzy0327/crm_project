@@ -2,10 +2,7 @@ package com.wzy.crm.utils;
 
 
 import com.wzy.crm.config.DomainConfig;
-import com.wzy.crm.pojo.CustomerReadinfo;
-import com.wzy.crm.pojo.MessageShareTransmit;
-import com.wzy.crm.pojo.VisitLog;
-import com.wzy.crm.pojo.VisitPlan;
+import com.wzy.crm.pojo.*;
 import com.wzy.crm.vo.CommentVo;
 import com.wzy.crm.wx.cp.config.WechatAccountConfig;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -175,6 +172,30 @@ public class SendWxMessage {
         return true;
     }
 
+    public boolean handleSendArticleCustomerScan(CustomerReadinfo customerReadinfo){
+        String content = "";
+        Integer articleId = customerReadinfo.getMessageId();
+        Integer customerId = customerReadinfo.getCustomerId();
+        String messageTitle = customerReadinfo.getMessageTitle();
+        System.out.println("messageTitle:"+messageTitle);
+        String str = "客户";
+        String userId = customerReadinfo.getUserId();
+        content += "您的分享消息：\n";
+        content += "【<a href = \""+domainConfig.getUrl()+"module/my-share/my-share-detail.html?userid="+userId+"&artid="+articleId+"\">"+customerReadinfo.getMessageTitle()+"</a>】正在被" + ((customerReadinfo.getCustomerName() == null)?str:customerReadinfo.getCustomerName())+"浏览！";
+        WxCpMessage wxCpMessage = WxCpMessage.TEXT()
+                .agentId(accountConfig.getAppConfigs()
+                        .get(0).getAgentId())
+                .content(content)
+                .toUser(customerReadinfo.getUserId())
+                .build();
+        try {
+            wxCpService.messageSend(wxCpMessage);
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 
     public boolean handleSendCustomerTransmit(MessageShareTransmit messageShareTransmit){
         String content = "";
@@ -189,6 +210,28 @@ public class SendWxMessage {
                         .get(0).getAgentId())
                 .content(content)
                 .toUser(messageShareTransmit.getUserId())
+                .build();
+        try {
+            wxCpService.messageSend(wxCpMessage);
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean handleSendArticleCustomerTransmit(ArticleShareTransmit articleShareTransmit){
+        String content = "";
+        Integer articleId = articleShareTransmit.getArticleId();
+        Integer customerId = articleShareTransmit.getCustomerId();
+        String str = "客户";
+        String userId = articleShareTransmit.getUserId();
+        content += "您的分享消息：\n";
+        content += "【<a href = \""+domainConfig.getUrl()+"module/my-share/my-share-detail.html?userid="+userId+"&artid="+articleId+"\">"+articleShareTransmit.getTitle()+"</a>】被" + ((articleShareTransmit.getCustomerName() == null)?str:articleShareTransmit.getCustomerName())+"转发！";
+        WxCpMessage wxCpMessage = WxCpMessage.TEXT()
+                .agentId(accountConfig.getAppConfigs()
+                        .get(0).getAgentId())
+                .content(content)
+                .toUser(articleShareTransmit.getUserId())
                 .build();
         try {
             wxCpService.messageSend(wxCpMessage);

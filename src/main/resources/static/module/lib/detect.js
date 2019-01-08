@@ -1,5 +1,4 @@
 var OSTool = OSTool || {};
-var city;
 OSTool.Exp_USERAGENT = {
     //browser
     MSIE : /(msie) ([\w.]+)/,
@@ -47,7 +46,7 @@ OSTool.Exp_USERAGENT = {
 };
 OSTool.detectOS = function(ua){
     var os = {},
-    //browser
+        //browser
         chrome = ua.match(OSTool.Exp_USERAGENT.CHROME),
         opera = ua.match(OSTool.Exp_USERAGENT.OPERA),
         firefox = ua.match(OSTool.Exp_USERAGENT.FIREFOX),
@@ -63,24 +62,24 @@ OSTool.detectOS = function(ua){
         micromessage = ua.match(OSTool.Exp_USERAGENT.MicroMessenger),
         qq=ua.match(OSTool.Exp_USERAGENT.QQ),
 
-    //engine
+        //engine
         webkit = ua.match(OSTool.Exp_USERAGENT.WEBKIT),
         gecko = ua.match(OSTool.Exp_USERAGENT.GECKO),
         presto = ua.match(OSTool.Exp_USERAGENT.PRESTO),
         trident = ua.match(OSTool.Exp_USERAGENT.TRIDENT),
 
-    //device
+        //device
         mac = ua.match(OSTool.Exp_USERAGENT.MAC),
         windows = ua.match(OSTool.Exp_USERAGENT.WINNDOWS),
         linux = ua.match(OSTool.Exp_USERAGENT.LINUX),
         chromeos = ua.match(OSTool.Exp_USERAGENT.CHROMEOS),
 
-    //pad
+        //pad
         ipad = ua.match(OSTool.Exp_USERAGENT.IPAD),
         rimtablet = ua.match(OSTool.Exp_USERAGENT.RIMTABLET),
         touchpad = webos && ua.match(OSTool.Exp_USERAGENT.TOUCHPAD),
 
-    //mobile
+        //mobile
         ios = ua.match(OSTool.Exp_USERAGENT.IOS),
         ipod = ua.match(OSTool.Exp_USERAGENT.IPOD),
         iphone = !ipad && ua.match(OSTool.Exp_USERAGENT.IPHONE),
@@ -167,8 +166,8 @@ OSTool.detectOS = function(ua){
 
     //safari
     if ((os.deviceName == 'iphone' ||
-        os.deviceName == 'ipod' ||
-        os.deviceName == 'ipad') &&
+            os.deviceName == 'ipod' ||
+            os.deviceName == 'ipad') &&
         os.engine == 'webkit' &&
         os.type != 'desktop') {
         try{
@@ -195,11 +194,6 @@ OSTool.detectOS = function(ua){
     }
 
     return os;
-};
-OSTool.baiduCallback = function(data){
-    pointX = data.content.point.x;
-    pointY = data.content.point.y;
-    city = data.content.address;
 };
 OSTool.detectIP = function(callback){
     if(callback){
@@ -238,19 +232,15 @@ OSTool.detectIP = function(callback){
             }
         );*/
         getLoaction = defaultLoation;
+
         var script1 = document.createElement("script");
         script1.src = "http://pv.sohu.com/cityjson?ie=utf-8";
         document.head.insertBefore(script1, document.head.firstChild);
-        var script2 = document.createElement('script');
-        script2.type = "text/javascript";
-        key = "unl7umbeQU9GFKs5XoXSQZCuQY1um1iB";//百度地图可以申请到
-        script2.src = "http://api.map.baidu.com/location/ip?ak="+key+"&coor=bd09ll&ip&callback=OSTool.baiduCallback";//拼接URL
-        document.head.appendChild(script2);
         function returnCBK(){
             callback({
                 ip:returnCitySN.cip || '',
                 cid:returnCitySN.cid || '',
-                city:city || '',
+                city:returnCitySN.cname || '',
                 location:JSON.stringify(getLoaction || {})
             });
         }
@@ -258,7 +248,7 @@ OSTool.detectIP = function(callback){
             allTime += 100;
             if(allTime >= 3000){
                 window.clearInterval(timer_ip);
-                if((typeof(returnCitySN) != "undefined" && typeof(city) != "undefined")|| getLoaction != 0){
+                if(typeof(returnCitySN) != "undefined" || getLoaction != 0){
                     returnCBK();
                 }else{
                     callback('none');

@@ -7,6 +7,7 @@
     <result column="author" property="author" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="link" property="link" jdbcType="VARCHAR" />
     <result column="pub_time" property="pubTime" jdbcType="TIMESTAMP" />
     <result column="keyword" property="keyword" jdbcType="VARCHAR" />
@@ -24,11 +25,13 @@
   </delete>
   <insert id="insert" parameterType="com.wzy.crm.pojo.KeywordsArticle" >
     insert into keywords_article (id, author,
-      title, description, link, 
-      pub_time, keyword)
+      title, description, url, 
+      link, pub_time, keyword
+      )
     values (#{id,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR},
-      #{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{link,jdbcType=VARCHAR}, 
-      #{pubTime,jdbcType=TIMESTAMP}, #{keyword,jdbcType=VARCHAR})
+      #{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{link,jdbcType=VARCHAR}, #{pubTime,jdbcType=TIMESTAMP}, #{keyword,jdbcType=VARCHAR}
+      )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wzy.crm.pojo.KeywordsArticle" >
     update keywords_article
@@ -36,18 +39,19 @@
       author = #{author,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
       link = #{link,jdbcType=VARCHAR},
       pub_time = #{pubTime,jdbcType=TIMESTAMP},
       keyword = #{keyword,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, msg_type, author, title, description, link, pub_time, keyword
+    select id, msg_type, author, title, description, url, link, pub_time, keyword
     from keywords_article
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, msg_type, author, title, description, link, pub_time, keyword
+    select id, msg_type, author, title, description, url, link, pub_time, keyword
     from keywords_article
   </select>
   <select id="selectByTitle" resultType="int">
@@ -56,10 +60,10 @@
     where title = #{title}
   </select>
   <select id="findArticleByKeywords" resultMap="MessageResponseMap">
-    select id,title,msg_type,author,title,pub_time
+    select id,title,msg_type,url,author,pub_time
     from keywords_article
     where keyword = #{keywords}
-    order by pub_time desc
+    order by title desc
     limit 0,10
   </select>
 </mapper>

@@ -15,7 +15,7 @@
     delete from article_share
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wzy.crm.pojo.ArticleShare" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.wzy.crm.pojo.ArticleShare" >
     insert into article_share (id, article_id, user_id, 
       push_time, share_flag, share_time, 
       open_count, del_flag)
@@ -34,6 +34,18 @@
       del_flag = #{delFlag,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateOpenCount">
+    update article_share
+    set open_count = open_count+1
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectSelfShare">
+    select id,message_id,titleText,user_id,open_count,transmit_times,share_time
+    from v_share_message
+    where user_id = #{userId}
+    order by share_time desc
+    limit #{start},#{size};
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select id, article_id, user_id, push_time, share_flag, share_time, open_count, del_flag
     from article_share

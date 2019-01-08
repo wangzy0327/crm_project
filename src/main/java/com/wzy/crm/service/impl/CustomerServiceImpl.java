@@ -45,7 +45,13 @@ public class CustomerServiceImpl implements ICustomerService {
     private CustomerReadinfoMapper customerReadinfoMapper;
 
     @Autowired
+    private ArticleCustomerReadinfoMapper articleCustomerReadinfoMapper;
+
+    @Autowired
     private MessageShareMapper messageShareMapper;
+
+    @Autowired
+    private ArticleShareMapper articleShareMapper;
 
     @Autowired
     private SendWxMessage sendWxMessage;
@@ -205,6 +211,65 @@ public class CustomerServiceImpl implements ICustomerService {
             messageShare.setId(customerReadinfo.getShareId());
             messageShareMapper.updateOpenCount(messageShare);
             customerReadinfoMapper.updateInfoAndTimesByKey(customerReadinfo);
+            sendWxMessage.handleSendCustomerScan(customerReadinfo);
+        }
+        return ServerResponse.createBySuccess(customerReadinfo);
+    }
+
+    @Override
+    public ServerResponse updateArticleCustomerReadInfo(CustomerReadinfo customerReadinfo) {
+        Integer shareId = customerReadinfo.getShareId();
+        Integer messageId = customerReadinfo.getMessageId();
+        String openId = customerReadinfo.getOpenId();
+        System.out.println("readInfo openId:"+openId);
+        Customer customer = customerMapper.selectByPrimaryKey(customerReadinfo.getCustomerId());
+        List<Customer> customers;
+        if(customer == null){
+            customers = customerMapper.selectByOpenid(openId);
+            if(customers.size()>0){
+                customer = customers.get(0);
+                customerReadinfo.setCustomerId(customer.getId());
+                customerReadinfo.setCustomerName(customer.getName());
+                MessageShareCustomer messageShareCustomer = new MessageShareCustomer();
+                messageShareCustomer.setShareId(customerReadinfo.getShareId());
+                messageShareCustomer.setMessageId(customerReadinfo.getMessageId());
+                messageShareCustomer.setUserId(customerReadinfo.getUserId());
+                messageShareCustomer.setCustomerId(customerReadinfo.getCustomerId());
+                messageShareCustomerMapper.insert(messageShareCustomer);
+            }
+        }
+        if(customer == null){
+            return ServerResponse.createByErrorMessage("客户id问题!");
+        }
+        if(openId!=null && customer.getOpenId()!=null && !openId.equals(customer.getOpenId())){
+            return ServerResponse.createByErrorMessage("客户身份信息不匹配");
+        }else if(customer.getOpenId() == null){
+            String cusOpenid = customer.getOpenId();
+            if(openId!=null&&!openId.equals("-1")&& cusOpenid == null){
+                customer.setOpenId(openId);
+                customerMapper.updateByPrimaryKey(customer);
+            }
+        }
+        List<CustomerReadinfo> customerReadinfos = articleCustomerReadinfoMapper.selectByShareKey(shareId,messageId);
+        CustomerReadinfo customerReadinfoModify = null;
+        if(customerReadinfos == null || customerReadinfos.size() == 0){
+            customerReadinfo.setTimes(1);
+            articleCustomerReadinfoMapper.insert(customerReadinfo);
+            MessageShare messageShare = new MessageShare();
+            messageShare.setId(customerReadinfo.getShareId());
+            articleShareMapper.updateOpenCount(messageShare);
+            sendWxMessage.handleSendCustomerScan(customerReadinfo);
+        }else if(customerReadinfos!=null && customerReadinfo.getId()!=null){
+            customerReadinfoModify = customerReadinfos.get(0);
+            articleCustomerReadinfoMapper.updateByKeyAndTime(customerReadinfoModify.getId(),customerReadinfo.getViewTime(),customerReadinfo.getTotalTime(),customerReadinfo.getReadInfo());
+        }else{
+            customerReadinfoModify = customerReadinfos.get(0);
+            customerReadinfo.setId(customerReadinfoModify.getId());
+            customerReadinfo.setTimes(customerReadinfoModify.getTimes()+1);
+            MessageShare messageShare = new MessageShare();
+            messageShare.setId(customerReadinfo.getShareId());
+            articleShareMapper.updateOpenCount(messageShare);
+            articleCustomerReadinfoMapper.updateInfoAndTimesByKey(customerReadinfo);
             sendWxMessage.handleSendCustomerScan(customerReadinfo);
         }
         return ServerResponse.createBySuccess(customerReadinfo);
